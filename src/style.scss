@@ -1,0 +1,263 @@
+@import "element-plus/theme-chalk/dark/css-vars.css";
+@import "@/scss/common";
+
+/**
+ * 设置所有元素共有的样式
+ *
+ * @author Himmelbleu
+ * @date 2023 年 2 月 14 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100% !important;
+  background-color: var(--l-box-bg);
+  color: var(--l-pri-color);
+  font-size: var(--font-size);
+  font-weight: 400;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+* {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: var(--font-family);
+  letter-spacing: 1px;
+  scroll-behavior: smooth;
+  word-break: break-all;
+  line-break: anywhere;
+  box-sizing: border-box;
+}
+
+#app {
+  --uno: f-c-c;
+}
+
+img {
+  --uno: rd-2;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+/**
+ * 设置响应式 font-size 方案
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+
+:root {
+  --l-transition: all 0.4s ease-in-out;
+  --font-size: 14px;
+  --font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+// 375 ~ 1400 都是 14px，超过 1500px 就开始依次往上递增
+@for $i from 1 through 30 {
+  $min: $i * 100 + 1500px;
+
+  @media screen and (min-width: $min) {
+    :root {
+      --font-size: #{calc($min / 100)};
+    }
+  }
+}
+
+/**
+ * 设置昼夜模式下使用的颜色
+ *
+ * @author Himmelbleu
+ * @date 2023 年 2 月 14 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+html[class="dark"] {
+  // 盒子背景颜色
+  --l-box-bg: #191919;
+  // 卡片背景颜色
+  --l-card-bg: #222222;
+  // 分界线背景颜色
+  --l-divider-bg: #464646;
+  // 模态框背景颜色
+  --l-matee-bg: #0d0d0d8f;
+  // strip 条背景颜色
+  --l-strip-bg: #7f7f7f;
+  // 隐藏代码块 modal
+  --l-code-hidden: #2e2e2e;
+  // highlight
+  --hljs-color: #abb2bf;
+  --hljs-bg: #282c34;
+  --hljs-comment-color: #5c6370;
+  --hljs-keyword: #c678dd;
+  --hljs-section: #e06c75;
+  --hljs-literal: #56b6c2;
+  --hljs-addition: #98c379;
+  --hljs-attr: #d19a66;
+  --hljs-bullet: #61aeee;
+  --hljs-built: #e6c07b;
+}
+
+html[class="light"] {
+  // 盒子背景颜色
+  --l-box-bg: #f9f9f9;
+  // 卡片背景颜色
+  --l-card-bg: #ffffff;
+  // 分界线背景颜色
+  --l-divider-bg: #e3e3e3;
+  // 模态框背景颜色
+  --l-matee-bg: #0d0d0d8f;
+  // strip 条背景颜色
+  --l-strip-bg: #d5d5d5;
+  // 隐藏代码块 modal
+  --l-code-hidden: #e0e0e0;
+  // highlight
+  --hljs-color: #383a42;
+  --hljs-bg: #fafafa;
+  --hljs-comment-color: #a0a1a7;
+  --hljs-keyword: #a626a4;
+  --hljs-section: #e45649;
+  --hljs-literal: #0184bb;
+  --hljs-addition: #50a14f;
+  --hljs-attr: #986801;
+  --hljs-bullet: #986801;
+  --hljs-built: #986801;
+}
+
+/**
+ * 覆盖 element-plus 样式
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+:root {
+  --el-text-color-regular: var(--l-pri-color) !important;
+  --el-text-color-primary: var(--l-pri-color) !important;
+  --el-color-primary: var(--l-theme-color) !important;
+  --el-border-radius-base: 0.5rem !important;
+  --el-color-primary-light-5: var(--l-theme-color) !important;
+  --el-font-size-base: var(--l-fiv-size) !important;
+  --el-fill-color-blank: transparent !important;
+  --el-text-color-placeholder: var(--l-thr-color) !important;
+}
+
+.el-rate__icon {
+  margin: 0 !important;
+}
+
+/**
+ * highlightjs 样式
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 16 日
+ * @url https://www.cnblogs.com/Himmelbleu/#/
+ */
+.hljs {
+  padding: 1rem;
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  color: var(--l-pri-color);
+  transition: var(--l-transition);
+  background: var(--l-code-bg) !important;
+
+  &::-webkit-scrollbar {
+    height: 0.5rem;
+    width: 0;
+  }
+
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: var(--l-divider-bg);
+  }
+
+  span {
+    --uno: l-for-size;
+    line-height: 1.6;
+    letter-spacing: 1.2px;
+    font-family: #{"Hack", var(--font-family)};
+  }
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--hljs-comment-color);
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-formula,
+.hljs-keyword {
+  color: var(--hljs-keyword);
+}
+
+.hljs-deletion,
+.hljs-name,
+.hljs-section,
+.hljs-selector-tag,
+.hljs-subst {
+  color: var(--hljs-section);
+}
+
+.hljs-literal {
+  color: var(--hljs-literal);
+}
+
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string,
+.hljs-regexp,
+.hljs-string {
+  color: var(--hljs-addition);
+}
+
+.hljs-attr,
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-pseudo,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable {
+  color: var(--hljs-attr);
+}
+
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-symbol,
+.hljs-title {
+  color: var(--hljs-bullet);
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title,
+.hljs-title.class_ {
+  color: var(--hljs-built);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}
