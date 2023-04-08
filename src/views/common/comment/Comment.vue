@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAnchorStore } from "@/store";
-import { getCommentCount, getCommentList } from "@/apis/remote-api";
+import { CommentApi } from "@/apis";
 
 const props = defineProps({
   postId: { type: String, required: true }
@@ -8,16 +8,16 @@ const props = defineProps({
 
 const level = ref();
 const { anchor } = storeToRefs(useAnchorStore());
-const pageCount = ref(await getCommentCount(props.postId));
+const pageCount = ref(await CommentApi.getCount(props.postId));
 const currPageIndex = ref(1);
-const comments = ref(await getCommentList(props.postId, currPageIndex.value, anchor.value));
+const comments = ref(await CommentApi.getList(props.postId, currPageIndex.value, anchor.value));
 
 watch(level, () => {
   document.querySelector(`#level-${anchor.value}`).scrollIntoView();
 });
 
 async function paginationChange() {
-  comments.value = await getCommentList(props.postId, currPageIndex.value);
+  comments.value = await CommentApi.getList(props.postId, currPageIndex.value);
 }
 
 function onPost(response: any) {

@@ -3,7 +3,6 @@
  *
  * @author Himmelbleu
  * @date 2023 年 1 月 15 日
- * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 @import "./mixins.scss";
 
@@ -18,6 +17,11 @@
 }
 
 .noscroll {
+  & {
+    scrollbar-color: initial;
+    scrollbar-width: none;
+  }
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -36,7 +40,7 @@
     right: 0;
     bottom: 1px;
     style: dashed;
-    color: var(--l-divider-bg);
+    color: #464646;
   }
 }
 
@@ -77,5 +81,75 @@
     outline: none;
     color: var(--l-pri-color);
     resize: none;
+  }
+}
+
+@include pc() {
+  .page {
+    --uno: f-s-c relative;
+    z-index: 2;
+
+    & > .content {
+      width: 55vw;
+    }
+  }
+}
+
+@include mb() {
+  .page {
+    width: 100%;
+  }
+}
+
+.welcome {
+  * {
+    color: #ededed !important;
+  }
+
+  .cover::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .wave-1 {
+    top: 0;
+    left: -100%;
+    opacity: 0.5;
+    animation: move-wave-to-right 20s infinite linear;
+    background: url(https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2281365/o_230410092356_wave-1.png) repeat-x;
+  }
+
+  .wave-2 {
+    top: 0;
+    left: 0%;
+    opacity: 0.6;
+    animation: move-wave-to-left 30s infinite linear;
+    background: url(https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2281365/o_230410092402_wave-2.png) repeat-x;
+  }
+
+  @keyframes move-wave-to-right {
+    0% {
+      transform: translateX(0%) scaleY(1);
+    }
+    50% {
+      transform: translateX(25%) scaleY(0.85);
+    }
+    100% {
+      transform: translateX(50%) scaleY(1);
+    }
+  }
+
+  @keyframes move-wave-to-left {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
 }

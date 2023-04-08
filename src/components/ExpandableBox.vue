@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import $ from "jquery";
 
-const setting = EcyUtils.getSetting();
+const setting = EcyUtils.getLocalSetting();
 const props = defineProps({
   text: {
     type: String,
@@ -42,7 +42,7 @@ function toggle() {
   }
 }
 
-function initHeight(msg?: string) {
+function initHeight() {
   height.value = $(content.value).height();
 
   if (!props.disabled) {

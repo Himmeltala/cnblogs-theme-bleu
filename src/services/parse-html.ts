@@ -3,15 +3,12 @@
  *
  * @author Himmelbleu
  * @date 2022 年 12 月 1 日
- * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 
 import $ from "jquery";
 
 /**
  * 把字符串转换为 DOM
- *
- * @param dom 字符串
  */
 export function parseDOM(dom: any) {
   return new DOMParser().parseFromString(dom, "text/html");
@@ -31,7 +28,7 @@ function getMaxPage(dom: any): number {
 /**
  * 只适用于获取首页随笔列表；日历随笔、文章列表。列表项包含描述、评论、点赞的随笔列表。
  */
-export function parseWritingList(dom: any): CustType.IWritingList {
+export function parseWorksList(dom: any): CustType.IWorksList {
   const id = $(dom).find(".postTitle2");
   const head = $(dom).find(".postTitle");
   const desc = $(dom).find(".c_b_p_desc");
@@ -41,7 +38,7 @@ export function parseWritingList(dom: any): CustType.IWritingList {
   const comm = notes.match(/评论\([0-9]+\)/g);
   const digg = notes.match(/推荐\([0-9]+\)/g);
 
-  const data: CustType.IWriting[] = [];
+  const data: CustType.IWorks[] = [];
 
   $(desc).each((i, e) => {
     data.push({
@@ -67,7 +64,7 @@ export function parseWritingList(dom: any): CustType.IWritingList {
 /**
  * 解析随笔详细页面
  */
-export function parseWriting(id: string, dom: any): CustType.IWriting {
+export function parseWorks(id: string, dom: any): CustType.IWorks {
   return {
     id,
     text: $(dom).find(".postTitle > a > span").text(),
@@ -122,8 +119,8 @@ export function parseCommentPages(json: any): number {
 /**
  * 解析随笔详细页面中的属性：标签、分类
  */
-export function parseWritingProps(dom: any): CustType.IWritingProps {
-  const data = <CustType.IWritingProps>{ tags: [], sorts: [] };
+export function parseWorksProps(dom: any): CustType.IWorksProps {
+  const data = <CustType.IWorksProps>{ tags: [], sorts: [] };
   const _dom = parseDOM(dom);
 
   $(_dom)
@@ -153,7 +150,7 @@ export function parseWritingProps(dom: any): CustType.IWritingProps {
 /**
  * 解析上下篇随笔
  */
-export function parseEssayPrevNext(dom: any): CustType.IPrevNext {
+export function parseWorksPrevNext(dom: any): CustType.IPrevNext {
   const data: CustType.IPrevNext = { prev: {}, next: {} };
 
   $(parseDOM(dom))
@@ -181,8 +178,8 @@ export function parseEssayPrevNext(dom: any): CustType.IPrevNext {
  *
  * 只适用于获取分类、档案的随笔、文章列表。
  */
-export function parseWritingsFull(dom: any): CustType.IWritingList2 {
-  const data: CustType.IWriting[] = [];
+export function parseWorksFull(dom: any): CustType.IWorksList2 {
+  const data: CustType.IWorks[] = [];
 
   const dateReg = /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g;
   const viewReg = /阅读\([0-9]+\)/g;
@@ -222,11 +219,11 @@ export function parseWritingsFull(dom: any): CustType.IWritingList2 {
  *
  * 只适用于获取以标签区别的随笔、文章列表。
  */
-export function parseWritingsSlice(dom: any): CustType.IWritingList2 {
+export function parseWorksSlice(dom: any): CustType.IWorksList2 {
   const head = $(dom).find(".PostList > .postTitl2 > a");
   const desc = $(dom).find(".PostList > .postDesc2");
   const hint = $(dom).find(".PostListTitle").text().trim();
-  const data: CustType.IWriting[] = [];
+  const data: CustType.IWorks[] = [];
 
   $(head).each((i, e) => {
     data.push({
@@ -243,7 +240,7 @@ export function parseWritingsSlice(dom: any): CustType.IWritingList2 {
     });
   });
 
-  return { data, hint };
+  return { data, hint, page: getMaxPage($(dom).find(".Pager")[0]) };
 }
 
 function loadColumn(dom: any, selector: string, success: (e: any, matched?: any) => void, regexp?: RegExp) {
@@ -260,10 +257,10 @@ function loadColumn(dom: any, selector: string, success: (e: any, matched?: any)
 /**
  * 解析侧边栏分类列表、标签列表，... 列表
  */
-export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
+export function parseMenuColumn(dom: any): CustType.IMenuColumn {
   const _dom = parseDOM(dom);
 
-  const data: CustType.ICabinetColumn = {
+  const data: CustType.IMenuColumn = {
     essaySort: [],
     essayArchive: [],
     articleArchive: [],
@@ -404,8 +401,8 @@ export function parseCabinetColumn(dom: any): CustType.ICabinetColumn {
 /**
  * 解析侧边栏博主主人基本的昵称、粉丝数、园龄等数据
  */
-export function parseAuthorData(dom: string): CustType.ICabinetItemData[] {
-  const data: CustType.ICabinetItemData[] = [];
+export function parseAuthorData(dom: string): CustType.IMenuItemData[] {
+  const data: CustType.IMenuItemData[] = [];
   $(parseDOM(dom))
     .find("#profile_block > a")
     .each((i, e) => {
@@ -416,11 +413,9 @@ export function parseAuthorData(dom: string): CustType.ICabinetItemData[] {
 
 /**
  * 解析博主主人的随笔、文章、评论、阅读等数据
- *
- * @param dom 真实 DOM
  */
-export function parseMasterData(dom: string): Array<CustType.ICabinetItemData> {
-  const data: CustType.ICabinetItemData[] = [];
+export function parseMasterData(dom: string): Array<CustType.IMenuItemData> {
+  const data: CustType.IMenuItemData[] = [];
   $(parseDOM(dom))
     .find("span")
     .each((i, d) => {
@@ -437,11 +432,9 @@ export function parseMasterData(dom: string): Array<CustType.ICabinetItemData> {
 
 /**
  * 解析侧边栏博客排行信息。
- *
- * @param dom 真实 DOM
  */
-export function parseCabinetRankList(dom: string): CustType.ICabinetItemData[] {
-  const data: CustType.ICabinetItemData[] = [];
+export function parseCabinetRankList(dom: string): CustType.IMenuItemData[] {
+  const data: CustType.IMenuItemData[] = [];
   $(parseDOM(dom))
     .find("li")
     .each((i, d) => {
@@ -455,11 +448,9 @@ export function parseCabinetRankList(dom: string): CustType.ICabinetItemData[] {
 
 /**
  * 解析博客阅读排行榜
- *
- * @param dom 真实 DOM
  */
-export function parseCabinetTopList(dom: string): CustType.ICabinetTopList {
-  const data: CustType.ICabinetTopList = {
+export function parseTopList(dom: string): CustType.ITopList {
+  const data: CustType.ITopList = {
     topView: [],
     topComments: [],
     topDigg: []
@@ -534,8 +525,8 @@ export function parseIsUnLock(dom: any): boolean {
   }
 }
 
-export function parseWritingSortChild(dom: any): CustType.IWritingSortChild[] {
-  const data: CustType.IWritingSortChild[] = [];
+export function parseWorksSortChild(dom: any): CustType.IWorksSortChild[] {
+  const data: CustType.IWorksSortChild[] = [];
   $(dom)
     .find("li")
     .each((i, el) => {

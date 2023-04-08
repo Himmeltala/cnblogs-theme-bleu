@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { setComment, getCommentCount, getCommentList } from "@/apis/remote-api";
+import { CommentApi } from "@/apis";
 
 const props = defineProps({
   postId: { type: String, required: true }
@@ -24,10 +24,10 @@ function uploadImage(el: string) {
 async function AddComment() {
   if (comment.value.body) {
     loading.value = true;
-    const data = await setComment(comment.value);
+    const data = await CommentApi.insert(comment.value);
     if (data.isSuccess) {
-      const count = await getCommentCount(props.postId);
-      const comments = await getCommentList(props.postId, 0);
+      const count = await CommentApi.getCount(props.postId);
+      const comments = await CommentApi.getList(props.postId, 0);
       comment.value.body = "";
       emits("onPost", { count, comments });
       ElMessage({ message: "发送评论成功！", grouping: true, type: "success" });

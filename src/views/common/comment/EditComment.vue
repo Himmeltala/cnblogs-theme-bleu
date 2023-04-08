@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { updateComment, getComment, getCommentCount, getCommentList } from "@/apis/remote-api";
+import { CommentApi } from "@/apis";
 
 const props = defineProps({
   comment: {
@@ -29,17 +29,20 @@ function uploadImage(el: string) {
 
 async function before() {
   htmlContent = props.comment.content;
-  content.value = await getComment({ commentId: props.comment.commentId });
+  content.value = await CommentApi.get({ commentId: props.comment.commentId });
   props.comment.isEditing = !props.comment.isEditing;
 }
 
 async function finish() {
-  const response = await updateComment({ body: content.value, commentId: props.comment.commentId });
+  const response = await CommentApi.update({ body: content.value, commentId: props.comment.commentId });
 
   if (response.isSuccess) {
     content.value = "";
     props.comment.isEditing = !props.comment.isEditing;
-    emits("onFinish", { count: await getCommentCount(props.postId), comments: await getCommentList(props.postId, props.currPageIndex) });
+    emits("onFinish", {
+      count: await CommentApi.getCount(props.postId),
+      comments: await CommentApi.getList(props.postId, props.currPageIndex)
+    });
     ElMessage({ message: "修改评论成功！", grouping: true, type: "success" });
   } else {
     ElMessage({ message: "这不是你的评论，没有权限编辑！", grouping: true, type: "error" });

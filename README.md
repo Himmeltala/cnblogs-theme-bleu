@@ -201,7 +201,9 @@ window.__ECY_CONFIG__ = {
 
 ```js
 window.__ECY_CONFIG__ = {
-  github: "your github address"
+  other: {
+    github: "your github address"
+  }
 };
 ```
 
@@ -215,18 +217,7 @@ window.__ECY_CONFIG__ = {
 window.__ECY_CONFIG__ = {
   cabinet: {
     avatar: "url",
-    signature: "your text",
-    navs: [
-      // 可以插入图片、文本、svg
-      {
-        href: "https://i.cnblogs.com/posts/edit",
-        text: "新随笔"
-      },
-      {
-        href: "https://gitee.com/Enziandom",
-        svg: `<path d="M512 1024C230.4 1024 0 793.6 0 512S230.4 0 512 0s512 230.4 512 512-230.4 512-512 512z m259.2-569.6H480c-12.8 0-25.6 12.8-25.6 25.6v64c0 12.8 12.8 25.6 25.6 25.6h176c12.8 0 25.6 12.8 25.6 25.6v12.8c0 41.6-35.2 76.8-76.8 76.8h-240c-12.8 0-25.6-12.8-25.6-25.6V416c0-41.6 35.2-76.8 76.8-76.8h355.2c12.8 0 25.6-12.8 25.6-25.6v-64c0-12.8-12.8-25.6-25.6-25.6H416c-105.6 0-188.8 86.4-188.8 188.8V768c0 12.8 12.8 25.6 25.6 25.6h374.4c92.8 0 169.6-76.8 169.6-169.6v-144c0-12.8-12.8-25.6-25.6-25.6z""></path>`
-      }
-    ]
+    signature: "your text"
   }
 };
 ```
@@ -263,12 +254,14 @@ window.__ECY_CONFIG__ = {
 
 ```js
 window.__ECY_CONFIG__ = {
-  links: [
-    {
-      href: "http://ts.xcatliu.com/index.html",
-      text: "TypeScript 入门教程"
-    }
-  ]
+  cabinet: {
+    links: [
+      {
+        href: "http://ts.xcatliu.com/index.html",
+        text: "TypeScript 入门教程"
+      }
+    ]
+  }
 };
 ```
 
@@ -276,26 +269,16 @@ window.__ECY_CONFIG__ = {
 
 ```js
 window.__ECY_CONFIG__ = {
-  books: [
-    {
-      href: "https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript/19848692",
-      text: "深入理解 JavaScript",
-      img: "http://img3m1.ddimg.cn/85/1/11120396251-1_w_1.jpg",
-      author: "[美]罗彻麦尔",
-      rate: 4.5
-    }
-  ]
+  cabinet: {
+    books: [
+      {
+        href: "https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript/19848692",
+        text: "深入理解 JavaScript",
+        img: "http://img3m1.ddimg.cn/85/1/11120396251-1_w_1.jpg",
+        author: "[美]罗彻麦尔",
+        rate: 4.5
+      }
+    ]
+  }
 };
 ```
-
-# 二次开发
-
-```bash
-npm install
-npm run dev
-npm build
-```
-
-二次开发需要把 build 之后的 index.css、index.js 上传到博客园后台“文件”。并获取这两个文件的链接，以替换部署说明中标签的引入链接。
-
-建议多使用 UnoCSS，开发时请把 `.env.development` 中两个字段修改成你自己的，否则获取的数据是我本人博客上的，博客 ID 和博客 App 都可以 F12 查看你博客找到，搜索`currentBlogId` 和`currentBlogApp`。

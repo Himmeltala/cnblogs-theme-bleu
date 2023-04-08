@@ -3,17 +3,7 @@
  *
  * @author Himmelbleu
  * @date 2023 年 1 月 15 日
- * @url https://www.cnblogs.com/Himmelbleu/#/
  */
-
-@mixin flex($justify: center, $items: center, $content: center, $wrap: wrap, $row: row) {
-  display: flex;
-  align-content: $content;
-  align-items: $items;
-  justify-content: $justify;
-  flex-wrap: $wrap;
-  flex-direction: $row;
-}
 
 @mixin hover($border-color: bottom, $font-color: true) {
   cursor: pointer;

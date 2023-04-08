@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { answerComment, getCommentCount, getCommentList } from "@/apis/remote-api";
+import { CommentApi } from "@/apis";
 
 const props = defineProps({
   comment: {
@@ -35,7 +35,7 @@ function before() {
 }
 
 async function finish() {
-  const response = await answerComment({
+  const response = await CommentApi.answer({
     body: `回复 ${props.comment.layer} [@${props.comment.author}](${props.comment.space})\n\n` + content.value,
     postId: props.postId,
     parentCommentId: props.comment.commentId
@@ -44,7 +44,10 @@ async function finish() {
   if (response.isSuccess) {
     content.value = "";
     props.comment.isAnsling = !props.comment.isAnsling;
-    emits("onFinish", { count: await getCommentCount(props.postId), comments: await getCommentList(props.postId, props.currPageIndex) });
+    emits("onFinish", {
+      count: await CommentApi.getCount(props.postId),
+      comments: await CommentApi.getList(props.postId, props.currPageIndex)
+    });
     ElMessage({ message: "回复评论成功！", grouping: true, type: "success" });
   } else {
     ElMessage({ message: "回复评论失败！", grouping: true, type: "error" });

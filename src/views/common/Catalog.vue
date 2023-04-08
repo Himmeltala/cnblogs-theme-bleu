@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useCatalogStore } from "@/store";
 
-const setting = EcyUtils.getSetting();
 const route = useRoute();
 const store = useCatalogStore();
 const anchors = shallowRef();
@@ -13,19 +12,12 @@ store.$onAction(({ args }) => {
 }, true);
 
 watch(route, async () => {
-  if (route.name !== "Writing") {
-    anchors.value = [];
-  }
+  if (route.name !== RouterName.Works) anchors.value = [];
 });
 </script>
 
 <template>
-  <MovableBox
-    id="l-catalog"
-    v-show="anchors && anchors.length"
-    ref="movbox"
-    :disabled="disabled"
-    :class="{ 'l-box-bg': !setting.card.open }">
+  <MovableBox id="l-catalog" v-show="anchors && anchors.length" ref="movbox" :disabled="disabled">
     <template #head>
       <div class="headtip f-c-s">
         <div class="f-c-c">
@@ -44,7 +36,7 @@ watch(route, async () => {
 <style scoped lang="scss">
 @include pc() {
   #l-catalog {
-    left: calc(var(--content-width) * 1.55);
+    left: calc(55vw * 1.45);
   }
 }
 

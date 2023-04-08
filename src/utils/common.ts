@@ -3,87 +3,28 @@
  *
  * @author Himmelbleu
  * @date 2022 年 12 月 1 日
- * @url https://www.cnblogs.com/Himmelbleu/#/
  */
 
 import $ from "jquery";
 
 export namespace EcyUtils {
-  /**
-   * 获取本地博客设置数据
-   *
-   * @returns 博客设置
-   */
-  export function getSetting() {
-    return useStorage<CustType.ISetting>(`l-${EcyConfig.blogApp}-setting`, {});
+  export function getLocalSetting() {
+    return useStorage<CustType.ILocalSetting>(`l-${EcyConfig.blogApp}-setting`, getLocalSettingTemp());
   }
 
-  /**
-   * Ecy 主题设置模板对象
-   */
-  export function getSettingTemp(): CustType.ISetting {
+  export function getLocalSettingTemp(): CustType.ILocalSetting {
     return {
-      theme: { mode: "dark", color: "#409eff" },
+      theme: { mode: "dark" },
       toolkits: { pin: true },
-      pages: {
-        home: {
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 1 }
-        },
-        writing: {
-          code: { light: { color: "#f2f2f2" }, dark: { color: "#222222" } },
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 1 }
-        },
-        markList: {
-          padding: { left: 0, right: 0, top: 0, bottom: 0 },
-          margin: { left: 0, right: 0, top: 0, bottom: 0 }
-        },
-        markSort: {
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 1 }
-        },
-        gallery: {
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 0 }
-        },
-        sort: {
-          padding: { left: 1, right: 1, top: 1, bottom: 1 },
-          margin: { left: 0, right: 0, top: 0, bottom: 1 }
-        }
-      },
-      font: {
-        size: { level1: 1.3, level2: 1.2, level3: 1.1, level4: 1, level5: 0.9, level6: 0.8 },
-        light: { color: { level1: "#393939", level2: "#4e4e4e", level3: "#707070" } },
-        dark: { color: { level1: "#a7a7a7", level2: "#8d9095", level3: "#878787" } }
-      },
-      content: {
-        width: 50,
-        padding: { left: 0, right: 0, top: 0, bottom: 0 },
-        margin: { left: 0, right: 0, top: 0, bottom: 0 }
-      },
       cabinet: {
-        position: { left: 0, right: 0, break: false },
-        left: { pin: false, padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
-        right: { pin: false, padding: { left: 1, right: 1, top: 1, bottom: 1 }, margin: { left: 0, right: 0, top: 0, bottom: 0 } },
         toggles: {
           我的技术栈: { open: true, show: true },
           博客信息: { open: true, show: true },
           常用链接: { open: true, show: true },
           博客数据: { open: true, show: true },
           推荐书籍: { open: true, show: true }
-        },
-        width: 17.5
-      },
-      background: { open: false, filter: 6, src: "" },
-      card: {
-        color: "rgba(31, 31, 31, 1)",
-        open: false,
-        radius: 10,
-        padding: { left: 1, right: 1, top: 1, bottom: 1 },
-        margin: { left: 0, right: 1, top: 0, bottom: 1 }
-      },
-      other: { github: { position: "left" }, pagation: { pin: true } }
+        }
+      }
     };
   }
 
@@ -130,9 +71,6 @@ export namespace EcyUtils {
     return source;
   }
 
-  /**
-   * 关闭 loading 屏
-   */
   export function endLoading() {
     $(".light-loading, .dark-loading").fadeOut();
     $("#l-content").addClass("l-transition");
@@ -140,9 +78,6 @@ export namespace EcyUtils {
     $("#l-progress > .l-pro__track > .l-pro__bar").removeClass("bar-active").addClass("bar-static");
   }
 
-  /**
-   * 开启 loading 屏
-   */
   export function startLoading() {
     $("#l-content").removeClass("l-transition");
     $("#l-progress > .l-pro__track").removeClass("track-static").addClass("track-active");
@@ -183,13 +118,40 @@ export namespace EcyUtils {
     }
   }
 
+  export function setTitle(title?: string) {
+    const prefix = title ? title + " - " : "";
+    document.querySelector("title").innerText = `${prefix}${EcyConfig.blogApp} - 博客园`;
+  }
+
+  export namespace Random {
+    function select(min: number, max: number) {
+      let sum = max - min + 1;
+      return Math.floor(Math.random() * sum + min);
+    }
+
+    export function get(src: string[], min = 0, max = src.length) {
+      let a = [];
+      if (src.length < max) {
+        for (let i = 0; i < max; i++) {
+          let d = Math.floor(Math.random() * src.length);
+          a[i] = d;
+        }
+      } else {
+        for (let i = 0; i < max; i++) {
+          a[i] = select(min, max);
+          for (let z = 0; z < i; z++) {
+            if (a[i] == a[z]) {
+              i--;
+              break;
+            }
+          }
+        }
+      }
+      return a;
+    }
+  }
+
   export namespace Log {
-    /**
-     * 打印普通消息 log
-     *
-     * @param title 标题
-     * @param msg 信息
-     */
     export function primary(title: string, msg: string) {
       console.log(
         `%c${title}%c${msg}`,
@@ -198,12 +160,6 @@ export namespace EcyUtils {
       );
     }
 
-    /**
-     * 打印警告 log
-     *
-     * @param title 标题
-     * @param msg 信息
-     */
     export function warning(title: string, msg: string) {
       console.log(
         `%c${title}%c${msg}`,
@@ -253,10 +209,6 @@ export namespace EcyUtils {
   }
 
   export namespace Router {
-    /**
-     * 导航，传入 path 导航 Vue Router 路由组件；传入普通链接进行跳转；传入 back 对上级进行回跳。
-     * @param params path：路径、router：导航路由组件时传递
-     */
     export function go(params: { path: string; router?: Router }) {
       if (params.path === "back") {
         params.router.go(-1);

@@ -1,14 +1,21 @@
 import { Rule, UserShortcuts } from "unocss";
 
 const rules = <Rule<any>[]>[
-  // fon size
+  // font size
   [/^l-([a-z]*)-size$/, ([, d]) => ({ "font-size": `var(--l-${d}-size) !important` })],
+  // font color
+  [/^l-([a-z]*)-color$/, ([, d]) => ({ color: `var(--l-${d}-color) !important` })],
+  // font size
+  [
+    /^size-(\d*.?\d*)(px|rem)$/,
+    ([, d, unit]) => {
+      return { "font-size": `${d}${unit} !important` };
+    }
+  ],
   // overflow
   [/^ofw-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
   // white-space
   [/^wce-(normal|pre|nowrap|pre-wrap|pre-line)$/, ([, d]) => ({ "white-space": `${d} !important` })],
-  // font color
-  [/^l-([a-z]*)-color$/, ([, d]) => ({ color: `var(--l-${d}-color) !important` })],
   // background color
   [/^l-([a-z]*)-bg$/, ([, d]) => ({ "background-color": `var(--l-${d}-bg) !important` })]
 ];

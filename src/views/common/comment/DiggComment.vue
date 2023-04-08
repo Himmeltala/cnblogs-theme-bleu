@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { voteComment } from "@/apis/remote-api";
+import { CommentApi } from "@/apis";
 
 const props = defineProps({
   comment: {
@@ -13,7 +13,7 @@ const props = defineProps({
 });
 
 async function diggComment() {
-  const data = await voteComment({
+  const data = await CommentApi.vote({
     isAbandoned: false,
     commentId: props.comment.commentId,
     postId: props.postId,

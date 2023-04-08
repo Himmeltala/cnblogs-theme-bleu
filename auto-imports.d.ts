@@ -8,6 +8,8 @@ declare global {
   const EcyUtils: typeof import('@/utils/common')['EcyUtils']
   const EffectScope: typeof import('vue')['EffectScope']
   const ElMessage: typeof import('element-plus/es')['ElMessage']
+  const RouterName: typeof import('@/utils/router-helper')['RouterName']
+  const RouterPath: typeof import('@/utils/router-helper')['RouterPath']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
@@ -300,6 +302,8 @@ declare module 'vue' {
     readonly EcyUtils: UnwrapRef<typeof import('@/utils/common')['EcyUtils']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
+    readonly RouterName: UnwrapRef<typeof import('@/utils/router-helper')['RouterName']>
+    readonly RouterPath: UnwrapRef<typeof import('@/utils/router-helper')['RouterPath']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>

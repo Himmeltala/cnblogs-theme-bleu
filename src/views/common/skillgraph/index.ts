@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 let fillColor = "",
   strokeColor = "";
 
@@ -41,7 +39,7 @@ function drawRadarMap(config: any, x: any, y: any, ctx: any) {
     radius = radius + step;
   }
   drawStria(coords, x, y, config, ctx);
-  drawDataArea(radius, coords, x, y, config, ctx);
+  drawDataArea(coords, x, y, config, ctx);
 }
 
 /**
@@ -75,7 +73,7 @@ function drawStria(axis: any, x: any, y: any, config: any, ctx: any) {
  * @param config 配置项
  * @param ctx canvas 上下文
  */
-function drawDataArea(radius: any, coords: any, x: any, y: any, config: any, ctx: any) {
+function drawDataArea(coords: any, x: any, y: any, config: any, ctx: any) {
   let axis = [];
   let maxLayer = coords[coords.length - 1].coords;
 
@@ -117,40 +115,6 @@ function drawDataArea(radius: any, coords: any, x: any, y: any, config: any, ctx
   ctx.fill();
 
   drawDataAreaTop(axis, ctx);
-  drawFloatingPanel(axis);
-}
-
-/**
- * 绘制可移动的面板，显示详细信息
- *
- * @param axis 所有多边形（层）的坐标轴
- */
-function drawFloatingPanel(axis: any) {
-  let cnp = $("#floating");
-  let timeout: any = null;
-  $("#graph").on({
-    mousemove: function (e) {
-      if (timeout != null) clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        axis.forEach((v: any) => {
-          if (v.x >= e.offsetX - 5 && v.x < e.offsetX + 5 && v.y >= e.offsetY - 5 && v.y < e.offsetY + 5) {
-            $(cnp).css({
-              display: "block",
-              left: `${e.offsetX}px`,
-              top: `${e.offsetY}px`
-            });
-            $(cnp).empty().append(`
-              <div class="tech">技术栈：${v.title}</div>
-              <div class="star">掌握程度：${v.star}</div>
-            `);
-          }
-        });
-      }, 50);
-    },
-    mouseleave: () => {
-      $(cnp).css({ display: "none" });
-    }
-  });
 }
 
 /**
@@ -176,14 +140,14 @@ export function calcSize(sideWidthVw: number) {
   return (sideWidthVw / 100) * window.innerWidth;
 }
 
-export function useSkillGraph(vw: number, color: string, config: any) {
+export function useSkillGraph(vw: number, graph: HTMLCanvasElement, config: any) {
   if (config) {
-    fillColor = color;
+    fillColor = "#409effde";
     strokeColor = config.strokeColor || "#a7a7a7";
     config.textColor = config.textColor || "#a7a7a7";
     config.lineColor = config.textColor || "#a7a7a7";
     // @ts-ignore
-    const ctx = document.getElementById("graph").getContext("2d");
+    const ctx = graph.getContext("2d");
     drawRadarMap(config, vw, vw, ctx);
   }
   return vw;

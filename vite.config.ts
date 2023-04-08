@@ -45,6 +45,9 @@ export default defineConfig(({ command, mode }) => {
             "@/ecy.config": ["EcyConfig"]
           },
           {
+            "@/utils/router-helper": ["RouterName", "RouterPath"]
+          },
+          {
             from: "vue-router",
             imports: ["Router"],
             type: true
@@ -107,9 +110,9 @@ export default defineConfig(({ command, mode }) => {
           manualChunks() {
             return "components";
           },
-          entryFileNames: "[name].js",
-          chunkFileNames: "[name].js",
-          assetFileNames: "[name].[ext]"
+          entryFileNames: "[name]-ecy.js",
+          chunkFileNames: "[name]-ecy.js",
+          assetFileNames: "[name]-ecy.[ext]"
         }
       }
     }

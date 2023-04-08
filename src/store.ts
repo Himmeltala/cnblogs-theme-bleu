@@ -17,13 +17,3 @@ export const useAnchorStore = defineStore("anchorStore", () => {
 
   return { anchor: _anchor, setAnchor };
 });
-
-export const useBaseAuthorData = defineStore("baseAuthorData", () => {
-  const _authorData = ref();
-
-  function setBaseAuthorData(data: any) {
-    _authorData.value = data;
-  }
-
-  return { authorData: _authorData, setBaseAuthorData };
-});

@@ -11,45 +11,41 @@ const props = defineProps({
 });
 
 const emits = defineEmits(["next", "prev", "nexpr"]);
-
-const setting = EcyUtils.getSetting();
 const index = ref(1);
 
 function nextChange() {
   if (index.value < props.count) {
     index.value++;
-    emits("next", { elIndex: index.value, pageCount: props.count, currentIndex: index.value });
+    emits("next", index.value);
   }
 }
 
 function prevChange() {
   if (index.value > 1) {
     index.value--;
-    emits("prev", { elIndex: index.value, pageCount: props.count, currentIndex: index.value });
+    emits("prev", index.value);
   }
 }
 
 function nexprChange(elIndex: number) {
   index.value = elIndex;
-  emits("nexpr", { elIndex: index.value, pageCount: props.count, currentIndex: index.value });
+  emits("nexpr", index.value);
 }
 </script>
 
 <template>
-  <div class="l-pagination relative">
-    <div v-if="count" class="sorter hover left z-1 f-c-c rd-l-4" @click="prevChange" v-show="disabled && index !== 1">
+  <div class="pagination relative">
+    <div v-if="!disabled" class="sorter hover left f-c-c rd-l-4" @click="prevChange" v-show="index !== 1 && count">
       <i-ep-arrow-left-bold />
     </div>
-    <div class="l-pagination__content">
+    <div class="content">
       <slot name="content" />
     </div>
-    <div v-if="count" class="sorter hover right z-1 f-c-c rd-l-4" @click="nextChange" v-show="disabled && index !== count">
+    <div v-if="!disabled" class="sorter hover right f-c-c rd-l-4" @click="nextChange" v-show="index !== count && count">
       <i-ep-arrow-right-bold />
     </div>
-    <div class="l-pagination__bottom f-c-e my-4" :class="{ 'l-box-bg': !setting.card.open }">
-      <Card v-if="count">
-        <el-pagination layout="pager, next" :page-count="count" v-model:current-page="index" @current-change="nexprChange" />
-      </Card>
+    <div v-if="count && !disabled" class="bottom f-c-e my-4">
+      <el-pagination layout="pager, next" :page-count="count" v-model:current-page="index" @current-change="nexprChange" />
     </div>
   </div>
 </template>
@@ -72,11 +68,11 @@ function nexprChange(elIndex: number) {
   }
 
   .sorter.left {
-    left: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.6rem);
+    left: calc(calc(45vw / 2) - 4rem);
   }
 
   .sorter.right {
-    right: calc(calc(calc(100vw - var(--content-width)) / 2) - 2.6rem);
+    right: calc(calc(45vw / 2) - 4rem);
   }
 }
 </style>

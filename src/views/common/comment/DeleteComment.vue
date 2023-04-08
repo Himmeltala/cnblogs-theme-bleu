@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { deleteComment } from "@/apis/remote-api";
+import { CommentApi } from "@/apis";
 
 const props = defineProps({
   comment: {
@@ -21,7 +21,7 @@ const props = defineProps({
 });
 
 async function confirmDeleteComment() {
-  const data = await deleteComment({
+  const data = await CommentApi.del({
     commentId: props.comment.commentId,
     parentId: props.postId
   });

@@ -1,56 +1,56 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { redirect, name } from "@/utils/router-helper";
+import { redirect } from "@/utils/router-helper";
 
 const routes = [
   {
-    name: name.Index,
-    path: "/",
+    name: RouterName.Index,
+    path: RouterPath.index(),
     component: () => import("@/views/Index.vue")
   },
   {
-    name: name.Writing,
-    path: "/p/:id",
-    component: () => import("@/views/Writing.vue")
+    name: RouterName.Profile,
+    path: RouterPath.profile(),
+    component: () => import("@/views/Profile.vue")
   },
   {
-    name: name.Home,
-    path: "/home",
-    component: () => import("@/views/Home.vue")
+    name: RouterName.Works,
+    path: RouterPath.works(),
+    component: () => import("@/views/Works.vue")
   },
   {
-    name: name.MarkSort,
-    path: "/mark/:tag",
-    component: () => import("@/views/MarkSort.vue")
+    name: RouterName.WorksByMark,
+    path: RouterPath.worksByMark(),
+    component: () => import("@/views/WorksByMark.vue")
   },
   {
-    name: name.Sort,
-    path: "/sort/:mode/:id",
-    component: () => import("@/views/Sort.vue")
+    name: RouterName.WorksBySort,
+    path: RouterPath.worksBySort(),
+    component: () => import("@/views/WorksBySort.vue")
   },
   {
-    name: name.Archive,
-    path: "/archive/:mode/:date?",
-    component: () => import("@/views/Archive.vue")
+    name: RouterName.WorksByArchive,
+    path: RouterPath.worksByArchive(),
+    component: () => import("@/views/WorksByArchive.vue")
   },
   {
-    name: name.MarkList,
-    path: "/marks",
+    name: RouterName.WorksByCalendar,
+    path: RouterPath.worksByCalendar(),
+    component: () => import("@/views/WorksByCalendar.vue")
+  },
+  {
+    name: RouterName.MarkList,
+    path: RouterPath.markList(),
     component: () => import("@/views/MarkList.vue")
   },
   {
-    name: name.Albumn,
-    path: "/albumn/:id",
+    name: RouterName.Albumn,
+    path: RouterPath.albumn(),
     component: () => import("@/views/Albumn.vue")
   },
   {
-    name: name.AlbumnItem,
-    path: "/album/item/:id",
+    name: RouterName.AlbumnItem,
+    path: RouterPath.albumnItem(),
     component: () => import("@/views/AlbumnItem.vue")
-  },
-  {
-    name: name.Calendar,
-    path: "/calendar",
-    component: () => import("@/views/Calendar.vue")
   }
 ];
 

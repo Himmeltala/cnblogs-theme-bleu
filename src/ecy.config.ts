@@ -32,20 +32,11 @@ export namespace EcyConfig {
     return $("#p_b_follow > a")?.text() === "-取消关注" ?? false;
   }
 
-  /**
-   * 初始化自定义博客设置
-   */
-  function initSetting() {
-    const setting = EcyUtils.getSetting().value;
-    localStorage.setItem(`l-${blogApp}-setting`, JSON.stringify(EcyUtils.reloadObjProps(setting, EcyUtils.getSettingTemp())));
-
+  function initLocalSetting() {
+    const setting = EcyUtils.getLocalSetting().value;
+    const strings = JSON.stringify(EcyUtils.reloadObjProps(setting, EcyUtils.getLocalSettingTemp()));
+    localStorage.setItem(`l-${blogApp}-setting`, strings);
     $("html").attr("class", setting.theme.mode);
-    $("html").css({
-      "--l-theme-color": setting.theme.color,
-      "--cabinet-width": `${setting.cabinet.width}rem`,
-      "--content-width": `${setting.content.width}vw`,
-      "--l-bg-filter": `${setting.background.filter}px`
-    });
   }
 
   /**
@@ -55,12 +46,7 @@ export namespace EcyConfig {
    */
   export function useLite(dev: Function, pro: Function) {
     $("body").append(`<div id="app"></div>`);
-    $("body").append(`<div id="l-menu-container"></div>`);
     $("head").append(`<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css" />`);
-
-    window.oncontextmenu = () => {
-      return false;
-    };
 
     if (import.meta.env.PROD) {
       blogId = currentBlogId;
@@ -72,7 +58,7 @@ export namespace EcyConfig {
       isFollow = getIsFollow();
       // @ts-ignore
       __ECY_CONFIG__ = window["__ECY_CONFIG__"];
-      initSetting();
+      initLocalSetting();
       pro();
     } else if (import.meta.env.DEV) {
       blogId = import.meta.env.VITE_BLOG_ID;
@@ -82,6 +68,38 @@ export namespace EcyConfig {
       __ECY_CONFIG__ = {
         cabinet: {
           signature: "Time tick away, dream faded away!"
+        },
+        covers: {
+          works: [
+            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8apu19t61j32yo1o0x6v.jpg",
+            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8aptjk8obj32y31wwnlv.jpg",
+            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8aptwnz55j337f1yib2e.jpg",
+            "https://gzw.sinaimg.cn/large/0073YlnVgy1h4smbf7pn8j31cw0qcn76.jpg"
+          ],
+          index: [
+            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8apu19t61j32yo1o0x6v.jpg",
+            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8aptjk8obj32y31wwnlv.jpg",
+            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8aptwnz55j337f1yib2e.jpg",
+            "https://gzw.sinaimg.cn/large/0073YlnVgy1h4smbf7pn8j31cw0qcn76.jpg"
+          ]
+        },
+        graph: {
+          alpha: 0.85,
+          sides: 9,
+          layer: 6,
+          lineWidth: 1,
+          textSize: 0.8,
+          data: [
+            { title: "scss", star: 5 },
+            { title: "vue3", star: 5 },
+            { title: "vite", star: 4 },
+            { title: "js", star: 5 },
+            { title: "ts", star: 4 },
+            { title: "C", star: 2 },
+            { title: "react", star: 2 },
+            { title: "uniapp", star: 5 },
+            { title: "java", star: 4 }
+          ]
         },
         nameplate: {
           tags: ["Web 前端", "二次元", "简约", "拖延症", "吸猫"],
@@ -102,7 +120,7 @@ export namespace EcyConfig {
           }
         }
       };
-      initSetting();
+      initLocalSetting();
       dev();
     }
 
