@@ -6,14 +6,14 @@ EcyUtils.startLoading();
 const worksList = shallowRef(await WorksApi.getList(1));
 const indexImgs = EcyConfig.__ECY_CONFIG__.covers.index || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
 const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
-const covers = shallowRef(EcyUtils.Random.get(worksImgs, 0, worksList.value.data.length));
+const imgsRanNum = shallowRef(EcyUtils.Random.get(worksImgs, worksList.value.data.length));
 
 async function fetchData(index: any) {
   EcyUtils.startLoading();
 
   WorksApi.getList(index).then(newVal => {
     worksList.value = newVal;
-    covers.value = EcyUtils.Random.get(worksImgs, 0, worksList.value.data.length);
+    imgsRanNum.value = EcyUtils.Random.get(worksImgs, worksList.value.data.length);
     EcyUtils.endLoading();
   });
 }
@@ -53,7 +53,7 @@ onMounted(() => {
             :key="item.id"
             :item="item"
             :index="index"
-            :cover="worksImgs[covers[index]]" />
+            :cover="worksImgs[imgsRanNum[index]]" />
         </template>
       </Pagination>
     </div>

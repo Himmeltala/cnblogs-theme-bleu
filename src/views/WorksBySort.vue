@@ -19,7 +19,7 @@ async function fetchData(index?: any) {
   }
 
   typeL1Works.value = await WorksApi.getByTypeL1(`${sortId}`, index);
-  covers.value = EcyUtils.Random.get(worksImgs, 0, typeL1Works.value.data.length);
+  covers.value = EcyUtils.Random.get(worksImgs, typeL1Works.value.data.length);
 
   EcyUtils.setTitle(typeL1Works.value.hint);
   EcyUtils.endLoading();

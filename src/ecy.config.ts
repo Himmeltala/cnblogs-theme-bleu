@@ -81,6 +81,11 @@ export namespace EcyConfig {
             "https://n.sinaimg.cn/sinakd10118/1/w1081h1320/20210910/525d-98224496d08d222e095510ad859b6d98.jpg",
             "https://img2.baidu.com/it/u=1194562060,1998366528&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422",
             "https://img0.baidu.com/it/u=2223180490,240811175&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
+            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
+            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
+            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
+            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
+            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
             "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
           ],
           index: [

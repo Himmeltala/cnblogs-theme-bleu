@@ -276,7 +276,7 @@ declare namespace EcyUtils {
   function setTitle(title?: string);
 
   namespace Random {
-    function get(src: string[], min?: number, max?: number): number[];
+    function get(src: string[], max?: number): number[];
   }
 
   namespace Log {

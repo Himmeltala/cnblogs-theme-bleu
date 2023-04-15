@@ -21,7 +21,7 @@ async function fetchData() {
     archiveWorks.value = await WorksApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
   }
 
-  covers.value = EcyUtils.Random.get(worksImgs, 0, archiveWorks.value.data.length);
+  covers.value = EcyUtils.Random.get(worksImgs, archiveWorks.value.data.length);
   EcyUtils.setTitle(archiveWorks.value.hint);
   EcyUtils.endLoading();
 }

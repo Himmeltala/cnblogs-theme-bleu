@@ -129,16 +129,17 @@ export namespace EcyUtils {
       return Math.floor(Math.random() * sum + min);
     }
 
-    export function get(src: string[], min = 0, max = src.length) {
+    export function get(src: string[], max: number) {
       let a = [];
+
       if (src.length < max) {
         for (let i = 0; i < max; i++) {
           let d = Math.floor(Math.random() * src.length);
           a[i] = d;
         }
       } else if (src.length >= max) {
-        for (let i = 0; i < max; i++) {
-          a[i] = select(min, max);
+        for (let i = 0; i < src.length; i++) {
+          a[i] = select(0, src.length - 1);
           for (let z = 0; z < i; z++) {
             if (a[i] == a[z]) {
               i--;
@@ -147,6 +148,7 @@ export namespace EcyUtils {
           }
         }
       }
+
       return a;
     }
   }
