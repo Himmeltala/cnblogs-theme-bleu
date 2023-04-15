@@ -6,18 +6,20 @@ let sortId = route.params.id as string;
 let sortMode = route.params.mode as "a" | "p";
 const typeL2Works = shallowRef();
 const typeL1Works = shallowRef();
-const imgs = EcyConfig.__ECY_CONFIG__.covers.index || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
-const covers = EcyUtils.Random.get(imgs, 0, 10);
+const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
+const covers = shallowRef();
 
 async function fetchData(index?: any) {
   EcyUtils.startLoading();
-  typeL1Works.value = await WorksApi.getByTypeL1(`${sortId}`, index);
 
   if (sortMode === "a") {
     typeL2Works.value = await WorksApi.getByTypeL2(`${sortId}`, "article");
   } else if (sortMode === "p") {
     typeL2Works.value = await WorksApi.getByTypeL2(`${sortId}`);
   }
+
+  typeL1Works.value = await WorksApi.getByTypeL1(`${sortId}`, index);
+  covers.value = EcyUtils.Random.get(worksImgs, 0, typeL1Works.value.data.length);
 
   EcyUtils.setTitle(typeL1Works.value.hint);
   EcyUtils.endLoading();
@@ -59,9 +61,10 @@ watch(route, async () => {
           <WorksItem
             v-if="typeL1Works.data.length > 0"
             v-for="(item, index) in typeL1Works.data"
+            :key="item.id"
             :item="item"
             :index="index"
-            :cover="imgs[covers[index]]" />
+            :cover="worksImgs[covers[index]]" />
         </template>
       </Pagination>
       <div class="mt-35" v-if="!typeL1Works.data.length">

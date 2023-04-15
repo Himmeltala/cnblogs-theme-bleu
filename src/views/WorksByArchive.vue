@@ -7,11 +7,12 @@ const route = useRoute();
 let archiveDate = route.params.date;
 let archiveMode = route.params.mode;
 const archiveWorks = shallowRef();
-const imgs = EcyConfig.__ECY_CONFIG__.covers.index || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
-const covers = EcyUtils.Random.get(imgs, 0, 10);
+const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
+const covers = shallowRef();
 
 async function fetchData() {
   EcyUtils.startLoading();
+
   if (archiveMode === "a") {
     archiveWorks.value = await WorksApi.getListByArchive(`${archiveDate}`, "article");
   } else if (archiveMode === "p") {
@@ -19,6 +20,8 @@ async function fetchData() {
   } else if (archiveMode === "d") {
     archiveWorks.value = await WorksApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
   }
+
+  covers.value = EcyUtils.Random.get(worksImgs, 0, archiveWorks.value.data.length);
   EcyUtils.setTitle(archiveWorks.value.hint);
   EcyUtils.endLoading();
 }
@@ -52,9 +55,10 @@ watch(route, async () => {
           <WorksItem
             v-if="archiveWorks.data.length > 0"
             v-for="(item, index) in archiveWorks.data"
+            :key="item.id"
             :item="item"
             :index="index"
-            :cover="imgs[covers[index]]" />
+            :cover="worksImgs[covers[index]]" />
         </template>
       </Pagination>
     </div>

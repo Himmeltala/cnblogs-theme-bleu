@@ -9,15 +9,15 @@ const props = shallowRef();
 const prevNext = shallowRef();
 const viewPoint = shallowRef();
 const isUnlock = ref(false);
-const pwd = ref("");
-const imgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
-let postId = route.params.id as string;
+const password = ref("");
+const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
+let worksId = route.params.id as string;
 
 async function fetchData() {
-  works.value = await WorksApi.get(postId);
-  props.value = await WorksApi.getProps(postId);
-  prevNext.value = await WorksApi.getPrevNext(postId);
-  viewPoint.value = await WorksApi.getViewPoint(postId);
+  works.value = await WorksApi.get(worksId);
+  props.value = await WorksApi.getProps(worksId);
+  prevNext.value = await WorksApi.getPrevNext(worksId);
+  viewPoint.value = await WorksApi.getViewPoint(worksId);
 }
 
 await fetchData();
@@ -36,16 +36,16 @@ onMounted(() => {
 });
 
 async function submit() {
-  const _islock = await WorksApi.isUnlock(pwd.value, postId);
+  const _islock = await WorksApi.isUnlock(password.value, worksId);
   if (_islock) {
-    works.value = await WorksApi.getLocked(pwd.value, postId);
+    works.value = await WorksApi.getLocked(password.value, worksId);
     isUnlock.value = false;
   }
   ElMessage({ message: _islock ? "密码输入正确！" : "密码错误！", grouping: true, type: _islock ? "success" : "error" });
 }
 
 async function vote(type: BlogType.VoteType) {
-  const res = await WorksApi.vote({ postId, isAbandoned: false, voteType: type });
+  const res = await WorksApi.vote({ postId: worksId, isAbandoned: false, voteType: type });
   if (res) {
     if (res.isSuccess)
       if (type == "Bury") viewPoint.value.buryCount = viewPoint.value.buryCount + 1;
@@ -57,7 +57,7 @@ async function vote(type: BlogType.VoteType) {
 watch(route, async () => {
   if (route.name === RouterName.Works) {
     EcyUtils.startLoading();
-    postId = route.params.id as string;
+    worksId = route.params.id as string;
     await fetchData();
     isUnlock.value = false;
     if (!(works.value.content && works.value.text)) isUnlock.value = true;
@@ -70,7 +70,7 @@ watch(route, async () => {
 <template>
   <div v-if="!isUnlock" class="welcome relative h-50vh w-100vw">
     <div class="cover z-999 absolute left-0 top-0 h-100% w-100%">
-      <img class="h-100% w-100% rd-0" :src="imgs[Math.floor(Math.random() * imgs.length)]" />
+      <img class="h-100% w-100% rd-0" :src="worksImgs[Math.floor(Math.random() * worksImgs.length)]" />
     </div>
     <div class="z-999 f-c-c absolute left-0 top-10vh w-100%">
       <div class="w-55vw">
@@ -91,7 +91,7 @@ watch(route, async () => {
           <div
             v-if="EcyConfig.isOwner"
             class="f-c-c hover"
-            @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId })">
+            @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com/EditPosts.aspx?postid=' + worksId })">
             <i-ep-edit-pen class="mr-1" />
             <span>编辑</span>
           </div>
@@ -180,13 +180,13 @@ watch(route, async () => {
             </el-button>
           </div>
         </div>
-        <Comment :post-id="postId" />
+        <Comment :post-id="worksId" />
       </div>
       <div v-if="isUnlock">
         <div class="modal fixed w-100vw h-100vh top-0 left-0 l-box-bg f-c-c z-999999">
           <el-form>
             <el-form-item label="密码：">
-              <el-input show-password type="password" v-model="pwd" placeholder="输入博文阅读密码" />
+              <el-input show-password type="password" v-model="password" placeholder="输入博文阅读密码" />
             </el-form-item>
             <el-form-item>
               <el-button size="small" type="primary" @click="submit">确定</el-button>

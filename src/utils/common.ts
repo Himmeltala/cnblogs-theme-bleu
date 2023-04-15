@@ -136,7 +136,7 @@ export namespace EcyUtils {
           let d = Math.floor(Math.random() * src.length);
           a[i] = d;
         }
-      } else {
+      } else if (src.length >= max) {
         for (let i = 0; i < max; i++) {
           a[i] = select(min, max);
           for (let z = 0; z < i; z++) {

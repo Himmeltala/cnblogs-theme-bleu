@@ -71,10 +71,17 @@ export namespace EcyConfig {
         },
         covers: {
           works: [
-            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8apu19t61j32yo1o0x6v.jpg",
-            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8aptjk8obj32y31wwnlv.jpg",
-            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8aptwnz55j337f1yib2e.jpg",
-            "https://gzw.sinaimg.cn/large/0073YlnVgy1h4smbf7pn8j31cw0qcn76.jpg"
+            "https://img1.baidu.com/it/u=726526983,4132763702&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500",
+            "https://img0.baidu.com/it/u=2862888988,3851280368&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
+            "https://img0.baidu.com/it/u=1378108440,2977662023&fm=253&fmt=auto&app=138&f=JPEG?w=281&h=500",
+            "https://img.win3000.com/m00/d1/c4/85045c91eedd2953ea148b22fb7d592a.jpg",
+            "https://img2.baidu.com/it/u=3529812522,165675595&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500",
+            "https://img1.baidu.com/it/u=4014731863,2947911801&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800",
+            "https://img0.baidu.com/it/u=3799846776,4059990499&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313",
+            "https://n.sinaimg.cn/sinakd10118/1/w1081h1320/20210910/525d-98224496d08d222e095510ad859b6d98.jpg",
+            "https://img2.baidu.com/it/u=1194562060,1998366528&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422",
+            "https://img0.baidu.com/it/u=2223180490,240811175&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
+            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
           ],
           index: [
             "https://gzw.sinaimg.cn/large/0073YlnVgy1h8apu19t61j32yo1o0x6v.jpg",

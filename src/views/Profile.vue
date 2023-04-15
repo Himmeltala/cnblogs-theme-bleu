@@ -7,12 +7,12 @@ EcyUtils.startLoading();
 const news = shallowRef();
 const stats = shallowRef();
 
-MenuApi.getNews().then(res => {
-  news.value = res;
+MenuApi.getNews().then(newVal => {
+  news.value = newVal;
 });
 
-MenuApi.getStats().then(res => {
-  stats.value = res;
+MenuApi.getStats().then(newVal => {
+  stats.value = newVal;
 });
 
 onMounted(() => {

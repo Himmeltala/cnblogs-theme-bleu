@@ -4,13 +4,16 @@ import { WorksApi } from "@/apis";
 EcyUtils.startLoading();
 
 const worksList = shallowRef(await WorksApi.getList(1));
-const imgs = EcyConfig.__ECY_CONFIG__.covers.index || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
-const covers = EcyUtils.Random.get(imgs, 0, 10);
+const indexImgs = EcyConfig.__ECY_CONFIG__.covers.index || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
+const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
+const covers = shallowRef(EcyUtils.Random.get(worksImgs, 0, worksList.value.data.length));
 
 async function fetchData(index: any) {
   EcyUtils.startLoading();
-  WorksApi.getList(index).then(newWorksList => {
-    worksList.value = newWorksList;
+
+  WorksApi.getList(index).then(newVal => {
+    worksList.value = newVal;
+    covers.value = EcyUtils.Random.get(worksImgs, 0, worksList.value.data.length);
     EcyUtils.endLoading();
   });
 }
@@ -36,7 +39,7 @@ onMounted(() => {
       <div class="wave-2 absolute h-100% w-200%"></div>
     </div>
     <div class="z-990 cover absolute left-0 top-0 h-100% w-100%">
-      <img class="relative h-100% w-100% rd-0" :src="imgs[Math.floor(Math.random() * imgs.length)]" />
+      <img class="relative h-100% w-100% rd-0" :src="indexImgs[Math.floor(Math.random() * indexImgs.length)]" />
     </div>
   </div>
   <div id="l-start-nail"></div>
@@ -47,9 +50,10 @@ onMounted(() => {
           <WorksItem
             v-if="worksList.data.length > 0"
             v-for="(item, index) in worksList.data"
+            :key="item.id"
             :item="item"
             :index="index"
-            :cover="imgs[covers[index]]" />
+            :cover="worksImgs[covers[index]]" />
         </template>
       </Pagination>
     </div>
