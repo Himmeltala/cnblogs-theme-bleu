@@ -49,7 +49,7 @@ export namespace WorksApi {
   /**
    * 获取随笔、文章
    */
-  export async function get(id: string) {
+  export async function getWorks(id: string) {
     const { data } = await sendAwaitGet(`/p/${id}.html`);
     return Parser.parseWorks(id, data);
   }
@@ -148,7 +148,7 @@ export namespace WorksApi {
    * @param pwd 博文阅读密码
    * @returns 输入密码正确时返回 true
    */
-  export async function isUnlock(pwd: string, id: string) {
+  export async function isPassed(pwd: string, id: string) {
     const formData = new FormData();
     formData.append("Password", pwd);
     const { data } = await sendAwaitPost(`/protected/p/${id}.html`, formData);
@@ -161,7 +161,7 @@ export namespace WorksApi {
    * @param pwd 博文阅读密码
    * @returns 输入密码正确时返回这个博文内容
    */
-  export async function getLocked(pwd: string, id: string) {
+  export async function getLockedWorks(pwd: string, id: string) {
     const formData = new FormData();
     formData.append("Password", pwd);
     const { data } = await sendAwaitPost(`/protected/p/${id}.html`, formData);

@@ -239,9 +239,7 @@ declare namespace CustType {
       textSize: number;
       data: { title: string; star: number }[];
     };
-    other: {
-      catalog: { level: boolean };
-    };
+    other: {};
   }>;
 
   type IBox = Partial<{

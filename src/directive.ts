@@ -2,7 +2,7 @@ import $ from "jquery";
 import hljs from "highlight.js";
 import { useCatalogStore } from "@/store";
 
-function useCodeFolder(ele: JQuery<HTMLElement>) {
+function createCodeFolder(ele: JQuery<HTMLElement>) {
   const height = ele.height();
 
   if (height >= 380) {
@@ -21,12 +21,11 @@ function useCodeFolder(ele: JQuery<HTMLElement>) {
   }
 }
 
-function useCodeClipboard(ele: JQuery<HTMLElement>) {
+function createCodeClipboard(ele: JQuery<HTMLElement>) {
   const clipboard = $(`<span class="clipboard hover mr-2">复制</span>`);
 
   clipboard.on("click", () => {
-    const text = ele.text();
-    navigator.clipboard.writeText(text).then(
+    navigator.clipboard.writeText(ele.text()).then(
       () => {
         ElMessage({ message: "复制成功！", type: "success", grouping: true });
       },
@@ -39,7 +38,85 @@ function useCodeClipboard(ele: JQuery<HTMLElement>) {
   ele.parent().find(".code-block").prepend(clipboard);
 }
 
-function useHighslide(ele: JQuery<HTMLElement>) {
+function createCodeLang(ele: JQuery<HTMLElement>) {
+  const lang = ele
+    .attr("class")
+    ?.match(/(language-\w*){0,1}/g)[0]
+    .split(",")[0]
+    .split("-")[1]
+    .toUpperCase();
+
+  ele.parent().prepend(`<div class="code-block l-six-size l-thr-color">${lang}</div>`);
+}
+
+/**
+ * 构造代码高亮
+ */
+function useVHljs(el: any) {
+  $(el)
+    .find("pre code")
+    .each((index, ele) => {
+      const $ele = $(ele);
+
+      hljs.highlightElement(ele);
+      createCodeLang($ele);
+      createCodeFolder($ele);
+      createCodeClipboard($ele);
+    });
+}
+
+/**
+ * 构造数学公式
+ */
+function useVMathjax() {
+  // @ts-ignore
+  const MathJax = window.MathJax;
+  const nodes = document.querySelectorAll(".math");
+
+  if (MathJax && nodes.length > 0) {
+    MathJax.startup.promise = MathJax.startup.promise.then(() => MathJax.typesetPromise(nodes)).catch((err: any) => console.error(err));
+  }
+}
+
+/**
+ * 构造目录
+ */
+function useVCatalog(el: any) {
+  const catalog = <any>[];
+  let step = 0;
+
+  $(el)
+    .children("h1, h2, h3")
+    .each((i, item) => {
+      const id = $(item).attr("id");
+      const type = $(item)[0].localName;
+      let content = ``;
+
+      if (type === "h1") {
+        content = `<div id="catalog-${id}" class="hover" data-step="${step}">${$(item).text()}</div>`;
+      } else if (type === "h2") {
+        content = `<div id="catalog-${id}" class="hover" data-step="${step}" style="margin-left: 10px">${$(item).text()}</div>`;
+      } else if (type === "h3") {
+        content = `<div id="catalog-${id}" class="hover" data-step="${step}" style="margin-left: 20px">${$(item).text()}</div>`;
+      }
+
+      catalog.push({ id, content, item });
+      step += 2.5;
+    });
+
+  useCatalogStore().setCatalog(catalog);
+}
+
+/**
+ * 构造目录点击事件
+ */
+function useCatalogEvents(binding: any) {
+  $(`#catalog-${binding.value.id}`).on("click", () => {
+    document.querySelector(`#${binding.value.id}`).scrollIntoView();
+  });
+}
+
+function createHighslide(ele: JQuery<HTMLElement>) {
   const image = $(".l-highslide .l-highslide__img");
 
   ele.on("click", () => {
@@ -49,9 +126,20 @@ function useHighslide(ele: JQuery<HTMLElement>) {
     image.css({ width: ele.width(), height: ele.height() });
   });
 
-  const eleParent = ele.parent("p");
-  eleParent.addClass("f-c-c flex-col");
-  eleParent.append(`<div class="l-sec-color l-fiv-size mt-2">${ele.attr("alt")}</div>`);
+  const text = ele.parent("p");
+  text.addClass("f-c-c flex-col");
+  text.append(`<div class="l-sec-color l-fiv-size mt-2">${ele.attr("alt")}</div>`);
+}
+
+/**
+ * 构造图片放大器
+ */
+function useVHighslide(el: any) {
+  $(el)
+    .find("img")
+    .each((index, ele) => {
+      createHighslide($(ele));
+    });
 }
 
 export function useDirective(Vue: any) {
@@ -60,30 +148,10 @@ export function useDirective(Vue: any) {
    */
   Vue.directive("hljs", {
     mounted(el: any) {
-      $(el)
-        .find("img")
-        .each((index, ele) => {
-          useHighslide($(ele));
-        });
-
-      $(el)
-        .find("pre code")
-        .each((index, ele) => {
-          const $ele = $(ele);
-
-          const lang = $ele
-            .attr("class")
-            ?.match(/(language-\w*){0,1}/g)[0]
-            .split(",")[0]
-            .split("-")[1]
-            .toUpperCase();
-          hljs.highlightElement(ele);
-
-          $ele.parent().prepend(`<div class="code-block l-six-size l-thr-color">${lang}</div>`);
-
-          useCodeFolder($ele);
-          useCodeClipboard($ele);
-        });
+      useVHljs(el);
+    },
+    updated(el: any) {
+      useVHljs(el);
     }
   });
 
@@ -92,13 +160,22 @@ export function useDirective(Vue: any) {
    */
   Vue.directive("mathjax", {
     mounted() {
-      // @ts-ignore
-      const MathJax = window.MathJax;
-      const nodes = document.querySelectorAll(".math");
+      useVMathjax();
+    },
+    updated() {
+      useVMathjax();
+    }
+  });
 
-      if (MathJax && nodes.length > 0) {
-        MathJax.startup.promise = MathJax.startup.promise.then(() => MathJax.typesetPromise(nodes)).catch((err: any) => console.error(err));
-      }
+  /**
+   * 制作图片放大器
+   */
+  Vue.directive("highslide", {
+    mounted(el: any) {
+      useVHighslide(el);
+    },
+    updated(el: any) {
+      useVHighslide(el);
     }
   });
 
@@ -107,54 +184,22 @@ export function useDirective(Vue: any) {
    */
   Vue.directive("catalog", {
     mounted(el: any) {
-      const catalog = <any>[];
-
-      let h1 = 0;
-      let h2 = 0;
-      let h3 = 0;
-      let item = ``;
-
-      $(el)
-        .children("h1,h2,h3")
-        .each((i, e) => {
-          const id = $(e).attr("id");
-          const type: string = $(e)[0].localName;
-          const level = EcyConfig.__ECY_CONFIG__.other?.catalog?.level;
-          let content = ``;
-          item = `${$(e).text()}`;
-
-          if (type === "h1") {
-            h1++;
-            h2 = 0;
-            h3 = 0;
-            if (level) item = `${h1}.${item}`;
-            content = `<div id="catalog-${id}" class="hover">${item}</div>`;
-          } else if (type === "h2") {
-            h2++;
-            h3 = 0;
-            if (level) item = `${h1}.${h2}.${item}`;
-            content = `<div id="catalog-${id}" class="hover" style="margin-left: 10px">${item}</div>`;
-          } else if (type === "h3") {
-            h3++;
-            if (level) item = `${h1}.${h2}.${h3}.${item}`;
-            content = `<div id="catalog-${id}" class="hover" style="margin-left: 20px">${item}</div>`;
-          }
-
-          catalog.push({ id, content });
-        });
-
-      useCatalogStore().setCatalog(catalog);
+      useVCatalog(el);
+    },
+    updated(el: any) {
+      useVCatalog(el);
     }
   });
 
   /**
    * 制作目录锚点的点击事件
    */
-  Vue.directive("cateve", {
+  Vue.directive("catalog-event", {
     mounted(el: any, binding: any) {
-      $(`#catalog-${binding.value.id}`).on("click", () => {
-        document.querySelector(`#${binding.value.id}`).scrollIntoView();
-      });
+      useCatalogEvents(binding);
+    },
+    updated(el: any, binding: any) {
+      useCatalogEvents(binding);
     }
   });
 }

@@ -73,7 +73,6 @@ declare module '@vue/runtime-core' {
     IEpGuide: typeof import('~icons/ep/guide')['default']
     IEpHouse: typeof import('~icons/ep/house')['default']
     IEpLink: typeof import('~icons/ep/link')['default']
-    IEpLocation: typeof import('~icons/ep/location')['default']
     IEpManagement: typeof import('~icons/ep/management')['default']
     IEpMore: typeof import('~icons/ep/more')['default']
     IEpNotebook: typeof import('~icons/ep/notebook')['default']

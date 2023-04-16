@@ -85,6 +85,12 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+.headtip {
+  padding-left: 0.4rem;
+  border-radius: 0.25rem;
+  border-left: 0.25rem solid var(--el-color-primary);
+}
+
 .arrow {
   transform: scale(0, 0);
 }

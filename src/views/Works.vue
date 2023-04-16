@@ -8,21 +8,22 @@ const works = shallowRef();
 const props = shallowRef();
 const prevNext = shallowRef();
 const viewPoint = shallowRef();
-const isUnlock = ref(false);
+const isLocked = ref();
 const password = ref("");
 const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
 let worksId = route.params.id as string;
 
 async function fetchData() {
-  works.value = await WorksApi.get(worksId);
+  works.value = await WorksApi.getWorks(worksId);
   props.value = await WorksApi.getProps(worksId);
   prevNext.value = await WorksApi.getPrevNext(worksId);
   viewPoint.value = await WorksApi.getViewPoint(worksId);
+
+  isLocked.value = works.value.isLocked;
+  EcyUtils.setTitle(works.value.text);
 }
 
 await fetchData();
-if (!(works.value.content && works.value.text)) isUnlock.value = true;
-EcyUtils.setTitle(works.value.text);
 
 onMounted(() => {
   const anchor = route.hash.match(/#.+/g);
@@ -36,12 +37,12 @@ onMounted(() => {
 });
 
 async function submit() {
-  const _islock = await WorksApi.isUnlock(password.value, worksId);
-  if (_islock) {
-    works.value = await WorksApi.getLocked(password.value, worksId);
-    isUnlock.value = false;
+  const passed = await WorksApi.isPassed(password.value, worksId);
+  if (passed) {
+    works.value = await WorksApi.getLockedWorks(password.value, worksId);
+    isLocked.value = false;
   }
-  ElMessage({ message: _islock ? "密码输入正确！" : "密码错误！", grouping: true, type: _islock ? "success" : "error" });
+  ElMessage({ message: passed ? "密码输入正确！" : "密码错误！", grouping: true, type: passed ? "success" : "error" });
 }
 
 async function vote(type: BlogType.VoteType) {
@@ -59,8 +60,6 @@ watch(route, async () => {
     EcyUtils.startLoading();
     worksId = route.params.id as string;
     await fetchData();
-    isUnlock.value = false;
-    if (!(works.value.content && works.value.text)) isUnlock.value = true;
     EcyUtils.setTitle(works.value.text);
     EcyUtils.endLoading();
   }
@@ -68,7 +67,7 @@ watch(route, async () => {
 </script>
 
 <template>
-  <div v-if="!isUnlock" class="welcome relative h-50vh w-100vw">
+  <div v-if="!isLocked" class="welcome relative h-50vh w-100vw">
     <div class="cover z-999 absolute left-0 top-0 h-100% w-100%">
       <img class="h-100% w-100% rd-0" :src="worksImgs[Math.floor(Math.random() * worksImgs.length)]" />
     </div>
@@ -133,10 +132,10 @@ watch(route, async () => {
   </div>
   <div id="l-works" class="page">
     <div class="content">
-      <div v-show="!isUnlock">
-        <div class="l-thr-size" v-html="works.content" v-hljs v-catalog v-mathjax></div>
+      <div v-show="!isLocked">
+        <div class="l-thr-size" v-html="works.content" v-hljs v-highslide v-catalog v-mathjax></div>
         <Highslide />
-        <Catalog />
+        <Catalog v-if="EcyConfig.pcDevice" />
         <div class="divider flex-col"></div>
         <div class="l-sec-color f-c-e l-fiv-size">
           <div class="f-c-c mr-4">
@@ -182,7 +181,7 @@ watch(route, async () => {
         </div>
         <Comment :post-id="worksId" />
       </div>
-      <div v-if="isUnlock">
+      <div v-if="isLocked">
         <div class="modal fixed w-100vw h-100vh top-0 left-0 l-box-bg f-c-c z-999999">
           <el-form>
             <el-form-item label="密码：">
@@ -272,11 +271,6 @@ pre {
       background-color: var(--l-code-bg);
       color: var(--l-sec-color);
       margin: 0;
-      padding: {
-        left: 0.5rem;
-        top: 0.1rem;
-        bottom: 0.1rem;
-      }
       border: {
         radius: 0.25rem;
         left: {
@@ -284,6 +278,15 @@ pre {
           color: var(--l-theme-color);
           style: solid;
         }
+      }
+      padding: {
+        top: 0.8rem;
+        bottom: 0.8rem;
+      }
+
+      p {
+        margin: 0 !important;
+        padding-left: 0.5rem;
       }
     }
 
@@ -299,7 +302,6 @@ pre {
 
     p {
       line-height: 1.7;
-      margin: 1.5rem 0 !important;
     }
 
     img {
@@ -340,7 +342,7 @@ pre {
 <style scoped lang="scss">
 .welcome {
   .cover::after {
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
   }
 }
 </style>

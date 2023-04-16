@@ -42,6 +42,11 @@ html {
   --hljs-built: #e6c07b;
 }
 
+html {
+  --font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  --l-transition: all 0.4s ease-in-out;
+}
+
 /**
  * 设置所有元素共有的样式
  *
@@ -96,11 +101,8 @@ a:link {
  * @author Himmelbleu
  * @date 2023 年 1 月 15 日
  */
-
 :root {
   --font-size: 14px;
-  --font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-  --l-transition: all 0.4s ease-in-out;
 }
 
 // 375 ~ 1400 都是 14px，超过 1500px 就开始依次往上递增

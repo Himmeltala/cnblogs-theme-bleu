@@ -65,21 +65,24 @@ export function parseWorksList(dom: any): CustType.IWorksList {
  * 解析随笔详细页面
  */
 export function parseWorks(id: string, dom: any): CustType.IWorks {
+  const text = $(dom).find(".postTitle > a > span").text();
+  const content = $(dom).find("#cnblogs_post_body").html();
+
   return {
     id,
-    text: $(dom).find(".postTitle > a > span").text(),
-    content: $(dom).find("#cnblogs_post_body").html(),
+    text,
+    content,
     date: $(dom).find("#post-date").text(),
     view: $(dom).find("#post_view_count").text(),
     comm: $(dom).find("#post_comment_count").text(),
-    isLocked: $(dom).find(`img[title="密码保护"]`).attr("title") ? true : false
+    isLocked: !text && !content
   };
 }
 
 /**
  * 解析随笔详细页面的评论列表
  */
-export function parseCommentList(dom: any): Array<CustType.IComment> {
+export function parseCommentList(dom: any): CustType.IComment[] {
   const data: CustType.IComment[] = [];
 
   $(parseDOM(dom))
@@ -414,7 +417,7 @@ export function parseAuthorData(dom: string): CustType.IMenuItemData[] {
 /**
  * 解析博主主人的随笔、文章、评论、阅读等数据
  */
-export function parseMasterData(dom: string): Array<CustType.IMenuItemData> {
+export function parseMasterData(dom: string): CustType.IMenuItemData[] {
   const data: CustType.IMenuItemData[] = [];
   $(parseDOM(dom))
     .find("span")

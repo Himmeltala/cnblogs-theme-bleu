@@ -1,74 +1,74 @@
 <script setup lang="ts">
 import $ from "jquery";
 
-const highslide = ref<HTMLElement>();
-const image = ref<HTMLElement>();
-const angle = ref(0);
-const x = ref(0);
-const y = ref(0);
-const width = ref(0);
-const height = ref(0);
-const transition = ref(false);
+const highslideRef = ref<HTMLElement>();
+const imgRef = ref<HTMLElement>();
+const positionX = ref(0);
+const positionY = ref(0);
+const imgDegree = ref(0);
+const imgWidth = ref(0);
+const imgHeight = ref(0);
+const animationOpened = ref(false);
 
-useDraggable(image, {
+useDraggable(imgRef, {
   onMove(position) {
-    x.value = position.x;
-    y.value = position.y;
+    positionX.value = position.x;
+    positionY.value = position.y;
   },
   onStart() {
-    transition.value = false;
-    width.value = $(image.value).width();
-    height.value = $(image.value).height();
+    animationOpened.value = false;
+    imgWidth.value = $(imgRef.value).width();
+    imgHeight.value = $(imgRef.value).height();
   }
 });
 
 function close() {
-  $(highslide.value).removeClass("active").addClass("noactive");
+  $(highslideRef.value).removeClass("active").addClass("noactive");
   $("body").css({ overflow: "auto" });
-  angle.value = 0;
-  x.value = 0;
-  y.value = 0;
+  imgDegree.value = 0;
+  positionX.value = 0;
+  positionY.value = 0;
 }
 
 function zoom() {
-  transition.value = true;
-  width.value = $(image.value).width();
-  height.value = $(image.value).height();
+  animationOpened.value = true;
+  imgWidth.value = $(imgRef.value).width();
+  imgHeight.value = $(imgRef.value).height();
 }
 
 function zoomIn() {
   zoom();
-  height.value += height.value * 0.15;
-  width.value += width.value * 0.15;
+  imgHeight.value += imgHeight.value * 0.15;
+  imgWidth.value += imgWidth.value * 0.15;
 }
 
 function zoomOut() {
   zoom();
-  height.value -= height.value * 0.15;
-  width.value -= width.value * 0.15;
+  imgHeight.value -= imgHeight.value * 0.15;
+  imgWidth.value -= imgWidth.value * 0.15;
 }
 
 function rotate(direction: "right" | "left") {
-  transition.value = true;
+  animationOpened.value = true;
   if (direction === "left") {
-    angle.value += 90;
+    imgDegree.value += 90;
   } else {
-    angle.value -= 90;
+    imgDegree.value -= 90;
   }
 }
 
 onMounted(() => {
-  image.value.addEventListener("mousewheel", e => {
-    transition.value = false;
-    width.value = $(image.value).width();
-    height.value = $(image.value).height();
+  imgRef.value.addEventListener("mousewheel", e => {
+    animationOpened.value = false;
+    imgWidth.value = $(imgRef.value).width();
+    imgHeight.value = $(imgRef.value).height();
     // @ts-ignore
     if (e.deltaY < 0) {
-      height.value += height.value * 0.15;
-      width.value += width.value * 0.15;
+      imgHeight.value += imgHeight.value * 0.15;
+      imgWidth.value += imgWidth.value * 0.15;
     } else {
-      height.value -= height.value * 0.15;
-      width.value -= width.value * 0.15;
+      imgHeight.value -= imgHeight.value * 0.15;
+      imgWidth.value -= imgWidth.value * 0.15;
     }
   });
 });
@@ -76,24 +76,24 @@ onMounted(() => {
 
 <template>
   <Teleport to="body">
-    <div class="l-highslide l-matee-bg noactive" ref="highslide">
+    <div class="l-highslide l-matee-bg noactive" ref="highslideRef">
       <div class="relative w-100% h-100%">
         <div class="l-highslide__box w-100% h-100% f-c-c">
           <img
-            ref="image"
+            ref="imgRef"
             draggable="false"
             style="max-width: initial"
             class="l-highslide__img noselect cursor-move"
             :class="{
-              fixed: x && y && EcyConfig.pcDevice ? true : false,
-              transition: transition
+              fixed: positionX && positionY && EcyConfig.pcDevice ? true : false,
+              transition: animationOpened
             }"
             :style="{
-              transform: 'rotate(' + angle + 'deg)',
-              left: x + 'px',
-              top: y + 'px',
-              width: width + 'px',
-              height: height + 'px'
+              transform: 'rotate(' + imgDegree + 'deg)',
+              left: positionX + 'px',
+              top: positionY + 'px',
+              width: imgWidth + 'px',
+              height: imgHeight + 'px'
             }" />
         </div>
         <div class="l-highslide__close f-c-c z-99 hover absolute top-2 right-2" @click="close">
@@ -123,7 +123,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .l-highslide {
   position: fixed;
-  z-index: 9;
+  z-index: 999999;
   top: 0;
   left: 0;
   width: 100vw;
