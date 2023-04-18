@@ -22,7 +22,6 @@ onMounted(() => {
     </div>
   </div>
 </template>
-0
 
 <style scoped lang="scss">
 #l-tags {

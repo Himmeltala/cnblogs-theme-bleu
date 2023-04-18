@@ -87,7 +87,7 @@ export function parseCommentList(dom: any): CustType.IComment[] {
 
   $(parseDOM(dom))
     .find(".feedbackItem")
-    .map((i, elem) => {
+    .each((i, elem) => {
       const anchorId = $(elem).find(".layer").attr("href")!.split("#")[1];
       data[i] = {
         isEditing: false,
@@ -128,7 +128,7 @@ export function parseWorksProps(dom: any): CustType.IWorksProps {
 
   $(_dom)
     .find("#BlogPostCategory > a")
-    .map((i, d) => {
+    .each((i, d) => {
       data.sorts.push({
         href: $(d)
           .attr("href")
@@ -141,7 +141,7 @@ export function parseWorksProps(dom: any): CustType.IWorksProps {
 
   $(_dom)
     .find("#EntryTag > a")
-    .map((i, d) => {
+    .each((i, d) => {
       data.tags.push({
         text: $(d).text()
       });

@@ -59,7 +59,7 @@ const hidden = computed(() => {
 <template>
   <div
     id="l-lmenu"
-    class="l-fiv-size fixed top-0 left-0 noscroll ofw-auto h-100vh bg-#191919 p-3 w-17.5rem"
+    class="l-size-2 fixed top-0 left-0 noscroll ofw-auto h-100vh l-back-bg p-3 w-17.5rem"
     :class="{ 'show-lcabinet z-99': block, 'hidden-lcabinet': hidden }">
     <ExpandableBox text="博客信息" disabled>
       <template #icon>
@@ -109,7 +109,7 @@ const hidden = computed(() => {
           <template v-if="columnList">
             <div class="mb-2" v-for="item in columnList.rankings">{{ item.text }}</div>
             <router-link :to="RouterPath.worksByCalendar()">
-              <div class="my-4 f-c-s hover l-pri-color">
+              <div class="my-4 f-c-s hover l-color-1">
                 <i-ep-calendar class="mr-2" />
                 博客日历
               </div>
@@ -276,7 +276,7 @@ const hidden = computed(() => {
 $quota: 10;
 
 #l-lmenu {
-  transition: var(--l-transition);
+  transition: var(--l-animation-effect);
 }
 
 .show-lcabinet {

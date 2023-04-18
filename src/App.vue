@@ -2,6 +2,7 @@
 const route = useRoute();
 const ldisabled = ref(true);
 const rdisabled = ref(true);
+const indexImgs = EcyConfig.__ECY_CONFIG__.covers.index || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
 
 onMounted(() => {
   document.getElementById("l-lstrip").onclick = () => {
@@ -19,18 +20,18 @@ onMounted(() => {
 });
 
 watch(route, async () => {
-  if (route.name === "Index" || route.name === "EssayList") {
+  if (route.name === RouterName.Index) {
     EcyUtils.setTitle();
   }
 });
 </script>
 
 <template>
-  <div id="l-content" class="l-transition relative">
+  <div id="l-content" class="fade-in-out relative">
     <div id="l-top-nail"></div>
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
-        <KeepAlive :include="['Home', 'MarkList', 'Index', 'Calendar']">
+        <KeepAlive :include="[RouterName.Index, RouterName.MarkList, RouterName.Profile, RouterName.WorksByCalendar]">
           <Suspense>
             <component :is="Component" />
           </Suspense>
@@ -41,8 +42,13 @@ watch(route, async () => {
   </div>
   <div class="l-tools">
     <div id="l-progress" class="z-99999 fixed left-0 top-0 w-100vw">
-      <div class="l-pro__track absolute top-0">
-        <div class="l-pro__bar rd-2"></div>
+      <div class="track absolute top-0">
+        <div class="bar rd-2"></div>
+      </div>
+    </div>
+    <div id="l-backmask" class="fixed left-0 top-0 w-100vw h-100vh">
+      <div class="relative w-100% h-100%">
+        <img class="cover w-100% h-100%" :src="indexImgs[Math.floor(Math.random() * indexImgs.length)]" />
       </div>
     </div>
     <div id="l-matte" class="fixed top-0 left-0 l-matee-bg z-99" :class="{ 'w-100% h-100vh': !rdisabled || !ldisabled }"></div>
@@ -58,18 +64,18 @@ watch(route, async () => {
 #l-progress {
   height: 0.15rem;
 
-  .l-pro__bar,
-  .l-pro__track {
+  .bar,
+  .track {
     height: 100%;
     background: var(--l-theme-color);
   }
 
-  .l-pro__bar.bar-active {
+  .bar.bar-active {
     animation: active-animation 3s infinite ease-in-out;
     width: 3rem;
   }
 
-  .l-pro__track.track-active {
+  .track.track-active {
     animation: track-active-animation 4s infinite ease-in;
   }
 
@@ -89,12 +95,18 @@ watch(route, async () => {
     }
   }
 
-  .l-pro__bar.static {
+  .bar.static {
     width: 0vw;
   }
 
-  .l-pro__track.static {
+  .track.static {
     left: 0;
+  }
+}
+
+#l-backmask {
+  img {
+    opacity: 0.05;
   }
 }
 </style>
@@ -106,7 +118,7 @@ watch(route, async () => {
   }
 }
 
-.l-transition {
+.fade-in-out {
   animation: transition-animation 0.5s ease-in;
 
   @keyframes transition-animation {

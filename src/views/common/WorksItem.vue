@@ -24,11 +24,11 @@ defineProps({
     </div>
     <div class="w-52%" :class="{ 'pl-4': index % 2 === 0, 'pr-4': index % 2 !== 0 }">
       <div
-        class="hover text-ellipsis line-clamp-2 f-c-s mb-6 l-pri-size"
+        class="hover text-ellipsis line-clamp-2 f-c-s mb-6 l-size-6"
         @click="EcyUtils.Router.go({ path: RouterPath.works(item.id), router: $router })">
         {{ item.text }}
       </div>
-      <div class="f-c-s mb-4 l-fiv-size l-sec-color">
+      <div class="f-c-s mb-4 l-size-2 l-color-2">
         <div class="mr-3 f-c-c">
           <i-ep-view class="mr-1" />
           {{ item.view }}
@@ -42,15 +42,15 @@ defineProps({
           {{ item.digg }}
         </div>
       </div>
-      <div class="l-thr-color text-ellipsis line-clamp-4">
+      <div class="l-color-3 text-ellipsis line-clamp-4">
         {{ item.desc }}
       </div>
-      <div class="hover f-c-s mt-6 l-fiv-size">
+      <div class="hover f-c-s mt-6 l-size-2">
         <i-ep-caret-right />
         <router-link class="ml-1 b-b-1 b-b-dotted p-b-0.5" :to="'/p/' + item.id"> 阅读全文 </router-link>
       </div>
       <div class="mt-4 f-c-e">
-        <div class="l-fiv-size l-sec-color f-c-c">
+        <div class="l-size-2 l-color-2 f-c-c">
           <i-ep-clock class="mr-1" />
           {{ item.date }}
         </div>
@@ -71,7 +71,7 @@ defineProps({
 
 <style scoped lang="scss">
 .item {
-  transition: var(--l-transition);
+  transition: var(--l-animation-effect);
   margin: {
     top: 1.5rem;
     bottom: 3rem;

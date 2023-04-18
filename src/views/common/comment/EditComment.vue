@@ -69,7 +69,7 @@ function cancel() {
         <textarea v-model="content" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
       </div>
     </div>
-    <div class="float-right f-c-e l-fiv-size l-sec-color" :class="{ 're-item': !comment.isEditing, 'w-100%': comment.isEditing }">
+    <div class="float-right f-c-e l-size-2 l-color-2" :class="{ 're-item': !comment.isEditing, 'w-100%': comment.isEditing }">
       <div v-show="!comment.isEditing && !comment.isAnsling" class="hover f-c-e" @click="before">
         <i-ep-edit-pen class="mr-1" />
         <span>编辑</span>

@@ -18,7 +18,7 @@ const hidden = computed(() => {
 <template>
   <div
     id="l-rmenu"
-    class="noscroll l-fiv-size h-100vh ofw-auto fixed top-0 right-0 bg-#191919 p-3 w-17.5rem"
+    class="noscroll l-size-2 h-100vh ofw-auto fixed top-0 right-0 l-back-bg p-3 w-17.5rem"
     :class="{ 'show-rcabinet z-99': block, 'hidden-rcabinet': hidden }">
     <ExpandableBox text="常用链接" v-if="EcyConfig.__ECY_CONFIG__.cabinet.links && EcyConfig.__ECY_CONFIG__.cabinet.links.length">
       <template #icon>
@@ -55,7 +55,7 @@ const hidden = computed(() => {
 $quota: 10;
 
 #l-rmenu {
-  transition: var(--l-transition);
+  transition: var(--l-animation-effect);
 }
 
 .show-rcabinet {

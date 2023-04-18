@@ -1,22 +1,60 @@
 <script setup lang="ts">
 const setting = EcyUtils.getLocalSetting();
-const isTop = ref(false);
+const isToTop = ref(false);
+const isToBottom = ref(true);
+let html: HTMLElement;
+let topNail: HTMLElement;
+let bottomNail: HTMLElement;
 
-function moveToNavil() {
-  if (isTop.value) {
-    document.querySelector("#l-top-nail").scrollIntoView();
+onMounted(() => {
+  html = document.querySelector("html");
+  topNail = document.querySelector("#l-top-nail");
+  bottomNail = document.querySelector("#l-bottom-nail");
+
+  window.addEventListener(
+    "scroll",
+    useThrottleFn(() => {
+      const ratio = window.scrollY / Number(document.body.clientHeight);
+
+      if (ratio <= 0.5) {
+        isToBottom.value = true;
+        isToTop.value = false;
+      } else if (ratio > 0.5 && ratio <= 1) {
+        isToTop.value = true;
+        isToBottom.value = false;
+      }
+    }, 200)
+  );
+});
+
+function toTop() {
+  topNail.scrollIntoView();
+  isToTop.value = true;
+  isToBottom.value = false;
+}
+
+function toBottom() {
+  bottomNail.scrollIntoView();
+  isToTop.value = false;
+  isToBottom.value = true;
+}
+
+function toggleMode() {
+  if (setting.value.theme.mode === "dark") {
+    html.className = "light";
+    setting.value.theme.mode = "light";
   } else {
-    document.querySelector("#l-bottom-nail").scrollIntoView();
+    html.className = "dark";
+    setting.value.theme.mode = "dark";
   }
-  isTop.value = !isTop.value;
 }
 </script>
 
 <template>
-  <div id="l-toolkits" class="fixed z-99 right-18 top-65vh l-thr-size">
+  <div id="l-toolkits" class="fixed z-99 right-20 top-55vh l-size-4">
     <div
       :class="{ 'show-0': setting.toolkits.pin, 'close-0': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 bg-#191919"
+      class="absolute hover left-0 rd-2 l-back-bg"
       @click="EcyUtils.Router.go({ path: RouterPath.index(), router: $router })">
       <div class="f-c-c w-8 h-8">
         <i-ep-reading />
@@ -24,24 +62,23 @@ function moveToNavil() {
     </div>
     <div
       :class="{ 'show-1': setting.toolkits.pin, 'close-1': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 bg-#191919"
+      class="absolute hover left-0 rd-2 l-back-bg"
       @click="EcyUtils.Router.go({ path: 'back', router: $router })">
       <div class="f-c-c w-8 h-8">
-        <i-ep-guide />
+        <i-ep-location />
       </div>
     </div>
     <div
       :class="{ 'show-2': setting.toolkits.pin, 'close-2': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 bg-#191919"
-      @click="moveToNavil">
+      class="absolute hover left-0 rd-2 l-back-bg"
+      @click="isToTop ? toTop() : toBottom()">
       <div class="f-c-c w-8 h-8">
-        <i-ep-add-location v-show="isTop" />
-        <i-ep-delete-location v-show="!isTop" />
+        <i-ep-upload :class="{ 'top-nav': isToTop, 'bottom-nav': isToBottom }" />
       </div>
     </div>
     <div
       :class="{ 'show-3': setting.toolkits.pin, 'close-3': !setting.toolkits.pin }"
-      class="absolute hover left-0 rd-2 bg-#191919"
+      class="absolute hover left-0 rd-2 l-back-bg"
       @click="EcyUtils.Router.go({ path: RouterPath.profile(), router: $router })">
       <div class="f-c-c w-8 h-8">
         <i-ep-warning />
@@ -49,16 +86,25 @@ function moveToNavil() {
     </div>
     <div
       :class="{ 'show-4': setting.toolkits.pin, 'close-4': !setting.toolkits.pin }"
-      class="setting absolute hover left-0 rd-2 bg-#191919"
-      @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">
+      class="absolute hover left-0 rd-2 l-back-bg"
+      @click="toggleMode">
       <div class="f-c-c w-8 h-8">
-        <i-ep-setting class="rotate-setting" />
+        <i-ep-moon v-show="setting.theme.mode === 'dark'" />
+        <i-ep-sunny v-show="setting.theme.mode === 'light'" />
+      </div>
+    </div>
+    <div
+      :class="{ 'show-5': setting.toolkits.pin, 'close-5': !setting.toolkits.pin }"
+      class="absolute hover left-0 rd-2 l-back-bg"
+      @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com' })">
+      <div class="f-c-c w-8 h-8">
+        <i-ep-setting />
       </div>
     </div>
     <div
       @click="setting.toolkits.pin = !setting.toolkits.pin"
       :class="{ 'show-toolkits': setting.toolkits.pin, 'close-toolkits': !setting.toolkits.pin }"
-      class="kits-box absolute hover top-50 left-0 rd-2 bg-#191919">
+      class="kits-box absolute hover top-60 left-0 rd-2 l-back-bg">
       <div class="f-c-c w-8 h-8">
         <i-ep-more />
       </div>
@@ -68,36 +114,36 @@ function moveToNavil() {
 
 <style scoped lang="scss">
 $show-top: 0;
-$close-end: 12.5rem;
+$show-anitime: 0.2s;
+$close-top: 15rem;
+$close-anitime: 0.6s;
+$move-step: 2.5rem;
 
-@for $index from 0 to 5 {
+@for $index from 0 to 6 {
   @if $index != 0 {
-    $show-top: $show-top + 2.5rem;
+    $show-top: $show-top + $move-step;
   }
 
   .show-#{$index} {
-    animation: show-#{$index}-animation math.div($index, 10) + 0.2s ease-in;
+    $show-anitime: $show-anitime + math.div($index, 10);
+    animation: show-#{$index}-animation $show-anitime ease-in;
     top: $show-top;
   }
 
   .close-#{$index} {
-    animation: close-#{$index}-animation math.div($index, 10) + 0.2s ease-in;
-    top: $close-end;
+    $close-anitime: $close-anitime - math.div($index, 10);
+    animation: close-#{$index}-animation $close-anitime ease-in;
+    top: $close-top;
     z-index: -1;
   }
 
   @keyframes show-#{$index}-animation {
-    $show-anime-top: 0;
+    $step: $close-top;
 
     @for $i from 0 to 11 {
-      @if $index == 0 {
-        $show-anime-top: $close-end - $i * 1rem;
-      } @else {
-        $show-anime-top: $i * math.div($show-top, 10);
-      }
-
       #{$i * 10%} {
-        top: $show-anime-top;
+        top: $step;
+        $step: $step - math.div($close-top - $index * $move-step, 10);
       }
     }
   }
@@ -105,53 +151,29 @@ $close-end: 12.5rem;
   @keyframes close-#{$index}-animation {
     @for $i from 0 to 11 {
       #{ $i * 10%} {
-        top: $show-top + $i * math.div(($close-end - $show-top), 10);
+        top: $show-top + $i * math.div($close-top - $show-top, 10);
       }
     }
   }
 }
 
 .show-toolkits {
-  animation: show-toolkits-animation 0.3s ease-in;
+  transition: var(--l-animation-effect);
   transform: rotate(0);
 }
 
 .close-toolkits {
-  animation: close-toolkits-animation 0.3s ease-in;
+  transition: var(--l-animation-effect);
   transform: rotate(180deg);
 }
 
-@keyframes show-toolkits-animation {
-  @for $index from 0 to 10 {
-    #{$index * 10%} {
-      transform: rotate(180deg - $index * 18deg);
-    }
-  }
+.top-nav {
+  transition: var(--l-animation-effect);
+  transform: rotate(0);
 }
 
-@keyframes close-toolkits-animation {
-  @for $index from 0 to 10 {
-    #{$index * 10%} {
-      transform: rotate($index * 18deg);
-    }
-  }
-}
-
-.rotate-setting:hover {
-  animation: 1.5s infinite rotate-setting-animation;
-}
-
-@keyframes rotate-setting-animation {
-  @for $index from 0 to 10 {
-    #{$index * 10%} {
-      transform: rotate($index * 36deg);
-    }
-  }
-
-  @for $index from 10 to 0 {
-    #{$index * 10%} {
-      transform: rotate($index * 36deg);
-    }
-  }
+.bottom-nav {
+  transition: var(--l-animation-effect);
+  transform: rotate(180deg);
 }
 </style>

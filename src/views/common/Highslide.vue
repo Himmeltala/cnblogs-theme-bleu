@@ -162,6 +162,6 @@ onMounted(() => {
   font-size: 1.5rem;
   color: #fff;
   opacity: 0.7;
-  background-color: var(--l-pri-color);
+  background-color: var(--l-color-1);
 }
 </style>

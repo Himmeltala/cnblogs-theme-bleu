@@ -253,7 +253,7 @@ declare namespace CustType {
    * Ecy 主题设置数据类型
    */
   type ILocalSetting = Partial<{
-    theme: { mode: string };
+    theme: { mode: "dark" | "light" };
     toolkits: { pin: boolean };
     cabinet: {
       toggles: Record<string, { open: boolean; show: boolean }>;

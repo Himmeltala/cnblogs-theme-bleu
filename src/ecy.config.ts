@@ -80,12 +80,6 @@ export namespace EcyConfig {
             "https://img0.baidu.com/it/u=3799846776,4059990499&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313",
             "https://n.sinaimg.cn/sinakd10118/1/w1081h1320/20210910/525d-98224496d08d222e095510ad859b6d98.jpg",
             "https://img2.baidu.com/it/u=1194562060,1998366528&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422",
-            "https://img0.baidu.com/it/u=2223180490,240811175&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
-            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
-            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
-            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
-            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
-            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
             "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
           ],
           index: [
@@ -138,6 +132,6 @@ export namespace EcyConfig {
 
     $("head").append(`<link rel="shortcut icon" href="${__ECY_CONFIG__.icon}">`);
     EcyUtils.Log.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-ecy");
-    EcyUtils.Log.primary("v1.0.0", "Powered By Himmelbleu using Vue3 & Vite.");
+    EcyUtils.Log.primary("v1.1.0", "Powered By Himmelbleu using Vue3 & Vite.");
   }
 }

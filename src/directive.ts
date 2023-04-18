@@ -7,13 +7,13 @@ function createCodeFolder(ele: JQuery<HTMLElement>) {
 
   if (height >= 380) {
     ele.height(380);
-    const $click = $(`<div class="close-code-modal l-fiv-size l-thr-color hover">展开</div>`);
-    const $modal = $(`<div class="hight-code-modal f-c-c rd-2"></div>`);
+    const $click = $(`<div class="l-fiv-size l-color-3 hover">展开</div>`);
+    const $modal = $(`<div class="modal f-c-c rd-2"></div>`);
     $modal.prepend($click);
 
     $click.on("click", () => {
       ele.height(height);
-      ele.removeClass("hight-code-modal");
+      ele.removeClass("modal");
       $modal.css({ display: "none" });
     });
 
@@ -35,7 +35,7 @@ function createCodeClipboard(ele: JQuery<HTMLElement>) {
     );
   });
 
-  ele.parent().find(".code-block").prepend(clipboard);
+  ele.parent().find(".code-tools").prepend(clipboard);
 }
 
 function createCodeLang(ele: JQuery<HTMLElement>) {
@@ -46,7 +46,7 @@ function createCodeLang(ele: JQuery<HTMLElement>) {
     .split("-")[1]
     .toUpperCase();
 
-  ele.parent().prepend(`<div class="code-block l-six-size l-thr-color">${lang}</div>`);
+  ele.parent().prepend(`<div class="code-tools l-size-1 l-color-3">${lang}</div>`);
 }
 
 /**
@@ -128,7 +128,7 @@ function createHighslide(ele: JQuery<HTMLElement>) {
 
   const text = ele.parent("p");
   text.addClass("f-c-c flex-col");
-  text.append(`<div class="l-sec-color l-fiv-size mt-2">${ele.attr("alt")}</div>`);
+  text.append(`<div class="l-color-2 l-fiv-size mt-2">${ele.attr("alt")}</div>`);
 }
 
 /**

@@ -76,7 +76,7 @@ function cancel() {
         <textarea v-model="content" placeholder="请回复一条友善的评论，支持 Markdown 语法" />
       </div>
     </div>
-    <div class="float-right f-c-e l-fiv-size l-sec-color" :class="{ 'ed-item': !comment.isAnsling, ' w-100%': comment.isAnsling }">
+    <div class="float-right f-c-e l-size-2 l-color-2" :class="{ 'ed-item': !comment.isAnsling, ' w-100%': comment.isAnsling }">
       <div v-show="!comment.isAnsling && !comment.isEditing" class="hover f-c-e" @click="before">
         <i-ep-chat-round class="mr-1" />
         <span>回复</span>

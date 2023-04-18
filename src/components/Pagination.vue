@@ -62,7 +62,7 @@ function nexprChange(elIndex: number) {
     position: fixed;
     top: 50vh;
     opacity: 0.7;
-    color: var(--l-thr-color);
+    color: var(--l-color-3);
     width: 2.5rem;
     height: 2.5rem;
   }

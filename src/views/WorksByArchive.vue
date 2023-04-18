@@ -49,7 +49,7 @@ watch(route, async () => {
               </div>
             </template>
             <template #content>
-              <div class="l-sec-size mb-5 mt-4">{{ archiveWorks.hint }}</div>
+              <div class="l-size-5 mb-5 mt-4">{{ archiveWorks.hint }}</div>
             </template>
           </el-page-header>
           <WorksItem

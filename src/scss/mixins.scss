@@ -7,7 +7,7 @@
 
 @mixin hover($border-color: bottom, $font-color: true) {
   cursor: pointer;
-  transition: var(--l-transition);
+  transition: var(--l-animation-effect);
 
   &:hover {
     @if ($font-color == true) {

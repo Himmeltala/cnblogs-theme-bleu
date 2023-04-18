@@ -32,10 +32,10 @@ onMounted(() => {
           </div>
         </template>
         <template #content>
-          <div class="l-sec-size mb-5 mt-4">相册 - {{ albumn.title }}</div>
+          <div class="l-size-5 mb-5 mt-4">相册 - {{ albumn.title }}</div>
         </template>
       </el-page-header>
-      <div class="mb-4 l-fiv-size l-sec-color">{{ albumn.desc }}</div>
+      <div class="mb-4 l-size-2 l-color-2">{{ albumn.desc }}</div>
       <div class="f-c-b flex-wrap">
         <el-image class="w-50 h-50 mb-4" v-for="(item, index) in srcList" :initial-index="index" :src="item" :preview-src-list="srcList" />
         <el-result v-if="!albumn.data.length" icon="error" title="相册加载失败" sub-title="相册可能被移除">

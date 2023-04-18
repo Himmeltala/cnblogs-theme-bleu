@@ -39,7 +39,7 @@ onMounted(() => {
           </div>
         </template>
         <template #content>
-          <div class="l-sec-size">博客日历</div>
+          <div class="l-size-5">博客日历</div>
         </template>
       </el-page-header>
       <el-calendar v-model="dateModel">
@@ -56,7 +56,7 @@ onMounted(() => {
             <u>
               {{ data.day.split("-")[2] }}
             </u>
-            <div class="mt-2 l-sec-color l-six-size">点击查看</div>
+            <div class="mt-2 l-color-2 l-size-1">点击查看</div>
           </div>
           <span v-else>{{ data.day.split("-")[2] }}</span>
         </template>

@@ -48,7 +48,7 @@ function onEdFinish(response: any) {
             <div class="l-comment__author hover cursor-pointer" @click="EcyUtils.Router.go({ path: item.space })">
               {{ item.author }}
             </div>
-            <div class="l-comment__data l-fiv-size l-sec-color mt-2 f-c-c">
+            <div class="l-comment__data l-size-2 l-color-2 mt-2 f-c-c">
               <span :id="'level-' + item.commentId" class="mr-2 ref" v-if="anchor == item.commentId" ref="level">{{ item.layer }} </span>
               <span :id="'level-' + item.commentId" class="mr-2" v-else>{{ item.layer }}</span>
               {{ item.date }}
@@ -62,7 +62,7 @@ function onEdFinish(response: any) {
         <div class="l-comment__more float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>
             <div class="f-c-c">
-              <i-ep-more class="hover l-fiv-size l-sec-color" />
+              <i-ep-more class="hover l-size-2 l-color-2" />
             </div>
             <template #dropdown>
               <el-dropdown-menu>

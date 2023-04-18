@@ -38,7 +38,7 @@ defineProps({
     left: 0.6rem;
     right: 0.6rem;
   }
-  font-size: var(--l-six-size);
+  font-size: var(--l-size-1);
 }
 
 .l-tag.hover {
@@ -50,8 +50,8 @@ defineProps({
 }
 
 .l-tag.text {
-  border-color: var(--l-pri-color);
-  color: var(--l-pri-color);
+  border-color: var(--l-color-1);
+  color: var(--l-color-1);
 }
 
 .l-tag.plain {

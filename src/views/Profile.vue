@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-profile min-height mt-4 l-fiv-size page">
+  <div class="l-profile min-height mt-4 l-size-2 page">
     <div class="content">
       <div class="mb-6 f-s-c">
         <div class="w-40%">
@@ -213,6 +213,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .title {
-  --uno: l-for-size;
+  --uno: l-size-3;
 }
 </style>

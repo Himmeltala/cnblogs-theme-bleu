@@ -74,7 +74,7 @@ watch(route, async () => {
     <div class="z-999 f-c-c absolute left-0 top-10vh w-100%">
       <div class="w-55vw">
         <div class="size-2rem text-ellipsis line-clamp-2 w-100%">{{ works.text }}</div>
-        <div class="f-c-s mt-6 l-fiv-size">
+        <div class="f-c-s mt-6 l-size-2">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
             <span>{{ works.date }}</span>
@@ -96,7 +96,7 @@ watch(route, async () => {
           </div>
         </div>
         <div class="mt-6">
-          <div class="mb-4 flex-wrap l-fiv-size f-c-s" v-if="props.sorts.length > 0">
+          <div class="mb-4 flex-wrap l-size-2 f-c-s" v-if="props.sorts.length > 0">
             <div class="f-c-c">
               <i-ep-folder-opened class="mr-1" />
               <span>分类：</span>
@@ -111,7 +111,7 @@ watch(route, async () => {
               </LTag>
             </div>
           </div>
-          <div class="f-c-s flex-wrap l-fiv-size" v-if="props.tags.length > 0">
+          <div class="f-c-s flex-wrap l-size-2" v-if="props.tags.length > 0">
             <div class="f-c-c">
               <i-ep-price-tag class="mr-1" />
               <span>标签：</span>
@@ -133,11 +133,11 @@ watch(route, async () => {
   <div id="l-works" class="page">
     <div class="content">
       <div v-show="!isLocked">
-        <div class="l-thr-size" v-html="works.content" v-hljs v-highslide v-catalog v-mathjax></div>
+        <div class="l-size-4" v-html="works.content" v-hljs v-highslide v-catalog v-mathjax></div>
         <Highslide />
         <Catalog v-if="EcyConfig.pcDevice" />
         <div class="divider flex-col"></div>
-        <div class="l-sec-color f-c-e l-fiv-size">
+        <div class="l-color-2 f-c-e l-size-2">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
             <span>{{ works.date }}</span>
@@ -151,14 +151,14 @@ watch(route, async () => {
             <span>{{ works.comm }}条评论</span>
           </div>
         </div>
-        <div class="prev-next mt-10 l-fiv-size">
+        <div class="prev-next mt-10 l-size-2">
           <div class="hover f-c-s mb-2" v-if="prevNext.prev.href">
             <i-ep-d-arrow-left />
-            <a class="hover l-pri-color" :href="prevNext.prev.href"> 上一篇：{{ prevNext.prev.text }} </a>
+            <a class="hover l-color-1" :href="prevNext.prev.href"> 上一篇：{{ prevNext.prev.text }} </a>
           </div>
           <div class="hover f-c-s" v-if="prevNext.next.href">
             <i-ep-d-arrow-right />
-            <a class="hover l-pri-color" :href="prevNext.next.href"> 下一篇：{{ prevNext.next.text }} </a>
+            <a class="hover l-color-1" :href="prevNext.next.href"> 下一篇：{{ prevNext.next.text }} </a>
           </div>
         </div>
         <div class="viewpoint my-10 f-c-e">
@@ -182,7 +182,7 @@ watch(route, async () => {
         <Comment :post-id="worksId" />
       </div>
       <div v-if="isLocked">
-        <div class="modal fixed w-100vw h-100vh top-0 left-0 l-box-bg f-c-c z-999999">
+        <div class="modal fixed w-100vw h-100vh top-0 left-0 l-back-bg f-c-c z-999999">
           <el-form>
             <el-form-item label="密码：">
               <el-input show-password type="password" v-model="password" placeholder="输入博文阅读密码" />
@@ -200,34 +200,43 @@ watch(route, async () => {
 <style lang="scss">
 code {
   --uno: rd-2;
-  background: #22222299;
   color: var(--el-color-danger-light-3);
   padding: 0.15rem 0.4rem;
   margin: 0;
-}
-
-a > code {
-  color: var(--l-theme-color) !important;
 }
 
 pre {
   --uno: rd-2;
   position: relative;
 
-  .code-block {
+  code {
+    background: var(--l-block-code-bg);
+  }
+
+  .code-tools {
     position: absolute;
     top: 0.2rem;
     right: 0.2rem;
   }
 
-  .hight-code-modal {
+  .modal {
     width: 100%;
     height: 3rem;
     position: absolute;
     bottom: 0;
     left: 0;
-    background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-hidden-bg) 100%);
+    background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-modal-bg) 100%);
   }
+}
+
+p {
+  code {
+    background: var(--l-inline-code-bg);
+  }
+}
+
+a > code {
+  color: var(--l-theme-color) !important;
 }
 
 #l-works {
@@ -268,8 +277,8 @@ pre {
     }
 
     blockquote {
-      background-color: var(--l-code-bg);
-      color: var(--l-sec-color);
+      background-color: var(--l-blockquote-bg);
+      color: var(--l-color-2);
       margin: 0;
       border: {
         radius: 0.25rem;
@@ -293,7 +302,7 @@ pre {
     u {
       text-decoration: none;
       padding-bottom: 1px;
-      border-bottom: 1px dotted var(--l-pri-color);
+      border-bottom: 1px dotted var(--l-color-1);
     }
 
     a {

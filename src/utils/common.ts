@@ -73,15 +73,15 @@ export namespace EcyUtils {
 
   export function endLoading() {
     $(".light-loading, .dark-loading").fadeOut();
-    $("#l-content").addClass("l-transition");
-    $("#l-progress > .l-pro__track").removeClass("track-active").addClass("track-static");
-    $("#l-progress > .l-pro__track > .l-pro__bar").removeClass("bar-active").addClass("bar-static");
+    $("#l-content").addClass("fade-in-out");
+    $("#l-progress > .track").removeClass("track-active").addClass("track-static");
+    $("#l-progress > .track > .bar").removeClass("bar-active").addClass("bar-static");
   }
 
   export function startLoading() {
-    $("#l-content").removeClass("l-transition");
-    $("#l-progress > .l-pro__track").removeClass("track-static").addClass("track-active");
-    $("#l-progress > .l-pro__track > .l-pro__bar").removeClass("bar-static").addClass("bar-active");
+    $("#l-content").removeClass("fade-in-out");
+    $("#l-progress > .track").removeClass("track-static").addClass("track-active");
+    $("#l-progress > .track > .bar").removeClass("bar-static").addClass("bar-active");
   }
 
   /**
