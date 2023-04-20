@@ -1,19 +1,26 @@
 <script setup lang="ts">
 import { WorksApi } from "@/apis";
 
-EcyUtils.startLoading();
-
 const route = useRoute();
 const works = shallowRef();
 const props = shallowRef();
 const prevNext = shallowRef();
 const viewPoint = shallowRef();
-const isLocked = ref();
+const isLocked = ref(false);
 const password = ref("");
-const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
 let worksId = route.params.id as string;
+const coverFilter = EcyConfig.__ECY_CONFIG__.covers.filter.works;
+const coverMatte = EcyConfig.__ECY_CONFIG__.covers.matte.works;
+const fontFamily = EcyConfig.__ECY_CONFIG__.font.family || "Hack";
+
+const getCoverImg = computed(() => {
+  const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
+  return worksImgs[Math.floor(Math.random() * worksImgs.length)];
+});
 
 async function fetchData() {
+  EcyUtils.startLoading();
+
   works.value = await WorksApi.getWorks(worksId);
   props.value = await WorksApi.getProps(worksId);
   prevNext.value = await WorksApi.getPrevNext(worksId);
@@ -25,24 +32,13 @@ async function fetchData() {
 
 await fetchData();
 
-onMounted(() => {
-  const anchor = route.hash.match(/#.+/g);
-  if (anchor) {
-    setTimeout(() => {
-      document.querySelector(`#${anchor[0].replace("#", "")}`).scrollIntoView();
-    }, 500);
-  }
-
-  EcyUtils.endLoading();
-});
-
 async function submit() {
   const passed = await WorksApi.isPassed(password.value, worksId);
   if (passed) {
     works.value = await WorksApi.getLockedWorks(password.value, worksId);
     isLocked.value = false;
   }
-  ElMessage({ message: passed ? "密码输入正确！" : "密码错误！", grouping: true, type: passed ? "success" : "error" });
+  ElMessage({ message: passed ? "密码正确！" : "密码错误！", grouping: true, type: passed ? "success" : "error" });
 }
 
 async function vote(type: BlogType.VoteType) {
@@ -57,22 +53,32 @@ async function vote(type: BlogType.VoteType) {
 
 watch(route, async () => {
   if (route.name === RouterName.Works) {
-    EcyUtils.startLoading();
     worksId = route.params.id as string;
     await fetchData();
-    EcyUtils.setTitle(works.value.text);
     EcyUtils.endLoading();
   }
+});
+
+onMounted(() => {
+  const anchor = route.hash.match(/#.+/g);
+
+  if (anchor) {
+    setTimeout(() => {
+      document.querySelector(`#${anchor[0].replace("#", "")}`).scrollIntoView();
+    }, 500);
+  }
+
+  EcyUtils.endLoading();
 });
 </script>
 
 <template>
-  <div v-if="!isLocked" class="welcome relative h-50vh w-100vw">
+  <div v-show="!isLocked" class="welcome l-works-welcome relative h-50vh w-100vw">
     <div class="cover z-999 absolute left-0 top-0 h-100% w-100%">
-      <img class="h-100% w-100% rd-0" :src="worksImgs[Math.floor(Math.random() * worksImgs.length)]" />
+      <img class="h-100% w-100% rd-0" :src="getCoverImg" />
     </div>
-    <div class="z-999 f-c-c absolute left-0 top-10vh w-100%">
-      <div class="w-55vw">
+    <div class="content z-999 absolute left-0 top-10vh w-100%">
+      <div>
         <div class="size-2rem text-ellipsis line-clamp-2 w-100%">{{ works.text }}</div>
         <div class="f-c-s mt-6 l-size-2">
           <div class="f-c-c mr-4">
@@ -102,13 +108,13 @@ watch(route, async () => {
               <span>分类：</span>
             </div>
             <div v-for="(item, index) in props.sorts" :class="{ 'mr-2': index !== props.sorts.length - 1 }">
-              <LTag
+              <HollowedBox
                 line="dotted"
                 hover
                 round
                 @click="EcyUtils.Router.go({ path: RouterPath.worksBySort('p', item.href), router: $router })">
                 {{ item.text }}
-              </LTag>
+              </HollowedBox>
             </div>
           </div>
           <div class="f-c-s flex-wrap l-size-2" v-if="props.tags.length > 0">
@@ -117,15 +123,19 @@ watch(route, async () => {
               <span>标签：</span>
             </div>
             <div v-for="(item, index) in props.tags" :class="{ 'mr-2': index !== props.tags.length - 1 }">
-              <LTag line="dotted" hover round @click="EcyUtils.Router.go({ path: RouterPath.worksByMark(item.text), router: $router })">
+              <HollowedBox
+                line="dotted"
+                hover
+                round
+                @click="EcyUtils.Router.go({ path: RouterPath.worksByMark(item.text), router: $router })">
                 {{ item.text }}
-              </LTag>
+              </HollowedBox>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="z-999 absolute bottom-0 left-0 h-75px w-100% ofw-hidden">
+    <div class="z-999 absolute bottom-0 left-0 h-75px w-100% flow-hidden">
       <div class="wave-1 absolute h-100% w-200%"></div>
       <div class="wave-2 absolute h-100% w-200%"></div>
     </div>
@@ -133,9 +143,9 @@ watch(route, async () => {
   <div id="l-works" class="page">
     <div class="content">
       <div v-show="!isLocked">
-        <div class="l-size-4" v-html="works.content" v-hljs v-highslide v-catalog v-mathjax></div>
+        <div class="l-size-4" v-html="works.content" v-hljs="works.text" v-highslide="works.text" v-catalog v-mathjax="works.text"></div>
         <Highslide />
-        <Catalog v-if="EcyConfig.pcDevice" />
+        <Catalog />
         <div class="divider flex-col"></div>
         <div class="l-color-2 f-c-e l-size-2">
           <div class="f-c-c mr-4">
@@ -199,10 +209,16 @@ watch(route, async () => {
 
 <style lang="scss">
 code {
-  --uno: rd-2;
-  color: var(--el-color-danger-light-3);
-  padding: 0.15rem 0.4rem;
   margin: 0;
+  --uno: rd-2 l-size-3;
+  letter-spacing: 1.2px;
+  color: var(--el-color-danger-light-3);
+  font-family: #{v-bind(fontFamily), var(--l-font-family)};
+
+  span {
+    line-height: 1.6;
+    font-family: #{v-bind(fontFamily), var(--l-font-family)};
+  }
 }
 
 pre {
@@ -226,12 +242,6 @@ pre {
     bottom: 0;
     left: 0;
     background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--l-code-modal-bg) 100%);
-  }
-}
-
-p {
-  code {
-    background: var(--l-inline-code-bg);
   }
 }
 
@@ -277,6 +287,7 @@ a > code {
     }
 
     blockquote {
+      --uno: l-size-3;
       background-color: var(--l-blockquote-bg);
       color: var(--l-color-2);
       margin: 0;
@@ -350,8 +361,14 @@ a > code {
 
 <style scoped lang="scss">
 .welcome {
+  .cover::before {
+    backdrop-filter: blur(v-bind(coverFilter));
+    z-index: 1;
+  }
+
   .cover::after {
-    backdrop-filter: blur(10px);
+    background-color: black;
+    opacity: v-bind(coverMatte);
   }
 }
 </style>

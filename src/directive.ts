@@ -2,12 +2,12 @@ import $ from "jquery";
 import hljs from "highlight.js";
 import { useCatalogStore } from "@/store";
 
-function createCodeFolder(ele: JQuery<HTMLElement>) {
+function createCodeModal(ele: JQuery<HTMLElement>) {
   const height = ele.height();
 
   if (height >= 380) {
     ele.height(380);
-    const $click = $(`<div class="l-fiv-size l-color-3 hover">展开</div>`);
+    const $click = $(`<div class="l-size-2 l-color-3 hover">展开</div>`);
     const $modal = $(`<div class="modal f-c-c rd-2"></div>`);
     $modal.prepend($click);
 
@@ -21,10 +21,22 @@ function createCodeFolder(ele: JQuery<HTMLElement>) {
   }
 }
 
-function createCodeClipboard(ele: JQuery<HTMLElement>) {
-  const clipboard = $(`<span class="clipboard hover mr-2">复制</span>`);
+function createCodeTools(ele: JQuery<HTMLElement>) {
+  const lang = ele
+    .attr("class")
+    ?.match(/(language-\w*){0,1}/g)[0]
+    .split(",")[0]
+    .split("-")[1]
+    .toUpperCase();
 
-  clipboard.on("click", () => {
+  const tools = $(`
+    <div class="code-tools f-c-e l-size-1 l-color-3 w-100%">
+      <div class="clipboard hover mr-2">复制</div>
+      <div>${lang}</div>
+    </div>
+  `);
+
+  tools.find(".clipboard").on("click", () => {
     navigator.clipboard.writeText(ele.text()).then(
       () => {
         ElMessage({ message: "复制成功！", type: "success", grouping: true });
@@ -35,18 +47,7 @@ function createCodeClipboard(ele: JQuery<HTMLElement>) {
     );
   });
 
-  ele.parent().find(".code-tools").prepend(clipboard);
-}
-
-function createCodeLang(ele: JQuery<HTMLElement>) {
-  const lang = ele
-    .attr("class")
-    ?.match(/(language-\w*){0,1}/g)[0]
-    .split(",")[0]
-    .split("-")[1]
-    .toUpperCase();
-
-  ele.parent().prepend(`<div class="code-tools l-size-1 l-color-3">${lang}</div>`);
+  ele.parent().prepend(tools);
 }
 
 /**
@@ -59,9 +60,9 @@ function useVHljs(el: any) {
       const $ele = $(ele);
 
       hljs.highlightElement(ele);
-      createCodeLang($ele);
-      createCodeFolder($ele);
-      createCodeClipboard($ele);
+
+      createCodeTools($ele);
+      createCodeModal($ele);
     });
 }
 
@@ -81,8 +82,8 @@ function useVMathjax() {
 /**
  * 构造目录
  */
-function useVCatalog(el: any) {
-  const catalog = <any>[];
+function useVCatalog(el: any, binding: any) {
+  const catalog: any[] = [];
   let step = 0;
 
   $(el)
@@ -128,7 +129,7 @@ function createHighslide(ele: JQuery<HTMLElement>) {
 
   const text = ele.parent("p");
   text.addClass("f-c-c flex-col");
-  text.append(`<div class="l-color-2 l-fiv-size mt-2">${ele.attr("alt")}</div>`);
+  text.append(`<div class="l-color-2 l-size-2 mt-2">${ele.attr("alt")}</div>`);
 }
 
 /**
@@ -150,8 +151,10 @@ export function useDirective(Vue: any) {
     mounted(el: any) {
       useVHljs(el);
     },
-    updated(el: any) {
-      useVHljs(el);
+    updated(el: any, binding: any) {
+      if (binding.value != binding.oldValue) {
+        useVHljs(el);
+      }
     }
   });
 
@@ -162,8 +165,10 @@ export function useDirective(Vue: any) {
     mounted() {
       useVMathjax();
     },
-    updated() {
-      useVMathjax();
+    updated(el: any, binding: any) {
+      if (binding.value != binding.oldValue) {
+        useVMathjax();
+      }
     }
   });
 
@@ -174,8 +179,10 @@ export function useDirective(Vue: any) {
     mounted(el: any) {
       useVHighslide(el);
     },
-    updated(el: any) {
-      useVHighslide(el);
+    updated(el: any, binding: any) {
+      if (binding.value != binding.oldValue) {
+        useVHighslide(el);
+      }
     }
   });
 
@@ -183,11 +190,11 @@ export function useDirective(Vue: any) {
    * 制作目录锚点
    */
   Vue.directive("catalog", {
-    mounted(el: any) {
-      useVCatalog(el);
+    mounted(el: any, binding: any) {
+      useVCatalog(el, binding);
     },
-    updated(el: any) {
-      useVCatalog(el);
+    updated(el: any, binding: any) {
+      useVCatalog(el, binding);
     }
   });
 

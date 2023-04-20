@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MenuApi } from "@/apis";
 
-EcyUtils.setTitle("铭牌");
+EcyUtils.setTitle("我的铭牌");
 EcyUtils.startLoading();
 
 const news = shallowRef();
@@ -29,9 +29,9 @@ onMounted(() => {
             <div class="font-bold mb-2 title">{{ EcyConfig.blogApp }} 的博客</div>
             <div :class="{ 'f-c-s': EcyConfig.pcDevice }">
               <img
-                :class="{ 'mr-10': EcyConfig.pcDevice, 'mb-4': !EcyConfig.pcDevice }"
                 class="w-25 h-25 rd-50"
-                :src="EcyConfig.__ECY_CONFIG__.cabinet.avatar" />
+                :class="{ 'mr-10': EcyConfig.pcDevice, 'mb-4': !EcyConfig.pcDevice }"
+                :src="EcyConfig.__ECY_CONFIG__.avatar" />
               <div>
                 <template v-if="news">
                   <div class="mb-1 hover">圆龄：{{ news[1]?.text || "" }}</div>
@@ -47,7 +47,7 @@ onMounted(() => {
           </div>
           <div>
             <div class="mb-2 font-bold title">个人签名</div>
-            <div class="hover" v-html="EcyConfig.__ECY_CONFIG__.cabinet.signature"></div>
+            <div class="hover" v-html="EcyConfig.__ECY_CONFIG__.nameplate.signature"></div>
           </div>
         </div>
         <div class="w-60% mb-6">
@@ -58,7 +58,7 @@ onMounted(() => {
       <div class="mb-6">
         <div class="mb-4 font-bold title">个人标签</div>
         <div class="hobbies f-c-s flex-wrap">
-          <LTag class="mr-2 mb-4" hover round v-for="item in EcyConfig.__ECY_CONFIG__.nameplate.tags">{{ item }}</LTag>
+          <HollowedBox class="mr-2 mb-4" hover round v-for="item in EcyConfig.__ECY_CONFIG__.nameplate.tags">{{ item }}</HollowedBox>
         </div>
       </div>
       <div v-if="EcyConfig.pcDevice" class="f-s-b mb-6">
@@ -195,7 +195,7 @@ onMounted(() => {
         </div>
         <div class="mb-6" v-if="!EcyConfig.__ECY_CONFIG__.nameplate.photo.disabled">
           <div class="mb-4 font-bold title">精选图片</div>
-          <div class="f-s-b flex-wrap noscroll ofw-auto">
+          <div class="f-s-b flex-wrap noscroll flow-auto">
             <div v-for="(item, i) in EcyConfig.__ECY_CONFIG__.nameplate.photo.src" :class="{ ' h-28': i < 3 }" style="width: 32%">
               <el-image
                 v-if="i < 3"

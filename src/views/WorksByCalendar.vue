@@ -9,11 +9,10 @@ const calendar = shallowRef(await WorksApi.getCalendar(`${date.getFullYear()}/${
 const dateModel = ref(date);
 let currMonth = dateModel.value.getMonth();
 
-const findDate = (data: any) =>
-  computed(() => {
-    const date = data.day.replaceAll("-", "/");
-    return !!calendar.value.find(el => el == date);
-  });
+function findDate(data: any) {
+  const date = data.day.replaceAll("-", "/");
+  return !!calendar.value.find(el => el == date);
+}
 
 watch(dateModel, async () => {
   if (dateModel.value.getMonth() != currMonth) {
@@ -52,7 +51,7 @@ onMounted(() => {
                 router: $router
               })
             "
-            v-if="findDate(data).value">
+            v-if="findDate(data)">
             <u>
               {{ data.day.split("-")[2] }}
             </u>

@@ -7,7 +7,7 @@ let sortMode = route.params.mode as "a" | "p";
 const typeL2Works = shallowRef();
 const typeL1Works = shallowRef();
 const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
-const covers = shallowRef();
+const imgsIndex = shallowRef();
 
 async function fetchData(index?: any) {
   EcyUtils.startLoading();
@@ -19,7 +19,7 @@ async function fetchData(index?: any) {
   }
 
   typeL1Works.value = await WorksApi.getByTypeL1(`${sortId}`, index);
-  covers.value = EcyUtils.Random.get(worksImgs, typeL1Works.value.data.length);
+  imgsIndex.value = EcyUtils.Random.get(worksImgs, typeL1Works.value.data.length);
 
   EcyUtils.setTitle(typeL1Works.value.hint);
   EcyUtils.endLoading();
@@ -51,7 +51,7 @@ watch(route, async () => {
               <div class="l-size-5 mb-5 mt-4">{{ typeL1Works.hint }}</div>
             </template>
           </el-page-header>
-          <div class="l-sort__desc mb-4 l-size-3 l-color-2" v-html="typeL1Works.desc2 || typeL1Works.desc"></div>
+          <div class="l-sort__desc mb-10 l-size-2 l-color-3" v-html="typeL1Works.desc2 || typeL1Works.desc"></div>
           <div class="l-sort__child l-size-2" v-if="typeL2Works.length > 0">
             <div class="hover f-c-s" v-for="(item, index) in typeL2Works" :class="{ 'mb-3': index != typeL2Works.length - 1 }">
               <span class="mr-2">📁</span>
@@ -64,7 +64,7 @@ watch(route, async () => {
             :key="item.id"
             :item="item"
             :index="index"
-            :cover="worksImgs[covers[index]]" />
+            :cover="worksImgs[imgsIndex[index]]" />
         </template>
       </Pagination>
       <div class="mt-35" v-if="!typeL1Works.data.length">

@@ -76,15 +76,6 @@ export namespace RouterPath {
     } else return "/sort/:mode/:id";
   }
 
-  type ArchiveParam<T> = Extract<"a" | "p" | "d", T> extends "d"
-    ? {
-        mode?: "d";
-        date: string;
-      }
-    : {
-        mode?: "a" | "p";
-      };
-
   /**
    *
    * @param mode a -> 文章；p -> 随笔；d -> 从日历点击过来的

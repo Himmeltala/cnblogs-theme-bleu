@@ -6,7 +6,7 @@
 
 部署之前，确保博客皮肤是“Custom”，且禁用 CSS 默认样式。
 
-首页 HTML 代码：
+## 首页 HTML 代码
 
 ```html
 <!-- clear unused elems -->
@@ -143,7 +143,7 @@
 </div>
 ```
 
-页脚 HTML 代码：
+## 页脚 HTML 代码
 
 ```html
 <!-- ecy config -->
@@ -153,22 +153,28 @@
 <script type="module" src="https://blog-static.cnblogs.com/files/blogs/666252/index-ecy.js"></script>
 ```
 
-在你的博客园后台“选项”中，勾选“启用数学公式支持”和“数学公式渲染引擎”（选择 MathJax3），否则数学公式不生效。
+## 其他设置
+
+博客园后台“选项”，勾选“启用数学公式支持”和“数学公式渲染引擎”，请选择 MathJax3，否则数学公式不生效。
 
 # 部署问题
 
-1. 长时间停在 loading；
-2. 控制台报错过多；
+长时间停在 loading；控制台报错过多；
 
-解决：多刷新几次 / 清除浏览器缓存。
+- 可能是你的配置项没有添加非可选字段；
+- 可能是你的配置项字段结尾处没有逗号。
 
 # 配置说明
 
 ## 个人铭牌
 
+让别人可以快速地了解博主的信息。本页面通过小工具箱（屏幕右侧）的按钮中跳转过来，或可以直接输入 url（你的域名`/profile`）。
+
 ```js
 window.__ECY_CONFIG__ = {
   nameplate: {
+    // 个性签名
+    signature: "your text",
     // 个人标签
     tags: ["程序人生", "习惯计划"],
     // 联系方式
@@ -197,38 +203,7 @@ window.__ECY_CONFIG__ = {
 };
 ```
 
-## GitHub
-
-```js
-window.__ECY_CONFIG__ = {
-  other: {
-    github: "your github address"
-  }
-};
-```
-
-|  字段  |                  描述                  | 可选值 |
-| :----: | :------------------------------------: | :----: |
-| github | github 角标，在浏览器左上角，PC 端可见 |        |
-
-## 陈列柜
-
-```js
-window.__ECY_CONFIG__ = {
-  cabinet: {
-    avatar: "url",
-    signature: "your text"
-  }
-};
-```
-
-|   字段    |      描述      |
-| :-------: | :------------: |
-|  avatar   |      头像      |
-| signature |    个性签名    |
-|   navs    | 左陈列柜导航项 |
-
-## 技能栈
+### 技能雷达
 
 ```js
 window.__ECY_CONFIG__ = {
@@ -250,7 +225,49 @@ window.__ECY_CONFIG__ = {
 };
 ```
 
-## 推荐链接
+## 背景图片
+
+提供背景图片，filter 更改图片的模糊度，matte 更改图片的遮罩。
+
+index：首页顶部的背景图片是一个重复的随机图片；
+
+works：作品顶部的背景图片也是一个重复的随机图片。works 数组还给归档、首页作品列表提供背景图片，这两个页面的背景图片如果大于或等于列表项的数量，就不是一个重复的随机背景图片，而是一个不重复的，且切换页数时可以变化的随机数。
+
+```js
+window.__ECY_CONFIG__ = {
+  covers: {
+    // 模糊度
+    filter: {
+      index: "2px",
+      works: "20px"
+    },
+    // 遮罩
+    matte: {
+      index: 0.1,
+      works: 0.1
+    },
+    // 封面
+    index: [
+      "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230420153800_95785723_p0.png",
+      "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230420154313_86093780_p0.jpg"
+    ],
+    // 封面，大于或等于列表项数量时，生成的是一个不重复的数组
+    works: [
+      "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230420154313_86093780_p0.jpg",
+      "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230420154438_77055913_p0.jpg"
+    ]
+  }
+};
+```
+
+## 陈列柜
+
+在首页开屏的背景图片中上方的左右两侧处呼出陈列柜。
+
+- 左陈列柜主要展示博客原有的信息，如博主信息、随笔分类、标签分类、博客日历等。
+- 右陈列柜主要展示由本皮肤提供的额外的可展示的信息。
+
+### 推荐链接
 
 ```js
 window.__ECY_CONFIG__ = {
@@ -265,7 +282,7 @@ window.__ECY_CONFIG__ = {
 };
 ```
 
-## 推荐书籍
+### 推荐书籍
 
 ```js
 window.__ECY_CONFIG__ = {
@@ -280,5 +297,32 @@ window.__ECY_CONFIG__ = {
       }
     ]
   }
+};
+```
+
+## 代码字体
+
+你可以自定义代码的字体，假如你的电脑上安装了 Space Mono 字体，可以对博客的代码进行设置。
+
+```js
+window.__ECY_CONFIG__ = {
+  font: {
+    family: `"Space Mono", Hack`
+  }
+};
+```
+
+多个字体使用 `,` 隔开，会根据你设置的字体顺序，依次判断电脑或 html 中是否安装了字体，如果有该字体，就不再往下判断。
+
+注意：使用模板字符串语法，和 CSS 设置字体的规则写 font-family 一样，有空格的字体使用 `""` 包裹起来。
+
+## 杂项
+
+```js
+window.__ECY_CONFIG__ = {
+  // 浏览器标签图标
+  icon: "",
+  // 头像，我的铭牌页和左陈列柜需要
+  avatar: ""
 };
 ```

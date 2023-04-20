@@ -1,36 +1,43 @@
 <script setup lang="ts">
 defineProps({
-  plain: {
-    type: Boolean,
-    default: false
-  },
   hover: {
     type: Boolean,
     default: false
   },
-  text: {
-    type: Boolean,
-    default: true
-  },
   line: {
     type: String as PropType<"solid" | "dotted">,
     default: "solid"
+  },
+  fontSize: {
+    type: String,
+    default: "l-size-1"
+  },
+  textColor: {
+    type: String,
+    default: "l-color-1"
   },
   round: {
     type: Boolean,
     default: false
   }
 });
+
+function translate(prop: string): string {
+  return prop;
+}
 </script>
 
 <template>
-  <span class="l-tag" :class="{ round: round, text: text, plain: plain, hover: hover }" :style="{ 'border-style': line }">
+  <span
+    class="l-hollobox"
+    :class="{ round: round, hover: hover, [translate(textColor)]: textColor, [translate(fontSize)]: fontSize }"
+    :style="{ 'border-style': line }">
     <slot />
   </span>
 </template>
 
 <style scoped lang="scss">
-.l-tag {
+.l-hollobox {
   border-width: 1px;
   padding: {
     top: 0.3rem;
@@ -38,24 +45,13 @@ defineProps({
     left: 0.6rem;
     right: 0.6rem;
   }
-  font-size: var(--l-size-1);
 }
 
-.l-tag.hover {
+.l-hollobox.hover {
   @include hover($border-color: all);
 }
 
-.l-tag.round {
+.l-hollobox.round {
   border-radius: 50px;
-}
-
-.l-tag.text {
-  border-color: var(--l-color-1);
-  color: var(--l-color-1);
-}
-
-.l-tag.plain {
-  border-color: var(--l-theme-color);
-  color: var(--l-theme-color);
 }
 </style>

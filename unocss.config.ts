@@ -1,12 +1,8 @@
 import { Rule, UserShortcuts } from "unocss";
 
 const rules = <Rule<any>[]>[
-  // font size
-  [/^l-([a-z]*)-size$/, ([, d]) => ({ "font-size": `var(--l-${d}-size) !important` })],
   // l-size-1
   [/^l-size-(\d*)$/, ([, d]) => ({ "font-size": `var(--l-size-${d}) !important` })],
-  // font color
-  [/^l-([a-z]*)-color$/, ([, d]) => ({ color: `var(--l-${d}-color) !important` })],
   // l-color-1
   [/^l-color-(\d*)$/, ([, d]) => ({ color: `var(--l-color-${d}) !important` })],
   // l-hight-color-1
@@ -18,8 +14,9 @@ const rules = <Rule<any>[]>[
       return { "font-size": `${d}${unit} !important` };
     }
   ],
-  [/^ofw-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
   [/^flow-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
+  [/^flow-x-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
+  [/^flow-y-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/, ([, d]) => ({ overflow: `${d}` })],
   // background color
   [/^l-([a-z]*)-bg$/, ([, d]) => ({ "background-color": `var(--l-${d}-bg) !important` })]
 ];

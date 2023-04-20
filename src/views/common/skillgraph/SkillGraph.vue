@@ -2,13 +2,6 @@
 import { useSkillGraph } from "./index";
 
 const graph = ref<HTMLCanvasElement>();
-const setting = EcyUtils.getLocalSetting();
-
-watch(setting, (val, old) => {
-  if (val.theme.color != old.theme.color) {
-    useSkillGraph(110, graph.value, EcyConfig.__ECY_CONFIG__.graph);
-  }
-});
 
 onMounted(() => {
   if (EcyConfig.__ECY_CONFIG__.graph) {
@@ -18,7 +11,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="skillgraph f-c-c" v-if="EcyConfig.__ECY_CONFIG__.graph">
+  <div class="skillgraph f-c-c">
     <canvas ref="graph" class="graph" width="220" height="220"></canvas>
   </div>
 </template>

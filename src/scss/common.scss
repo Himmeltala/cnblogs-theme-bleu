@@ -87,11 +87,28 @@
       width: 55vw;
     }
   }
+
+  .l-works-welcome {
+    .content {
+      --uno: f-c-c;
+
+      & > div {
+        width: 55vw;
+      }
+    }
+  }
 }
 
 @include mb() {
   .page {
+    --uno: px-4;
     width: 100%;
+  }
+
+  .l-works-welcome {
+    .content {
+      --uno: px-4;
+    }
   }
 }
 
@@ -100,7 +117,8 @@
     color: #ededed !important;
   }
 
-  .cover::after {
+  .cover::after,
+  .cover::before {
     content: "";
     display: block;
     position: absolute;

@@ -60,8 +60,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-expbox mb-6 l-color-3" v-show="setting.cabinet.toggles[title]?.show">
-    <div class="l-expbox__title headtip mb-4 f-c-b l-size-5">
+  <div class="l-expbox mb-6" v-show="setting.cabinet.toggles[title]?.show">
+    <div class="title headtip mb-4 f-c-b l-size-5 l-color-1">
       <div class="f-c-s">
         <div class="f-c-c mr-1">
           <slot name="icon" />
@@ -78,7 +78,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div ref="content" class="l-expbox__content">
+    <div ref="content" class="content l-color-2">
       <slot />
     </div>
   </div>
@@ -95,7 +95,7 @@ onMounted(() => {
   transform: scale(0, 0);
 }
 
-.l-expbox__title:hover .arrow {
+.title:hover .arrow {
   transform: scale(1, 1);
 }
 
@@ -125,7 +125,7 @@ onMounted(() => {
   }
 }
 
-.l-expbox__content {
+.content {
   overflow: hidden;
   transition: var(--l-animation-effect);
 }

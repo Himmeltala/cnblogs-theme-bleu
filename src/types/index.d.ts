@@ -212,13 +212,13 @@ declare namespace CustType {
    */
   type IEcy = Partial<{
     icon: string;
+    avatar: string;
     cabinet: Partial<{
-      avatar: string;
-      signature: string;
       links: { href: string; text: string }[];
       books: { href?: string; text: string; img: string; author: string; rate: number }[];
     }>;
     nameplate: {
+      signature: string;
       tags: string[];
       connection: { name: string; text: string; svg?: string; img?: string }[];
       warehouse: { url: string; text: string }[];
@@ -228,6 +228,8 @@ declare namespace CustType {
       photo: { disabled: boolean; src?: string[] };
     };
     covers: {
+      matte: { index: number; works: number };
+      filter: { index: string; works: string };
       index: string[];
       works: string[];
     };
@@ -239,14 +241,9 @@ declare namespace CustType {
       textSize: number;
       data: { title: string; star: number }[];
     };
-    other: {};
-  }>;
-
-  type IBox = Partial<{
-    left: number;
-    right: number;
-    top: number;
-    bottom: number;
+    font: {
+      family: string;
+    };
   }>;
 
   /**

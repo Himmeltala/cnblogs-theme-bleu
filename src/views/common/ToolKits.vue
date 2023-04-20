@@ -1,10 +1,13 @@
 <script setup lang="ts">
+const route = useRoute();
 const setting = EcyUtils.getLocalSetting();
 const isToTop = ref(false);
 const isToBottom = ref(true);
+const isShowGuide = ref(false);
 let html: HTMLElement;
 let topNail: HTMLElement;
 let bottomNail: HTMLElement;
+const catalogDisabled = inject<boolean>("catalogDisabled");
 
 onMounted(() => {
   html = document.querySelector("html");
@@ -15,7 +18,6 @@ onMounted(() => {
     "scroll",
     useThrottleFn(() => {
       const ratio = window.scrollY / Number(document.body.clientHeight);
-
       if (ratio <= 0.5) {
         isToBottom.value = true;
         isToTop.value = false;
@@ -27,16 +29,10 @@ onMounted(() => {
   );
 });
 
-function toTop() {
-  topNail.scrollIntoView();
-  isToTop.value = true;
-  isToBottom.value = false;
-}
-
-function toBottom() {
-  bottomNail.scrollIntoView();
-  isToTop.value = false;
-  isToBottom.value = true;
+function moveScroll(dom: HTMLElement) {
+  dom.scrollIntoView();
+  isToTop.value = !isToTop.value;
+  isToBottom.value = !isToBottom.value;
 }
 
 function toggleMode() {
@@ -48,20 +44,37 @@ function toggleMode() {
     setting.value.theme.mode = "dark";
   }
 }
+
+watch(route, () => {
+  if (route.name !== RouterName.Works) {
+    isShowGuide.value = false;
+  } else {
+    isShowGuide.value = true;
+  }
+});
 </script>
 
 <template>
   <div id="l-toolkits" class="fixed z-99 right-20 top-55vh l-size-4">
     <div
+      v-show="isShowGuide"
       :class="{ 'show-0': setting.toolkits.pin, 'close-0': !setting.toolkits.pin }"
       class="absolute hover left-0 rd-2 l-back-bg"
-      @click="EcyUtils.Router.go({ path: RouterPath.index(), router: $router })">
+      @click="catalogDisabled = !catalogDisabled">
       <div class="f-c-c w-8 h-8">
-        <i-ep-reading />
+        <i-ep-guide />
       </div>
     </div>
     <div
       :class="{ 'show-1': setting.toolkits.pin, 'close-1': !setting.toolkits.pin }"
+      class="absolute hover left-0 rd-2 l-back-bg"
+      @click="EcyUtils.Router.go({ path: RouterPath.index(), router: $router })">
+      <div class="f-c-c w-8 h-8">
+        <i-ep-house />
+      </div>
+    </div>
+    <div
+      :class="{ 'show-2': setting.toolkits.pin, 'close-2': !setting.toolkits.pin }"
       class="absolute hover left-0 rd-2 l-back-bg"
       @click="EcyUtils.Router.go({ path: 'back', router: $router })">
       <div class="f-c-c w-8 h-8">
@@ -69,15 +82,15 @@ function toggleMode() {
       </div>
     </div>
     <div
-      :class="{ 'show-2': setting.toolkits.pin, 'close-2': !setting.toolkits.pin }"
+      :class="{ 'show-3': setting.toolkits.pin, 'close-3': !setting.toolkits.pin }"
       class="absolute hover left-0 rd-2 l-back-bg"
-      @click="isToTop ? toTop() : toBottom()">
+      @click="isToTop ? moveScroll(topNail) : moveScroll(bottomNail)">
       <div class="f-c-c w-8 h-8">
         <i-ep-upload :class="{ 'top-nav': isToTop, 'bottom-nav': isToBottom }" />
       </div>
     </div>
     <div
-      :class="{ 'show-3': setting.toolkits.pin, 'close-3': !setting.toolkits.pin }"
+      :class="{ 'show-4': setting.toolkits.pin, 'close-4': !setting.toolkits.pin }"
       class="absolute hover left-0 rd-2 l-back-bg"
       @click="EcyUtils.Router.go({ path: RouterPath.profile(), router: $router })">
       <div class="f-c-c w-8 h-8">
@@ -85,7 +98,7 @@ function toggleMode() {
       </div>
     </div>
     <div
-      :class="{ 'show-4': setting.toolkits.pin, 'close-4': !setting.toolkits.pin }"
+      :class="{ 'show-5': setting.toolkits.pin, 'close-5': !setting.toolkits.pin }"
       class="absolute hover left-0 rd-2 l-back-bg"
       @click="toggleMode">
       <div class="f-c-c w-8 h-8">
@@ -94,7 +107,7 @@ function toggleMode() {
       </div>
     </div>
     <div
-      :class="{ 'show-5': setting.toolkits.pin, 'close-5': !setting.toolkits.pin }"
+      :class="{ 'show-6': setting.toolkits.pin, 'close-6': !setting.toolkits.pin }"
       class="absolute hover left-0 rd-2 l-back-bg"
       @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com' })">
       <div class="f-c-c w-8 h-8">
@@ -104,7 +117,7 @@ function toggleMode() {
     <div
       @click="setting.toolkits.pin = !setting.toolkits.pin"
       :class="{ 'show-toolkits': setting.toolkits.pin, 'close-toolkits': !setting.toolkits.pin }"
-      class="kits-box absolute hover top-60 left-0 rd-2 l-back-bg">
+      class="kits-box absolute hover top-70 left-0 rd-2 l-back-bg">
       <div class="f-c-c w-8 h-8">
         <i-ep-more />
       </div>
@@ -114,12 +127,12 @@ function toggleMode() {
 
 <style scoped lang="scss">
 $show-top: 0;
-$show-anitime: 0.2s;
-$close-top: 15rem;
-$close-anitime: 0.6s;
+$show-anitime: 0.1s;
+$close-top: 17.5rem;
+$close-anitime: 0.7s;
 $move-step: 2.5rem;
 
-@for $index from 0 to 6 {
+@for $index from 0 to 7 {
   @if $index != 0 {
     $show-top: $show-top + $move-step;
   }

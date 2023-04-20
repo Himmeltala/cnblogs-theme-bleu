@@ -8,7 +8,7 @@ let archiveDate = route.params.date;
 let archiveMode = route.params.mode;
 const archiveWorks = shallowRef();
 const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
-const covers = shallowRef();
+const imgsIndex = shallowRef();
 
 async function fetchData() {
   EcyUtils.startLoading();
@@ -21,7 +21,7 @@ async function fetchData() {
     archiveWorks.value = await WorksApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
   }
 
-  covers.value = EcyUtils.Random.get(worksImgs, archiveWorks.value.data.length);
+  imgsIndex.value = EcyUtils.Random.get(worksImgs, archiveWorks.value.data.length);
   EcyUtils.setTitle(archiveWorks.value.hint);
   EcyUtils.endLoading();
 }
@@ -58,7 +58,7 @@ watch(route, async () => {
             :key="item.id"
             :item="item"
             :index="index"
-            :cover="worksImgs[covers[index]]" />
+            :cover="worksImgs[imgsIndex[index]]" />
         </template>
       </Pagination>
     </div>

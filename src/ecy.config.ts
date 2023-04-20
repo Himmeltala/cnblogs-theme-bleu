@@ -66,27 +66,23 @@ export namespace EcyConfig {
       EcyConfig.blogApp = import.meta.env.VITE_BLOG_APP;
       baseAPI = "/api";
       __ECY_CONFIG__ = {
-        cabinet: {
-          signature: "Time tick away, dream faded away!"
-        },
+        cabinet: {},
         covers: {
+          matte: {
+            index: 0.15,
+            works: 0.1
+          },
+          filter: {
+            index: "1.5px",
+            works: "20px"
+          },
           works: [
             "https://img1.baidu.com/it/u=726526983,4132763702&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500",
-            "https://img0.baidu.com/it/u=2862888988,3851280368&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889",
-            "https://img0.baidu.com/it/u=1378108440,2977662023&fm=253&fmt=auto&app=138&f=JPEG?w=281&h=500",
-            "https://img.win3000.com/m00/d1/c4/85045c91eedd2953ea148b22fb7d592a.jpg",
-            "https://img2.baidu.com/it/u=3529812522,165675595&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500",
-            "https://img1.baidu.com/it/u=4014731863,2947911801&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800",
-            "https://img0.baidu.com/it/u=3799846776,4059990499&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313",
-            "https://n.sinaimg.cn/sinakd10118/1/w1081h1320/20210910/525d-98224496d08d222e095510ad859b6d98.jpg",
-            "https://img2.baidu.com/it/u=1194562060,1998366528&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422",
-            "https://img2.baidu.com/it/u=888702446,3413998468&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=889"
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F3660fb05-8f3a-4c20-a290-bb9a7af75cb1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1684687574&t=fa60842f83e2cf0842f13a22c38b7173"
           ],
           index: [
             "https://gzw.sinaimg.cn/large/0073YlnVgy1h8apu19t61j32yo1o0x6v.jpg",
-            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8aptjk8obj32y31wwnlv.jpg",
-            "https://gzw.sinaimg.cn/large/0073YlnVgy1h8aptwnz55j337f1yib2e.jpg",
-            "https://gzw.sinaimg.cn/large/0073YlnVgy1h4smbf7pn8j31cw0qcn76.jpg"
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F3660fb05-8f3a-4c20-a290-bb9a7af75cb1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1684687574&t=fa60842f83e2cf0842f13a22c38b7173"
           ]
         },
         graph: {
@@ -109,6 +105,7 @@ export namespace EcyConfig {
         },
         nameplate: {
           tags: ["Web 前端", "二次元", "简约", "拖延症", "吸猫"],
+          signature: "Time tick away, dream faded away!",
           connection: [
             {
               name: "Email",
@@ -124,6 +121,9 @@ export namespace EcyConfig {
             disabled: true,
             src: ["https://img2.baidu.com/it/u=803568479,1965819057&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281"]
           }
+        },
+        font: {
+          family: `"Space Mono", Hack`
         }
       };
       initLocalSetting();
@@ -132,6 +132,6 @@ export namespace EcyConfig {
 
     $("head").append(`<link rel="shortcut icon" href="${__ECY_CONFIG__.icon}">`);
     EcyUtils.Log.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-ecy");
-    EcyUtils.Log.primary("v1.1.0", "Powered By Himmelbleu using Vue3 & Vite.");
+    EcyUtils.Log.primary("v1.2.0", "Powered By Himmelbleu using Vue3 & Vite.");
   }
 }
