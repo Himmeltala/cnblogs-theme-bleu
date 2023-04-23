@@ -3,59 +3,64 @@ import { WorksApi } from "@/apis";
 
 const route = useRoute();
 const works = shallowRef();
-const props = shallowRef();
-const prevNext = shallowRef();
-const viewPoint = shallowRef();
-const isLocked = ref(false);
-const password = ref("");
-let worksId = route.params.id as string;
+const worksProps = shallowRef();
+const worksPrevNext = shallowRef();
+const worksViewPoint = shallowRef();
+const worksIsLocked = ref(false);
+const worksPassword = ref("");
 const coverFilter = EcyConfig.__ECY_CONFIG__.covers.filter.works;
 const coverMatte = EcyConfig.__ECY_CONFIG__.covers.matte.works;
-const fontFamily = EcyConfig.__ECY_CONFIG__.font.family || "Hack";
+const codeFontFamily = EcyConfig.__ECY_CONFIG__.font.code || `var(--el-font-family)`;
+const worksCovers = EcyConfig.__ECY_CONFIG__.covers.works;
+const eleComments = ref();
+let worksId = route.params.id as string;
 
-const getCoverImg = computed(() => {
-  const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
-  return worksImgs[Math.floor(Math.random() * worksImgs.length)];
+const getWorksCover = computed(() => {
+  return worksCovers[Math.floor(Math.random() * worksCovers.length)];
 });
 
-async function fetchData() {
+async function fetchData(mouted?: boolean) {
   EcyUtils.startLoading();
 
-  works.value = await WorksApi.getWorks(worksId);
-  props.value = await WorksApi.getProps(worksId);
-  prevNext.value = await WorksApi.getPrevNext(worksId);
-  viewPoint.value = await WorksApi.getViewPoint(worksId);
+  const [worksVal, worksPropsVal, worksPrevNextVal, worksViewPointVal] = await Promise.all([
+    WorksApi.getWorks(worksId),
+    WorksApi.getProps(worksId),
+    WorksApi.getPrevNext(worksId),
+    WorksApi.getViewPoint(worksId)
+  ]);
 
-  isLocked.value = works.value.isLocked;
+  works.value = worksVal;
+  worksProps.value = worksPropsVal;
+  worksPrevNext.value = worksPrevNextVal;
+  worksViewPoint.value = worksViewPointVal;
+  worksIsLocked.value = worksVal.isLocked;
+
   EcyUtils.setTitle(works.value.text);
+  mouted && EcyUtils.endLoading();
 }
 
-await fetchData();
-
 async function submit() {
-  const passed = await WorksApi.isPassed(password.value, worksId);
+  const passed = await WorksApi.isPassed(worksPassword.value, worksId);
   if (passed) {
-    works.value = await WorksApi.getLockedWorks(password.value, worksId);
-    isLocked.value = false;
+    works.value = await WorksApi.getLockedWorks(worksPassword.value, worksId);
+    worksIsLocked.value = false;
   }
   ElMessage({ message: passed ? "密码正确！" : "密码错误！", grouping: true, type: passed ? "success" : "error" });
 }
 
 async function vote(type: BlogType.VoteType) {
-  const res = await WorksApi.vote({ postId: worksId, isAbandoned: false, voteType: type });
-  if (res) {
-    if (res.isSuccess)
-      if (type == "Bury") viewPoint.value.buryCount = viewPoint.value.buryCount + 1;
-      else viewPoint.value.diggCount = viewPoint.value.diggCount + 1;
-    ElMessage({ message: res.message, grouping: true, type: res.isSuccess ? "success" : "error" });
+  const res = await WorksApi.vote({ postId: parseInt(worksId), isAbandoned: false, voteType: type });
+  if (res && res.isSuccess) {
+    type == "Bury" ? worksViewPoint.value.buryCount++ : worksViewPoint.value.diggCount++;
   }
+  ElMessage({ message: res.message, grouping: true, type: res.isSuccess ? "success" : "error" });
 }
 
 watch(route, async () => {
-  if (route.name === RouterName.Works) {
+  if (route.name === RouterName.WORKS) {
     worksId = route.params.id as string;
-    await fetchData();
-    EcyUtils.endLoading();
+    await fetchData(true);
+    await eleComments.value.fetchData();
   }
 });
 
@@ -64,22 +69,24 @@ onMounted(() => {
 
   if (anchor) {
     setTimeout(() => {
-      document.querySelector(`#${anchor[0].replace("#", "")}`).scrollIntoView();
+      document.getElementById(`#${anchor[0].replace("#", "")}`).scrollIntoView();
     }, 500);
   }
 
   EcyUtils.endLoading();
 });
+
+await fetchData();
 </script>
 
 <template>
-  <div v-show="!isLocked" class="welcome l-works-welcome relative h-50vh w-100vw">
+  <div v-show="!worksIsLocked" class="welcome l-works-welcome relative h-50vh w-100vw">
     <div class="cover z-999 absolute left-0 top-0 h-100% w-100%">
-      <img class="h-100% w-100% rd-0" :src="getCoverImg" />
+      <img class="h-100% w-100% rd-0" :src="getWorksCover" />
     </div>
     <div class="content z-999 absolute left-0 top-10vh w-100%">
       <div>
-        <div class="size-2rem text-ellipsis line-clamp-2 w-100%">{{ works.text }}</div>
+        <div class="l-size-13 text-ellipsis line-clamp-2 w-100%">{{ works.text }}</div>
         <div class="f-c-s mt-6 l-size-2">
           <div class="f-c-c mr-4">
             <i-ep-clock class="mr-1" />
@@ -102,32 +109,32 @@ onMounted(() => {
           </div>
         </div>
         <div class="mt-6">
-          <div class="mb-4 flex-wrap l-size-2 f-c-s" v-if="props.sorts.length > 0">
+          <div class="mb-4 flex-wrap l-size-2 f-c-s" v-if="worksProps.sorts.length > 0">
             <div class="f-c-c">
               <i-ep-folder-opened class="mr-1" />
               <span>分类：</span>
             </div>
-            <div v-for="(item, index) in props.sorts" :class="{ 'mr-2': index !== props.sorts.length - 1 }">
+            <div v-for="(item, index) in worksProps.sorts" :class="{ 'mr-2': index !== worksProps.sorts.length - 1 }">
               <HollowedBox
                 line="dotted"
                 hover
                 round
-                @click="EcyUtils.Router.go({ path: RouterPath.worksBySort('p', item.href), router: $router })">
+                @click="EcyUtils.Router.go({ path: RouterPath.WORKS_BY_SORT('p', item.href), router: $router })">
                 {{ item.text }}
               </HollowedBox>
             </div>
           </div>
-          <div class="f-c-s flex-wrap l-size-2" v-if="props.tags.length > 0">
+          <div class="f-c-s flex-wrap l-size-2" v-if="worksProps.tags.length > 0">
             <div class="f-c-c">
               <i-ep-price-tag class="mr-1" />
               <span>标签：</span>
             </div>
-            <div v-for="(item, index) in props.tags" :class="{ 'mr-2': index !== props.tags.length - 1 }">
+            <div v-for="(item, index) in worksProps.tags" :class="{ 'mr-2': index !== worksProps.tags.length - 1 }">
               <HollowedBox
                 line="dotted"
                 hover
                 round
-                @click="EcyUtils.Router.go({ path: RouterPath.worksByMark(item.text), router: $router })">
+                @click="EcyUtils.Router.go({ path: RouterPath.WORKS_BY_MARK(item.text), router: $router })">
                 {{ item.text }}
               </HollowedBox>
             </div>
@@ -142,8 +149,8 @@ onMounted(() => {
   </div>
   <div id="l-works" class="page">
     <div class="content">
-      <div v-show="!isLocked">
-        <div class="l-size-4" v-html="works.content" v-hljs="works.text" v-highslide="works.text" v-catalog v-mathjax="works.text"></div>
+      <div v-show="!worksIsLocked">
+        <div class="l-size-4" v-html="works.content" v-hljs="works.text" v-highslide="works.text" v-mathjax="works.text" v-catalog></div>
         <Highslide />
         <Catalog />
         <div class="divider flex-col"></div>
@@ -162,19 +169,19 @@ onMounted(() => {
           </div>
         </div>
         <div class="prev-next mt-10 l-size-2">
-          <div class="hover f-c-s mb-2" v-if="prevNext.prev.href">
+          <div class="hover f-c-s mb-2" v-if="worksPrevNext.prev.href">
             <i-ep-d-arrow-left />
-            <a class="hover l-color-1" :href="prevNext.prev.href"> 上一篇：{{ prevNext.prev.text }} </a>
+            <a class="hover l-color-1" :href="worksPrevNext.prev.href"> 上一篇：{{ worksPrevNext.prev.text }} </a>
           </div>
-          <div class="hover f-c-s" v-if="prevNext.next.href">
+          <div class="hover f-c-s" v-if="worksPrevNext.next.href">
             <i-ep-d-arrow-right />
-            <a class="hover l-color-1" :href="prevNext.next.href"> 下一篇：{{ prevNext.next.text }} </a>
+            <a class="hover l-color-1" :href="worksPrevNext.next.href"> 下一篇：{{ worksPrevNext.next.text }} </a>
           </div>
         </div>
         <div class="viewpoint my-10 f-c-e">
           <div class="mr-5">
             <el-button plain @click="vote('Digg')">
-              点赞 {{ viewPoint.diggCount }}
+              点赞 {{ worksViewPoint.diggCount }}
               <template #icon>
                 <i-ep-caret-top />
               </template>
@@ -182,20 +189,20 @@ onMounted(() => {
           </div>
           <div>
             <el-button plain @click="vote('Bury')">
-              反对 {{ viewPoint.buryCount }}
+              反对 {{ worksViewPoint.buryCount }}
               <template #icon>
                 <i-ep-caret-bottom />
               </template>
             </el-button>
           </div>
         </div>
-        <Comment :post-id="worksId" />
+        <Comment :post-id="worksId" ref="eleComments" />
       </div>
-      <div v-if="isLocked">
+      <div v-if="worksIsLocked">
         <div class="modal fixed w-100vw h-100vh top-0 left-0 l-back-bg f-c-c z-999999">
           <el-form>
             <el-form-item label="密码：">
-              <el-input show-password type="password" v-model="password" placeholder="输入博文阅读密码" />
+              <el-input show-password type="password" v-model="worksPassword" placeholder="输入博文阅读密码" />
             </el-form-item>
             <el-form-item>
               <el-button size="small" type="primary" @click="submit">确定</el-button>
@@ -213,11 +220,11 @@ code {
   --uno: rd-2 l-size-3;
   letter-spacing: 1.2px;
   color: var(--el-color-danger-light-3);
-  font-family: #{v-bind(fontFamily), var(--l-font-family)};
+  font-family: v-bind(codeFontFamily);
 
   span {
     line-height: 1.6;
-    font-family: #{v-bind(fontFamily), var(--l-font-family)};
+    font-family: v-bind(codeFontFamily);
   }
 }
 

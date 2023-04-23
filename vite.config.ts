@@ -39,13 +39,10 @@ export default defineConfig(({ command, mode }) => {
           "vue-router",
           "@vueuse/core",
           {
-            "@/utils/common": ["EcyUtils"]
+            "@/constants/index": ["RouterName", "RouterPath", "RouterRegx", "ProvideKey"]
           },
           {
-            "@/ecy.config": ["EcyConfig"]
-          },
-          {
-            "@/utils/router-helper": ["RouterName", "RouterPath"]
+            "@/utils/common": ["EcyUtils", "EcyConfig"]
           },
           {
             from: "vue-router",

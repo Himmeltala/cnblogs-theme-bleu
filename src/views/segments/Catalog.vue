@@ -5,17 +5,17 @@ const route = useRoute();
 const translate = shallowRef("");
 const anchors = shallowRef([]);
 const store = useCatalogStore();
-const catalogDisabled = inject<boolean>("catalogDisabled");
+const catalogDisabled = inject<boolean>(ProvideKey.CATALOG_DISABLED);
 let observer: IntersectionObserver;
 
 function moveSlider(entries: any) {
   for (let i = 0; i < anchors.value.length; i++) {
-    document.querySelector(`#catalog-${anchors.value[i].id}`).classList.remove("catalog-active");
+    document.querySelector(`#catalog-${anchors.value[i].id}`)?.classList.remove("catalog-active");
   }
   const item = document.querySelector(`#catalog-${entries[0].target.id}`);
-  const step = item.getAttribute("data-step");
+  const step = item?.getAttribute("data-step");
   translate.value = step;
-  item.classList.add("catalog-active");
+  item?.classList.add("catalog-active");
 }
 
 function isTouchedItem(offsetTop: number) {
@@ -45,7 +45,7 @@ onUnmounted(() => {
 });
 
 watch(route, () => {
-  if (route.name !== RouterName.Works) {
+  if (route.name !== RouterName.WORKS) {
     anchors.value = [];
     observer.disconnect();
   }

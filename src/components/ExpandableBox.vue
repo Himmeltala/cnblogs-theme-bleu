@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import $ from "jquery";
-
 const setting = EcyUtils.getLocalSetting();
 const props = defineProps({
   text: {
@@ -43,7 +41,7 @@ function toggle() {
 }
 
 function initHeight() {
-  height.value = $(content.value).height();
+  height.value = content.value.style.height;
 
   if (!props.disabled) {
     if (!setting.value.cabinet.toggles[title]?.open) {

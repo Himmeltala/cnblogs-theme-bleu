@@ -7,7 +7,7 @@ const isShowGuide = ref(false);
 let html: HTMLElement;
 let topNail: HTMLElement;
 let bottomNail: HTMLElement;
-const catalogDisabled = inject<boolean>("catalogDisabled");
+const catalogDisabled = inject<boolean>(ProvideKey.CATALOG_DISABLED);
 
 onMounted(() => {
   html = document.querySelector("html");
@@ -46,7 +46,7 @@ function toggleMode() {
 }
 
 watch(route, () => {
-  if (route.name !== RouterName.Works) {
+  if (route.name !== RouterName.WORKS) {
     isShowGuide.value = false;
   } else {
     isShowGuide.value = true;
@@ -68,7 +68,7 @@ watch(route, () => {
     <div
       :class="{ 'show-1': setting.toolkits.pin, 'close-1': !setting.toolkits.pin }"
       class="absolute hover left-0 rd-2 l-back-bg"
-      @click="EcyUtils.Router.go({ path: RouterPath.index(), router: $router })">
+      @click="EcyUtils.Router.go({ path: RouterPath.INDEX(), router: $router })">
       <div class="f-c-c w-8 h-8">
         <i-ep-house />
       </div>
@@ -92,7 +92,7 @@ watch(route, () => {
     <div
       :class="{ 'show-4': setting.toolkits.pin, 'close-4': !setting.toolkits.pin }"
       class="absolute hover left-0 rd-2 l-back-bg"
-      @click="EcyUtils.Router.go({ path: RouterPath.profile(), router: $router })">
+      @click="EcyUtils.Router.go({ path: RouterPath.PROFILE(), router: $router })">
       <div class="f-c-c w-8 h-8">
         <i-ep-warning />
       </div>

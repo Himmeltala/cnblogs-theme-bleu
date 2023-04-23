@@ -9,19 +9,20 @@
 ## 首页 HTML 代码
 
 ```html
-<!-- clear unused elems -->
+<!-- 删除不必要的元素 -->
 <script>
   $("head > link").remove();
   $("#top_nav").remove();
 </script>
-<!-- ecy style -->
+<!-- 主题样式 -->
 <link rel="stylesheet" href="https://blog-static.cnblogs.com/files/blogs/666252/index-ecy.css" />
-<!-- ecy loading style -->
 <style>
+  /* 此项必须设置 */
   #home {
     display: none !important;
   }
 
+  /* 以下是 loading 样式 */
   @-webkit-keyframes loading {
     0% {
       opacity: 0;
@@ -53,7 +54,6 @@
   .dark-loading,
   .light-loading {
     font-size: 1rem !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     position: fixed;
     top: 0;
@@ -74,7 +74,6 @@
 
   .box h2 {
     font-size: 1rem !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
     font-weight: 400;
     color: #777;
     margin: 0;
@@ -85,8 +84,6 @@
 
   .box span {
     font-size: 1rem !important;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
-    font-weight: 400;
     display: inline-block;
     vertical-align: middle;
     width: 0.6em;
@@ -134,7 +131,7 @@
     animation-delay: 1.2s;
   }
 </style>
-<!-- ecy loading -->
+<!-- loading 元素 -->
 <div class="dark-loading">
   <div class="box">
     <h2>Loading</h2>
@@ -143,10 +140,12 @@
 </div>
 ```
 
+loading 样式可以自行设置，loading 元素最外层的类名必须是 dark-loading、light-loading 的其中一个。
+
 ## 页脚 HTML 代码
 
 ```html
-<!-- ecy config -->
+<!-- 主题配置 -->
 <script>
   window.__ECY_CONFIG__ = {};
 </script>
@@ -300,23 +299,24 @@ window.__ECY_CONFIG__ = {
 };
 ```
 
-## 代码字体
+## 主题字体
 
 你可以自定义代码的字体，假如你的电脑上安装了 Space Mono 字体，可以对博客的代码进行设置。
 
 ```js
 window.__ECY_CONFIG__ = {
   font: {
-    family: `"Space Mono", Hack`
+    // 不设置主要的字体时给一个空字符串
+    main: "",
+    // 代码字体
+    code: `"Space Mono", Hack`
   }
 };
 ```
 
-多个字体使用 `,` 隔开，会根据你设置的字体顺序，依次判断电脑或 html 中是否安装了字体，如果有该字体，就不再往下判断。
+你也可以从网络上加载字体，在“首页 HTML 代码”添加 link 标签引入网络字体。
 
-注意：使用模板字符串语法，和 CSS 设置字体的规则写 font-family 一样，有空格的字体使用 `""` 包裹起来。
-
-## 杂项
+## 其他配置
 
 ```js
 window.__ECY_CONFIG__ = {

@@ -111,7 +111,7 @@ onMounted(() => {
             </div>
           </div>
           <div v-if="!EcyConfig.__ECY_CONFIG__.nameplate.photo.disabled">
-            <el-button type="primary" @click="EcyUtils.Router.go({ router: $router, path: RouterPath.index() })">Go Index</el-button>
+            <el-button type="primary" @click="EcyUtils.Router.go({ router: $router, path: RouterPath.INDEX() })">Go Index</el-button>
             <el-button text type="primary" @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
             <el-button text type="primary" @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
           </div>
@@ -141,7 +141,7 @@ onMounted(() => {
             </div>
           </div>
           <div v-else>
-            <el-button type="primary" @click="EcyUtils.Router.go({ router: $router, path: RouterPath.index() })">Go Index</el-button>
+            <el-button type="primary" @click="EcyUtils.Router.go({ router: $router, path: RouterPath.INDEX() })">Go Index</el-button>
             <el-button text type="primary" @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
             <el-button text type="primary" @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
           </div>
@@ -162,7 +162,7 @@ onMounted(() => {
           </div>
         </div>
         <div class="mb-6">
-          <el-button type="primary" @click="EcyUtils.Router.go({ router: $router, path: RouterPath.index() })">Go Index</el-button>
+          <el-button type="primary" @click="EcyUtils.Router.go({ router: $router, path: RouterPath.INDEX() })">Go Index</el-button>
           <el-button text type="primary" @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com/posts/edit' })">新建随笔</el-button>
           <el-button text type="primary" @click="EcyUtils.Router.go({ path: 'https://i.cnblogs.com/posts' })">管理博客</el-button>
         </div>

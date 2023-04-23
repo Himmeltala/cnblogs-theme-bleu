@@ -66,7 +66,7 @@ const hidden = computed(() => {
         <i-ep-house />
       </template>
       <div class="f-c-c mb-4">
-        <router-link :to="RouterPath.profile()">
+        <router-link :to="RouterPath.PROFILE()">
           <img class="h-25 w-25 cursor-pointer rd-50" :src="EcyConfig.__ECY_CONFIG__.avatar" />
         </router-link>
       </div>
@@ -113,7 +113,7 @@ const hidden = computed(() => {
         <el-tab-pane label="博客常用项" name="first">
           <template v-if="columnList">
             <div class="mb-2" v-for="item in columnList.rankings">{{ item.text }}</div>
-            <router-link :to="RouterPath.worksByCalendar()">
+            <router-link :to="RouterPath.WORKS_BY_CALENDAR()">
               <div class="my-4 f-c-s hover l-color-1">
                 <i-ep-calendar class="mr-2" />
                 博客日历
@@ -129,7 +129,7 @@ const hidden = computed(() => {
                   class="hover"
                   :class="{ 'mb-1': index != columnList.essaySort.length - 1 }"
                   v-for="(item, index) in columnList.essaySort">
-                  <router-link :to="RouterPath.worksBySort('p', item.id)">
+                  <router-link :to="RouterPath.WORKS_BY_SORT('p', item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
@@ -143,7 +143,7 @@ const hidden = computed(() => {
                   class="hover"
                   :class="{ 'mb-1': index != columnList.essayArchive.length - 1 }"
                   v-for="(item, index) in columnList.essayArchive">
-                  <router-link :to="RouterPath.worksByArchive('p', item.id)">
+                  <router-link :to="RouterPath.WORKS_BY_ARCHIVE('p', item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
@@ -157,7 +157,7 @@ const hidden = computed(() => {
                   class="hover"
                   :class="{ 'mb-1': index != columnList.articleSort.length - 1 }"
                   v-for="(item, index) in columnList.articleSort">
-                  <router-link :to="RouterPath.worksBySort('a', item.id)">
+                  <router-link :to="RouterPath.WORKS_BY_SORT('a', item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
@@ -171,7 +171,7 @@ const hidden = computed(() => {
                   class="hover"
                   :class="{ 'mb-1': index != columnList.articleArchive.length - 1 }"
                   v-for="(item, index) in columnList.articleArchive">
-                  <router-link :to="RouterPath.worksByArchive('a', item.id)">
+                  <router-link :to="RouterPath.WORKS_BY_ARCHIVE('a', item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
@@ -182,12 +182,12 @@ const hidden = computed(() => {
                   标签分类
                 </template>
                 <div class="hover" :class="{ 'mb-1': index != columnList.tagList.length - 1 }" v-for="(item, index) in columnList.tagList">
-                  <router-link :to="RouterPath.worksByMark(item.id)">
+                  <router-link :to="RouterPath.WORKS_BY_MARK(item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
                 <div>
-                  <router-link :to="RouterPath.markList()">更多...</router-link>
+                  <router-link :to="RouterPath.MARK_LIST()">更多...</router-link>
                 </div>
               </el-collapse-item>
               <el-collapse-item title="最新随笔" v-if="columnList.latestEssayList.length">
@@ -199,7 +199,7 @@ const hidden = computed(() => {
                   class="hover"
                   :class="{ 'mb-4': index != columnList.latestEssayList.length - 1 }"
                   v-for="(item, index) in columnList.latestEssayList">
-                  <router-link :to="RouterPath.works(item.id)">
+                  <router-link :to="RouterPath.WORKS(item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
@@ -211,7 +211,7 @@ const hidden = computed(() => {
                 </template>
                 <div :class="{ 'mb-4': index != columnList.latestComments.length - 1 }" v-for="(item, index) in columnList.latestComments">
                   <div class="hover">
-                    <router-link :to="RouterPath.works(item.id)">
+                    <router-link :to="RouterPath.WORKS(item.id)">
                       {{ item.title }}
                     </router-link>
                   </div>
@@ -242,7 +242,7 @@ const hidden = computed(() => {
                   评论排行榜
                 </template>
                 <div class="mb-2 hover" v-for="item in topList.topComments">
-                  <router-link :to="RouterPath.works(item.id)">
+                  <router-link :to="RouterPath.WORKS(item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
@@ -253,7 +253,7 @@ const hidden = computed(() => {
                   点赞排行榜
                 </template>
                 <div class="mb-2 hover" v-for="item in topList.topDigg">
-                  <router-link :to="RouterPath.works(item.id)">
+                  <router-link :to="RouterPath.WORKS(item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
@@ -264,7 +264,7 @@ const hidden = computed(() => {
                   阅读排行榜
                 </template>
                 <div class="mb-2 hover" v-for="item in topList.topView">
-                  <router-link :to="RouterPath.works(item.id)">
+                  <router-link :to="RouterPath.WORKS(item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>

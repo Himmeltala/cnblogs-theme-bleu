@@ -7,29 +7,42 @@ const route = useRoute();
 let archiveDate = route.params.date;
 let archiveMode = route.params.mode;
 const archiveWorks = shallowRef();
-const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
+const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works;
 const imgsIndex = shallowRef();
 
 async function fetchData() {
+  let fetchDataPromise;
   EcyUtils.startLoading();
 
-  if (archiveMode === "a") {
-    archiveWorks.value = await WorksApi.getListByArchive(`${archiveDate}`, "article");
-  } else if (archiveMode === "p") {
-    archiveWorks.value = await WorksApi.getListByArchive(`${archiveDate}`, "works");
-  } else if (archiveMode === "d") {
-    archiveWorks.value = await WorksApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
+  switch (archiveMode) {
+    case "a":
+      fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "article");
+      break;
+    case "p":
+      fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "works");
+      break;
+    case "d":
+      fetchDataPromise = WorksApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
+      break;
+    default:
+      fetchDataPromise = Promise.reject(new Error("Invalid archive mode provided."));
   }
 
-  imgsIndex.value = EcyUtils.Random.get(worksImgs, archiveWorks.value.data.length);
-  EcyUtils.setTitle(archiveWorks.value.hint);
-  EcyUtils.endLoading();
+  try {
+    archiveWorks.value = await fetchDataPromise;
+    imgsIndex.value = EcyUtils.Random.get(worksImgs, archiveWorks.value.data.length);
+    EcyUtils.setTitle(archiveWorks.value.hint);
+  } catch (error) {
+    ElMessage.error(error);
+  } finally {
+    EcyUtils.endLoading();
+  }
 }
 
 await fetchData();
 
 watch(route, async () => {
-  if (route.name === RouterName.WorksByArchive) {
+  if (route.name === RouterName.WORKS_BY_ARCHIVE) {
     archiveMode = route.params.mode;
     archiveDate = route.params.date;
     await fetchData();

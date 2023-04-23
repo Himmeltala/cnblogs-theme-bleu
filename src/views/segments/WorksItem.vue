@@ -25,7 +25,7 @@ defineProps({
     <div class="w-52%" :class="{ 'pl-4': index % 2 === 0, 'pr-4': index % 2 !== 0 }">
       <div
         class="hover text-ellipsis line-clamp-2 f-c-s mb-6 l-size-6"
-        @click="EcyUtils.Router.go({ path: RouterPath.works(item.id), router: $router })">
+        @click="EcyUtils.Router.go({ path: RouterPath.WORKS(item.id), router: $router })">
         {{ item.text }}
       </div>
       <div class="f-c-s mb-4 l-size-2 l-color-2">
@@ -45,7 +45,7 @@ defineProps({
       <div class="l-color-3 text-ellipsis line-clamp-4">
         {{ item.desc }}
       </div>
-      <div class="hover f-c-s mt-6 l-size-2">
+      <div class="hover f-c-s mt-6 l-size-2 l-color-2">
         <i-ep-caret-right />
         <router-link class="ml-1 b-b-1 b-b-dotted p-b-0.5" :to="'/p/' + item.id"> 阅读全文 </router-link>
       </div>
@@ -55,7 +55,7 @@ defineProps({
           {{ item.date }}
         </div>
       </div>
-      <div v-show="item.isTop || item.isOnlyMe || item.isLocked" class="mt-4">
+      <div v-show="item.isTop || item.isOnlyMe || item.isLocked" class="mt-4 l-color-3">
         <HollowedBox round plain v-if="item.isTop" class="mr-2">置顶随笔</HollowedBox>
         <HollowedBox round plain v-else-if="item.isOnlyMe" class="mr-2">自己可见</HollowedBox>
         <HollowedBox round plain v-else-if="item.isLocked" class="mr-2">密码锁定</HollowedBox>
@@ -70,7 +70,7 @@ defineProps({
   <div v-else class="item h-20rem rd-2">
     <div
       class="hover text-ellipsis line-clamp-2 f-c-s mb-6 l-size-6"
-      @click="EcyUtils.Router.go({ path: RouterPath.works(item.id), router: $router })">
+      @click="EcyUtils.Router.go({ path: RouterPath.WORKS(item.id), router: $router })">
       {{ item.text }}
     </div>
     <div class="f-c-b mb-4">
@@ -107,13 +107,13 @@ defineProps({
       <HollowedBox round plain v-else-if="item.isOnlyMe" class="mr-2">自己可见</HollowedBox>
       <HollowedBox round plain v-else-if="item.isLocked" class="mr-2">密码锁定</HollowedBox>
     </div>
-    <div class="hover f-c-b mt-6 l-size-2">
+    <div class="hover f-c-b mt-6 l-size-2 l-color-2">
       <div class="f-c-c">
         <i-ep-caret-right />
         <router-link class="ml-1 b-b-1 b-b-dotted p-b-0.5" :to="'/p/' + item.id"> 阅读全文 </router-link>
       </div>
       <div class="f-c-e">
-        <div class="l-size-2 l-color-2 f-c-c">
+        <div class="l-size-2 f-c-c">
           <i-ep-clock class="mr-1" />
           {{ item.date }}
         </div>
@@ -133,31 +133,30 @@ defineProps({
   backdrop-filter: blur(6px);
 }
 
-@include pc() {
-  .item:hover {
-    box-shadow: 0 1px 20px -6px rgba(193, 193, 193, 0.5);
-
+.item {
+  &:hover {
     img {
       transition: var(--l-animation-effect);
       transform: scale(1.1, 1.1);
     }
   }
 
+  img {
+    transition: var(--l-animation-effect);
+  }
+}
+
+@include pc() {
   .item {
     margin: {
       top: 1.5rem;
       bottom: 3rem;
-    }
-
-    img {
-      transition: var(--l-animation-effect);
     }
   }
 }
 
 @include mb() {
   .item {
-    transition: var(--l-animation-effect);
     margin: {
       top: 1.5rem;
       bottom: 1.5rem;

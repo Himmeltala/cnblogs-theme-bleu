@@ -15,7 +15,7 @@ async function fetchData(index?: any) {
 }
 
 watch(route, async () => {
-  if (route.name === RouterName.WorksByMark) await fetchData();
+  if (route.name === RouterName.WORKS_BY_MARK) await fetchData();
 });
 
 onMounted(() => {

@@ -7,141 +7,74 @@
 
 import { useAnchorStore } from "@/store";
 
-export enum RouterName {
-  // 首页
-  Index = "Index",
-  // 铭牌
-  Profile = "Profile",
-  // 文章或随笔
-  Works = "Works",
-  // 一级和二级随笔或文章分类
-  WorksBySort = "WorksBySort",
-  // 随笔或文章档案
-  WorksByArchive = "WorksByArchive",
-  // 随笔或文章的标签
-  WorksByMark = "WorksByMark",
-  // 随笔或文章的日历
-  WorksByCalendar = "WorksByCalendar",
-  // 标签列表
-  MarkList = "MarkList",
-  // 相册
-  Albumn = "Albumn",
-  // 照片
-  AlbumnItem = "AlbunItem"
-}
-
-export namespace RouterPath {
-  /**
-   * @returns "/"
-   */
-  export function index() {
-    return "/";
+export const routes = [
+  {
+    name: RouterName.INDEX,
+    path: RouterPath.INDEX(),
+    component: () => import("@/views/Index.vue")
+  },
+  {
+    name: RouterName.PROFILE,
+    path: RouterPath.PROFILE(),
+    component: () => import("@/views/Profile.vue")
+  },
+  {
+    name: RouterName.WORKS,
+    path: RouterPath.WORKS(),
+    component: () => import("@/views/Works.vue")
+  },
+  {
+    name: RouterName.WORKS_BY_MARK,
+    path: RouterPath.WORKS_BY_MARK(),
+    component: () => import("@/views/WorksByMark.vue")
+  },
+  {
+    name: RouterName.WORKS_BY_SORT,
+    path: RouterPath.WORKS_BY_SORT(),
+    component: () => import("@/views/WorksBySort.vue")
+  },
+  {
+    name: RouterName.WORKS_BY_ARCHIVE,
+    path: RouterPath.WORKS_BY_ARCHIVE(),
+    component: () => import("@/views/WorksByArchive.vue")
+  },
+  {
+    name: RouterName.WORKS_BY_CALENDAR,
+    path: RouterPath.WORKS_BY_CALENDAR(),
+    component: () => import("@/views/WorksByCalendar.vue")
+  },
+  {
+    name: RouterName.MARK_LIST,
+    path: RouterPath.MARK_LIST(),
+    component: () => import("@/views/MarkList.vue")
+  },
+  {
+    name: RouterName.ALBUMN,
+    path: RouterPath.ALBUMN(),
+    component: () => import("@/views/Albumn.vue")
+  },
+  {
+    name: RouterName.ALBUMN_ITEM,
+    path: RouterPath.ALBUMN_ITEM(),
+    component: () => import("@/views/AlbumnItem.vue")
   }
-
-  /**
-   * @returns "/profile"
-   */
-  export function profile() {
-    return "/profile";
-  }
-
-  /**
-   * @param id 随笔或文章 ID
-   * @returns "/p/:id"
-   */
-  export function works(id?: string | number) {
-    if (id) {
-      return `/p/${id}`;
-    } else return "/p/:id";
-  }
-
-  /**
-   * @param tag 标签
-   * @returns "/mark/:tag"
-   */
-  export function worksByMark(tag?: string) {
-    if (tag) {
-      return `/mark/${tag}`;
-    } else return "/mark/:tag";
-  }
-
-  /**
-   * @param mode a -> 文章分类；p -> 随笔分类
-   * @param id 文章或随笔 ID
-   * @returns "/sort/:mode/:id"
-   */
-  export function worksBySort(mode?: "a" | "p", id?: string | number) {
-    if (mode && id) {
-      return `/sort/${mode}/${id}`;
-    } else return "/sort/:mode/:id";
-  }
-
-  /**
-   *
-   * @param mode a -> 文章；p -> 随笔；d -> 从日历点击过来的
-   * @param date 日期
-   * @returns "/archive/:mode/:date"
-   */
-  export function worksByArchive(mode?: "a" | "p" | "d", date?: string) {
-    if (mode && date) {
-      return `/archive/${mode}/${date}`;
-    } else return "/archive/:mode/:date";
-  }
-
-  /**
-   * @returns "/calendar"
-   */
-  export function worksByCalendar() {
-    return "/calendar";
-  }
-
-  /**
-   * @returns "/marks"
-   */
-  export function markList() {
-    return "/marks";
-  }
-
-  /**
-   * @param id 相册 ID
-   * @returns "/albumn/:id"
-   */
-  export function albumn(id?: string | number) {
-    if (id) {
-      return `/albumn/${id}`;
-    } else return "/albumn/:id";
-  }
-
-  /**
-   * @param id 照片 ID
-   * @returns "/albumn/item/:id"
-   */
-  export function albumnItem(id?: string | number) {
-    if (id) {
-      return `/albumn/item/${id}`;
-    } else return "/album/item/:id";
-  }
-}
-
-const regexp = {
-  Works: /\/p\/\d+.html/g,
-  WorksBySort: /\/category\/\d+/g,
-  WorksByMark: /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g,
-  Article: /\/articles\/\d+.html/g,
-  AlbumnItem: /\/gallery\/image\/\d+/g
-};
+];
 
 /**
  * 从评论链接点击进入时，获取其携带的评论锚点位置
  * @param URL 从评论点击过来的链接
  */
-function setCommentAnchor(URL: string) {
-  try {
-    const anchor = URL.match(/#\/\d+/g)[0].split("#/")[1];
-    if (anchor) {
-      useAnchorStore().setAnchor(anchor);
-    }
-  } catch (e) {}
+function addCommentAnchor(URL: string) {
+  const regex = /#\/\d+/g;
+  const result = regex.exec(URL);
+  if (result !== null) {
+    const anchor = result[0].split("#/")[1];
+    useAnchorStore().setAnchor(anchor);
+  }
+}
+
+function push() {
+  window.history.pushState("", "", `${window.location.protocol}//${window.location.host}/${EcyConfig.blogApp}/#/`);
 }
 
 /**
@@ -159,36 +92,35 @@ export function redirect(next: any): () => void {
   let nextParam: any;
   const URL = window.location.href;
 
-  if (regexp.Works.test(URL)) {
-    const postId = URL.match(regexp.Works)[0].split("/")[2].split(".")[0];
-    setCommentAnchor(URL);
+  if (RouterRegx.WORKS.test(URL)) {
+    const postId = URL.match(RouterRegx.WORKS)[0].split("/")[2].split(".")[0];
+    addCommentAnchor(URL);
     nextParam = {
-      name: RouterName.Works,
+      name: RouterName.WORKS,
       params: { id: postId }
     };
-  } else if (regexp.WorksBySort.test(URL)) {
-    const sortId = URL.match(regexp.WorksBySort)[0].split("/")[2].split(",")[0];
+  } else if (RouterRegx.WORKS_BY_SORT.test(URL)) {
+    const sortId = URL.match(RouterRegx.WORKS_BY_SORT)[0].split("/")[2].split(",")[0];
     nextParam = {
-      name: RouterName.WorksBySort,
+      name: RouterName.WORKS_BY_SORT,
       params: { id: sortId }
     };
-  } else if (regexp.WorksByMark.test(URL)) {
-    const tag = decodeURI(URL).match(regexp.WorksByMark)[0].split("/")[2];
+  } else if (RouterRegx.WORKS_BY_MARK.test(URL)) {
+    const tag = decodeURI(URL).match(RouterRegx.WORKS_BY_MARK)[0].split("/")[2];
     nextParam = {
-      name: RouterName.WorksByMark,
+      name: RouterName.WORKS_BY_MARK,
       params: { tag }
     };
-  } else if (regexp.AlbumnItem.test(URL)) {
-    const id = URL.match(regexp.AlbumnItem)[0].split("/")[3];
+  } else if (RouterRegx.ALBUMN_ITEM.test(URL)) {
+    const id = URL.match(RouterRegx.ALBUMN_ITEM)[0].split("/")[3];
     nextParam = {
-      name: RouterName.AlbumnItem,
+      name: RouterName.ALBUMN_ITEM,
       params: { id }
     };
-  } else if (regexp.Article.test(URL)) {
-    const id = URL.match(regexp.Article)[0].split("/")[2].split(".")[0];
-    console.log("article", id);
+  } else if (RouterRegx.ARTICLES.test(URL)) {
+    const id = URL.match(RouterRegx.ARTICLES)[0].split("/")[2].split(".")[0];
     nextParam = {
-      name: RouterName.Works,
+      name: RouterName.WORKS,
       params: { id }
     };
   }
@@ -201,8 +133,4 @@ export function redirect(next: any): () => void {
       next();
     }
   };
-}
-
-function push() {
-  window.history.pushState("", "", `${window.location.protocol}//${window.location.host}/${EcyConfig.blogApp}/#/`);
 }

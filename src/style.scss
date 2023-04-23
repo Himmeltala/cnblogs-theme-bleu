@@ -22,8 +22,8 @@ html[class="dark"] {
   --l-code-modal-bg: #2e2e2e;
   // 主题规定的文字颜色
   --l-color-1: #a7a7a7;
-  --l-color-2: #8d9095;
-  --l-color-3: #878787;
+  --l-color-2: #999999;
+  --l-color-3: #7c7c7c;
   // 主题规定的高亮文字颜色
   --l-hight-color-1: white;
   --l-hight-color-2: #ededed;
@@ -75,6 +75,13 @@ html[class="light"] {
 
 html {
   // 主题规定的文字大小
+  --l-size-13: 2rem;
+  --l-size-12: 1.9rem;
+  --l-size-11: 1.8rem;
+  --l-size-10: 1.7rem;
+  --l-size-9: 1.6rem;
+  --l-size-8: 1.5rem;
+  --l-size-7: 1.4rem;
   --l-size-6: 1.3rem;
   --l-size-5: 1.2rem;
   --l-size-4: 1.1rem;
@@ -85,7 +92,6 @@ html {
   --l-theme-color: #409eff;
   // 模态框背景颜色
   --l-matee-bg: #0d0d0d8f;
-  --l-font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   --l-animation-effect: all 0.4s ease-in-out;
 }
 

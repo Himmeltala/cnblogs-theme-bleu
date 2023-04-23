@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { getAlbumnItem } from "@/apis";
 
-EcyUtils.setTitle("相册图片");
 EcyUtils.startLoading();
+EcyUtils.setTitle("相册图片");
 
 const route = useRoute();
 const imgUrl = shallowRef(await getAlbumnItem(`${route.params.id}`));
@@ -26,8 +26,8 @@ onMounted(() => {
         </template>
       </el-page-header>
       <div class="f-c-c">
-        <el-image class="albumn-item" :src="imgUrl" :preview-src-list="[imgUrl]" />
-        <el-result v-if="!imgUrl" icon="error" title="图片加载失败" sub-title="图片可能从相册移除">
+        <el-image v-if="imgUrl" class="albumn-item" :src="imgUrl" :preview-src-list="[imgUrl]" />
+        <el-result v-else icon="error" title="图片加载失败" sub-title="图片可能从相册移除">
           <template #extra>
             <el-button @click="$router.push('/')" type="primary">返回首页</el-button>
           </template>

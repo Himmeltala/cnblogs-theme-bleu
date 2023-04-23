@@ -1,58 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { redirect } from "@/utils/router-helper";
-
-const routes = [
-  {
-    name: RouterName.Index,
-    path: RouterPath.index(),
-    component: () => import("@/views/Index.vue")
-  },
-  {
-    name: RouterName.Profile,
-    path: RouterPath.profile(),
-    component: () => import("@/views/Profile.vue")
-  },
-  {
-    name: RouterName.Works,
-    path: RouterPath.works(),
-    component: () => import("@/views/Works.vue")
-  },
-  {
-    name: RouterName.WorksByMark,
-    path: RouterPath.worksByMark(),
-    component: () => import("@/views/WorksByMark.vue")
-  },
-  {
-    name: RouterName.WorksBySort,
-    path: RouterPath.worksBySort(),
-    component: () => import("@/views/WorksBySort.vue")
-  },
-  {
-    name: RouterName.WorksByArchive,
-    path: RouterPath.worksByArchive(),
-    component: () => import("@/views/WorksByArchive.vue")
-  },
-  {
-    name: RouterName.WorksByCalendar,
-    path: RouterPath.worksByCalendar(),
-    component: () => import("@/views/WorksByCalendar.vue")
-  },
-  {
-    name: RouterName.MarkList,
-    path: RouterPath.markList(),
-    component: () => import("@/views/MarkList.vue")
-  },
-  {
-    name: RouterName.Albumn,
-    path: RouterPath.albumn(),
-    component: () => import("@/views/Albumn.vue")
-  },
-  {
-    name: RouterName.AlbumnItem,
-    path: RouterPath.albumnItem(),
-    component: () => import("@/views/AlbumnItem.vue")
-  }
-];
+import { redirect, routes } from "@/utils/router-helper";
 
 const router = createRouter({
   routes,

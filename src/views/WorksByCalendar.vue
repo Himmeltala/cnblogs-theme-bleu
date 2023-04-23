@@ -7,19 +7,15 @@ EcyUtils.startLoading();
 const date = new Date();
 const calendar = shallowRef(await WorksApi.getCalendar(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`));
 const dateModel = ref(date);
-let currMonth = dateModel.value.getMonth();
 
 function findDate(data: any) {
   const date = data.day.replaceAll("-", "/");
-  return !!calendar.value.find(el => el == date);
+  return calendar.value.includes(date);
 }
 
-watch(dateModel, async () => {
-  if (dateModel.value.getMonth() != currMonth) {
-    currMonth = dateModel.value.getMonth();
-    calendar.value = await WorksApi.getCalendar(
-      `${dateModel.value.getFullYear()}/${dateModel.value.getMonth() + 1}/${dateModel.value.getDate()}`
-    );
+watch(dateModel, async (newVal, oldVal) => {
+  if (newVal.getMonth() !== oldVal.getMonth()) {
+    calendar.value = await WorksApi.getCalendar(`${newVal.getFullYear()}/${newVal.getMonth() + 1}/${newVal.getDate()}`);
   }
 });
 
@@ -47,7 +43,7 @@ onMounted(() => {
             class="w-100% h-100%"
             @click="
               EcyUtils.Router.go({
-                path: RouterPath.worksByArchive('d', data.day),
+                path: RouterPath.WORKS_BY_ARCHIVE('d', data.day),
                 router: $router
               })
             "

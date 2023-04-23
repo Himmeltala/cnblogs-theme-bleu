@@ -13,16 +13,14 @@ const props = defineProps({
 });
 
 async function buryComment() {
-  const data = await CommentApi.vote({
+  const { isSuccess, message } = await CommentApi.vote({
     isAbandoned: false,
-    commentId: props.comment.commentId,
-    postId: props.postId,
+    commentId: parseInt(props.comment.commentId),
+    postId: parseInt(props.postId),
     voteType: "Bury"
   });
-  if (data.isSuccess) {
-    props.comment.bury = props.comment.bury! + 1;
-  }
-  ElMessage({ message: data.message, grouping: true, type: data.isSuccess ? "success" : "error" });
+  isSuccess && props.comment.bury++;
+  ElMessage({ message: message, grouping: true, type: isSuccess ? "success" : "error" });
 }
 </script>
 

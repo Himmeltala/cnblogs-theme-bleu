@@ -35,22 +35,21 @@ function before() {
 }
 
 async function finish() {
-  const response = await CommentApi.answer({
+  const { isSuccess } = await CommentApi.answer({
     body: `回复 ${props.comment.layer} [@${props.comment.author}](${props.comment.space})\n\n` + content.value,
-    postId: props.postId,
-    parentCommentId: props.comment.commentId
+    postId: parseInt(props.postId),
+    parentCommentId: parseInt(props.comment.commentId)
   });
 
-  if (response.isSuccess) {
+  if (isSuccess) {
     content.value = "";
     props.comment.isAnsling = !props.comment.isAnsling;
-    emits("onFinish", {
-      count: await CommentApi.getCount(props.postId),
-      comments: await CommentApi.getList(props.postId, props.currPageIndex)
-    });
-    ElMessage({ message: "回复评论成功！", grouping: true, type: "success" });
+    const count = await CommentApi.getCount(props.postId);
+    const comments = await CommentApi.getList(props.postId, props.currPageIndex);
+    emits("onFinish", { count, comments });
+    ElMessage.success("回复评论成功！");
   } else {
-    ElMessage({ message: "回复评论失败！", grouping: true, type: "error" });
+    ElMessage.error("回复评论失败！");
   }
 }
 

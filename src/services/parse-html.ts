@@ -5,76 +5,86 @@
  * @date 2022 年 12 月 1 日
  */
 
-import $ from "jquery";
-
 /**
  * 把字符串转换为 DOM
  */
-export function parseDOM(dom: any) {
+export function parseDOM(dom: string) {
   return new DOMParser().parseFromString(dom, "text/html");
 }
 
 /**
  * 获取页数
  */
-function getMaxPage(dom: any): number {
-  const reg = $(dom)
-    .text()
-    .match(/[1-9]+/g);
-  if (reg) return reg.map(i => parseInt(i)).pop();
-  else return 0;
+function getPage(dom: Element) {
+  if (dom) {
+    const pages = dom.innerText.match(/[1-9]+/g);
+    if (pages) return pages.map(i => parseInt(i)).pop();
+    else return 0;
+  } else {
+    return 0;
+  }
 }
 
 /**
  * 只适用于获取首页随笔列表；日历随笔、文章列表。列表项包含描述、评论、点赞的随笔列表。
  */
-export function parseWorksList(dom: any): CustType.IWorksList {
-  const id = $(dom).find(".postTitle2");
-  const head = $(dom).find(".postTitle");
-  const desc = $(dom).find(".c_b_p_desc");
-  const notes = $(dom).find(".postDesc").text();
-  const date = notes.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g);
-  const view = notes.match(/阅读\([0-9]+\)/g);
-  const comm = notes.match(/评论\([0-9]+\)/g);
-  const digg = notes.match(/推荐\([0-9]+\)/g);
-
+export function parseWorksList(dom: Document): CustType.IWorksList {
+  const id = dom.getElementsByClassName("postTitle2");
+  const head = dom.getElementsByClassName("postTitle");
+  const desc = dom.getElementsByClassName("c_b_p_desc");
+  const notes = dom.getElementsByClassName("postDesc");
+  const hint = dom.getElementsByClassName("dayTitle");
   const data: CustType.IWorks[] = [];
 
-  $(desc).each((i, e) => {
-    data.push({
-      id: $(id[i])
-        .attr("href")
-        .match(/[0-9]+/g)[0],
-      text: EcyUtils.Text.replace($(head[i]).text().trim(), [/\[置顶\]/g]),
-      desc: EcyUtils.Text.replace($(desc[i]).text(), [/阅读全文/g]),
-      date: date[i],
-      view: view[i],
-      comm: comm[i],
-      digg: digg[i],
-      surface: $(e).find(".desc_img").attr("src") ?? "",
-      isLocked: !!$(id[i]).find(`img[title="密码保护"]`).attr("title"),
-      isOnlyMe: !!$(id[i]).find(`img[title="仅自己可见"]`).attr("title"),
-      isTop: $(head[i]).find(".pinned-post-mark").text() === "[置顶]"
-    });
-  });
+  for (let index = 0; index < desc.length; index++) {
+    const eleDescImg = desc[index].getElementsByClassName("desc_img")[0];
+    const surface = eleDescImg ? eleDescImg.getAttribute("src") : "";
 
-  return { page: getMaxPage($(dom).find("#homepage_top_pager > .pager")), data, hint: $(dom).find(".dayTitle").text() + " 档案" ?? "" };
+    const eleLock = id[index].querySelector(`img[title="密码保护"]`);
+    const isLocked = !!eleLock;
+
+    const eleOnlyMe = id[index].querySelector(`img[title="仅自己可见"]`);
+    const isOnlyMe = !!eleOnlyMe;
+
+    const eleTop = head[index].getElementsByClassName("pinned-post-mark")[0];
+    const isTop = eleTop && eleTop.innerText === "[置顶]";
+
+    data.push({
+      id: id[index].getAttribute("href").match(/[0-9]+/g)[0],
+      text: EcyUtils.Text.replace(head[index].innerText.trim(), [/\[置顶\]/g]),
+      desc: EcyUtils.Text.replace(desc[index].innerText, [/阅读全文/g]),
+      date: notes[index].innerText.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)[0],
+      view: notes[index].innerText.match(/阅读\([0-9]+\)/g)[0],
+      comm: notes[index].innerText.match(/评论\([0-9]+\)/g)[0],
+      digg: notes[index].innerText.match(/推荐\([0-9]+\)/g)[0],
+      surface,
+      isLocked,
+      isOnlyMe,
+      isTop
+    });
+  }
+
+  return {
+    data,
+    page: getPage(dom.querySelector("#homepage_top_pager > .pager")),
+    hint: hint[0].innerText + " 档案" ?? ""
+  };
 }
 
 /**
  * 解析随笔详细页面
  */
-export function parseWorks(id: string, dom: any): CustType.IWorks {
-  const text = $(dom).find(".postTitle > a > span").text();
-  const content = $(dom).find("#cnblogs_post_body").html();
+export function parseWorks(id: string, dom: Document): CustType.IWorks {
+  const text = dom.querySelector(".postTitle > a > span").innerText;
+  const content = dom.getElementById("cnblogs_post_body").innerHTML;
 
   return {
     id,
     text,
     content,
-    date: $(dom).find("#post-date").text(),
-    view: $(dom).find("#post_view_count").text(),
-    comm: $(dom).find("#post_comment_count").text(),
+    date: dom.getElementById("post-date").innerText,
+    view: dom.getElementById("post_view_count").innerText,
+    comm: dom.getElementById("post_comment_count").innerText,
     isLocked: !text && !content
   };
 }
@@ -82,27 +92,30 @@ export function parseWorks(id: string, dom: any): CustType.IWorks {
 /**
  * 解析随笔详细页面的评论列表
  */
-export function parseCommentList(dom: any): CustType.IComment[] {
+export function parseCommentList(dom: Document): CustType.IComment[] {
   const data: CustType.IComment[] = [];
+  const eles = dom.getElementsByClassName("feedbackItem");
 
-  $(parseDOM(dom))
-    .find(".feedbackItem")
-    .each((i, elem) => {
-      const anchorId = $(elem).find(".layer").attr("href")!.split("#")[1];
-      data[i] = {
-        isEditing: false,
-        isAnsling: false,
-        commentId: anchorId,
-        space: $(elem).find(`#a_comment_author_${anchorId}`).attr("href"),
-        author: $(elem).find(`#a_comment_author_${anchorId}`).text(),
-        layer: $(elem).find(".layer").text(),
-        date: $(elem).find(".comment_date").text(),
-        content: $(elem).find(`#comment_body_${anchorId}`).html(),
-        digg: $(elem).find(".comment_digg").text().trim(),
-        bury: $(elem).find(".comment_burry").text().trim(),
-        avatar: $(elem).find(`#comment_${anchorId}_avatar`).text().trim()
-      };
+  for (let i = 0; i < eles.length; i++) {
+    const layer = eles[i].getElementsByClassName("layer")[0];
+    const anchorId = layer.getAttribute("href").split("#")[1];
+    const eleAvatar = eles[i].querySelector(`#comment_${anchorId}_avatar`);
+    const avatar = eleAvatar ? eleAvatar.innerText.trim() : "";
+
+    data.push({
+      isEditing: false,
+      isAnsling: false,
+      commentId: anchorId,
+      space: eles[i].querySelector(`#a_comment_author_${anchorId}`).getAttribute("href"),
+      author: eles[i].querySelector(`#a_comment_author_${anchorId}`).innerText,
+      layer: layer.innerText,
+      date: eles[i].getElementsByClassName("comment_date")[0].innerText,
+      content: eles[i].querySelector(`#comment_body_${anchorId}`).innerHTML,
+      digg: eles[i].getElementsByClassName("comment_digg")[0].innerText.trim(),
+      bury: eles[i].getElementsByClassName("comment_burry")[0].innerText.trim(),
+      avatar
     });
+  }
 
   return data;
 }
@@ -112,40 +125,39 @@ export function parseCommentList(dom: any): CustType.IComment[] {
  *
  * 40 / 50 = 0.8 意思还是第一页，100 / 50 = 2，刚好第二页，因此除了之后是一个向上取整的
  *
- * @param json 评论数量计数
+ * @param data 评论数量计数
  * @returns 返回一共有多少个 pageIndex
  */
-export function parseCommentPages(json: any): number {
-  return Math.ceil(parseInt(json) / 50);
+export function parseCommentPages(data: string): number {
+  return Math.ceil(parseInt(data) / 50);
 }
 
 /**
  * 解析随笔详细页面中的属性：标签、分类
  */
-export function parseWorksProps(dom: any): CustType.IWorksProps {
+export function parseWorksProps(dom: Document): CustType.IWorksProps {
   const data = <CustType.IWorksProps>{ tags: [], sorts: [] };
-  const _dom = parseDOM(dom);
 
-  $(_dom)
-    .find("#BlogPostCategory > a")
-    .each((i, d) => {
-      data.sorts.push({
-        href: $(d)
-          .attr("href")
-          .match(/\/category\/\d+/g)[0]
-          .split("/")[2]
-          .split(",")[0],
-        text: $(d).text()
-      });
-    });
+  const eleCates = dom.querySelectorAll("#BlogPostCategory > a");
 
-  $(_dom)
-    .find("#EntryTag > a")
-    .each((i, d) => {
-      data.tags.push({
-        text: $(d).text()
-      });
+  for (let i = 0; i < eleCates.length; i++) {
+    data.sorts.push({
+      href: eleCates[i]
+        .getAttribute("href")
+        .match(/\/category\/\d+/g)[0]
+        .split("/")[2]
+        .split(",")[0],
+      text: eleCates[i].innerText
     });
+  }
+
+  const eleTags = dom.querySelectorAll("#EntryTag > a");
+
+  for (let i = 0; i < eleTags.length; i++) {
+    data.tags.push({
+      text: eleTags[i].innerText
+    });
+  }
 
   return data;
 }
@@ -153,25 +165,25 @@ export function parseWorksProps(dom: any): CustType.IWorksProps {
 /**
  * 解析上下篇随笔
  */
-export function parseWorksPrevNext(dom: any): CustType.IPrevNext {
+export function parseWorksPrevNext(dom: Document): CustType.IPrevNext {
   const data: CustType.IPrevNext = { prev: {}, next: {} };
+  const eleAs = dom.getElementsByTagName("a");
 
-  $(parseDOM(dom))
-    .find("a")
-    .each((i, e) => {
-      const prefix = $(e).text().trim();
-      if (prefix == "«") {
-        data["prev"] = {
-          text: $(e).next("a").text(),
-          href: $(e).next("a").attr("href")
-        };
-      } else if (prefix == "»") {
-        data["next"] = {
-          text: $(e).next("a").text(),
-          href: $(e).next("a").attr("href")
-        };
-      }
-    });
+  for (let i = 0; i < eleAs.length; i++) {
+    const prefix = eleAs[i].innerText.trim();
+    const nextElement = eleAs[i].nextElementSibling;
+    if (prefix == "«") {
+      data["prev"] = {
+        text: nextElement.innerText.trim(),
+        href: nextElement.getAttribute("href")
+      };
+    } else if (prefix == "»") {
+      data["next"] = {
+        text: nextElement.innerText.trim(),
+        href: nextElement.getAttribute("href")
+      };
+    }
+  }
 
   return data;
 }
@@ -181,7 +193,7 @@ export function parseWorksPrevNext(dom: any): CustType.IPrevNext {
  *
  * 只适用于获取分类、档案的随笔、文章列表。
  */
-export function parseWorksFull(dom: any): CustType.IWorksList2 {
+export function parseWorksFull(dom: Document): CustType.IWorksList2 {
   const data: CustType.IWorks[] = [];
 
   const dateReg = /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g;
@@ -189,30 +201,40 @@ export function parseWorksFull(dom: any): CustType.IWorksList2 {
   const commReg = /评论\([0-9]+\)/g;
   const diggReg = /推荐\([0-9]+\)/g;
 
-  $(dom)
-    .find(".entrylistItem")
-    .each((i, e) => {
-      const item = $(e).find(".entrylistItemPostDesc").text();
-      data.push({
-        id: $(e)
-          .find(".entrylistItemTitle")
-          .attr("href")
-          .match(/[0-9]+/g)[0],
-        text: $(e).find(".entrylistItemTitle > span").text(),
-        desc: $(e).find(".c_b_p_desc").text(),
-        date: item.match(dateReg)[0],
-        view: item.match(viewReg)[0],
-        comm: item.match(commReg)[0],
-        digg: item.match(diggReg)[0],
-        surface: $(e).find(".c_b_p_desc > .desc_img").attr("src") ?? ""
-      });
+  const eleList = dom.getElementsByClassName("entrylistItem");
+
+  for (let i = 0; i < eleList.length; i++) {
+    const item = eleList[i].getElementsByClassName("entrylistItemPostDesc")[0].innerText;
+    const eleDescImg = eleList[i].querySelector(".c_b_p_desc > .desc_img");
+    const surface = eleDescImg ? eleDescImg.getAttribute("src") : "";
+
+    data.push({
+      id: eleList[i]
+        .getElementsByClassName("entrylistItemTitle")[0]
+        .getAttribute("href")
+        .match(/[0-9]+/g)[0],
+      text: eleList[i].querySelector(".entrylistItemTitle > span").innerText,
+      desc: eleList[i].getElementsByClassName("c_b_p_desc")[0].innerText,
+      date: item.match(dateReg)[0],
+      view: item.match(viewReg)[0],
+      comm: item.match(commReg)[0],
+      digg: item.match(diggReg)[0],
+      surface
     });
+  }
+
+  const eleDesc = dom.querySelector(".entrylistTitle .category-crumb-item");
+  const desc = eleDesc ? eleDesc.getAttribute("title") : "";
+  const eleDesc2 = dom.getElementsByClassName("entrylistDescription")[0];
+  const desc2 = eleDesc2 ? eleDesc2.innerText : "";
+  const eleHint = dom.getElementsByClassName("entrylistTitle")[0];
+  const hint = eleHint ? eleHint.innerText : "";
 
   return {
-    desc: $(dom).find(".entrylistTitle .category-crumb-item").attr("title"),
-    desc2: $(dom).find(".entrylistDescription")?.text() ?? "",
-    page: getMaxPage($(dom).find("#mainContent .pager")[0]),
-    hint: $(dom).find(".entrylistTitle").text() ?? "",
+    desc,
+    desc2,
+    page: getPage(dom.querySelectorAll("#mainContent .pager")[0]),
+    hint,
     data
   };
 }
@@ -222,47 +244,39 @@ export function parseWorksFull(dom: any): CustType.IWorksList2 {
  *
  * 只适用于获取以标签区别的随笔、文章列表。
  */
-export function parseWorksSlice(dom: any): CustType.IWorksList2 {
-  const head = $(dom).find(".PostList > .postTitl2 > a");
-  const desc = $(dom).find(".PostList > .postDesc2");
-  const hint = $(dom).find(".PostListTitle").text().trim();
+export function parseWorksSlice(dom: Document): CustType.IWorksList2 {
+  const head = dom.querySelectorAll(".PostList > .postTitl2 > a");
+  const desc = dom.querySelectorAll(".PostList > .postDesc2");
+  const hint = dom.getElementsByClassName("PostListTitle")[0].innerText.trim();
   const data: CustType.IWorks[] = [];
 
-  $(head).each((i, e) => {
+  head.forEach((ele, index) => {
     data.push({
-      id: $(e)
-        .attr("href")
-        .match(/[0-9]+/g)[0],
-      text: $(e).text().trim(),
-      date: $(desc[i])
-        .text()
-        .match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)[0],
-      view: $(desc[i]).find(".post-view-count").text().split(":")[1],
-      comm: $(desc[i]).find(".post-comment-count").text().split(":")[1],
-      digg: $(desc[i]).find(".post-digg-count").text().split(":")[1]
+      id: ele.getAttribute("href").match(/[0-9]+/g)[0],
+      text: ele.innerText.trim(),
+      date: desc[index].innerText.match(/[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g)[0],
+      view: desc[index].getElementsByClassName("post-view-count")[0].innerText.split(":")[1],
+      comm: desc[index].getElementsByClassName("post-comment-count")[0].innerText.split(":")[1],
+      digg: desc[index].getElementsByClassName("post-digg-count")[0].innerText.split(":")[1]
     });
   });
 
-  return { data, hint, page: getMaxPage($(dom).find(".Pager")[0]) };
+  return { data, hint, page: getPage(dom.getElementsByClassName("Pager")[0]) };
 }
 
-function loadColumn(dom: any, selector: string, success: (e: any, matched?: any) => void, regexp?: RegExp) {
-  $(dom)
-    .find(selector)
-    .each((i, e) => {
-      if (regexp) {
-        const matched = $(e)?.attr("href")?.match(regexp);
-        if (matched) success(e, matched);
-      } else success(e);
-    });
+function loadColumn(dom: Document, selector: string, success: (e: Element, matched?: any) => void, regexp?: RegExp) {
+  dom.querySelectorAll(selector).forEach(ele => {
+    if (regexp) {
+      const matched = ele.getAttribute("href")?.match(regexp);
+      if (matched) success(ele, matched);
+    } else success(ele);
+  });
 }
 
 /**
  * 解析侧边栏分类列表、标签列表，... 列表
  */
-export function parseMenuColumn(dom: any): CustType.IMenuColumn {
-  const _dom = parseDOM(dom);
-
+export function parseMenuColumn(dom: Document): CustType.IMenuColumn {
   const data: CustType.IMenuColumn = {
     essaySort: [],
     essayArchive: [],
@@ -276,92 +290,92 @@ export function parseMenuColumn(dom: any): CustType.IMenuColumn {
   };
 
   loadColumn(
-    _dom,
+    dom,
     "#sidebar_recentposts ul li > a",
     (e, matched) => {
       data.latestEssayList.push({
         id: matched[0],
-        text: $(e).text()
+        text: e.innerText
       });
     },
     /[0-9]+/g
   );
 
   loadColumn(
-    _dom,
+    dom,
     "#sidebar_toptags ul li > a",
     (e, matched) => {
       data.tagList.push({
         id: matched[1],
-        text: $(e).text()
+        text: e.innerText
       });
     },
     /tag\/(.[^\/]+)/
   );
 
-  loadColumn(_dom, "#sidebar_scorerank ul li", e => {
+  loadColumn(dom, "#sidebar_scorerank ul li", e => {
     data.rankings.push({
-      text: $(e).text()
+      text: e.innerText
     });
   });
 
   loadColumn(
-    _dom,
+    dom,
     "#sidebar_postcategory ul li > a",
     (e, matched) => {
       data.essaySort.push({
         id: matched[0],
-        text: $(e).text()
+        text: e.innerText
       });
     },
     /[0-9]+/g
   );
 
   loadColumn(
-    _dom,
+    dom,
     "#sidebar_postarchive ul li > a",
     (e, matched) => {
       const date = matched[1].split("/");
       data.essayArchive.push({
         id: `${date[0]}-${date[1]}`,
-        text: $(e).text()
+        text: e.innerText
       });
     },
     /archive\/([0-9]+\/[0-9]+)/
   );
 
   loadColumn(
-    _dom,
+    dom,
     "#sidebar_imagecategory ul li > a",
     (e, matched) => {
       data.albumn.push({
         id: matched[1],
-        text: $(e).text()
+        text: e.innerText
       });
     },
     /gallery\/([0-9]+)/
   );
 
   loadColumn(
-    _dom,
+    dom,
     "#sidebar_articlecategory ul li > a",
     (e, matched) => {
       data.articleSort.push({
         id: matched[0],
-        text: $(e).text()
+        text: e.innerText
       });
     },
     /[0-9]+/g
   );
 
   loadColumn(
-    _dom,
+    dom,
     "#sidebar_articlearchive ul li > a",
     (e, matched) => {
       const date = matched[1].split("/");
       data.articleArchive.push({
         id: `${date[0]}-${date[1]}`,
-        text: $(e).text()
+        text: e.innerText
       });
     },
     /archives\/([0-9]+\/[0-9]+)/
@@ -371,32 +385,31 @@ export function parseMenuColumn(dom: any): CustType.IMenuColumn {
   let bounds = false;
   let comment = { id: "", title: "", content: "", author: "" };
 
-  $(_dom)
-    .find("#sidebar_recentcomments ul li")
-    .each((i, e) => {
-      if (bounds) bounds = false;
+  const elesLi = dom.querySelectorAll("#sidebar_recentcomments ul li");
 
-      if (!bounds) {
-        if ($(e).attr("class") === "recent_comment_title") {
-          comment.title = $(e).find("a").text();
-          comment.id = $(e)
-            .find("a")
-            .attr("href")
-            .match(/[0-9]+/g)[0];
-        } else if ($(e).attr("class") === "recent_comment_body") {
-          comment.content = $(e).text();
-        } else if ($(e).attr("class") === "recent_comment_author") {
-          comment.author = EcyUtils.Text.replace($(e).text(), [/--/g]);
-        }
-      }
+  for (let i = 0; i < elesLi.length; i++) {
+    if (bounds) bounds = false;
 
-      if (count % 3 == 0) {
-        bounds = true;
-        data.latestComments.push(comment);
-        comment = { id: "", title: "", content: "", author: "" };
+    if (!bounds) {
+      const attr = elesLi[i].getAttribute("class");
+      if (attr === "recent_comment_title") {
+        const eleA = elesLi[i].getElementsByTagName("a")[0];
+        comment.title = eleA.innerText;
+        comment.id = eleA.getAttribute("href").match(/[0-9]+/g)[0];
+      } else if (attr === "recent_comment_body") {
+        comment.content = elesLi[i].innerText;
+      } else if (attr === "recent_comment_author") {
+        comment.author = EcyUtils.Text.replace(elesLi[i].innerText, [/--/g]);
       }
-      count++;
-    });
+    }
+
+    if (count % 3 == 0) {
+      bounds = true;
+      data.latestComments.push(comment);
+      comment = { id: "", title: "", content: "", author: "" };
+    }
+    count++;
+  }
 
   return data;
 }
@@ -404,32 +417,28 @@ export function parseMenuColumn(dom: any): CustType.IMenuColumn {
 /**
  * 解析侧边栏博主主人基本的昵称、粉丝数、园龄等数据
  */
-export function parseAuthorData(dom: string): CustType.IMenuItemData[] {
-  const data: CustType.IMenuItemData[] = [];
-  $(parseDOM(dom))
-    .find("#profile_block > a")
-    .each((i, e) => {
-      data.push({ text: $(e).text().trim(), href: $(e).attr("href")! });
-    });
-  return data;
+export function parseAuthorData(dom: Document): CustType.IMenuItemData[] {
+  const nodeList = dom.querySelectorAll("#profile_block > a");
+  return Array.from(nodeList).map(ele => ({ text: ele.innerText.trim(), href: ele.getAttribute("href") }));
 }
 
 /**
  * 解析博主主人的随笔、文章、评论、阅读等数据
  */
-export function parseMasterData(dom: string): CustType.IMenuItemData[] {
+export function parseMasterData(dom: Document): CustType.IMenuItemData[] {
   const data: CustType.IMenuItemData[] = [];
-  $(parseDOM(dom))
-    .find("span")
-    .each((i, d) => {
-      if ($(d).attr("id")) {
-        const t = $(d).text();
-        const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
-        let digg = t.match(/\d+/g)[0];
-        if (i === 3) digg = EcyUtils.Parser.unit(digg);
-        data.push({ text, digg });
-      }
-    });
+  const eles = dom.getElementsByTagName("span");
+
+  for (let index = 0; index < eles.length; index++) {
+    if (eles[index].getAttribute("id")) {
+      const t = eles[index].innerText;
+      const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
+      let digg = t.match(/\d+/g)[0];
+      if (index === 3) digg = EcyUtils.Parser.unit(digg);
+      data.push({ text, digg });
+    }
+  }
+
   return data;
 }
 
@@ -438,79 +447,72 @@ export function parseMasterData(dom: string): CustType.IMenuItemData[] {
  */
 export function parseCabinetRankList(dom: string): CustType.IMenuItemData[] {
   const data: CustType.IMenuItemData[] = [];
-  $(parseDOM(dom))
-    .find("li")
-    .each((i, d) => {
-      const t = $(d).text().trim();
-      const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
-      const digg = t.match(/\d+/g)[0];
-      data.push({ text, digg });
-    });
+  const eles = parseDOM(dom).querySelectorAll("li");
+
+  for (let i = 0; i < eles.length; i++) {
+    const t = eles[i].innerText.trim();
+    const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
+    const digg = t.match(/\d+/g)[0];
+    data.push({ text, digg });
+  }
+
   return data;
 }
 
 /**
  * 解析博客阅读排行榜
  */
-export function parseTopList(dom: string): CustType.ITopList {
+export function parseTopList(dom: Document): CustType.ITopList {
   const data: CustType.ITopList = {
     topView: [],
     topComments: [],
     topDigg: []
   };
 
-  const _dom = parseDOM(dom);
+  const elesTopComms = dom.querySelectorAll("#TopFeedbackPostsBlock ul > li > a");
 
-  $(_dom)
-    .find("#TopFeedbackPostsBlock ul > li > a")
-    .each((i, e) => {
-      data.topComments.push({
-        id: $(e)
-          .attr("href")
-          ?.match(/\/p\/\d+/g)[0]
-          .split("/")[2],
-        text: $(e).text()
-      });
+  for (let index = 0; index < elesTopComms.length; index++) {
+    data.topComments.push({
+      id: elesTopComms[index]
+        .getAttribute("href")
+        ?.match(/\/p\/\d+/g)[0]
+        .split("/")[2],
+      text: elesTopComms[index].innerText
     });
+  }
 
-  $(_dom)
-    .find("#TopViewPostsBlock ul > li > a")
-    .each((i, e) => {
-      data.topView.push({
-        id: $(e)
-          .attr("href")
-          ?.match(/\/p\/\d+/g)[0]
-          .split("/")[2],
-        text: $(e).text()
-      });
-    });
+  const elesTopWors = dom.querySelectorAll("#TopViewPostsBlock ul > li > a");
 
-  $(_dom)
-    .find("#TopDiggPostsBlock ul > li > a")
-    .each((i, e) => {
-      data.topDigg.push({
-        id: $(e)
-          .attr("href")
-          ?.match(/\/p\/\d+/g)[0]
-          .split("/")[2],
-        text: $(e).text()
-      });
+  for (let index = 0; index < elesTopWors.length; index++) {
+    data.topView.push({
+      id: elesTopWors[index]
+        .getAttribute("href")
+        ?.match(/\/p\/\d+/g)[0]
+        .split("/")[2],
+      text: elesTopWors[index].innerText
     });
+  }
+
+  data.topDigg = Array.from(dom.querySelectorAll("#TopViewPostsBlock ul > li > a")).map(ele => ({
+    id: ele
+      .getAttribute("href")
+      ?.match(/\/p\/\d+/g)[0]
+      .split("/")[2],
+    text: ele.innerText
+  }));
 
   return data;
 }
 
-export function parseMarkList(realDOM: any): CustType.IMark[] {
+export function parseMarkList(dom: Document): CustType.IMark[] {
   const data: CustType.IMark[] = [];
-  $(realDOM)
-    .find("#MyTag1_dtTagList")
-    .find("td")
-    .each((i, e) => {
-      const count = parseInt($(e).attr("data-use-count"));
-      const href = $(e).find("a").attr("href");
-      const text = $(e).find("a").text();
-      data.push({ count, href, text });
-    });
+  const eles = dom.getElementById("MyTag1_dtTagList").getElementsByTagName("td");
+
+  for (let i = 0; i < eles.length; i++) {
+    const eleA = eles[i].getElementsByTagName("a")[0];
+    data.push({ count: parseInt(eles[i].getAttribute("data-use-count")), href: eleA.getAttribute("href"), text: eleA.innerText });
+  }
+
   return data;
 }
 
@@ -519,8 +521,8 @@ export function parseMarkList(realDOM: any): CustType.IMark[] {
  *
  * @returns 输入密码正确返回 true
  */
-export function parseIsUnLock(dom: any): boolean {
-  const isError = $(dom).find(".field-validation-error")?.text();
+export function parseIsUnLock(dom: Document): boolean {
+  const isError = dom.getElementsByClassName("field-validation-error")[0]?.innerText;
   if (isError && isError === "密码错误") {
     return false;
   } else if (!isError) {
@@ -528,52 +530,45 @@ export function parseIsUnLock(dom: any): boolean {
   }
 }
 
-export function parseWorksSortChild(dom: any): CustType.IWorksSortChild[] {
-  const data: CustType.IWorksSortChild[] = [];
-  $(dom)
-    .find("li")
-    .each((i, el) => {
-      data.push({
-        id: $(el).attr("data-category-id"),
-        text: $(el).find(".tree-categories-item-title-right").text()
-      });
-    });
-  return data;
+export function parseWorksSortChild(dom: Document): CustType.IWorksSortChild[] {
+  const nodeList = dom.getElementsByTagName("li");
+  return Array.from(nodeList).map(ele => ({
+    id: ele.getAttribute("data-category-id"),
+    text: ele.getElementsByClassName("tree-categories-item-title-right")[0].innerText
+  }));
 }
 
-export function parseAlbumn(dom: any) {
+export function parseAlbumn(dom: Document) {
   const data: CustType.AlbumnItem[] = [];
+  const eles = dom.getElementsByClassName("divPhoto");
 
-  $(dom)
-    .find(".divPhoto")
-    .each((i, e) => {
-      const id = $(e)
-        .find("a")
-        .attr("href")
+  for (let i = 0; i < eles.length; i++) {
+    data.push({
+      id: eles[i]
+        .getElementsByTagName("a")[0]
+        .getAttribute("href")
         .match(/\/gallery\/image\/\d+/g)[0]
-        .split("/")[3];
-      data.push({
-        id,
-        src: $(e).find("img").attr("src")
-      });
+        .split("/")[3],
+      src: eles[i].getElementsByTagName("img")[0].getAttribute("src")
     });
+  }
 
   return {
-    title: $(dom).find(".thumbTitle").text(),
-    desc: $(dom).find(".thumbDescription").text(),
+    title: dom.getElementsByClassName("thumbTitle")[0].innerText,
+    desc: dom.getElementsByClassName("thumbDescription")[0].innerText,
     data
   };
 }
 
-export function parseCalendar(dom: any): string[] {
+export function parseAlbumnItem(dom: Document) {
+  return dom.getElementById("ViewPicture1_GalleryImage").getAttribute("src");
+}
+
+export function parseCalendar(dom: Document): string[] {
   const dates: string[] = [];
-  $(dom)
-    .find("a[href^='https']")
-    .each((i, el) => {
-      const date = $(el)
-        .attr("href")
-        .match(/\d+\/\d+\/\d+/g)[0];
-      dates.push(date);
-    });
+  dom.querySelectorAll("a[href^='https']").forEach(ele => {
+    const date = ele.getAttribute("href").match(/\d+\/\d+\/\d+/g)[0];
+    dates.push(date);
+  });
   return dates;
 }

@@ -16,7 +16,7 @@ async function diggComment() {
   const data = await CommentApi.vote({
     isAbandoned: false,
     commentId: props.comment.commentId,
-    postId: props.postId,
+    postId: parseInt(props.postId),
     voteType: "Digg"
   });
   if (data.isSuccess) {

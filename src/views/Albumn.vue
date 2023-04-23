@@ -9,7 +9,7 @@ const albumn = shallowRef(await getAlbumn(`${route.params.id}`));
 const srcList = shallowRef(albumn.value.data.map(i => i.src));
 
 watch(route, async () => {
-  if (route.name === RouterName.Albumn) {
+  if (route.name === RouterName.ALBUMN) {
     EcyUtils.startLoading();
     albumn.value = await getAlbumn(`${route.params.id}`);
     srcList.value = albumn.value.data.map(i => i.src);

@@ -6,29 +6,42 @@ let sortId = route.params.id as string;
 let sortMode = route.params.mode as "a" | "p";
 const typeL2Works = shallowRef();
 const typeL1Works = shallowRef();
-const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works || ["https://img.tt98.com/d/file/tt98/201909171800581/001.jpg"];
+const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works;
 const imgsIndex = shallowRef();
 
 async function fetchData(index?: any) {
+  let typeL2WorksPromise;
   EcyUtils.startLoading();
 
-  if (sortMode === "a") {
-    typeL2Works.value = await WorksApi.getByTypeL2(`${sortId}`, "article");
-  } else if (sortMode === "p") {
-    typeL2Works.value = await WorksApi.getByTypeL2(`${sortId}`);
+  switch (sortMode) {
+    case "a":
+      typeL2WorksPromise = WorksApi.getByTypeL2(`${sortId}`, "article");
+      break;
+    case "p":
+      typeL2WorksPromise = WorksApi.getByTypeL2(`${sortId}`);
+      break;
+    default:
+      typeL2WorksPromise = Promise.reject(new Error("Invalid archive mode provided."));
+      break;
   }
 
-  typeL1Works.value = await WorksApi.getByTypeL1(`${sortId}`, index);
-  imgsIndex.value = EcyUtils.Random.get(worksImgs, typeL1Works.value.data.length);
-
-  EcyUtils.setTitle(typeL1Works.value.hint);
-  EcyUtils.endLoading();
+  try {
+    const [typeL1WorksResp, typeL2WorksResp] = await Promise.all([WorksApi.getByTypeL1(`${sortId}`, index), typeL2WorksPromise]);
+    typeL1Works.value = typeL1WorksResp;
+    typeL2Works.value = typeL2WorksResp;
+    imgsIndex.value = EcyUtils.Random.get(worksImgs, typeL1Works.value.data.length);
+    EcyUtils.setTitle(typeL1Works.value.hint);
+  } catch (error) {
+    ElMessage.error(error);
+  } finally {
+    EcyUtils.endLoading();
+  }
 }
 
 await fetchData();
 
 watch(route, async () => {
-  if (route.name === RouterName.WorksBySort) {
+  if (route.name === RouterName.WORKS_BY_SORT) {
     sortId = route.params.id as string;
     sortMode = route.params.mode as "a" | "p";
     await fetchData();
@@ -55,7 +68,7 @@ watch(route, async () => {
           <div class="l-sort__child l-size-2" v-if="typeL2Works.length > 0">
             <div class="hover f-c-s" v-for="(item, index) in typeL2Works" :class="{ 'mb-3': index != typeL2Works.length - 1 }">
               <span class="mr-2">📁</span>
-              <router-link :to="RouterPath.worksBySort(sortMode, item.id)">{{ item.text }}</router-link>
+              <router-link :to="RouterPath.WORKS_BY_SORT(sortMode, item.id)">{{ item.text }}</router-link>
             </div>
           </div>
           <WorksItem

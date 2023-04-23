@@ -13,9 +13,6 @@ dependencies:
   highlight.js:
     specifier: ^11.7.0
     version: registry.npmmirror.com/highlight.js@11.7.0
-  jquery:
-    specifier: ^3.6.4
-    version: registry.npmmirror.com/jquery@3.6.4
   pinia:
     specifier: ^2.0.33
     version: registry.npmmirror.com/pinia@2.0.33(typescript@5.0.2)(vue@3.2.47)
@@ -30,9 +27,6 @@ devDependencies:
   '@iconify-json/ep':
     specifier: ^1.1.10
     version: registry.npmmirror.com/@iconify-json/ep@1.1.10
-  '@types/jquery':
-    specifier: ^3.5.16
-    version: registry.npmmirror.com/@types/jquery@3.5.16
   '@types/node':
     specifier: ^18.15.11
     version: registry.npmmirror.com/@types/node@18.15.11
@@ -581,14 +575,6 @@ packages:
     version: 1.0.0
     dev: true
 
-  registry.npmmirror.com/@types/jquery@3.5.16:
-    resolution: {integrity: sha512-bsI7y4ZgeMkmpG9OM710RRzDFp+w4P1RGiIt30C1mSBT+ExCleeh4HObwgArnDFELmRrOpXgSYN9VF1hj+f1lw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/jquery/-/jquery-3.5.16.tgz}
-    name: '@types/jquery'
-    version: 3.5.16
-    dependencies:
-      '@types/sizzle': registry.npmmirror.com/@types/sizzle@2.3.3
-    dev: true
-
   registry.npmmirror.com/@types/json-schema@7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/json-schema/-/json-schema-7.0.11.tgz}
     name: '@types/json-schema'
@@ -613,12 +599,6 @@ packages:
     resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-18.15.11.tgz}
     name: '@types/node'
     version: 18.15.11
-    dev: true
-
-  registry.npmmirror.com/@types/sizzle@2.3.3:
-    resolution: {integrity: sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/sizzle/-/sizzle-2.3.3.tgz}
-    name: '@types/sizzle'
-    version: 2.3.3
     dev: true
 
   registry.npmmirror.com/@types/web-bluetooth@0.0.16:
@@ -1858,12 +1838,6 @@ packages:
     version: 1.18.2
     hasBin: true
     dev: true
-
-  registry.npmmirror.com/jquery@3.6.4:
-    resolution: {integrity: sha512-v28EW9DWDFpzcD9O5iyJXg3R3+q+mET5JhnjJzQUZMHOv67bpSIHq81GEYpPNZHG+XXHsfSme3nxp/hndKEcsQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/jquery/-/jquery-3.6.4.tgz}
-    name: jquery
-    version: 3.6.4
-    dev: false
 
   registry.npmmirror.com/json-parse-even-better-errors@2.3.1:
     resolution: {integrity: sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/json-parse-even-better-errors/-/json-parse-even-better-errors-2.3.1.tgz}

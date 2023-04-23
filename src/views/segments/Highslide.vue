@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import $ from "jquery";
-
-const highslideRef = ref<HTMLElement>();
-const imgRef = ref<HTMLElement>();
+const eleHighslide = ref<HTMLElement>();
+const eleImage = ref<HTMLElement>();
 const positionX = ref(0);
 const positionY = ref(0);
 const imgDegree = ref(0);
@@ -10,58 +8,47 @@ const imgWidth = ref(0);
 const imgHeight = ref(0);
 const animationOpened = ref(false);
 
-useDraggable(imgRef, {
+useDraggable(eleImage, {
   onMove(position) {
     positionX.value = position.x;
     positionY.value = position.y;
   },
   onStart() {
+    imgWidth.value = parseInt(eleImage.value.style.width);
+    imgHeight.value = parseInt(eleImage.value.style.height);
     animationOpened.value = false;
-    imgWidth.value = $(imgRef.value).width();
-    imgHeight.value = $(imgRef.value).height();
   }
 });
 
 function close() {
-  $(highslideRef.value).removeClass("active").addClass("noactive");
-  $("body").css({ overflow: "auto" });
+  eleHighslide.value.classList.toggle("active");
+  eleHighslide.value.classList.toggle("noactive");
+  document.documentElement.style.overflow = "auto";
   imgDegree.value = 0;
   positionX.value = 0;
   positionY.value = 0;
 }
 
-function zoom() {
-  animationOpened.value = true;
-  imgWidth.value = $(imgRef.value).width();
-  imgHeight.value = $(imgRef.value).height();
-}
-
 function zoomIn() {
-  zoom();
+  imgWidth.value = parseInt(eleImage.value.style.width);
+  imgHeight.value = parseInt(eleImage.value.style.height);
+  animationOpened.value = true;
   imgHeight.value += imgHeight.value * 0.15;
   imgWidth.value += imgWidth.value * 0.15;
 }
 
 function zoomOut() {
-  zoom();
+  imgWidth.value = parseInt(eleImage.value.style.width);
+  imgHeight.value = parseInt(eleImage.value.style.height);
+  animationOpened.value = true;
   imgHeight.value -= imgHeight.value * 0.15;
   imgWidth.value -= imgWidth.value * 0.15;
 }
 
-function rotate(direction: "right" | "left") {
-  animationOpened.value = true;
-  if (direction === "left") {
-    imgDegree.value += 90;
-  } else {
-    imgDegree.value -= 90;
-  }
-}
-
 onMounted(() => {
-  imgRef.value.addEventListener("mousewheel", e => {
-    animationOpened.value = false;
-    imgWidth.value = $(imgRef.value).width();
-    imgHeight.value = $(imgRef.value).height();
+  eleImage.value.addEventListener("mousewheel", e => {
+    imgWidth.value = parseInt(eleImage.value.style.width);
+    imgHeight.value = parseInt(eleImage.value.style.height);
     // @ts-ignore
     if (e.deltaY < 0) {
       imgHeight.value += imgHeight.value * 0.15;
@@ -76,20 +63,18 @@ onMounted(() => {
 
 <template>
   <Teleport to="body">
-    <div class="l-highslide l-matee-bg noactive" ref="highslideRef">
+    <div class="l-highslide l-matee-bg noactive" ref="eleHighslide">
       <div class="relative w-100% h-100%">
         <div class="l-highslide__box w-100% h-100% f-c-c">
           <img
-            ref="imgRef"
+            ref="eleImage"
             draggable="false"
-            style="max-width: initial"
             class="l-highslide__img noselect cursor-move"
             :class="{
-              fixed: positionX && positionY && EcyConfig.pcDevice ? true : false,
+              fixed: positionX && positionY && !!EcyConfig.pcDevice,
               transition: animationOpened
             }"
             :style="{
-              transform: 'rotate(' + imgDegree + 'deg)',
               left: positionX + 'px',
               top: positionY + 'px',
               width: imgWidth + 'px',
@@ -101,17 +86,11 @@ onMounted(() => {
         </div>
         <div class="z-99 f-c-c absolute bottom-4 left-0 w-100%">
           <div class="l-highslide__tool f-c-c">
-            <div class="mr-4 f-c-c hover" @click="zoomIn">
+            <div class="mr-6 f-c-c hover" @click="zoomIn">
               <i-ep-zoom-in />
             </div>
-            <div class="mr-4 f-c-c hover" @click="zoomOut">
+            <div class="f-c-c hover" @click="zoomOut">
               <i-ep-zoom-out />
-            </div>
-            <div class="mr-4 f-c-c hover" @click="rotate('right')">
-              <i-ep-refresh-left />
-            </div>
-            <div class="f-c-c hover" @click="rotate('left')">
-              <i-ep-refresh-right />
             </div>
           </div>
         </div>
@@ -143,9 +122,9 @@ onMounted(() => {
   transition: all 0.3s ease-in-out;
 }
 
-.highslide__img {
-  max-height: 100%;
-  max-width: 100%;
+.l-highslide__img {
+  max-width: initial !important;
+  max-height: initial !important;
 }
 
 .l-highslide__close {
