@@ -14,7 +14,7 @@ export namespace EcyUtils {
     return {
       theme: { mode: "dark" },
       toolkits: { pin: true },
-      cabinet: {
+      menu: {
         toggles: {
           我的技术栈: { open: true, show: true },
           博客信息: { open: true, show: true },
@@ -144,6 +144,10 @@ export namespace EcyUtils {
     document.getElementsByTagName("title")[0].innerText = `${prefix}${EcyConfig.blogApp} - 博客园`;
   }
 
+  export function scrollIntoView(selector: string) {
+    document.querySelector(selector).scrollIntoView();
+  }
+
   export namespace Random {
     function select(min: number, max: number) {
       let sum = max - min + 1;
@@ -193,17 +197,22 @@ export namespace EcyUtils {
   }
 
   export namespace Parser {
+    function fixed(trimed: string, suffix?: string, uint?: number, fix?: number) {
+      const result = (Number(trimed) / uint || 1000).toFixed(fix || 2);
+      return `${result}${suffix || ""}`;
+    }
+
     /**
      * 把一串数字转换为“xx万”的形式
      *
      * @param num 被格式化的数字
      */
     export function unit(num: string): string {
-      const trimedNum = num.trim();
-      if (trimedNum.length < 5) {
-        return (Number(trimedNum) / 1000).toFixed(2);
-      } else if (trimedNum.length >= 5 && trimedNum.length <= 7) {
-        return (Number(trimedNum) / 10000).toFixed(2) + "万";
+      const trimed = num.trim();
+      if (trimed.length < 5) {
+        return fixed(trimed);
+      } else if (trimed.length >= 5 && trimed.length <= 7) {
+        return fixed(trimed, "万", 10000);
       }
     }
   }
@@ -228,6 +237,27 @@ export namespace EcyUtils {
         source = source.replace(regExps[i], substitute);
       }
       return source;
+    }
+
+    /**
+     * 循环分割字符串，得到最后结果
+     *
+     * @param str 源字符串
+     * @param regex 从字符串中匹配想要的再进行切割
+     * @param keys 对每一次 match 得到的子串进行索引，即取值
+     * @param values 每一次 match 得到的子串
+     * @returns 从 str 经过多次 split 得到的子串
+     */
+    export function split(str: string, regex: RegExp, keys: number[], values: string[]) {
+      let matched;
+      if (keys.length !== values.length) return "";
+      if (str.match(regex)) {
+        matched = str.match(regex)[0];
+        for (let i = 0; i < keys.length; i++) {
+          matched = matched.split(values[i])[keys[i]];
+        }
+      }
+      return matched;
     }
   }
 
@@ -282,23 +312,23 @@ export namespace EcyConfig {
     } else return false;
   }
 
-  function initSetting() {
+  function loadedEcy() {
     const setting = EcyUtils.getLocalSetting().value;
     const strings = JSON.stringify(EcyUtils.reloadObjProps(setting, EcyUtils.getLocalSettingTemp()));
     localStorage.setItem(`l-${blogApp}-setting`, strings);
     document.documentElement.setAttribute("class", setting.theme.mode);
 
-    const fontFamily = EcyConfig.__ECY_CONFIG__.font.main || `var(--el-font-family)`;
+    const fontFamily = __ECY_CONFIG__.font.main || `var(--el-font-family)`;
     document.querySelector("html").style.setProperty("--l-font-family", fontFamily);
   }
 
-  function beforeUseLiteInsertElement() {
+  function beforeUseEcy() {
     const eleApp = document.createElement("div");
     eleApp.setAttribute("id", "app");
     document.body.append(eleApp);
   }
 
-  function afterUseLiteInsertElement() {
+  function afterUseEcy() {
     const eleIconLink = document.createElement("link");
     eleIconLink.rel = "shortcut icon";
     eleIconLink.href = __ECY_CONFIG__.icon;
@@ -311,7 +341,7 @@ export namespace EcyConfig {
    * @param pro 生产模式下，打包部署之后，给 window 注册一个函数，等待博客园资源加载完成之后再挂载 app。
    */
   export function useLite(dev: Function, pro: Function) {
-    beforeUseLiteInsertElement();
+    beforeUseEcy();
 
     if (import.meta.env.PROD) {
       blogId = currentBlogId;
@@ -323,15 +353,14 @@ export namespace EcyConfig {
       isFollow = getIsFollow();
       // @ts-ignore
       __ECY_CONFIG__ = window["__ECY_CONFIG__"];
-      initSetting();
+      loadedEcy();
       pro();
     } else if (import.meta.env.DEV) {
       blogId = import.meta.env.VITE_BLOG_ID;
       blogApp = import.meta.env.VITE_BLOG_APP;
-      EcyConfig.blogApp = import.meta.env.VITE_BLOG_APP;
       baseAPI = "/api";
       __ECY_CONFIG__ = {
-        cabinet: {},
+        menu: {},
         covers: {
           matte: {
             index: 0.15,
@@ -386,11 +415,11 @@ export namespace EcyConfig {
           main: ""
         }
       };
-      initSetting();
+      loadedEcy();
       dev();
     }
 
-    afterUseLiteInsertElement();
+    afterUseEcy();
     EcyUtils.Log.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-ecy");
     EcyUtils.Log.primary("v1.3.0", "The Theme was Created By Himmelbleu, and Powered By Vue3 & Vite.");
   }

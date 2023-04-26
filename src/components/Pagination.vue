@@ -35,13 +35,13 @@ function nexprChange(elIndex: number) {
 
 <template>
   <div class="pagination relative">
-    <div v-if="!disabled" class="sorter hover left f-c-c rd-l-4" @click="prevChange" v-show="index !== 1 && count">
+    <div v-if="!disabled" class="button hover left f-c-c rd-l-4" @click="prevChange" v-show="index !== 1 && count">
       <i-ep-arrow-left-bold />
     </div>
     <div class="content">
       <slot name="content" />
     </div>
-    <div v-if="!disabled" class="sorter hover right f-c-c rd-l-4" @click="nextChange" v-show="index !== count && count">
+    <div v-if="!disabled" class="button hover right f-c-c rd-l-4" @click="nextChange" v-show="index !== count && count">
       <i-ep-arrow-right-bold />
     </div>
     <div v-if="count && !disabled" class="bottom f-c-e my-4">
@@ -52,13 +52,13 @@ function nexprChange(elIndex: number) {
 
 <style scoped lang="scss">
 @include mb() {
-  .sorter {
+  .button {
     display: none;
   }
 }
 
 @include pc() {
-  .sorter {
+  .button {
     position: fixed;
     top: 50vh;
     opacity: 0.7;
@@ -67,11 +67,11 @@ function nexprChange(elIndex: number) {
     height: 2.5rem;
   }
 
-  .sorter.left {
+  .button.left {
     left: calc(calc(45vw / 2) - 4rem);
   }
 
-  .sorter.right {
+  .button.right {
     right: calc(calc(45vw / 2) - 4rem);
   }
 }

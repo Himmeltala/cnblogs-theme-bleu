@@ -1,19 +1,6 @@
 <script setup lang="ts">
-import { MenuApi } from "@/apis";
-
 EcyUtils.setTitle("我的铭牌");
 EcyUtils.startLoading();
-
-const news = shallowRef();
-const stats = shallowRef();
-
-MenuApi.getNews().then(newVal => {
-  news.value = newVal;
-});
-
-MenuApi.getStats().then(newVal => {
-  stats.value = newVal;
-});
 
 onMounted(() => {
   EcyUtils.endLoading();
@@ -21,44 +8,30 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="l-profile min-height mt-4 l-size-2 page">
+  <div class="l-profile page mt-4 l-size-2">
     <div class="content">
       <div class="mb-6 f-s-c">
         <div class="w-40%">
           <div class="mb-6">
             <div class="font-bold mb-2 title">{{ EcyConfig.blogApp }} 的博客</div>
-            <div :class="{ 'f-c-s': EcyConfig.pcDevice }">
+            <div :class="{ 'f-c-s': EcyConfig.pcDevice, 'text-center': !EcyConfig.pcDevice }">
               <img
                 class="w-25 h-25 rd-50"
-                :class="{ 'mr-10': EcyConfig.pcDevice, 'mb-4': !EcyConfig.pcDevice }"
+                :class="{ 'mr-6': EcyConfig.pcDevice, 'mb-4': !EcyConfig.pcDevice }"
                 :src="EcyConfig.__ECY_CONFIG__.avatar" />
-              <div>
-                <template v-if="news">
-                  <div class="mb-1 hover">圆龄：{{ news[1]?.text || "" }}</div>
-                  <div class="mb-1 hover">粉丝：{{ news[2]?.text || "" }}</div>
-                  <div class="mb-1 hover">关注：{{ news[3]?.text || "" }}</div>
-                </template>
-                <template v-if="stats">
-                  <div class="mb-1 hover">随笔：{{ stats[0]?.digg || "" }}</div>
-                  <div class="mb-1 hover">阅读：{{ stats[3]?.digg || "" }}</div>
-                </template>
-              </div>
+              <div class="hover" v-html="EcyConfig.__ECY_CONFIG__.nameplate.signature"></div>
             </div>
           </div>
-          <div>
-            <div class="mb-2 font-bold title">个人签名</div>
-            <div class="hover" v-html="EcyConfig.__ECY_CONFIG__.nameplate.signature"></div>
+          <div v-if="EcyConfig.pcDevice">
+            <div class="mb-4 font-bold title">个人标签</div>
+            <div class="hobbies f-c-s flex-wrap">
+              <HollowedBox class="mr-2 mb-4" hover round v-for="item in EcyConfig.__ECY_CONFIG__.nameplate.tags">{{ item }}</HollowedBox>
+            </div>
           </div>
         </div>
         <div class="w-60% mb-6">
           <div class="mb-2 font-bold title">个人简介</div>
           <div v-html="EcyConfig.__ECY_CONFIG__.nameplate.intro"></div>
-        </div>
-      </div>
-      <div class="mb-6">
-        <div class="mb-4 font-bold title">个人标签</div>
-        <div class="hobbies f-c-s flex-wrap">
-          <HollowedBox class="mr-2 mb-4" hover round v-for="item in EcyConfig.__ECY_CONFIG__.nameplate.tags">{{ item }}</HollowedBox>
         </div>
       </div>
       <div v-if="EcyConfig.pcDevice" class="f-s-b mb-6">
@@ -148,6 +121,12 @@ onMounted(() => {
         </div>
       </div>
       <div v-else>
+        <div class="mb-6">
+          <div class="mb-4 font-bold title">个人标签</div>
+          <div class="hobbies f-c-s flex-wrap">
+            <HollowedBox class="mr-2 mb-4" hover round v-for="item in EcyConfig.__ECY_CONFIG__.nameplate.tags">{{ item }}</HollowedBox>
+          </div>
+        </div>
         <div class="mb-6">
           <div class="mb-2 font-bold title">联系方式</div>
           <div class="f-s-s">

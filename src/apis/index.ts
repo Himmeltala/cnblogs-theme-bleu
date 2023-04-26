@@ -83,20 +83,20 @@ export namespace WorksApi {
    * @param id 分类 id
    * @param page 页数
    */
-  export async function getByTypeL1(id: string, page?: number | string) {
+  export async function getByL1(id: string, page?: number | string) {
     const { data } = await sendAwaitGet(`/category/${id}.html?page=${page || 1}`);
     return Parser.parseWorksFull(Parser.parseDOM(data));
   }
 
   /**
    * 获取随笔或文章的二级分类
+   *
    * @param id 分类 ID
-   * @param type 分类类型，随笔的类型是1，文章的类型是2
+   * @param isArticle 分类类型，随笔的类型是1，文章的类型是2
    */
-  export async function getByTypeL2(id: string, type?: "works" | "article") {
-    const _type = type === "works" || !type ? 1 : 2;
-    const { data } = await sendAwaitGet(`/ajax/TreeCategoryList.aspx?parentId=${id}&categoryType=${_type}`);
-    return Parser.parseWorksSortChild(Parser.parseDOM(data));
+  export async function getByL2(id: string, isArticle: boolean) {
+    const { data } = await sendAwaitGet(`/ajax/TreeCategoryList.aspx?parentId=${id}&categoryType=${isArticle ? 2 : 1}`);
+    return Parser.parseWorksByL2(Parser.parseDOM(data));
   }
 
   /**
@@ -172,7 +172,7 @@ export namespace WorksApi {
   }
 
   /**
-   * 获取一天之内的所有随笔、文章
+   * 获取日期下的随笔、文章
    *
    * @param date 2023/02/28
    */

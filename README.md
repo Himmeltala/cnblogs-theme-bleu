@@ -270,7 +270,7 @@ window.__ECY_CONFIG__ = {
 
 ```js
 window.__ECY_CONFIG__ = {
-  cabinet: {
+  menu: {
     links: [
       {
         href: "http://ts.xcatliu.com/index.html",
@@ -285,7 +285,7 @@ window.__ECY_CONFIG__ = {
 
 ```js
 window.__ECY_CONFIG__ = {
-  cabinet: {
+  menu: {
     books: [
       {
         href: "https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript/19848692",

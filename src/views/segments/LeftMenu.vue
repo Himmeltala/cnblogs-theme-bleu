@@ -60,7 +60,7 @@ const hidden = computed(() => {
   <div
     id="l-lmenu"
     class="l-size-2 z-9999 fixed top-0 left-0 noscroll flow-auto h-100vh l-back-bg p-3 w-17.5rem"
-    :class="{ 'show-lcabinet': block, 'hidden-lcabinet': hidden }">
+    :class="{ 'show-lmenu': block, 'hidden-lmenu': hidden }">
     <ExpandableBox text="博客信息" disabled>
       <template #icon>
         <i-ep-house />
@@ -129,7 +129,7 @@ const hidden = computed(() => {
                   class="hover"
                   :class="{ 'mb-1': index != columnList.essaySort.length - 1 }"
                   v-for="(item, index) in columnList.essaySort">
-                  <router-link :to="RouterPath.WORKS_BY_SORT('p', item.id)">
+                  <router-link :to="RouterPath.WORKS_BY_SORT(item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
@@ -157,7 +157,7 @@ const hidden = computed(() => {
                   class="hover"
                   :class="{ 'mb-1': index != columnList.articleSort.length - 1 }"
                   v-for="(item, index) in columnList.articleSort">
-                  <router-link :to="RouterPath.WORKS_BY_SORT('a', item.id)">
+                  <router-link :to="RouterPath.WORKS_BY_SORT(item.id)">
                     {{ item.text }}
                   </router-link>
                 </div>
@@ -227,7 +227,7 @@ const hidden = computed(() => {
                   我的相册
                 </template>
                 <div :class="{ 'mb-2': index != columnList.albumn.length - 1 }" v-for="(item, index) in columnList.albumn" :key="index">
-                  <router-link class="hover" :to="'/albumn/' + item.id">{{ item.text }}</router-link>
+                  <router-link class="hover" :to="RouterPath.ALBUMN(item.id)">{{ item.text }}</router-link>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -284,12 +284,12 @@ $quota: 10;
   transition: var(--l-animation-effect);
 }
 
-.show-lcabinet {
-  animation: showlcabinet 0.3s linear;
+.show-lmenu {
+  animation: showlmenu 0.3s linear;
   transform: translateX(0);
 }
 
-@keyframes showlcabinet {
+@keyframes showlmenu {
   @for $i from 0 to $quota {
     #{$i * 10%} {
       transform: translateX(calc(-17.5rem + $i * 1.75rem));
@@ -297,12 +297,12 @@ $quota: 10;
   }
 }
 
-.hidden-lcabinet {
-  animation: hiddenlcabinet 0.3s linear;
+.hidden-lmenu {
+  animation: hiddenlmenu 0.3s linear;
   transform: translateX(-17.5rem);
 }
 
-@keyframes hiddenlcabinet {
+@keyframes hiddenlmenu {
   @for $i from 0 to $quota {
     #{$i * 10%} {
       transform: translateX(calc($i * -1.75rem));

@@ -3,39 +3,18 @@ import { WorksApi } from "@/apis";
 
 const route = useRoute();
 let sortId = route.params.id as string;
-let sortMode = route.params.mode as "a" | "p";
 const typeL2Works = shallowRef();
 const typeL1Works = shallowRef();
 const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works;
 const imgsIndex = shallowRef();
 
 async function fetchData(index?: any) {
-  let typeL2WorksPromise;
   EcyUtils.startLoading();
-
-  switch (sortMode) {
-    case "a":
-      typeL2WorksPromise = WorksApi.getByTypeL2(`${sortId}`, "article");
-      break;
-    case "p":
-      typeL2WorksPromise = WorksApi.getByTypeL2(`${sortId}`);
-      break;
-    default:
-      typeL2WorksPromise = Promise.reject(new Error("Invalid archive mode provided."));
-      break;
-  }
-
-  try {
-    const [typeL1WorksResp, typeL2WorksResp] = await Promise.all([WorksApi.getByTypeL1(`${sortId}`, index), typeL2WorksPromise]);
-    typeL1Works.value = typeL1WorksResp;
-    typeL2Works.value = typeL2WorksResp;
-    imgsIndex.value = EcyUtils.Random.get(worksImgs, typeL1Works.value.data.length);
-    EcyUtils.setTitle(typeL1Works.value.hint);
-  } catch (error) {
-    ElMessage.error(error);
-  } finally {
-    EcyUtils.endLoading();
-  }
+  typeL1Works.value = await WorksApi.getByL1(`${sortId}`, index);
+  EcyUtils.endLoading();
+  typeL2Works.value = await WorksApi.getByL2(`${sortId}`, typeL1Works.value.isArticle);
+  imgsIndex.value = EcyUtils.Random.get(worksImgs, typeL1Works.value.data.length);
+  EcyUtils.setTitle(typeL1Works.value.hint);
 }
 
 await fetchData();
@@ -43,14 +22,13 @@ await fetchData();
 watch(route, async () => {
   if (route.name === RouterName.WORKS_BY_SORT) {
     sortId = route.params.id as string;
-    sortMode = route.params.mode as "a" | "p";
     await fetchData();
   }
 });
 </script>
 
 <template>
-  <div id="l-sort" class="min-height page">
+  <div id="l-works-by-sort" class="page">
     <div class="content">
       <Pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="typeL1Works.page" :disabled="!typeL1Works.data.length">
         <template #content>
@@ -64,11 +42,11 @@ watch(route, async () => {
               <div class="l-size-5 mb-5 mt-4">{{ typeL1Works.hint }}</div>
             </template>
           </el-page-header>
-          <div class="l-sort__desc mb-10 l-size-2 l-color-3" v-html="typeL1Works.desc2 || typeL1Works.desc"></div>
-          <div class="l-sort__child l-size-2" v-if="typeL2Works.length > 0">
+          <div class="mb-10 l-size-2 l-color-3" v-html="typeL1Works.desc2 || typeL1Works.desc"></div>
+          <div class="l-size-2" v-if="typeL2Works.length > 0">
             <div class="hover f-c-s" v-for="(item, index) in typeL2Works" :class="{ 'mb-3': index != typeL2Works.length - 1 }">
               <span class="mr-2">📁</span>
-              <router-link :to="RouterPath.WORKS_BY_SORT(sortMode, item.id)">{{ item.text }}</router-link>
+              <router-link :to="RouterPath.WORKS_BY_SORT(item.id)">{{ item.text }}</router-link>
             </div>
           </div>
           <WorksItem

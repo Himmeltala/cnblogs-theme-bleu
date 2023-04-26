@@ -19,20 +19,20 @@ const hidden = computed(() => {
   <div
     id="l-rmenu"
     class="noscroll z-9999 l-size-2 h-100vh flow-auto fixed top-0 right-0 l-back-bg p-3 w-17.5rem"
-    :class="{ 'show-rcabinet ': block, 'hidden-rcabinet': hidden }">
-    <ExpandableBox text="常用链接" v-if="EcyConfig.__ECY_CONFIG__.cabinet.links && EcyConfig.__ECY_CONFIG__.cabinet.links.length">
+    :class="{ 'show-rmenu ': block, 'hidden-rmenu': hidden }">
+    <ExpandableBox text="常用链接" v-if="EcyConfig.__ECY_CONFIG__.menu.links?.length">
       <template #icon>
         <i-ep-link />
       </template>
-      <a class="hover block mb-3" v-for="item in EcyConfig.__ECY_CONFIG__.cabinet.links" :href="item.href" target="_blank">
+      <a class="hover block mb-3" v-for="item in EcyConfig.__ECY_CONFIG__.menu.links" :href="item.href" target="_blank">
         {{ item.text }}
       </a>
     </ExpandableBox>
-    <ExpandableBox text="推荐书籍" v-if="EcyConfig.__ECY_CONFIG__.cabinet.books && EcyConfig.__ECY_CONFIG__.cabinet.books.length">
+    <ExpandableBox text="推荐书籍" v-if="EcyConfig.__ECY_CONFIG__.menu.books?.length">
       <template #icon>
         <i-ep-notebook />
       </template>
-      <div class="mb-3 f-c-b" v-for="item in EcyConfig.__ECY_CONFIG__.cabinet.books">
+      <div class="mb-3 f-c-b" v-for="item in EcyConfig.__ECY_CONFIG__.menu.books">
         <img class="h-25 w-20" :src="item.img" alt="FAILED" />
         <div style="width: calc(100% - 6rem)">
           <div class="mb-1" v-if="!item.href">
@@ -58,12 +58,12 @@ $quota: 10;
   transition: var(--l-animation-effect);
 }
 
-.show-rcabinet {
-  animation: showrcabinet 0.3s linear;
+.show-rmenu {
+  animation: showrmenu 0.3s linear;
   transform: translateX(0);
 }
 
-@keyframes showrcabinet {
+@keyframes showrmenu {
   @for $i from 0 to $quota {
     #{$i * 10%} {
       transform: translateX(calc(17.5rem + $i * -1.75rem));
@@ -71,12 +71,12 @@ $quota: 10;
   }
 }
 
-.hidden-rcabinet {
-  animation: hiddenrcabinet 0.3s linear;
+.hidden-rmenu {
+  animation: hiddenrmenu 0.3s linear;
   transform: translateX(17.5rem);
 }
 
-@keyframes hiddenrcabinet {
+@keyframes hiddenrmenu {
   @for $i from 0 to $quota {
     #{$i * 10%} {
       transform: translateX($i * 1.75rem);

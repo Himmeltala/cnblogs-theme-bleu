@@ -51,14 +51,13 @@ export namespace RouterPath {
   }
 
   /**
-   * @param mode a -> 文章分类；p -> 随笔分类
    * @param id 文章或随笔 ID
-   * @returns "/sort/:mode/:id"
+   * @returns "/sort/:id"
    */
-  export function WORKS_BY_SORT(mode?: "a" | "p", id?: string | number) {
-    if (mode && id) {
-      return `/sort/${mode}/${id}`;
-    } else return "/sort/:mode/:id";
+  export function WORKS_BY_SORT(id?: string | number) {
+    if (id) {
+      return `/sort/${id}`;
+    } else return "/sort/:id";
   }
 
   /**
@@ -111,7 +110,7 @@ export namespace RouterPath {
 export namespace RouterRegx {
   export const WORKS = /\/p\/\d+.html/g;
   export const WORKS_BY_SORT = /\/category\/\d+/g;
-  export const WORKS_BY_MARK = /\/tag\/[\w\s\u4e00-\u9fa5\n.\-|_]+/g;
+  export const WORKS_BY_MARK = /\/tag\/[\w\s\u4e00-\u9fa5\n\-\_%]+/g;
   export const ARTICLES = /\/articles\/\d+.html/g;
   export const ALBUMN_ITEM = /\/gallery\/image\/\d+/g;
 }

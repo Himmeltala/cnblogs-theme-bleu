@@ -134,6 +134,7 @@ declare namespace CustType {
     desc?: string;
     // 子分类描述
     desc2?: string;
+    isArticle?: boolean;
   }
 
   /**
@@ -145,9 +146,9 @@ declare namespace CustType {
   }
 
   /**
-   * 分类子分类
+   * 二级分类
    */
-  interface IWorksSortChild {
+  interface IWorksL2 {
     id: string;
     text: string;
   }
@@ -213,7 +214,7 @@ declare namespace CustType {
   type IEcy = Partial<{
     icon: string;
     avatar: string;
-    cabinet: Partial<{
+    menu: Partial<{
       links: { href: string; text: string }[];
       books: { href?: string; text: string; img: string; author: string; rate: number }[];
     }>;
@@ -253,7 +254,7 @@ declare namespace CustType {
   type ILocalSetting = Partial<{
     theme: { mode: "dark" | "light" };
     toolkits: { pin: boolean };
-    cabinet: {
+    menu: {
       toggles: Record<string, { open: boolean; show: boolean }>;
     };
   }>;
@@ -270,6 +271,7 @@ declare namespace EcyUtils {
   function openImageUploadWindow(el: string, onUploaded: (img: string) => void): void;
   function reloadObjProps(source: CustType.ILocalSetting, template: CustType.ILocalSetting): CustType.ILocalSetting;
   function setTitle(title?: string);
+  function scrollIntoView(selector: string);
 
   namespace Random {
     function get(src: string[], max?: number): number[];
@@ -286,6 +288,7 @@ declare namespace EcyUtils {
 
   namespace Text {
     function replace(source: string, regExps: RegExp[], replacement?: string[]): string;
+    function split(str: string, regex: RegExp, keys: number[], values: string[]): string;
   }
 
   namespace Router {

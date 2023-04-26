@@ -6,7 +6,7 @@ import { createPinia } from "pinia";
 /* Import CSS */
 import "uno.css";
 import "@/style.scss";
-import { useDirective } from "@/utils/directive-helper";
+import { useDirective } from "@/helpers/directive-helper";
 
 const app = createApp(App);
 app.use(router);

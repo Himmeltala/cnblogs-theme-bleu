@@ -24,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="l-tagcoll" class="min-height page">
+  <div id="l-works-by-mark" class="page">
     <div class="content">
       <el-page-header :icon="null" @back="EcyUtils.Router.go({ path: 'back', router: $router })">
         <template #title>

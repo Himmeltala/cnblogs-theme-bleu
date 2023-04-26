@@ -69,7 +69,7 @@ onMounted(() => {
 
   if (anchor) {
     setTimeout(() => {
-      document.getElementById(`#${anchor[0].replace("#", "")}`).scrollIntoView();
+      EcyUtils.scrollIntoView(`#${anchor[0].replace("#", "")}`);
     }, 500);
   }
 
@@ -80,7 +80,7 @@ await fetchData();
 </script>
 
 <template>
-  <div v-show="!worksIsLocked" class="welcome l-works-welcome relative h-50vh w-100vw">
+  <div v-show="!worksIsLocked" class="reception works-head-panel relative h-50vh w-100vw">
     <div class="cover z-999 absolute left-0 top-0 h-100% w-100%">
       <img class="h-100% w-100% rd-0" :src="getWorksCover" />
     </div>
@@ -119,7 +119,7 @@ await fetchData();
                 line="dotted"
                 hover
                 round
-                @click="EcyUtils.Router.go({ path: RouterPath.WORKS_BY_SORT('p', item.href), router: $router })">
+                @click="EcyUtils.Router.go({ path: RouterPath.WORKS_BY_SORT(item.href), router: $router })">
                 {{ item.text }}
               </HollowedBox>
             </div>
@@ -218,12 +218,12 @@ await fetchData();
 code {
   margin: 0;
   --uno: rd-2 l-size-3;
-  letter-spacing: 1.2px;
-  color: var(--el-color-danger-light-3);
+  letter-spacing: 1.3px;
+  color: var(--el-color-danger);
   font-family: v-bind(codeFontFamily);
 
   span {
-    line-height: 1.6;
+    line-height: 1.7;
     font-family: v-bind(codeFontFamily);
   }
 }
@@ -294,12 +294,10 @@ a > code {
     }
 
     blockquote {
-      --uno: l-size-3;
       background-color: var(--l-blockquote-bg);
       color: var(--l-color-2);
       margin: 0;
       border: {
-        radius: 0.25rem;
         left: {
           width: 0.3rem;
           color: var(--l-theme-color);
@@ -313,7 +311,7 @@ a > code {
 
       p {
         margin: 0 !important;
-        padding-left: 0.5rem;
+        padding-left: 1rem;
       }
     }
 
@@ -328,7 +326,9 @@ a > code {
     }
 
     p {
-      line-height: 1.7;
+      margin-top: 1.4rem;
+      margin-bottom: 1.4rem;
+      line-height: 1.9;
     }
 
     img {
@@ -337,8 +337,28 @@ a > code {
 
     ol,
     ul {
+      padding-left: 3rem;
+
       li {
+        margin-bottom: 1.4rem;
+        position: relative;
         line-height: 1.7;
+        list-style-type: none;
+        counter-increment: step-counter;
+
+        &::before {
+          content: counter(step-counter);
+          border-radius: 50%;
+          height: 2rem;
+          width: 2rem;
+          position: absolute;
+          top: 0;
+          left: -2.5rem;
+          --uno: f-c-c;
+          font-weight: 400;
+          color: var(--l-color-1);
+          background: var(--l-step-bg);
+        }
       }
 
       li:last-child {
@@ -367,7 +387,7 @@ a > code {
 </style>
 
 <style scoped lang="scss">
-.welcome {
+.reception {
   .cover::before {
     backdrop-filter: blur(v-bind(coverFilter));
     z-index: 1;

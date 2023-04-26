@@ -6,14 +6,14 @@ hljs.configure({
 });
 
 function createCodeModal(ele: HTMLElement) {
-  const height = parseInt(ele.style.height);
+  const height = Number(ele.offsetHeight);
 
   if (height >= 380) {
     const eleModal = document.createElement("div");
     eleModal.setAttribute("class", "modal f-c-c rd-2");
 
     const eleClick = document.createElement("div");
-    eleClick.setAttribute("class", "l-size-2 l-color-3 hover");
+    eleClick.setAttribute("class", "l-size-2 l-color-2 hover");
     eleClick.innerText = "展开";
     ele.style.height = "380px";
 
@@ -23,7 +23,8 @@ function createCodeModal(ele: HTMLElement) {
       eleModal.style.display = "none";
     });
 
-    eleModal.insertAdjacentElement("beforebegin", eleClick);
+    eleModal.append(eleClick);
+    ele.insertAdjacentElement("beforebegin", eleModal);
   }
 }
 
@@ -44,7 +45,7 @@ function createCodeTools(ele: HTMLElement) {
   eleLang.innerText = lang;
 
   const eleTools = document.createElement("div");
-  eleTools.setAttribute("class", "code-tools f-c-e l-size-1 l-color-3 w-100%");
+  eleTools.setAttribute("class", "code-tools f-c-e l-size-1 l-color-2 w-100%");
   eleTools.append(eleClipboard, eleLang);
 
   eleClipboard.addEventListener("click", () => {
@@ -60,8 +61,8 @@ function createCodeTools(ele: HTMLElement) {
 /**
  * 构造代码高亮
  */
-function useVHljs() {
-  const eleCodes = document.querySelectorAll<HTMLElement>("pre code");
+function useVHljs(el: HTMLElement) {
+  const eleCodes = el.querySelectorAll<HTMLElement>("pre code");
   eleCodes.forEach(eleCode => {
     hljs.highlightElement(eleCode);
     createCodeTools(eleCode);
@@ -72,10 +73,10 @@ function useVHljs() {
 /**
  * 构造数学公式
  */
-function useVMathjax() {
+function useVMathjax(el: HTMLElement) {
   // @ts-ignore
   const MathJax = window.MathJax;
-  const nodes = document.getElementsByClassName("math");
+  const nodes = el.getElementsByClassName("math");
 
   if (MathJax && nodes.length > 0) {
     MathJax.startup.promise = MathJax.startup.promise
@@ -122,7 +123,7 @@ function useVCatalog(el: HTMLElement) {
  */
 function useCatalogEvents(binding: any) {
   document.getElementById(`catalog-${binding.value.id}`).addEventListener("click", () => {
-    document.getElementById(binding.value.id).scrollIntoView();
+    EcyUtils.scrollIntoView(`#${binding.value.id}`);
   });
 }
 
@@ -136,7 +137,6 @@ function useVHighslide(el: HTMLElement) {
     eleHighslideImage.src = eleImage.getAttribute("src");
     eleHighslideImage.style.width = `${eleImage.width}px`;
     eleHighslideImage.style.height = `${eleImage.height}px`;
-
     document.documentElement.style.overflow = "hidden";
   }
 
@@ -163,12 +163,12 @@ export function useDirective(Vue: any) {
    * 对 pre code 代码进行格式化
    */
   Vue.directive("hljs", {
-    mounted() {
-      useVHljs();
+    mounted(el: HTMLElement) {
+      useVHljs(el);
     },
     updated(el: HTMLElement, binding: any) {
       if (binding.value != binding.oldValue) {
-        useVHljs();
+        useVHljs(el);
       }
     }
   });
@@ -177,12 +177,12 @@ export function useDirective(Vue: any) {
    * 对指定元素下的标签进行数学公式格式化
    */
   Vue.directive("mathjax", {
-    mounted() {
-      useVMathjax();
+    mounted(el: HTMLElement) {
+      useVMathjax(el);
     },
     updated(el: HTMLElement, binding: any) {
       if (binding.value != binding.oldValue) {
-        useVMathjax();
+        useVMathjax(el);
       }
     }
   });

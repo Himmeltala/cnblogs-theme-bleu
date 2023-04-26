@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { redirect, routes } from "@/utils/router-helper";
+import { redirect, routes } from "@/helpers/router-helper";
 
 const router = createRouter({
   routes,
@@ -14,7 +14,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  redirect(next)();
+  redirect(next);
 });
 
 export default router;

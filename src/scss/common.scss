@@ -44,14 +44,6 @@
   }
 }
 
-.min-height {
-  min-height: calc(100vh - 3rem);
-}
-
-.noselect {
-  user-select: none;
-}
-
 .clearfix:after {
   content: "";
   height: 0;
@@ -88,7 +80,7 @@
     }
   }
 
-  .l-works-welcome {
+  .works-head-panel {
     .content {
       --uno: f-c-c;
 
@@ -105,14 +97,14 @@
     width: 100%;
   }
 
-  .l-works-welcome {
+  .works-head-panel {
     .content {
       --uno: px-4;
     }
   }
 }
 
-.welcome {
+.reception {
   * {
     color: #ededed !important;
   }

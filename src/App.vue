@@ -97,11 +97,3 @@ watch(route, async () => {
   }
 }
 </style>
-
-<style scoped lang="scss">
-@include mb() {
-  #l-github {
-    display: none;
-  }
-}
-</style>

@@ -65,11 +65,11 @@ onMounted(() => {
   <Teleport to="body">
     <div class="l-highslide l-matee-bg noactive" ref="eleHighslide">
       <div class="relative w-100% h-100%">
-        <div class="l-highslide__box w-100% h-100% f-c-c">
+        <div class="w-100% h-100% f-c-c">
           <img
             ref="eleImage"
             draggable="false"
-            class="l-highslide__img noselect cursor-move"
+            class="l-highslide__img select-none cursor-move"
             :class="{
               fixed: positionX && positionY && !!EcyConfig.pcDevice,
               transition: animationOpened

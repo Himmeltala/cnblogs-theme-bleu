@@ -20,19 +20,15 @@ async function fetchData(index: any) {
   });
 }
 
-function toStartNail() {
-  document.querySelector("#l-start-nail").scrollIntoView();
-}
-
 onMounted(() => {
   EcyUtils.endLoading();
 });
 </script>
 
 <template>
-  <div class="welcome relative h-100vh w-100vw">
+  <div class="reception relative h-100vh w-100vw">
     <div class="z-999 absolute bottom-15vh left-0 f-c-c w-100vw">
-      <div class="w-10 h-10 hover" @click="toStartNail">
+      <div class="w-10 h-10 hover" @click="EcyUtils.scrollIntoView('#l-start-nail')">
         <i-ep-arrow-down-bold class="arrow hover" />
       </div>
     </div>
@@ -63,7 +59,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.welcome {
+.reception {
   .cover::before {
     backdrop-filter: blur(v-bind(coverFilter));
     z-index: 1;

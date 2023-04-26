@@ -46,7 +46,7 @@ export default defineConfig(({ command, mode }) => {
           },
           {
             from: "vue-router",
-            imports: ["Router"],
+            imports: ["Router", "NavigationGuardNext"],
             type: true
           },
           {

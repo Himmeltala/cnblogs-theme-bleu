@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const setting = EcyUtils.getLocalSetting();
+const localSetting = EcyUtils.getLocalSetting();
 const props = defineProps({
   text: {
     type: String,
@@ -12,8 +12,8 @@ const props = defineProps({
 });
 
 const title = `${props.text}`;
-if (!setting.value.cabinet.toggles[title]) {
-  setting.value.cabinet.toggles[title] = {
+if (!localSetting.value.menu.toggles[title]) {
+  localSetting.value.menu.toggles[title] = {
     open: true,
     show: true
   };
@@ -22,47 +22,35 @@ if (!setting.value.cabinet.toggles[title]) {
 const content = ref();
 const height = ref();
 
-function toggleClose() {
-  content.value.style.height = `${0}px`;
-  setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
-}
-
-function toggleOpen() {
-  content.value.style.height = `${height.value}px`;
-  setting.value.cabinet.toggles[title].open = !setting.value.cabinet.toggles[title].open;
-}
-
 function toggle() {
-  if (setting.value.cabinet.toggles[title]?.open) {
-    toggleClose();
+  if (localSetting.value.menu.toggles[title]?.open) {
+    content.value.style.height = `${0}px`;
+    localSetting.value.menu.toggles[title].open = !localSetting.value.menu.toggles[title].open;
   } else {
-    toggleOpen();
+    content.value.style.height = `${height.value}px`;
+    localSetting.value.menu.toggles[title].open = !localSetting.value.menu.toggles[title].open;
   }
 }
 
-function initHeight() {
-  height.value = content.value.style.height;
+onMounted(() => {
+  height.value = content.value.offsetHeight;
 
   if (!props.disabled) {
-    if (!setting.value.cabinet.toggles[title]?.open) {
+    if (!localSetting.value.menu.toggles[title]?.open) {
       content.value.style.height = `${0}px`;
     } else {
       content.value.style.height = `${height.value}px`;
     }
   }
-}
-
-onMounted(() => {
-  initHeight();
 });
 </script>
 
 <template>
-  <div class="l-expbox mb-6" v-show="setting.cabinet.toggles[title]?.show">
+  <div class="l-expbox mb-6" v-show="localSetting.menu.toggles[title]?.show">
     <div class="title headtip mb-4 f-c-b l-size-5 l-color-1">
       <div class="f-c-s">
         <div class="f-c-c mr-1">
-          <slot name="icon" />
+          <slot name="icon"></slot>
         </div>
         {{ text }}
       </div>
@@ -70,14 +58,14 @@ onMounted(() => {
         v-if="!disabled"
         @click="toggle"
         class="f-c-c opacity-70 hover"
-        :class="{ 'arrow-up': !setting.cabinet.toggles[title]?.open, 'arrow-down': setting.cabinet.toggles[title]?.open }">
+        :class="{ 'arrow-up': !localSetting.menu.toggles[title]?.open, 'arrow-down': localSetting.menu.toggles[title]?.open }">
         <div class="arrow f-c-c">
           <i-ep-arrow-down />
         </div>
       </div>
     </div>
     <div ref="content" class="content l-color-2">
-      <slot />
+      <slot></slot>
     </div>
   </div>
 </template>

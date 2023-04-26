@@ -51,7 +51,7 @@ watch(route, async () => {
 </script>
 
 <template>
-  <div id="l-archive" class="min-height page">
+  <div id="l-works-by-archive" class="page">
     <div class="content">
       <Pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="archiveWorks.page">
         <template #content>

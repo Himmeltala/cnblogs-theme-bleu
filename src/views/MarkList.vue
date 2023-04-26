@@ -12,8 +12,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="page mt-4">
-    <div id="l-tags" class="content min-height">
+  <div id="l-mark-list" class="page mt-4">
+    <div class="content">
       <HollowedBox round hover line="dotted" class="item mb-4" v-for="item of markList">
         <div class="f-c-c w-100% h-100%">
           <router-link :to="RouterPath.WORKS_BY_MARK(item.text)"> {{ item.text }} ({{ item.count }}) </router-link>

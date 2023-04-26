@@ -26,7 +26,7 @@ function getPage(dom: Element) {
 }
 
 /**
- * 只适用于获取首页随笔列表；日历随笔、文章列表。列表项包含描述、评论、点赞的随笔列表。
+ * 获取首页随笔列表：日期下的随笔和文章。列表项包含描述、评论、点赞的随笔列表。
  */
 export function parseWorksList(dom: Document): CustType.IWorksList {
   const id = dom.getElementsByClassName("postTitle2");
@@ -189,9 +189,7 @@ export function parseWorksPrevNext(dom: Document): CustType.IPrevNext {
 }
 
 /**
- * 获取分类和档案的随笔、文章列表。列表项包含描述、评论、点赞的随笔列表。
- *
- * 只适用于获取分类、档案的随笔、文章列表。
+ * 获取随笔档案、文章档案、随笔分类、档案分类四种列表。列表项包含描述、评论、点赞的随笔列表。
  */
 export function parseWorksFull(dom: Document): CustType.IWorksList2 {
   const data: CustType.IWorks[] = [];
@@ -202,6 +200,8 @@ export function parseWorksFull(dom: Document): CustType.IWorksList2 {
   const diggReg = /推荐\([0-9]+\)/g;
 
   const eleList = dom.getElementsByClassName("entrylistItem");
+  const eleListTitle = dom.getElementsByClassName("entrylistTitle")[0];
+  const isArticle = !/随笔分类/g.test(eleListTitle.innerText);
 
   for (let i = 0; i < eleList.length; i++) {
     const item = eleList[i].getElementsByClassName("entrylistItemPostDesc")[0].innerText;
@@ -235,14 +235,13 @@ export function parseWorksFull(dom: Document): CustType.IWorksList2 {
     desc2,
     page: getPage(dom.querySelectorAll("#mainContent .pager")[0]),
     hint,
-    data
+    data,
+    isArticle
   };
 }
 
 /**
- * 获取随笔、文章列表。
- *
- * 只适用于获取以标签区别的随笔、文章列表。
+ * 获取随笔和文章列表，列表通过标签查询。
  */
 export function parseWorksSlice(dom: Document): CustType.IWorksList2 {
   const head = dom.querySelectorAll(".PostList > .postTitl2 > a");
@@ -445,7 +444,7 @@ export function parseMasterData(dom: Document): CustType.IMenuItemData[] {
 /**
  * 解析侧边栏博客排行信息。
  */
-export function parseCabinetRankList(dom: string): CustType.IMenuItemData[] {
+export function parseMenuRankList(dom: string): CustType.IMenuItemData[] {
   const data: CustType.IMenuItemData[] = [];
   const eles = parseDOM(dom).querySelectorAll("li");
 
@@ -530,7 +529,7 @@ export function parseIsUnLock(dom: Document): boolean {
   }
 }
 
-export function parseWorksSortChild(dom: Document): CustType.IWorksSortChild[] {
+export function parseWorksByL2(dom: Document): CustType.IWorksL2[] {
   const nodeList = dom.getElementsByTagName("li");
   return Array.from(nodeList).map(ele => ({
     id: ele.getAttribute("data-category-id"),
