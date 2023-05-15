@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { WorksApi } from "@/apis";
-
-EcyUtils.setTitle("日历");
-EcyUtils.startLoading();
+import { useLoading } from "@/hooks/comp-hooks";
 
 const date = new Date();
-const calendar = shallowRef(await WorksApi.getCalendar(`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`));
+const calendar = shallowRef();
 const dateModel = ref(date);
 
 function findDate(data: any) {
@@ -13,20 +11,24 @@ function findDate(data: any) {
   return calendar.value.includes(date);
 }
 
-watch(dateModel, async (newVal, oldVal) => {
-  if (newVal.getMonth() !== oldVal.getMonth()) {
-    calendar.value = await WorksApi.getCalendar(`${newVal.getFullYear()}/${newVal.getMonth() + 1}/${newVal.getDate()}`);
-  }
-});
+async function fetchData() {
+  calendar.value = await WorksApi.getCalendar(
+    `${dateModel.value.getFullYear()}/${dateModel.value.getMonth() + 1}/${dateModel.value.getDate()}`
+  );
+}
 
-onMounted(() => {
-  EcyUtils.endLoading();
+useLoading(fetchData);
+
+watch(dateModel, (newVal, oldVal) => {
+  if (newVal.getMonth() !== oldVal.getMonth()) {
+    useLoading(fetchData);
+  }
 });
 </script>
 
 <template>
   <div class="l-works-by-calendar page">
-    <div class="content">
+    <div class="content" v-if="calendar">
       <el-page-header class="mt-4 mb-6" :icon="null" @back="EcyUtils.Router.go({ path: 'back', router: $router })">
         <template #title>
           <div class="f-c-c">

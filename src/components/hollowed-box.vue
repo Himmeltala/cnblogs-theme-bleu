@@ -19,6 +19,10 @@ defineProps({
   round: {
     type: Boolean,
     default: false
+  },
+  padding: {
+    type: Boolean,
+    default: true
   }
 });
 
@@ -28,17 +32,20 @@ function translate(prop: string): string {
 </script>
 
 <template>
-  <span
+  <div
     class="l-hollobox"
-    :class="{ round: round, hover: hover, [translate(textColor)]: textColor, [translate(fontSize)]: fontSize }"
+    :class="{ round: round, hover: hover, [translate(textColor)]: textColor, [translate(fontSize)]: fontSize, padding: padding }"
     :style="{ 'border-style': line }">
     <slot />
-  </span>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .l-hollobox {
   border-width: 1px;
+}
+
+.l-hollobox.padding {
   padding: {
     top: 0.3rem;
     bottom: 0.3rem;

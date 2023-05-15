@@ -15,7 +15,7 @@ const worksCovers = EcyConfig.__ECY_CONFIG__.covers.works;
 const eleComments = ref();
 let worksId = route.params.id as string;
 
-const getWorksCover = computed(() => {
+const calcWorksCover = computed(() => {
   return worksCovers[Math.floor(Math.random() * worksCovers.length)];
 });
 
@@ -82,7 +82,7 @@ await fetchData();
 <template>
   <div v-show="!worksIsLocked" class="reception works-head-panel relative h-50vh w-100vw">
     <div class="cover z-999 absolute left-0 top-0 h-100% w-100%">
-      <img class="h-100% w-100% rd-0" :src="getWorksCover" />
+      <img class="h-100% w-100% rd-0" :src="calcWorksCover" />
     </div>
     <div class="content z-999 absolute left-0 top-10vh w-100%">
       <div>
@@ -115,13 +115,13 @@ await fetchData();
               <span>分类：</span>
             </div>
             <div v-for="(item, index) in worksProps.sorts" :class="{ 'mr-2': index !== worksProps.sorts.length - 1 }">
-              <HollowedBox
+              <hollowed-box
                 line="dotted"
                 hover
                 round
                 @click="EcyUtils.Router.go({ path: RouterPath.WORKS_BY_SORT(item.href), router: $router })">
                 {{ item.text }}
-              </HollowedBox>
+              </hollowed-box>
             </div>
           </div>
           <div class="f-c-s flex-wrap l-size-2" v-if="worksProps.tags.length > 0">
@@ -130,13 +130,13 @@ await fetchData();
               <span>标签：</span>
             </div>
             <div v-for="(item, index) in worksProps.tags" :class="{ 'mr-2': index !== worksProps.tags.length - 1 }">
-              <HollowedBox
+              <hollowed-box
                 line="dotted"
                 hover
                 round
                 @click="EcyUtils.Router.go({ path: RouterPath.WORKS_BY_MARK(item.text), router: $router })">
                 {{ item.text }}
-              </HollowedBox>
+              </hollowed-box>
             </div>
           </div>
         </div>
@@ -151,8 +151,8 @@ await fetchData();
     <div class="content">
       <div v-show="!worksIsLocked">
         <div class="l-size-4" v-html="works.content" v-hljs="works.text" v-highslide="works.text" v-mathjax="works.text" v-catalog></div>
-        <Highslide />
-        <Catalog />
+        <highslide />
+        <catalog />
         <div class="divider flex-col"></div>
         <div class="l-color-2 f-c-e l-size-2">
           <div class="f-c-c mr-4">
@@ -196,7 +196,7 @@ await fetchData();
             </el-button>
           </div>
         </div>
-        <Comment :post-id="worksId" ref="eleComments" />
+        <comment :post-id="worksId" ref="eleComments" />
       </div>
       <div v-if="worksIsLocked">
         <div class="modal fixed w-100vw h-100vh top-0 left-0 l-back-bg f-c-c z-999999">

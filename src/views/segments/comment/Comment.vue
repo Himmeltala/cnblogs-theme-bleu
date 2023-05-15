@@ -44,7 +44,7 @@ defineExpose({
 
 <template>
   <div class="l-comment">
-    <PostComment :post-id="postId" @on-post="onPost" />
+    <post-comment :post-id="postId" @on-post="onPost" />
     <h3>评论列表</h3>
     <div class="l-comment__list mt-10" v-if="EcyConfig.isLogin && comments?.length">
       <div class="l-comment__main clearfix mb-12" v-for="(item, index) in comments" :key="item.commentId">
@@ -73,20 +73,20 @@ defineExpose({
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>
-                  <DiggComment :comment="item" :post-id="postId" />
+                  <digg-comment :comment="item" :post-id="postId" />
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <BuryComment :comment="item" :post-id="postId" />
+                  <bury-comment :comment="item" :post-id="postId" />
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <DeleteComment :comment="item" :comments="comments" :post-id="postId" :item-index="index" />
+                  <delete-comment :comment="item" :comments="comments" :post-id="postId" :item-index="index" />
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </div>
-        <EditComment @on-finish="onEdFinish" :post-id="postId" :curr-page-index="currIndex" :comment="item" />
-        <AnswerComment @on-finish="onReFinish" :post-id="postId" :curr-page-index="currIndex" :comment="item" />
+        <edit-comment @on-finish="onEdFinish" :post-id="postId" :curr-page-index="currIndex" :comment="item" />
+        <answer-comment @on-finish="onReFinish" :post-id="postId" :curr-page-index="currIndex" :comment="item" />
       </div>
       <div class="mt-10 f-c-e" v-if="pageCount > 1">
         <el-pagination @current-change="fetchData" layout="prev, pager, next" v-model:current-page="currIndex" :page-count="pageCount" />

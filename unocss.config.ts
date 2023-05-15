@@ -1,6 +1,6 @@
-import { Rule, UserShortcuts } from "unocss";
+import type { Rule, UserShortcuts } from "unocss";
 
-const rules = <Rule<any>[]>[
+const rules = <Rule[]>[
   // font size
   [/^l-size-(\d*)$/, ([, d]) => ({ "font-size": `var(--l-size-${d}) !important` })],
   // font color
@@ -28,18 +28,14 @@ function getMatches(prefix: string) {
   return matches.find(e => e.prefix === prefix);
 }
 
-function addItem(value: string) {
-  return ` ${value}`;
-}
-
 function addFlexItemsAndContent(p1: string) {
   const val = getMatches(p1);
-  return addItem(`flex items-${val.value} content-${val.value}`);
+  return `flex items-${val?.value || "center"} content-${val?.value || "center"}`;
 }
 
 function addFlexJustify(p2: string) {
   const val = getMatches(p2);
-  return addItem(`justify-${val.value}`);
+  return ` justify-${val?.value || "center"}`;
 }
 
 const shortcuts = <UserShortcuts>[

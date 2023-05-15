@@ -1,30 +1,28 @@
 <script setup lang="ts">
 import { getAlbumn } from "@/apis";
-
-EcyUtils.setTitle("相册");
-EcyUtils.startLoading();
+import { useLoading } from "@/hooks/comp-hooks";
 
 const route = useRoute();
-const albumn = shallowRef(await getAlbumn(`${route.params.id}`));
-const srcList = shallowRef(albumn.value.data.map(i => i.src));
+const albumn = shallowRef();
+const srcList = shallowRef();
 
-watch(route, async () => {
+async function fetchData() {
+  albumn.value = await getAlbumn(route.params.id as string);
+  srcList.value = albumn.value.data.map((i: any) => i.src);
+}
+
+watch(route, () => {
   if (route.name === RouterName.ALBUMN) {
-    EcyUtils.startLoading();
-    albumn.value = await getAlbumn(`${route.params.id}`);
-    srcList.value = albumn.value.data.map(i => i.src);
-    EcyUtils.endLoading();
+    useLoading(fetchData);
   }
 });
 
-onMounted(() => {
-  EcyUtils.endLoading();
-});
+useLoading(fetchData);
 </script>
 
 <template>
-  <div id="l-albumn" class=" page">
-    <div class="content">
+  <div id="l-albumn" class="page">
+    <div class="content" v-if="albumn">
       <el-page-header :icon="null" @back="EcyUtils.Router.go({ path: 'back', router: $router })">
         <template #title>
           <div class="f-c-c">

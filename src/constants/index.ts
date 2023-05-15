@@ -2,19 +2,6 @@ export enum ProvideKey {
   CATALOG_DISABLED = "catalogDisabled"
 }
 
-export enum RouterName {
-  INDEX = "Index",
-  PROFILE = "Profile",
-  WORKS = "Works",
-  WORKS_BY_SORT = "WorksBySort",
-  WORKS_BY_ARCHIVE = "WorksByArchive",
-  WORKS_BY_MARK = "WorksByMark",
-  WORKS_BY_CALENDAR = "WorksByCalendar",
-  MARK_LIST = "MarkList",
-  ALBUMN = "Albumn",
-  ALBUMN_ITEM = "AlbunItem"
-}
-
 export namespace RouterPath {
   /**
    * @returns "/"
@@ -105,6 +92,19 @@ export namespace RouterPath {
       return `/albumn/item/${id}`;
     } else return "/album/item/:id";
   }
+}
+
+export enum RouterName {
+  INDEX = "Index",
+  PROFILE = "Profile",
+  WORKS = "Works",
+  WORKS_BY_SORT = "WorksBySort",
+  WORKS_BY_ARCHIVE = "WorksByArchive",
+  WORKS_BY_MARK = "WorksByMark",
+  WORKS_BY_CALENDAR = "WorksByCalendar",
+  MARK_LIST = "MarkList",
+  ALBUMN = "Albumn",
+  ALBUMN_ITEM = "AlbunItem"
 }
 
 export namespace RouterRegx {

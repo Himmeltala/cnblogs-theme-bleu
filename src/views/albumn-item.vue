@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { getAlbumnItem } from "@/apis";
-
-EcyUtils.startLoading();
-EcyUtils.setTitle("相册图片");
+import { useLoading } from "@/hooks/comp-hooks";
 
 const route = useRoute();
-const imgUrl = shallowRef(await getAlbumnItem(`${route.params.id}`));
+const imgUrl = shallowRef();
 
-onMounted(() => {
-  EcyUtils.endLoading();
-});
+async function fetchData() {
+  imgUrl.value = await getAlbumnItem(`${route.params.id}`);
+}
+
+useLoading(fetchData);
 </script>
 
 <template>

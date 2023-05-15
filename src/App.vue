@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const route = useRoute();
 const ldisabled = ref(true);
 const rdisabled = ref(true);
 const catalogDisabled = ref(!EcyConfig.pcDevice);
@@ -26,12 +25,6 @@ onMounted(() => {
       rdisabled.value = true;
     }
   });
-});
-
-watch(route, async () => {
-  if (route.name === RouterName.INDEX) {
-    EcyUtils.setTitle();
-  }
 });
 </script>
 

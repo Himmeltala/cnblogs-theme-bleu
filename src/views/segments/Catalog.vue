@@ -72,7 +72,7 @@ store.$onAction(({ args }) => {
           class="l-size-1 mb-4 h-1.5rem f-c-s text-ellipsis line-clamp-1"
           v-for="item in anchors"
           v-html="item.content"
-          v-catalog-event="item" />
+          v-catalog-event="item"></div>
       </div>
       <div class="absolute slider-track"></div>
       <div class="absolute slider" :style="{ transform: 'translate(0, ' + translate + 'rem)' }"></div>

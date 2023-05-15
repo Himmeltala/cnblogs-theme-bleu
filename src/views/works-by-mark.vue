@@ -1,31 +1,25 @@
 <script setup lang="ts">
 import { WorksApi } from "@/apis";
-
-EcyUtils.startLoading();
+import { useLoading } from "@/hooks/comp-hooks";
 
 const route = useRoute();
-const markWorks = shallowRef(await WorksApi.getListByMark(`${route.params.tag}`));
-EcyUtils.setTitle(markWorks.value.hint);
+const markWorks = shallowRef();
 
 async function fetchData(index?: any) {
-  EcyUtils.startLoading();
   markWorks.value = await WorksApi.getListByMark(`${route.params.tag}`, index);
   EcyUtils.setTitle(markWorks.value.hint);
-  EcyUtils.endLoading();
 }
 
-watch(route, async () => {
-  if (route.name === RouterName.WORKS_BY_MARK) await fetchData();
-});
+useLoading(fetchData);
 
-onMounted(() => {
-  EcyUtils.endLoading();
+watch(route, () => {
+  if (route.name === RouterName.WORKS_BY_MARK) useLoading(fetchData);
 });
 </script>
 
 <template>
   <div id="l-works-by-mark" class="page">
-    <div class="content">
+    <div class="content" v-if="markWorks">
       <el-page-header :icon="null" @back="EcyUtils.Router.go({ path: 'back', router: $router })">
         <template #title>
           <div class="f-c-c">
@@ -36,7 +30,7 @@ onMounted(() => {
           <div class="l-size-5 mb-5 mt-4">{{ markWorks.hint }}</div>
         </template>
       </el-page-header>
-      <Pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="markWorks.page">
+      <pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="markWorks.page">
         <template #content>
           <div class="relative mb-15" v-for="item of markWorks.data">
             <div class="l-size-5">
@@ -68,7 +62,7 @@ onMounted(() => {
             </div>
           </div>
         </template>
-      </Pagination>
+      </pagination>
     </div>
   </div>
 </template>

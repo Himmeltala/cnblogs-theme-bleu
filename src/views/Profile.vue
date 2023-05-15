@@ -1,10 +1,7 @@
 <script setup lang="ts">
-EcyUtils.setTitle("我的铭牌");
-EcyUtils.startLoading();
+import { useLoading } from "@/hooks/comp-hooks";
 
-onMounted(() => {
-  EcyUtils.endLoading();
-});
+useLoading();
 </script>
 
 <template>
@@ -25,7 +22,7 @@ onMounted(() => {
           <div v-if="EcyConfig.pcDevice">
             <div class="mb-4 font-bold title">个人标签</div>
             <div class="hobbies f-c-s flex-wrap">
-              <HollowedBox class="mr-2 mb-4" hover round v-for="item in EcyConfig.__ECY_CONFIG__.nameplate.tags">{{ item }}</HollowedBox>
+              <hollowed-box class="mr-2 mb-4" hover round v-for="item in EcyConfig.__ECY_CONFIG__.nameplate.tags">{{ item }}</hollowed-box>
             </div>
           </div>
         </div>
@@ -124,7 +121,7 @@ onMounted(() => {
         <div class="mb-6">
           <div class="mb-4 font-bold title">个人标签</div>
           <div class="hobbies f-c-s flex-wrap">
-            <HollowedBox class="mr-2 mb-4" hover round v-for="item in EcyConfig.__ECY_CONFIG__.nameplate.tags">{{ item }}</HollowedBox>
+            <hollowed-box class="mr-2 mb-4" hover round v-for="item in EcyConfig.__ECY_CONFIG__.nameplate.tags">{{ item }}</hollowed-box>
           </div>
         </div>
         <div class="mb-6">
@@ -151,7 +148,7 @@ onMounted(() => {
         </div>
         <div class="mb-6">
           <div class="font-bold title">我的技能</div>
-          <SkillGraph />
+          <skillgraph />
         </div>
         <div class="f-s-b">
           <div class="mb-6 w-50%">

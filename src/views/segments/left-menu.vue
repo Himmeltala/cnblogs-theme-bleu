@@ -61,7 +61,7 @@ const hidden = computed(() => {
     id="l-lmenu"
     class="l-size-2 z-9999 fixed top-0 left-0 noscroll flow-auto h-100vh l-back-bg p-3 w-17.5rem"
     :class="{ 'show-lmenu': block, 'hidden-lmenu': hidden }">
-    <ExpandableBox text="博客信息" disabled>
+    <expanded-Box text="博客信息" disabled>
       <template #icon>
         <i-ep-house />
       </template>
@@ -104,8 +104,8 @@ const hidden = computed(() => {
           <i-ep-search />
         </template>
       </el-input>
-    </ExpandableBox>
-    <ExpandableBox text="博客数据" disabled>
+    </expanded-Box>
+    <expanded-box text="博客数据" disabled>
       <template #icon>
         <i-ep-data-analysis />
       </template>
@@ -273,7 +273,7 @@ const hidden = computed(() => {
           </template>
         </el-tab-pane>
       </el-tabs>
-    </ExpandableBox>
+    </expanded-box>
   </div>
 </template>
 

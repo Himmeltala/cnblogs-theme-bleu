@@ -20,15 +20,15 @@ const hidden = computed(() => {
     id="l-rmenu"
     class="noscroll z-9999 l-size-2 h-100vh flow-auto fixed top-0 right-0 l-back-bg p-3 w-17.5rem"
     :class="{ 'show-rmenu ': block, 'hidden-rmenu': hidden }">
-    <ExpandableBox text="常用链接" v-if="EcyConfig.__ECY_CONFIG__.menu.links?.length">
+    <expanded-box text="常用链接" v-if="EcyConfig.__ECY_CONFIG__.menu.links?.length">
       <template #icon>
         <i-ep-link />
       </template>
       <a class="hover block mb-3" v-for="item in EcyConfig.__ECY_CONFIG__.menu.links" :href="item.href" target="_blank">
         {{ item.text }}
       </a>
-    </ExpandableBox>
-    <ExpandableBox text="推荐书籍" v-if="EcyConfig.__ECY_CONFIG__.menu.books?.length">
+    </expanded-box>
+    <expanded-box text="推荐书籍" v-if="EcyConfig.__ECY_CONFIG__.menu.books?.length">
       <template #icon>
         <i-ep-notebook />
       </template>
@@ -47,7 +47,7 @@ const hidden = computed(() => {
           <el-rate style="width: 100%" v-model="item.rate" disabled size="small" />
         </div>
       </div>
-    </ExpandableBox>
+    </expanded-box>
   </div>
 </template>
 

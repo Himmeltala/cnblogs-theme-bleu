@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { WorksApi } from "@/apis";
-
-EcyUtils.startLoading();
+import { useLoading } from "@/hooks/comp-hooks";
 
 const route = useRoute();
 let archiveDate = route.params.date;
@@ -12,48 +11,35 @@ const imgsIndex = shallowRef();
 
 async function fetchData() {
   let fetchDataPromise;
-  EcyUtils.startLoading();
 
-  switch (archiveMode) {
-    case "a":
-      fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "article");
-      break;
-    case "p":
-      fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "works");
-      break;
-    case "d":
-      fetchDataPromise = WorksApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
-      break;
-    default:
-      fetchDataPromise = Promise.reject(new Error("Invalid archive mode provided."));
+  if (archiveMode == "a") {
+    fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "article");
+  } else if (archiveMode == "p") {
+    fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "works");
+  } else {
+    fetchDataPromise = WorksApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
   }
 
-  try {
-    archiveWorks.value = await fetchDataPromise;
-    imgsIndex.value = EcyUtils.Random.get(worksImgs, archiveWorks.value.data.length);
-    EcyUtils.setTitle(archiveWorks.value.hint);
-  } catch (error) {
-    ElMessage.error(error);
-  } finally {
-    EcyUtils.endLoading();
-  }
+  archiveWorks.value = await fetchDataPromise;
+  imgsIndex.value = EcyUtils.Random.get(worksImgs, archiveWorks.value.data.length);
+  EcyUtils.setTitle(archiveWorks.value.hint);
 }
 
-await fetchData();
+useLoading(fetchData);
 
-watch(route, async () => {
+watch(route, () => {
   if (route.name === RouterName.WORKS_BY_ARCHIVE) {
     archiveMode = route.params.mode;
     archiveDate = route.params.date;
-    await fetchData();
+    useLoading(fetchData);
   }
 });
 </script>
 
 <template>
   <div id="l-works-by-archive" class="page">
-    <div class="content">
-      <Pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="archiveWorks.page">
+    <div class="content" v-if="archiveWorks">
+      <pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="archiveWorks.page">
         <template #content>
           <el-page-header :icon="null" @back="EcyUtils.Router.go({ path: 'back', router: $router })">
             <template #title>
@@ -73,7 +59,7 @@ watch(route, async () => {
             :index="index"
             :cover="worksImgs[imgsIndex[index]]" />
         </template>
-      </Pagination>
+      </pagination>
     </div>
   </div>
 </template>

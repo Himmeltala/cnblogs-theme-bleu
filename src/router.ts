@@ -17,4 +17,10 @@ router.beforeEach((to, from, next) => {
   redirect(next);
 });
 
+router.afterEach(to => {
+  if (to.meta.title) {
+    EcyUtils.setTitle(to.meta.title as string);
+  }
+});
+
 export default router;

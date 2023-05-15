@@ -1,28 +1,20 @@
 <script setup lang="ts">
 import { WorksApi } from "@/apis";
+import { useLoading } from "@/hooks/comp-hooks";
 
-EcyUtils.startLoading();
-
-const worksList = shallowRef(await WorksApi.getList(1));
-const indexImgs = EcyConfig.__ECY_CONFIG__.covers.index;
-const worksImgs = EcyConfig.__ECY_CONFIG__.covers.works;
-const imgsIndex = shallowRef(EcyUtils.Random.get(worksImgs, worksList.value.data.length));
+const worksList = shallowRef();
+const coversIndex = shallowRef();
+const indexCovers = EcyConfig.__ECY_CONFIG__.covers.index;
+const allCovers = EcyConfig.__ECY_CONFIG__.covers.works;
 const coverFilter = EcyConfig.__ECY_CONFIG__.covers.filter.index;
 const coverMatte = EcyConfig.__ECY_CONFIG__.covers.matte.index;
 
 async function fetchData(index: any) {
-  EcyUtils.startLoading();
-
-  WorksApi.getList(index).then(newVal => {
-    worksList.value = newVal;
-    imgsIndex.value = EcyUtils.Random.get(worksImgs, worksList.value.data.length);
-    EcyUtils.endLoading();
-  });
+  worksList.value = await WorksApi.getList(index || 1);
+  coversIndex.value = EcyUtils.Random.get(allCovers, worksList.value.data.length);
 }
 
-onMounted(() => {
-  EcyUtils.endLoading();
-});
+useLoading(fetchData);
 </script>
 
 <template>
@@ -37,23 +29,23 @@ onMounted(() => {
       <div class="wave-2 absolute h-100% w-200%"></div>
     </div>
     <div class="z-990 cover absolute left-0 top-0 h-100% w-100%">
-      <img class="relative h-100% w-100% rd-0" :src="indexImgs[Math.floor(Math.random() * indexImgs.length)]" />
+      <img class="relative h-100% w-100% rd-0" :src="indexCovers[Math.floor(Math.random() * indexCovers.length)]" />
     </div>
   </div>
   <div id="l-start-nail"></div>
   <div id="l-index" class="page">
-    <div class="content">
-      <Pagination @prev="fetchData" @next="fetchData" @nexpr="fetchData" :count="worksList.page">
+    <div class="content" v-if="worksList">
+      <pagination @prev="fetchData" @next="fetchData" @nexpr="fetchData" :count="worksList.page">
         <template #content>
-          <WorksItem
+          <works-item
             v-if="worksList.data.length > 0"
             v-for="(item, index) in worksList.data"
             :key="item.id"
             :item="item"
             :index="index"
-            :cover="worksImgs[imgsIndex[index]]" />
+            :cover="allCovers[coversIndex[index]]" />
         </template>
-      </Pagination>
+      </pagination>
     </div>
   </div>
 </template>
