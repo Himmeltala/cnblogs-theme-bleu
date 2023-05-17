@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
 import { defineConfig, loadEnv } from "vite";
 import AutoImport from "unplugin-auto-import/vite";
@@ -6,26 +5,15 @@ import Components from "unplugin-vue-components/vite";
 import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
-// unocss
-import Unocss from "unocss/vite";
-import { presetAttributify, presetUno } from "unocss";
-import { rules, shortcuts } from "./unocss.config";
-import transformerDirectives from "@unocss/transformer-directives";
+import UnoCSS from "unocss/vite";
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode }) => {
   const { VITE_BLOG_APP } = loadEnv(mode, "./");
   return {
     plugins: [
       vue(),
-      Unocss({
-        rules,
-        shortcuts,
-        transformers: [
-          transformerDirectives({
-            applyVariable: ["--uno"]
-          })
-        ],
-        presets: [presetAttributify({}), presetUno()]
+      UnoCSS({
+        configFile: "./uno.config.ts"
       }),
       AutoImport({
         include: [
@@ -39,10 +27,25 @@ export default defineConfig(({ command, mode }) => {
           "vue-router",
           "@vueuse/core",
           {
-            "@/constants/index": ["RouterName", "RouterPath", "RouterRegx", "ProvideKey"]
+            "@/constants/index": [
+              "RouterName",
+              "RouterPath",
+              "RouterRegx",
+              "ProvideKey",
+              "BleuVars"
+            ]
           },
           {
-            "@/utils/common": ["EcyUtils", "EcyConfig"]
+            "@/utils/index": [
+              "Broswer",
+              "Formatter",
+              "Native",
+              "Navigation",
+              "PrettifyLog",
+              "Random",
+              "LocalStorage",
+              "Textual"
+            ]
           },
           {
             from: "vue-router",
@@ -52,6 +55,11 @@ export default defineConfig(({ command, mode }) => {
           {
             from: "vue",
             imports: ["PropType"],
+            type: true
+          },
+          {
+            from: "@vueuse/core",
+            imports: ["RemovableRef"],
             type: true
           }
         ],
@@ -78,12 +86,9 @@ export default defineConfig(({ command, mode }) => {
       })
     ],
     resolve: {
-      alias: [
-        {
-          find: "@",
-          replacement: resolve(__dirname, "src")
-        }
-      ]
+      alias: {
+        "@": "/src"
+      }
     },
     css: {
       preprocessorOptions: {
@@ -107,9 +112,9 @@ export default defineConfig(({ command, mode }) => {
           manualChunks() {
             return "components";
           },
-          entryFileNames: "[name]-ecy.js",
-          chunkFileNames: "[name]-ecy.js",
-          assetFileNames: "[name]-ecy.[ext]"
+          entryFileNames: "[name]-bleu.js",
+          chunkFileNames: "[name]-bleu.js",
+          assetFileNames: "[name]-bleu.[ext]"
         }
       }
     }

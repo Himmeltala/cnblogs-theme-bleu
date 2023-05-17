@@ -1,22 +1,17 @@
 /**
- * 设置 class 通用样式
+ * 设置所有元素共有的样式
  *
  * @author Himmelbleu
- * @date 2023 年 1 月 15 日
+ * @date 2023 年 2 月 14 日
  */
-@import "./mixins.scss";
+html,
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--text-a);
+  font-size: var(--l-respond-text);
+  background-color: var(--l-background-bg);
 
-.hover {
-  cursor: pointer !important;
-  transition: var(--l-animation-effect);
-
-  &:hover {
-    color: var(--el-color-primary) !important;
-    border-bottom-color: var(--el-color-primary) !important;
-  }
-}
-
-.noscroll {
   & {
     scrollbar-color: initial;
     scrollbar-width: none;
@@ -27,20 +22,98 @@
   }
 }
 
-.divider {
-  margin: {
-    top: 2rem;
-    left: 0;
-    right: 0;
-    bottom: 1rem;
+a:link {
+  text-decoration: none;
+}
+
+@include pc() {
+  .page {
+    --uno: f-s-c relative;
+    z-index: 2;
+
+    & > .content {
+      width: 55vw;
+    }
   }
-  border: {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 1px;
-    style: dashed;
-    color: #464646;
+}
+
+@include mb() {
+  .page {
+    --uno: px-4;
+    width: 100%;
+  }
+}
+
+.scroll-none {
+  & {
+    scrollbar-color: initial;
+    scrollbar-width: none;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.shine-text {
+  background: linear-gradient(
+    to right,
+    #4b89ac,
+    #7bb1d1,
+    #9cc6d8,
+    #b2d1d1,
+    #f5b0cb,
+    #d395d7,
+    #a595d3,
+    #5d4e6d
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shine-animation 10s ease infinite;
+}
+
+.shine-bg {
+  background: linear-gradient(
+    to right,
+    #4b89ac,
+    #7bb1d1,
+    #9cc6d8,
+    #b2d1d1,
+    #f5b0cb,
+    #d395d7,
+    #a595d3,
+    #5d4e6d
+  );
+  background-size: 200% auto;
+  animation: shine-animation 5s ease infinite;
+  filter: blur(55px);
+}
+
+@keyframes shine-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bounce {
+  animation: bounce-animation 0.8s ease alternate infinite;
+}
+
+@keyframes bounce-animation {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+
+  100% {
+    transform: translateY(-8px) scale(0.95, 1);
   }
 }
 
@@ -59,102 +132,14 @@
   @include hover($border-color: all, $font-color: false);
 
   textarea {
-    --uno: rd-2 p-2 l-size-2;
+    --uno: rd-2 p-2 text-0.9rem;
     background-color: transparent;
     width: 100%;
     height: 15rem;
     border: none;
     outline: none;
-    color: var(--l-color-1);
+    color: var(--text-a);
     resize: none;
-  }
-}
-
-@include pc() {
-  .page {
-    --uno: f-s-c relative;
-    z-index: 2;
-
-    & > .content {
-      width: 55vw;
-    }
-  }
-
-  .works-head-panel {
-    .content {
-      --uno: f-c-c;
-
-      & > div {
-        width: 55vw;
-      }
-    }
-  }
-}
-
-@include mb() {
-  .page {
-    --uno: px-4;
-    width: 100%;
-  }
-
-  .works-head-panel {
-    .content {
-      --uno: px-4;
-    }
-  }
-}
-
-.reception {
-  * {
-    color: #ededed !important;
-  }
-
-  .cover::after,
-  .cover::before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .wave-1 {
-    top: 0;
-    left: -100%;
-    opacity: 0.5;
-    animation: move-wave-to-right 20s infinite linear;
-    background: url(https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2281365/o_230410092356_wave-1.png) repeat-x;
-  }
-
-  .wave-2 {
-    top: 0;
-    left: 0%;
-    opacity: 0.6;
-    animation: move-wave-to-left 30s infinite linear;
-    background: url(https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2281365/o_230410092402_wave-2.png) repeat-x;
-  }
-
-  @keyframes move-wave-to-right {
-    0% {
-      transform: translateX(0%) scaleY(1);
-    }
-    50% {
-      transform: translateX(25%) scaleY(0.85);
-    }
-    100% {
-      transform: translateX(50%) scaleY(1);
-    }
-  }
-
-  @keyframes move-wave-to-left {
-    from {
-      transform: translateX(0%);
-    }
-    to {
-      transform: translateX(-50%);
-    }
   }
 }
 

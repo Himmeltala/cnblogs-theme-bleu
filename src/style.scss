@@ -1,5 +1,5 @@
 @import "element-plus/theme-chalk/dark/css-vars.css";
-@import "@/scss/common";
+@import "@/scss/index";
 
 /**
  * 设置昼夜模式下使用的颜色
@@ -7,28 +7,23 @@
  * @author Himmelbleu
  * @date 2023 年 2 月 14 日
  */
-html[class="dark"] {
-  // 盒子背景颜色
-  --l-back-bg: #191919;
-  // 条背景颜色
-  --l-strip-bg: #7f7f7f;
-  // 分界线颜色
-  --l-divider-bg: #464646;
+html.dark {
   // 块级代码块颜色
-  --l-block-code-bg: #222222;
-  // blockquote 颜色
+  --l-block-code-bg: #222222bd;
+  // 引用背景颜色
   --l-blockquote-bg: #222222;
   // 代码块 modal
   --l-code-modal-bg: #2e2e2e;
   // 序列背景颜色
   --l-step-bg: #2e2e2e;
+  --l-background-bg: #222222;
   // 主题规定的文字颜色
-  --l-color-1: #a7a7a7;
-  --l-color-2: #999999;
-  --l-color-3: #7c7c7c;
-  // 主题规定的高亮文字颜色
+  --text-a: #a7a7a7;
+  --text-b: #999999;
+  --text-c: #7c7c7c;
+  --text-primary: #409eff;
+  // 目录高亮
   --l-hight-color-1: white;
-  --l-hight-color-2: #ededed;
   // highlight
   --hljs-color: #abb2bf;
   --hljs-bg: #282c34;
@@ -42,28 +37,24 @@ html[class="dark"] {
   --hljs-built: #e6c07b;
 }
 
-html[class="light"] {
-  // 盒子背景颜色
-  --l-back-bg: #f9f9f9;
-  // 条背景颜色
-  --l-strip-bg: #d5d5d5;
-  // 分界线背景颜色
-  --l-divider-bg: #e3e3e3;
+html.light {
   // 块级代码块颜色
-  --l-block-code-bg: #f3f3f3;
-  // blockquote 颜色
+  --l-block-code-bg: #e7e7e7bd;
+  // 引用背景颜色
   --l-blockquote-bg: #f3f3f3;
   // 代码块 modal
   --l-code-modal-bg: #e0e0e0;
   // 序列背景颜色
   --l-step-bg: #eaeaea;
+  --l-background-bg: #f8f8f8;
   // 主题规定的文字颜色
-  --l-color-1: #393939;
-  --l-color-2: #686868;
-  --l-color-3: #969696;
-  // 主题规定的高亮文字颜色
+  --text-a: #383838;
+  --text-b: #686868;
+  --text-c: #969696;
+  --text-d: #dedede;
+  --text-primary: #409eff;
+  // 目录高亮
   --l-hight-color-1: black;
-  --l-hight-color-2: rgb(24, 24, 24);
   // highlight
   --hljs-color: #383a42;
   --hljs-bg: #fafafa;
@@ -78,211 +69,7 @@ html[class="light"] {
 }
 
 html {
-  // 主题规定的文字大小
-  --l-size-13: 2rem;
-  --l-size-12: 1.9rem;
-  --l-size-11: 1.8rem;
-  --l-size-10: 1.7rem;
-  --l-size-9: 1.6rem;
-  --l-size-8: 1.5rem;
-  --l-size-7: 1.4rem;
-  --l-size-6: 1.3rem;
-  --l-size-5: 1.2rem;
-  --l-size-4: 1.1rem;
-  --l-size-3: 1rem;
-  --l-size-2: 0.9rem;
-  --l-size-1: 0.8rem;
   // 主题颜色
   --l-theme-color: #409eff;
-  // 模态框背景颜色
-  --l-matee-bg: #0d0d0d8f;
-  --l-animation-effect: all 0.4s ease-in-out;
-}
-
-/**
- * 设置响应式 font-size 方案
- *
- * @author Himmelbleu
- * @date 2023 年 1 月 15 日
- */
-:root {
-  --l-size-root: 14px;
-}
-
-// 375 ~ 1400 都是 14px，超过 1500px 就开始依次往上递增
-@for $i from 1 through 30 {
-  $min: $i * 100 + 1500px;
-
-  @media screen and (min-width: $min) {
-    :root {
-      --l-size-root: #{calc($min / 100)};
-    }
-  }
-}
-
-/**
- * 覆盖 element-plus 样式
- *
- * @author Himmelbleu
- * @date 2023 年 1 月 15 日
- */
-:root {
-  --el-text-color-regular: var(--l-color-1) !important;
-  --el-text-color-primary: var(--l-color-1) !important;
-  --el-color-primary: var(--l-theme-color) !important;
-  --el-border-radius-base: 0.5rem !important;
-  --el-color-primary-light-5: var(--l-theme-color) !important;
-  --el-font-size-base: var(--l-size-2) !important;
-  --el-fill-color-blank: transparent !important;
-  --el-text-color-placeholder: var(--l-color-3) !important;
-}
-
-.el-rate__icon {
-  margin: 0 !important;
-}
-
-/**
- * highlightjs 样式
- *
- * @author Himmelbleu
- * @date 2023 年 1 月 16 日
- */
-.hljs {
-  padding: 1rem;
-  display: block;
-  overflow-x: auto;
-  overflow-y: hidden;
-  color: var(--l-color-1);
-  transition: var(--l-animation-effect);
-
-  &::-webkit-scrollbar {
-    height: 0.5rem;
-    width: 0;
-  }
-
-  &::-webkit-scrollbar-corner {
-    display: none;
-  }
-
-  &:hover::-webkit-scrollbar-thumb {
-    background-color: var(--l-strip-bg);
-  }
-}
-
-.hljs-comment,
-.hljs-quote {
-  color: var(--hljs-comment-color);
-  font-style: italic;
-}
-
-.hljs-doctag,
-.hljs-formula,
-.hljs-keyword {
-  color: var(--hljs-keyword);
-}
-
-.hljs-deletion,
-.hljs-name,
-.hljs-section,
-.hljs-selector-tag,
-.hljs-subst {
-  color: var(--hljs-section);
-}
-
-.hljs-literal {
-  color: var(--hljs-literal);
-}
-
-.hljs-addition,
-.hljs-attribute,
-.hljs-meta .hljs-string,
-.hljs-regexp,
-.hljs-string {
-  color: var(--hljs-addition);
-}
-
-.hljs-attr,
-.hljs-number,
-.hljs-selector-attr,
-.hljs-selector-class,
-.hljs-selector-pseudo,
-.hljs-template-variable,
-.hljs-type,
-.hljs-variable {
-  color: var(--hljs-attr);
-}
-
-.hljs-bullet,
-.hljs-link,
-.hljs-meta,
-.hljs-selector-id,
-.hljs-symbol,
-.hljs-title {
-  color: var(--hljs-bullet);
-}
-
-.hljs-built_in,
-.hljs-class .hljs-title,
-.hljs-title.class_ {
-  color: var(--hljs-built);
-}
-
-.hljs-emphasis {
-  font-style: italic;
-}
-
-.hljs-strong {
-  font-weight: 700;
-}
-
-.hljs-link {
-  text-decoration: underline;
-}
-
-/**
- * 设置所有元素共有的样式
- *
- * @author Himmelbleu
- * @date 2023 年 2 月 14 日
- */
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100% !important;
-  background-color: var(--l-back-bg);
-  color: var(--l-color-1);
-  font-size: var(--l-size-root);
-  font-weight: 400;
-
-  & {
-    scrollbar-color: initial;
-    scrollbar-width: none;
-  }
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-* {
-  color: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  font-family: var(--l-font-family);
-  letter-spacing: 1px;
-  scroll-behavior: smooth;
-  word-break: break-all;
-  line-break: anywhere;
-  box-sizing: border-box;
-}
-
-img {
-  --uno: rd-2;
-  max-width: 100%;
-  object-fit: cover;
-}
-
-a:link {
-  text-decoration: none;
+  --l-animation-effect: all 0.3s ease-in-out;
 }

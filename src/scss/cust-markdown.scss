@@ -1,0 +1,181 @@
+/**
+ * markdown 样式
+ *
+ * @author Himmelbleu
+ * @date 2023 年 6 月 11 日
+ */
+
+code {
+  margin: 0;
+  --uno: rd-2 text-4;
+  letter-spacing: 1.5px;
+  color: var(--el-color-danger-light-3);
+  font-family: var(--l-code-font-family);
+
+  span {
+    line-height: 1.8;
+    font-family: var(--l-code-font-family);
+  }
+}
+
+pre {
+  --uno: rd-2;
+  position: relative;
+
+  code {
+    background: var(--l-block-code-bg);
+  }
+
+  .code-tools {
+    --uno: absolute top-2 right-2 f-c-e text-0.8rem w-100%;
+
+    .code-language {
+      --uno: ml-4 text-c;
+    }
+  }
+
+  .code-modal {
+    --uno: absolute bottom-0 left-0 f-c-c rd-2 w-100%;
+    height: 3rem;
+    background-image: linear-gradient(
+      -180deg,
+      rgba(255, 255, 255, 0) 0%,
+      var(--l-code-modal-bg) 100%
+    );
+
+    .display-btn {
+      --uno: text-0.9rem;
+    }
+  }
+}
+
+a > code {
+  color: var(--l-theme-color) !important;
+}
+
+.markdown-textual {
+  --uno: z-9 text-1.1rem;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600 !important;
+  }
+
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.4rem !important;
+  }
+
+  h3 {
+    font-size: 1.3rem !important;
+  }
+
+  h4 {
+    font-size: 1.2rem !important;
+  }
+
+  h5 {
+    font-size: 1.1rem !important;
+  }
+
+  h6 {
+    font-size: 1rem !important;
+  }
+
+  blockquote {
+    background-color: var(--l-blockquote-bg);
+    color: var(--text-b);
+    margin: 0;
+    border: {
+      left: {
+        width: 0.3rem;
+        color: var(--l-theme-color);
+        style: solid;
+      }
+    }
+    padding: {
+      top: 0.8rem;
+      bottom: 0.8rem;
+    }
+
+    p {
+      margin: 0 !important;
+      padding-left: 1rem;
+    }
+  }
+
+  u {
+    text-decoration: none;
+    padding-bottom: 1px;
+    border-bottom: 1px dotted var(--text-a);
+  }
+
+  a {
+    color: var(--l-theme-color);
+  }
+
+  p {
+    margin: 1.5rem 0;
+    line-height: 1.8;
+  }
+
+  img {
+    cursor: zoom-in;
+    max-width: 100%;
+  }
+
+  ol,
+  ul {
+    padding-left: 4rem;
+
+    li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      line-height: 1.8;
+      list-style-type: none;
+      counter-increment: step-counter;
+
+      &::before {
+        content: counter(step-counter);
+        border-radius: 50%;
+        height: 1.7rem;
+        width: 1.7rem;
+        position: absolute;
+        top: 0;
+        left: -2.5rem;
+        --uno: f-c-c text-0.8rem;
+        font-weight: 400;
+        color: var(--text-a);
+        background: var(--l-step-bg);
+      }
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  table {
+    th {
+      font-weight: 600;
+    }
+
+    th,
+    td {
+      padding: 0.7rem 1.5rem;
+      border: 1px dotted #464646;
+      border-radius: 0.5rem;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+  }
+}

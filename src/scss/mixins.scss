@@ -23,14 +23,14 @@
 
 // PC 端
 @mixin pc() {
-  @media screen and (min-width: 1000px) {
+  @media screen and (min-width: 640px) {
     @content;
   }
 }
 
 // 移动端
 @mixin mb() {
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 639.9px) {
     @content;
   }
 }

@@ -6,15 +6,17 @@ import { createPinia } from "pinia";
 /* Import CSS */
 import "uno.css";
 import "@/style.scss";
-import { useDirective } from "@/helpers/directive-helper";
+/* Import Bleu Theme */
+import { useBleu } from "./bleu";
 
 const app = createApp(App);
 app.use(router);
 app.use(createPinia());
 
-useDirective(app);
+app.config.globalProperties.isBlogOwner = isBlogOwner;
+app.config.globalProperties.isLogined = isLogined;
 
-EcyConfig.useLite(
+useBleu(
   () => app.mount("#app"),
   () => app.mount("#app")
 );

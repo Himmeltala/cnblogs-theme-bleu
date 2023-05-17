@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(to => {
   if (to.meta.title) {
-    EcyUtils.setTitle(to.meta.title as string);
+    Broswer.setTitle(to.meta.title as string);
   }
 });
 
