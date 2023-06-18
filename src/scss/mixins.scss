@@ -5,22 +5,6 @@
  * @date 2023 年 1 月 15 日
  */
 
-@mixin hover($border-color: bottom, $font-color: true) {
-  cursor: pointer;
-  transition: var(--l-animation-effect);
-
-  &:hover {
-    @if ($font-color == true) {
-      color: var(--el-color-primary) !important;
-    }
-    @if $border-color == bottom {
-      border-bottom-color: var(--el-color-primary) !important;
-    } @else if $border-color == all {
-      border-color: var(--el-color-primary) !important;
-    }
-  }
-}
-
 // PC 端
 @mixin pc() {
   @media screen and (min-width: 640px) {

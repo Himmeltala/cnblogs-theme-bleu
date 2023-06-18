@@ -1,3 +1,9 @@
+/**
+ * 格式化
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ */
 export namespace Formatter {
   function fixed(trimed: string, suffix?: string, uint?: number, fix?: number) {
     const result = (Number(trimed) / uint || 1000).toFixed(fix || 2);

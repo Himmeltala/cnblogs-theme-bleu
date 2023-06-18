@@ -46,9 +46,6 @@ async function finish() {
       count: await CommentApi.getCount(props.postId),
       comments: await CommentApi.getList(props.postId, props.currPageIndex)
     });
-    ElMessage({ message: "修改评论成功！", grouping: true, type: "success" });
-  } else {
-    ElMessage({ message: "这不是你的评论，没有权限编辑！", grouping: true, type: "error" });
   }
 }
 

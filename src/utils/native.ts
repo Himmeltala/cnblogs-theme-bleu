@@ -1,3 +1,9 @@
+/**
+ * 博客本地 API
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ */
 export namespace Native {
   function openWindow(w: string, t: number, i: number, r: number) {
     const left = (screen.width - t) / 2 - r;
@@ -40,5 +46,40 @@ export namespace Native {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  /**
+   * 收藏作品
+   *
+   * @param id 作品 ID
+   */
+  export function saveArbeiten(id: string) {
+    // @ts-ignore
+    window.AddToWz(id);
+  }
+
+  /**
+   * 分享到微信
+   */
+  export function shareToWechat() {
+    // @ts-ignore
+    window.shareOnWechat();
+  }
+
+  /**
+   * 分享到新浪
+   */
+  export function shareToTsina() {
+    // @ts-ignore
+    window.ShareToTsina();
+  }
+
+  /**
+   * 搜索作品
+   *
+   * @param keyword 关键字
+   */
+  export function searchArbeiten(keyword: string) {
+    Navigation.go("https://zzk.cnblogs.com/s?w=blog:" + BleuVars.getBlogApp() + "%" + keyword);
   }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WorksApi } from "@/apis";
+import { ArbeitenApi } from "@/apis";
 
 const route = useRoute();
 let archiveDate = route.params.date;
@@ -14,11 +14,11 @@ async function fetchData() {
   let fetchDataPromise;
 
   if (archiveMode == "a") {
-    fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "article");
+    fetchDataPromise = ArbeitenApi.getListByArchive(`${archiveDate}`, "article");
   } else if (archiveMode == "p") {
-    fetchDataPromise = WorksApi.getListByArchive(`${archiveDate}`, "works");
+    fetchDataPromise = ArbeitenApi.getListByArchive(`${archiveDate}`, "works");
   } else {
-    fetchDataPromise = WorksApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
+    fetchDataPromise = ArbeitenApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
   }
 
   archiveList.value = await fetchDataPromise;
@@ -41,11 +41,11 @@ watch(route, async () => {
 </script>
 
 <template>
-  <div id="l-works-by-archive" class="page">
+  <div id="l-arbeiten-by-archive" class="page">
     <div class="content" v-if="archiveList">
       <Pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="archiveList.page">
         <template #content>
-          <el-page-header :icon="null" @back="Navigation.go({ path: 'back', router: $router })">
+          <el-page-header :icon="null" @back="$router.back()">
             <template #title>
               <div class="f-c-c">
                 <i-ep-back />
@@ -56,11 +56,12 @@ watch(route, async () => {
             </template>
           </el-page-header>
           <ArbeitenItem
-            v-if="archiveList.data.length > 0"
+            v-if="archiveList?.data?.length"
             v-for="(item, index) in archiveList.data"
             :key="item.id"
             :item="item"
             :index="index"
+            :length="archiveList.data.length"
             :cover="images[imgsIndexs[index]]" />
         </template>
       </Pagination>

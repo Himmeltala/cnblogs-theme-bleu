@@ -1,13 +1,3 @@
-export const useKatalogStore = defineStore("katalogStore", () => {
-  let katalog = ref();
-
-  function setKatalog(data: any) {
-    katalog.value = data;
-  }
-
-  return { katalog, setKatalog };
-});
-
 export const useAnchorStore = defineStore("anchorStore", () => {
   let _anchor = ref();
 

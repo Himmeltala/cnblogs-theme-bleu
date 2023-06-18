@@ -22,7 +22,6 @@ async function diggComment() {
   if (data.isSuccess) {
     props.comment.digg = props.comment.digg! + 1;
   }
-  ElMessage({ message: data.message, grouping: true, type: data.isSuccess ? "success" : "error" });
 }
 </script>
 

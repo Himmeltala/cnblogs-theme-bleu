@@ -1,29 +1,30 @@
 <script setup lang="ts">
-import { getAlbumn } from "@/apis";
-import { useLoading } from "@/hooks/use-loading";
+import { DatumApi } from "@/apis";
 
 const route = useRoute();
 const albumn = shallowRef();
 const srcList = shallowRef();
 
 async function fetchData() {
-  albumn.value = await getAlbumn(route.params.id as string);
+  Broswer.startLoading();
+  albumn.value = await DatumApi.getAlbumn(route.params.id as string);
   srcList.value = albumn.value.data.map((i: any) => i.src);
+  Broswer.endLoading();
 }
 
-watch(route, () => {
+watch(route, async () => {
   if (route.name === RouterName.Albumn) {
-    useLoading(fetchData);
+    await fetchData();
   }
 });
 
-useLoading(fetchData);
+await fetchData();
 </script>
 
 <template>
   <div id="l-albumn" class="page">
     <div class="content" v-if="albumn">
-      <el-page-header :icon="null" @back="Navigation.go({ path: 'back', router: $router })">
+      <el-page-header :icon="null" @back="$router.back()">
         <template #title>
           <div class="f-c-c">
             <i-ep-back />
@@ -36,7 +37,6 @@ useLoading(fetchData);
       <div class="mb-4 text-0.9rem text-b">{{ albumn.desc }}</div>
       <div class="f-c-b flex-wrap">
         <el-image
-          class="w-50 h-50 mb-4"
           v-for="(item, index) in srcList"
           :initial-index="index"
           :src="item"
@@ -47,7 +47,9 @@ useLoading(fetchData);
           title="相册加载失败"
           sub-title="相册可能被移除">
           <template #extra>
-            <el-button @click="$router.push('/')" type="primary">返回首页</el-button>
+            <el-button @click="$router.push(RouterPath.BleuHome())" type="primary">
+              返回首页
+            </el-button>
           </template>
         </el-result>
       </div>

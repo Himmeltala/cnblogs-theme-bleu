@@ -1,15 +1,21 @@
-export namespace LocalStorage {
+/**
+ * 操作浏览器本地存储
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ */
+export namespace BleuStorage {
   /**
    * 获取本地存储中的设置
    */
-  export function getSetting(): RemovableRef<BleuLocalSetting> {
-    return useStorage(`l-${BleuVars.getBlogApp()}-setting`, getSettingTemp());
+  export function getOptions() {
+    return useStorage<BleuOptions>(`l-${BleuVars.getBlogApp()}-setting`, {} as any);
   }
 
   /**
    * 获取本地存储中的模板
    */
-  export function getSettingTemp(): BleuLocalSetting {
+  export function getOptionsTemp(): BleuOptions {
     return {
       theme: { mode: "dark" },
       toolkits: { pin: true }
@@ -22,7 +28,7 @@ export namespace LocalStorage {
    * @param source 要被裁剪或添加字段的对象
    * @param template 一个对象，根据该模板（对象）对 source 进行裁剪或添加字段
    */
-  export function reloadObjProps(source: any, template: any) {
+  export function refactor(source: any, template: any) {
     if (!source) source = template;
     const sourceKeys = Object.keys(source);
     const templateKeys = Object.keys(template);
@@ -39,7 +45,7 @@ export namespace LocalStorage {
           if (!nonentity) source[templateKey] = template[templateKey];
           else {
             if (typeof template[templateKey] === "object") {
-              reloadObjProps(source[templateKey], template[templateKey]);
+              refactor(source[templateKey], template[templateKey]);
             }
           }
         });
@@ -50,7 +56,7 @@ export namespace LocalStorage {
           if (typeof source[templateKey] !== "object" || !source[templateKey]) {
             source[templateKey] = template[templateKey];
           }
-          reloadObjProps(source[templateKey], template[templateKey]);
+          refactor(source[templateKey], template[templateKey]);
         } else if (typeof template[templateKey] !== "object") {
           if (typeof source[templateKey] === "object") source[templateKey] = template[templateKey];
         }

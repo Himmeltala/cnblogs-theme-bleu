@@ -1,21 +1,25 @@
+/**
+ * 作品 HTML 解析器
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ */
 export namespace ArbeitenTransform {
   /**
    * 获取页数
    */
   function getPage(dom: Element) {
     if (dom) {
-      const pages = dom.innerText.match(/[1-9]+/g);
+      const pages = dom.innerText.trim().match(/[0-9]+/g);
       if (pages) return pages.map(i => parseInt(i)).pop();
       else return 0;
-    } else {
-      return 0;
-    }
+    } else return 0;
   }
 
   /**
    * 获取首页随笔列表：日期下的随笔和文章。列表项包含描述、评论、点赞的随笔列表。
    */
-  export function toWorksList(dom: Document): BleuArbeitenList {
+  export function toArbeitenList(dom: Document): BleuArbeitenList {
     const id = dom.getElementsByClassName("postTitle2");
     const head = dom.getElementsByClassName("postTitle");
     const desc = dom.getElementsByClassName("c_b_p_desc");
@@ -38,8 +42,8 @@ export namespace ArbeitenTransform {
 
       data.push({
         id: id[index].getAttribute("href").match(/[0-9]+/g)[0],
-        text: Textual.replace(head[index].innerText.trim(), [/\[置顶\]/g]),
-        desc: Textual.replace(desc[index].innerText, [/阅读全文/g]),
+        text: Textual.regexReplace(head[index].innerText.trim(), [/\[置顶\]/g]),
+        desc: Textual.regexReplace(desc[index].innerText, [/阅读全文/g]),
         date: notes[index].innerText.match(
           /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g
         )[0],
@@ -63,25 +67,32 @@ export namespace ArbeitenTransform {
   /**
    * 解析随笔详细页面
    */
-  export function toWorks(id: string, dom: Document): BleuArbeiten {
+  export function toArbeiten(id: string, dom: Document): BleuArbeiten {
     const text = dom.querySelector(".postTitle > a > span").innerText;
-    const content = dom.getElementById("cnblogs_post_body").innerHTML;
+    const content = dom.getElementById("cnblogs_post_body");
+    const p = content.querySelectorAll("p:not(pre)");
+    let str = "";
+
+    for (let i = 0; i < p.length; i++) {
+      str += p[i].innerText.trim();
+    }
 
     return {
       id,
       text,
-      content,
+      content: content.innerHTML,
       date: dom.getElementById("post-date").innerText,
       view: dom.getElementById("post_view_count").innerText,
       comm: dom.getElementById("post_comment_count").innerText,
-      isLocked: !text && !content
+      isLocked: !text && !content,
+      wordCount: Textual.calcChineseWords(str)
     };
   }
 
   /**
    * 解析随笔详细页面中的属性：标签、分类
    */
-  export function toWorksProps(dom: Document): BleuArbeitenProps {
+  export function toProps(dom: Document): BleuArbeitenProps {
     const data = <BleuArbeitenProps>{ tags: [], sorts: [] };
 
     const eleCates = dom.querySelectorAll("#BlogPostCategory > a");
@@ -111,23 +122,28 @@ export namespace ArbeitenTransform {
   /**
    * 解析上下篇随笔
    */
-  export function toWorksPrevNext(dom: Document): BleuArbeitenPrevNext {
+  export function toPrevNext(dom: Document): BleuArbeitenPrevNext {
     const data: BleuArbeitenPrevNext = { prev: {}, next: {} };
-    const eleAs = dom.getElementsByTagName("a");
+    const elems = dom.getElementsByTagName("a");
 
-    for (let i = 0; i < eleAs.length; i++) {
-      const prefix = eleAs[i].innerText.trim();
-      const nextElement = eleAs[i].nextElementSibling;
-      if (prefix == "«") {
-        data["prev"] = {
-          text: nextElement.innerText.trim(),
-          href: nextElement.getAttribute("href")
-        };
-      } else if (prefix == "»") {
-        data["next"] = {
-          text: nextElement.innerText.trim(),
-          href: nextElement.getAttribute("href")
-        };
+    for (let i = 0; i < elems.length; i++) {
+      const prefixElem = elems[i].innerText.trim();
+      const textElem = elems[(i += 1)];
+
+      const res = {
+        text: textElem.innerText.trim(),
+        href: Textual.regexSplit(
+          textElem.getAttribute("href"),
+          RouterRegx.Arbeiten,
+          [2, 0],
+          ["/", "."]
+        )
+      };
+
+      if (prefixElem == "«") {
+        data["prev"] = res;
+      } else if (prefixElem == "»") {
+        data["next"] = res;
       }
     }
 
@@ -137,7 +153,7 @@ export namespace ArbeitenTransform {
   /**
    * 获取随笔档案、文章档案、随笔分类、档案分类四种列表。列表项包含描述、评论、点赞的随笔列表。
    */
-  export function toWorksFull(dom: Document): BleuArbeitenList2 {
+  export function toArbeitenListFull(dom: Document): BleuArbeitenList2 {
     const data: BleuArbeiten[] = [];
 
     const dateReg =
@@ -190,7 +206,7 @@ export namespace ArbeitenTransform {
   /**
    * 获取随笔和文章列表，列表通过标签查询。
    */
-  export function toWorksSlice(dom: Document): BleuArbeitenList2 {
+  export function toArbeitenListPart(dom: Document): BleuArbeitenList2 {
     const head = dom.querySelectorAll(".PostList > .postTitl2 > a");
     const desc = dom.querySelectorAll(".PostList > .postDesc2");
     const hint = dom.getElementsByClassName("PostListTitle")[0].innerText.trim();
@@ -226,11 +242,22 @@ export namespace ArbeitenTransform {
     }
   }
 
-  export function toWorksByL2(dom: Document): BleuArbeitenL2[] {
+  export function toArbeitenByL2(dom: Document): BleuArbeitenL2[] {
     const nodeList = dom.getElementsByTagName("li");
     return Array.from(nodeList).map(ele => ({
       id: ele.getAttribute("data-category-id"),
       text: ele.getElementsByClassName("tree-categories-item-title-right")[0].innerText
     }));
+  }
+
+  export function toArbeitenInfo(dom: Document) {
+    const followText = dom.querySelector("#green_channel_follow").innerText.trim();
+    const diggText = dom.querySelector("#green_channel_digg").innerText.trim();
+    const isFollowed = followText == "已关注" ? true : false;
+    const isDigg = diggText == "已推荐" ? true : false;
+    return {
+      isFollowed,
+      isDigg
+    };
   }
 }

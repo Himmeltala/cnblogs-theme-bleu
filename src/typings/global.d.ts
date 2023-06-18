@@ -18,6 +18,7 @@ type BleuArbeiten = Partial<{
   isOnlyMe: boolean;
   // 是否置顶
   isTop: boolean;
+  wordCount: number;
 }>;
 
 /**
@@ -97,7 +98,7 @@ interface BleuArbeitenL2 {
 interface BleuMenuColumn {
   essaySort: { id: string; text: string; count: string }[];
   essayArchive: { id: string; text: string; count: string }[];
-  articleSort: { id: string; text: string }[];
+  articleSort: { id: string; text: string; count: string }[];
   articleArchive: { id: string; text: string }[];
   latestEssayList: { id: string; text: string }[];
   latestComments: { id: string; title: string; content: string; author: string }[];
@@ -149,54 +150,89 @@ interface BleuAlbumnItem {
 /**
  * 博客配置项
  */
-type BleuConfig = Partial<{
-  icon: string;
-  avatar: string;
+interface BleuConfig {
+  icon?: string;
+  avatar?: string;
   signature: string;
   images: {
-    bg: {
+    /**
+     * 背景的相关配置
+     */
+    background: {
       src: string;
+      size: string;
+      repeat: string;
       opacity: number;
+      position: string;
     };
-    arbeiten?: string[];
+    /**
+     * 随笔、文章的相关配置
+     */
+    arbeiten: string[];
+    /**
+     * 首页的相关配置
+     */
     home: {
+      /**
+       * 轮播图透明度
+       */
       opacity: number;
+      /**
+       * 轮播图播放间隔
+       */
       interval: number;
       carousel: string[];
-      divider: string;
+      disabled: boolean;
     };
   };
-  chart: any;
-  font: {
-    main: string;
-    code: string;
+  /**
+   * markdown 样式配置
+   */
+  markdown?: {
+    arbeiten: any;
+    comment: any;
   };
-}>;
+  /**
+   * 放大器配置
+   */
+  amplifier?: {
+    arbeiten: any;
+    comment: any;
+  };
+  /**
+   * 图表
+   */
+  chart: {
+    /**
+     * 技能表
+     */
+    tech: any;
+    /**
+     * 我的标签
+     */
+    mark?: {
+      count?: number;
+    };
+    category?: {
+      count?: number;
+    };
+  };
+  /**
+   * 字体
+   */
+  font?: {
+    main?: { name?: string };
+    code?: { name?: string; size?: string };
+    art?: { name?: string; size?: string };
+  };
+}
 
 /**
  * Bleu 本地设置
  */
-type BleuLocalSetting = Partial<{
+interface BleuOptions {
   theme: { mode: "dark" | "light" };
   toolkits: { pin: boolean };
-}>;
-
-/**
- * Bleu 配置选项
- */
-declare namespace BleuVars {
-  let config: BleuConfig;
-
-  function getBlogApp(): string;
-  function getBlogId(): number;
-  function getBaseURL(): string;
-  function isPcDevice(): boolean;
-
-  function getUserGuid(): string;
-  /**
-   * 是否已经订阅
-   */
-  function isFollow(): boolean;
 }
 
 /**
@@ -219,41 +255,7 @@ declare const currentBlogId: number;
  */
 declare const currentBlogApp: string;
 
-declare namespace Broswer {
-  function setTitle(title?: string): void;
-  function scrollIntoView(selector: string): void;
-  function endLoading(): void;
-  function startLoading(): void;
-}
-
-declare namespace Formatter {
-  function unit(num: string): string;
-}
-
-declare namespace Native {
-  function openImageUploadWindow(el: string, onUploaded: (img: string) => void): void;
-}
-
-declare namespace Navigation {
-  function go(params: { path: string; router?: Router }): void;
-}
-
-declare namespace PrettifyLog {
-  function primary(title: string, msg: string): void;
-  function warning(title: string, msg: string): void;
-}
-
-declare namespace LocalStorage {
-  function getSetting(): RemovableRef<BleuLocalSetting>;
-  function getSettingTemp(): BleuLocalSetting;
-  function reloadObjProps(source: any, template: any): any;
-}
-
-declare namespace Random {
-  function get(src: string[], max: number): number[];
-}
-
-declare namespace Textual {
-  function split(str: string, regex: RegExp, keys: number[], values: string[]): string;
-  function replace(source: string, regExps: RegExp[], replacement?: string[]): string;
-}
+/**
+ * blogUserGuid
+ */
+declare const visitorUserId: string;

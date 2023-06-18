@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { WorksApi } from "@/apis";
+import { ArbeitenApi } from "@/apis";
 
 const route = useRoute();
 const markWorks = shallowRef();
 
 async function fetchData(index?: any) {
   Broswer.startLoading();
-  markWorks.value = await WorksApi.getListByMark(`${route.params.tag}`, index);
+  markWorks.value = await ArbeitenApi.getListByMark(`${route.params.tag}`, index);
   Broswer.setTitle(markWorks.value.hint);
   Broswer.endLoading();
 }
@@ -21,9 +21,9 @@ watch(route, async () => {
 </script>
 
 <template>
-  <div id="l-works-by-mark" class="page">
+  <div id="l-arbeiten-by-mark" class="page">
     <div class="content" v-if="markWorks">
-      <el-page-header :icon="null" @back="Navigation.go({ path: 'back', router: $router })">
+      <el-page-header :icon="null" @back="$router.back()">
         <template #title>
           <div class="f-c-c">
             <i-ep-back />

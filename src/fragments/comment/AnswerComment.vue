@@ -49,9 +49,6 @@ async function finish() {
     const count = await CommentApi.getCount(props.postId);
     const comments = await CommentApi.getList(props.postId, props.currPageIndex);
     emits("onFinish", { count, comments });
-    ElMessage.success("回复评论成功！");
-  } else {
-    ElMessage.error("回复评论失败！");
   }
 }
 

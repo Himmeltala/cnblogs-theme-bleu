@@ -1,3 +1,9 @@
+/**
+ * 评论 HTML 解析器
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ */
 export namespace CommentTransform {
   /**
    * 解析评论数量，官方默认一页是 50 条，pageIndex = 0 开始

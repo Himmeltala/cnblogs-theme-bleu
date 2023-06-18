@@ -1,4 +1,10 @@
-export namespace MenuTransform {
+/**
+ * HTML 解析器
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ */
+export namespace DatumTransform {
   /**
    * 解析侧边栏博客排行信息。
    */
@@ -81,9 +87,10 @@ export namespace MenuTransform {
       "#sidebar_postcategory ul li > a",
       (element, matched) => {
         const innerText = element.innerText;
+
         data.essaySort.push({
           id: matched[0],
-          text: innerText,
+          text: innerText.split("(")[0],
           count: innerText.match(/[0-9]+/g)[0]
         });
       },
@@ -99,7 +106,7 @@ export namespace MenuTransform {
 
         data.essayArchive.push({
           id: `${date[0]}-${date[1]}`,
-          text: innerText,
+          text: innerText.split("(")[0],
           count: innerText.match(/\([0-9]+\)/g)[0].match(/[0-9]/g)[0]
         });
       },
@@ -122,9 +129,12 @@ export namespace MenuTransform {
       dom,
       "#sidebar_articlecategory ul li > a",
       (element, matched) => {
+        const innerText = element.innerText;
+
         data.articleSort.push({
           id: matched[0],
-          text: element.innerText
+          text: innerText.split("(")[0],
+          count: innerText.match(/[0-9]+/g)[0]
         });
       },
       /[0-9]+/g
@@ -161,7 +171,7 @@ export namespace MenuTransform {
         } else if (attr === "recent_comment_body") {
           comment.content = elesLi[i].innerText;
         } else if (attr === "recent_comment_author") {
-          comment.author = Textual.replace(elesLi[i].innerText, [/--/g]);
+          comment.author = Textual.regexReplace(elesLi[i].innerText, [/--/g]);
         }
       }
 
@@ -250,5 +260,56 @@ export namespace MenuTransform {
     }));
 
     return data;
+  }
+
+  export function toMarkList(dom: Document): BleuMark[] {
+    const data: BleuMark[] = [];
+    const eles = dom.getElementById("MyTag1_dtTagList").getElementsByTagName("td");
+
+    for (let i = 0; i < eles.length; i++) {
+      const eleA = eles[i].getElementsByTagName("a")[0];
+      data.push({
+        count: parseInt(eles[i].getAttribute("data-use-count")),
+        href: eleA.getAttribute("href"),
+        text: eleA.innerText
+      });
+    }
+
+    return data;
+  }
+
+  export function toAlbumnItem(dom: Document) {
+    return dom.getElementById("ViewPicture1_GalleryImage").getAttribute("src");
+  }
+
+  export function toAlbumn(dom: Document) {
+    const data: BleuAlbumnItem[] = [];
+    const eles = dom.getElementsByClassName("divPhoto");
+
+    for (let i = 0; i < eles.length; i++) {
+      data.push({
+        id: eles[i]
+          .getElementsByTagName("a")[0]
+          .getAttribute("href")
+          .match(/\/gallery\/image\/\d+/g)[0]
+          .split("/")[3],
+        src: eles[i].getElementsByTagName("img")[0].getAttribute("src")
+      });
+    }
+
+    return {
+      title: dom.getElementsByClassName("thumbTitle")[0].innerText,
+      desc: dom.getElementsByClassName("thumbDescription")[0].innerText,
+      data
+    };
+  }
+
+  export function toCalendar(dom: Document): string[] {
+    const dates: string[] = [];
+    dom.querySelectorAll("a[href^='https']").forEach(ele => {
+      const date = ele.getAttribute("href").match(/\d+\/\d+\/\d+/g)[0];
+      dates.push(date);
+    });
+    return dates;
   }
 }

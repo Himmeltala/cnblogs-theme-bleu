@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useRadarChart, usePieChart, useLineChart } from "@/hooks/use-echarts";
-import { WorksApi, MenuApi, getMarkList } from "@/apis";
+import { ArbeitenApi, DatumApi } from "@/apis";
+import { useWheelRollsUpAndDown } from "@/hooks/use-mouse";
+import {} from "@/utils/native";
 
 const list = shallowRef();
 const news = shallowRef();
@@ -13,15 +15,15 @@ async function fetchData() {
   Broswer.startLoading();
 
   const [val1, val2, val3, val4, val5, val6] = await Promise.all([
-    WorksApi.getList(),
-    MenuApi.getNews(),
-    MenuApi.getStats(),
-    MenuApi.getTopList(),
-    MenuApi.getColumn(),
-    getMarkList()
+    ArbeitenApi.getList(),
+    DatumApi.getNews(),
+    DatumApi.getStats(),
+    DatumApi.getTopList(),
+    DatumApi.getColumn(),
+    DatumApi.getMarkList()
   ]);
 
-  val1.data.splice(3, 7);
+  val1.data.splice(4, 6);
   list.value = val1;
   news.value = val2;
   status.value = val3;
@@ -43,13 +45,16 @@ const openPieChartCount2 = ref(0);
 const isShowLineChart = ref(false);
 const openLineChartCount = ref(0);
 
+const isWinUp = ref(false);
+const isActiveMenu = ref(false);
+
 onMounted(() => {
   useRadarChart(radarInst.value);
 
   usePieChart(
     pie1Inst.value,
     markList.value.map((i, index) => {
-      if (index <= 10) {
+      if (index <= (BleuVars.config.chart.mark?.count || 10)) {
         return { value: i.count, name: i.text };
       }
     }),
@@ -60,7 +65,7 @@ onMounted(() => {
   usePieChart(
     pie2Inst.value,
     column.value.essaySort.map((i, index) => {
-      if (index <= 10) {
+      if (index <= (BleuVars.config.chart.category?.count || 10)) {
         return { value: i.count, name: i.text };
       }
     }),
@@ -74,6 +79,18 @@ onMounted(() => {
     column.value.essayArchive.map(i => i.id),
     openLineChartCount
   );
+
+  useWheelRollsUpAndDown(
+    () => {
+      isWinUp.value = false;
+    },
+    () => {
+      isWinUp.value = true;
+    },
+    {
+      throttle: 50
+    }
+  );
 });
 
 const carouselList = shallowRef(BleuVars.config.images.home.carousel);
@@ -81,100 +98,143 @@ const carouselIndex = ref(0);
 
 setInterval(() => {
   carouselIndex.value++;
-  if (carouselIndex.value > 3) {
+  if (carouselIndex.value > BleuVars.config.images.home.carousel.length) {
     carouselIndex.value = 0;
   }
 }, BleuVars.config.images.home.interval);
+
+const searchVal = ref("");
 
 await fetchData();
 </script>
 
 <template>
   <div id="l-home" class="xl:px-18vw lt-xl:px-15vw lt-lg:px-10vw lt-md:px-5vw lt-sm:px-1rem">
-    <!-- area-1：开屏 -->
-    <div class="f-c-b">
-      <div class="sm:w-49% f-c-c">
-        <div class="h-100vh">
-          <div m="t-5">
-            <div text="start 10" class="shine-text font-art">
-              {{ BleuVars.getBlogApp() }} 的博客
+    <!-- area-1：菜单栏 -->
+    <div class="l-menu">
+      <div
+        @click="isActiveMenu = !isActiveMenu"
+        class="transition-all-300 select-none cursor-pointer f-c-c w-20 h-20 fixed-t top-0 z-99"
+        :class="{
+          'static-menu': !isActiveMenu,
+          'active-menu': isActiveMenu,
+          'left--20': !isWinUp,
+          'left-0': isWinUp || isActiveMenu
+        }"
+        b="rd-rb-4">
+        <div v-show="!isActiveMenu">
+          <div class="i-tabler-menu2 text-2.2rem"></div>
+          <div text="center 0.9rem">菜单</div>
+        </div>
+        <div v-show="isActiveMenu">
+          <div text="15" class="i-tabler-x cursor-pointer" />
+        </div>
+      </div>
+      <div
+        class="transition-all-300 fixed-lt w-70 h-100vh z-90 bg-drop-primary"
+        :class="{ 'close-menu-body': !isActiveMenu, 'open-menu-body': isActiveMenu }">
+        <div class="flow-auto select-none scroll-none h-100% mt-30">
+          <div class="menu-list ml-10">
+            <div class="hover mb-10 font-art" @click="Broswer.scrollIntoView('#l-top-nail')">
+              回到顶部
+            </div>
+            <div class="hover mb-10 font-art" @click="Broswer.scrollIntoView('#tags-nail')">
+              我的标签
+            </div>
+            <div class="hover mb-10 font-art" @click="Broswer.scrollIntoView('#essay-nail')">
+              随笔分类
+            </div>
+            <div class="hover mb-10 font-art" @click="Broswer.scrollIntoView('#article-nail')">
+              文章分类
             </div>
             <div
-              text="start 4 ellipsis"
-              class="line-clamp-2 line-height-1.2 letter-spacing-0.1 font-art"
-              m="t-3">
-              {{ BleuVars.config.signature }}
+              class="hover mb-10 font-art"
+              @click="Broswer.scrollIntoView('#essay-archive-nail')">
+              随笔归档
             </div>
-          </div>
-          <div m="t-15">
-            <div m="b-8" v-if="list?.data" v-for="item in list.data">
-              <div p="b-4">
-                <div class="f-c-s text-b text-0.9rem mb-6">
-                  <div class="i-tabler-clock-hour3 mr-2"></div>
-                  {{ item.date }}
-                </div>
-                <div
-                  class="text-ellipsis line-clamp-2 hover"
-                  @click="
-                    Navigation.go({
-                      path: RouterPath.Arbeiten(item.id),
-                      router: $router
-                    })
-                  ">
-                  {{ item.text }}
-                </div>
-                <div class="f-c-e" text="0.8rem c" m="t-6">
-                  <div
-                    m="r-2"
-                    text="b"
-                    class="hover"
-                    @click="
-                      Navigation.go({
-                        path: RouterPath.Arbeiten(item.id),
-                        router: $router
-                      })
-                    ">
-                    阅读全文
-                  </div>
-                  <div class="f-c-e">
-                    <div m="r-2" class="f-c-c">
-                      <div class="i-tabler-message2" m="r-1"></div>
-                      <div>
-                        {{ item.comm }}
-                      </div>
-                    </div>
-                    <div m="r-2" class="f-c-c">
-                      <div class="i-tabler-brand-tinder" m="r-1"></div>
-                      <div>
-                        {{ item.digg }}
-                      </div>
-                    </div>
-                    <div class="f-c-c">
-                      <div class="i-tabler-eye" m="r-1"></div>
-                      <div>
-                        {{ item.view }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div
+              class="hover mb-10 font-art"
+              @click="Broswer.scrollIntoView('#article-archive-nail')">
+              文章归档
             </div>
-            <div text="end" class="f-c-e">
-              <div
-                @click="Navigation.go({ path: RouterPath.ArbeitenList(), router: $router })"
-                class="w-20 cursor-pointer hover:text-primary transition-all-300 font-art"
-                p="x-1 y-1"
-                text="center 0.8rem"
-                b="rd-4 solid 1 hover:primary">
-                MORE
-              </div>
+            <div class="hover mb-10 font-art" @click="Broswer.scrollIntoView('#my-pohoto-nail')">
+              我的相册
+            </div>
+            <div
+              class="hover mb-10 font-art"
+              @click="$router.push(RouterPath.ArbeitenByCalendar())">
+              我的日历
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <!-- area-2：GitHub -->
+    <div v-show="!isActiveMenu" class="l-github lt-sm:hidden fixed-lb z-9 ml-2">
+      <div
+        class="f-c-c flex-col"
+        @click="Navigation.go('http://github.com/' + BleuVars.getBlogApp())">
+        <div class="write-vertical-left text-0.9rem text-b bounce shine-text hover mb-4">
+          {{ BleuVars.getBlogApp() }}'s github
+        </div>
+        <div class="i-tabler-brand-github hover mb-4 text-1.2rem text-b"></div>
+      </div>
+    </div>
+    <!-- area-3：开屏 -->
+    <div class="lg:f-s-b">
+      <div class="lg:w-49% lg:h-100vh py-4">
+        <div class="f-c-b flex-col h-100%">
+          <!-- 随笔列表 -->
+          <div class="lt-lg:mb-15" v-if="list?.data" v-for="item in list.data">
+            <!-- 日期 -->
+            <div class="f-c-s text-b text-0.9rem mb-2">
+              <div class="i-tabler-clock-hour3 mr-2"></div>
+              {{ item.date }}
+            </div>
+            <!-- 标题 -->
+            <div class="text-ellipsis lg:line-clamp-2 mb-2">
+              <router-link class="hover" :to="RouterPath.Arbeiten(item.id)">
+                {{ item.text }}
+              </router-link>
+            </div>
+            <!-- 简介 -->
+            <div class="text-ellipsis lg:line-clamp-1 lt-lg:line-clamp-3 text-0.9rem text-b ml-10">
+              {{ item.desc }}
+            </div>
+            <!-- 简要信息 -->
+            <div class="f-c-e" text="0.8rem c" m="t-5">
+              <div class="mr-2 text-b">
+                <router-link class="hover" :to="RouterPath.Arbeiten(item.id)">
+                  阅读全文
+                </router-link>
+              </div>
+              <div class="f-c-e">
+                <div class="f-c-c mr-2">
+                  <div class="i-tabler-message2 mr-1"></div>
+                  {{ item.comm }}
+                </div>
+                <div class="f-c-c mr-2">
+                  <div class="i-tabler-brand-tinder mr-1"></div>
+                  {{ item.digg }}
+                </div>
+                <div class="f-c-c">
+                  <div class="i-tabler-eye mr-1"></div>
+                  {{ item.view }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="f-c-e">
+            <HollowedBox round dotted hover @click="$router.push(RouterPath.ArbeitenList())">
+              <router-link :to="RouterPath.ArbeitenList()">MORE</router-link>
+            </HollowedBox>
+          </div>
+        </div>
+      </div>
       <!-- 轮播图 -->
-      <div class="sm:w-49% lt-sm:hidden h-100vh f-c-b relative">
-        <!-- 图片 -->
+      <div
+        v-if="!BleuVars.config.images.home.disabled"
+        class="lg:w-49% lt-lg:hidden h-100vh f-c-b relative">
         <img
           v-for="(item, index) in carouselList"
           :style="
@@ -185,78 +245,185 @@ await fetchData();
           class="w-100% h-100% transition-all-800 absolute top-0 left-0 object-cover"
           :src="item" />
       </div>
-    </div>
-    <!-- area-2：基本信息展示 -->
-    <div class="sm:f-s-b mt-20">
-      <div class="sm:w-49%">
-        <div class="caption mb-10">
-          <div class="i-tabler-info-square-rounded mr-2"></div>
-          博主数据
-        </div>
-        <div class="f-c-b mb-10 text-1rem text-c">
-          <img class="w-25 h-25 rd-50" :src="BleuVars.config.avatar" />
-          <div v-if="column?.rankings?.length > 0" class="f-c-e">
-            <div>
-              <div v-for="item in column.rankings" class="mt-2">
-                {{ item.text }}
+      <!-- area-4：不开启轮播图，个人数据 -->
+      <div
+        v-else
+        class="lg:w-49% lg:ml-10 lg:h-100vh"
+        :class="{ 'py-4': BleuVars.config.images.home.disabled }">
+        <div>
+          <div class="caption mb-10">
+            <div class="i-tabler-info-square-rounded mr-2"></div>
+            博客信息
+          </div>
+          <div class="f-c-s h-30 mb-10 text-1rem text-b">
+            <!-- 头像 -->
+            <img
+              class="w-25 h-25 rd-50% lt-lg:mr-8 lg:mr-10 object-cover"
+              :src="BleuVars.config.avatar" />
+            <div class="f-s-b flex-col h-100%">
+              <!-- 积分和排名 -->
+              <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
+                <div
+                  v-for="(item, index) in column.rankings"
+                  :class="{ 'mr-4': index != column.rankings.length - 1 }">
+                  {{ item.text }}
+                </div>
+              </div>
+              <div class="text-0.8rem text-ellipsis line-clamp-1 shine-text">
+                个签：{{ BleuVars.config.signature }}
+              </div>
+              <div class="w-60">
+                <el-input
+                  v-model="searchVal"
+                  @keyup.enter="Native.searchArbeiten(searchVal)"
+                  placeholder="输入关键字"
+                  clearable>
+                  <template #prefix>
+                    <div class="i-tabler-search"></div>
+                  </template>
+                </el-input>
               </div>
             </div>
           </div>
-        </div>
-        <div class="f-c-b text-1rem">
-          <div v-if="news?.length > 0">
-            <div>
-              <div class="f-c-s">
+          <div class="f-c-b text-1rem">
+            <div v-if="news?.length" class="text-0.9rem">
+              <div class="f-c-s cursor-pointer shine-text" @click="Navigation.go(news[0].href)">
                 <div class="i-tabler-user mr-2"></div>
-                博主：{{ news[0].text }}
+                昵称：{{ news[0].text }}
               </div>
-              <div class="f-c-s" m="t-5">
+              <div class="f-c-s hover mt-5" @click="Navigation.go(news[1].href)">
                 <div class="i-tabler-calendar mr-2"></div>
                 园龄：{{ news[1].text }}
               </div>
-              <div class="f-c-s" m="t-5">
+              <div class="f-c-s hover mt-5" @click="Navigation.go(news[2].href)">
                 <div class="i-tabler-brand-twitch mr-2"></div>
                 粉丝：{{ news[2].text }}
               </div>
-              <div class="f-c-s" m="t-5">
+              <div class="f-c-s hover mt-5" @click="Navigation.go(news[3].href)">
                 <div class="i-tabler-heart mr-2"></div>
                 关注：{{ news[3].text }}
               </div>
             </div>
-          </div>
-          <div v-if="status?.length > 0">
-            <div>
+            <div v-if="status?.length" class="text-0.9rem">
               <div class="f-c-s">
                 <div class="i-tabler-pencil-minus mr-2"></div>
                 发表的随笔：{{ status[0].digg }}
               </div>
-              <div class="f-c-s" m="t-5">
+              <div class="f-c-s mt-5">
                 <div class="i-tabler-books mr-2"></div>
                 发表的文章：{{ status[1].digg }}
               </div>
-              <div class="f-c-s" m="t-5">
+              <div class="f-c-s mt-5">
                 <div class="i-tabler-message-circle mr-2"></div>
                 拥有的评论：{{ status[2].digg }}
               </div>
-              <div class="f-c-s" m="t-5">
+              <div class="f-c-s mt-5">
                 <div class="i-tabler-chart-bar mr-2"></div>
-                被阅读：{{ status[3].digg }}次
+                阅读的数量：{{ status[3].digg }}次
               </div>
             </div>
           </div>
         </div>
+        <!-- 技能雷达图 -->
+        <div class="lg:mt-5 lt-lg:mt-15">
+          <div class="caption mb-5">
+            <div class="i-tabler-chart-radar mr-2"></div>
+            我的技能
+          </div>
+          <div class="f-c-c w-100%">
+            <div ref="radarInst" class="w-100% h-80"></div>
+          </div>
+        </div>
       </div>
-      <div class="sm:w-49% lt-sm:mt-20">
-        <div class="text-primary font-art text-1.4rem letter-spacing-0.2 f-c-s" m="b-5">
+    </div>
+    <!-- area-4：开启轮播图，个人数据 -->
+    <div v-if="!BleuVars.config.images.home.disabled" class="sm:f-s-b mt-20">
+      <div class="sm:w-49%">
+        <div class="caption mb-10">
+          <div class="i-tabler-info-square-rounded mr-2"></div>
+          博客信息
+        </div>
+        <div class="f-c-s h-30 mb-10 text-1rem text-b">
+          <!-- 头像 -->
+          <img
+            class="w-25 h-25 rd-50% lt-lg:mr-8 lg:mr-10 object-cover"
+            :src="BleuVars.config.avatar" />
+          <div class="f-s-b flex-col h-100%">
+            <!-- 积分和排名 -->
+            <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
+              <div
+                v-for="(item, index) in column.rankings"
+                :class="{ 'mr-4': index != column.rankings.length - 1 }">
+                {{ item.text }}
+              </div>
+            </div>
+            <div class="text-0.8rem text-ellipsis line-clamp-1 shine-text">
+              个签：{{ BleuVars.config.signature }}
+            </div>
+            <div class="w-60">
+              <el-input
+                v-model="searchVal"
+                @keyup.enter="Native.searchArbeiten(searchVal)"
+                placeholder="输入关键字"
+                clearable>
+                <template #prefix>
+                  <div class="i-tabler-search"></div>
+                </template>
+              </el-input>
+            </div>
+          </div>
+        </div>
+        <div class="f-c-b text-1rem">
+          <div v-if="news?.length" class="text-0.9rem">
+            <div class="f-c-s cursor-pointer shine-text" @click="Navigation.go(news[0].href)">
+              <div class="i-tabler-user mr-2"></div>
+              昵称：{{ news[0].text }}
+            </div>
+            <div class="f-c-s hover mt-5" @click="Navigation.go(news[1].href)">
+              <div class="i-tabler-calendar mr-2"></div>
+              园龄：{{ news[1].text }}
+            </div>
+            <div class="f-c-s hover mt-5" @click="Navigation.go(news[2].href)">
+              <div class="i-tabler-brand-twitch mr-2"></div>
+              粉丝：{{ news[2].text }}
+            </div>
+            <div class="f-c-s hover mt-5" @click="Navigation.go(news[3].href)">
+              <div class="i-tabler-heart mr-2"></div>
+              关注：{{ news[3].text }}
+            </div>
+          </div>
+          <div v-if="status?.length" class="text-0.9rem">
+            <div class="f-c-s">
+              <div class="i-tabler-pencil-minus mr-2"></div>
+              发表的随笔：{{ status[0].digg }}
+            </div>
+            <div class="f-c-s mt-5">
+              <div class="i-tabler-books mr-2"></div>
+              发表的文章：{{ status[1].digg }}
+            </div>
+            <div class="f-c-s mt-5">
+              <div class="i-tabler-message-circle mr-2"></div>
+              拥有的评论：{{ status[2].digg }}
+            </div>
+            <div class="f-c-s mt-5">
+              <div class="i-tabler-chart-bar mr-2"></div>
+              阅读的数量：{{ status[3].digg }}次
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 技能雷达图 -->
+      <div class="sm:w-49% lt-sm:mt-15">
+        <div class="caption mb-5">
           <div class="i-tabler-chart-radar mr-2"></div>
           我的技能
         </div>
         <div class="f-c-c w-100%">
-          <div ref="radarInst" class="w-100% h-90"></div>
+          <div ref="radarInst" class="w-100% h-80"></div>
         </div>
       </div>
     </div>
-    <!-- area-3：随笔标签 -->
+    <!-- area-5：随笔标签 -->
     <div class="mt-20 relative">
       <div
         class="transition-all-500"
@@ -278,15 +445,11 @@ await fetchData();
             图表
           </div>
         </div>
-        <div v-if="markList?.length > 0" class="f-s-b flex-wrap overflow-auto scroll-none">
-          <HollowedBox
-            v-for="item in markList"
-            line="dotted"
-            hover
-            round
-            class="mr-4 mb-6"
-            @click="Navigation.go({ path: RouterPath.ArbeitenByMark(item.text), router: $router })">
-            {{ item.text }}({{ item.count }})
+        <div v-if="markList?.length" class="f-s-b flex-wrap overflow-auto scroll-none">
+          <HollowedBox v-for="item in markList" hover line="dotted" round class="mr-4 mb-6">
+            <router-link :to="RouterPath.ArbeitenByMark(item.text)">
+              {{ item.text }}
+            </router-link>
           </HollowedBox>
         </div>
       </div>
@@ -305,7 +468,7 @@ await fetchData();
         </div>
       </div>
     </div>
-    <!-- area-4：随笔分类 -->
+    <!-- area-6：随笔分类 -->
     <div class="sm:f-s-b mt-15 relative">
       <!-- 随笔分类 -->
       <div class="sm:w-49%">
@@ -329,12 +492,11 @@ await fetchData();
               图表
             </div>
           </div>
-          <div v-if="column?.essaySort?.length > 0" class="f-c-b flex-wrap">
-            <div
-              @click="Navigation.go({ path: RouterPath.ArbeitenBySort(item.id), router: $router })"
-              class="mb-6 mr-4 cursor-pointer hover"
-              v-for="item in column.essaySort">
-              {{ item.text }}
+          <div v-if="column?.essaySort?.length" class="f-c-b flex-wrap">
+            <div class="mb-6 mr-4 hover" v-for="item in column.essaySort">
+              <router-link :to="RouterPath.ArbeitenBySort(item.id)">
+                {{ item.text }}
+              </router-link>
             </div>
           </div>
         </div>
@@ -359,17 +521,16 @@ await fetchData();
           <div class="i-tabler-sort-a-z mr-2"></div>
           文章分类
         </div>
-        <div v-if="column?.articleSort?.length > 0" class="f-c-b flex-wrap">
-          <div
-            @click="Navigation.go({ path: RouterPath.ArbeitenBySort(item.id), router: $router })"
-            class="mb-6 mr-4 cursor-pointer hover"
-            v-for="item in column.articleSort">
-            {{ item.text }}
+        <div v-if="column?.articleSort?.length" class="f-c-b flex-wrap">
+          <div class="mb-6 mr-4 hover" v-for="item in column.articleSort">
+            <router-link :to="RouterPath.ArbeitenBySort(item.id)">
+              {{ item.text }}
+            </router-link>
           </div>
         </div>
       </div>
     </div>
-    <!-- area-5：随笔归档 -->
+    <!-- area-7：随笔归档 -->
     <div class="mt-15 relative">
       <div>
         <div
@@ -392,14 +553,11 @@ await fetchData();
               图表
             </div>
           </div>
-          <div v-if="column?.essayArchive?.length > 0" class="f-c-b flex-wrap">
-            <div
-              @click="
-                Navigation.go({ path: RouterPath.ArbeitenByArchive('p', item.id), router: $router })
-              "
-              class="mb-6 mr-4 cursor-pointer hover"
-              v-for="item in column.essayArchive">
-              {{ item.text }}
+          <div v-if="column?.essayArchive?.length" class="f-c-b flex-wrap">
+            <div class="mb-6 mr-4 hover" v-for="item in column.essayArchive">
+              <router-link :to="RouterPath.ArbeitenByArchive('p', item.id)">
+                {{ item.text }}
+              </router-link>
             </div>
           </div>
         </div>
@@ -419,39 +577,66 @@ await fetchData();
         </div>
       </div>
     </div>
-    <!-- area-6：文章归档 -->
+    <!-- area-8：文章归档 -->
     <div class="mt-15">
       <div id="article-archive-nail" class="caption mb-10">
         <div class="i-tabler-folder-check mr-2"></div>
         文章归档
       </div>
-      <div v-if="column?.articleArchive?.length > 0" class="f-c-b flex-wrap">
-        <div
-          @click="
-            Navigation.go({ path: RouterPath.ArbeitenByArchive('a', item.id), router: $router })
-          "
-          class="mb-6 mr-4 cursor-pointer hover"
-          v-for="item in column.articleArchive">
-          {{ item.text }}
+      <div v-if="column?.articleArchive?.length" class="f-c-b flex-wrap">
+        <div class="mb-6 mr-4 hover" v-for="item in column.articleArchive">
+          <router-link :to="RouterPath.ArbeitenBySort(item.id)">
+            {{ item.text }}
+          </router-link>
         </div>
       </div>
     </div>
-    <!-- area-7：相册列表 -->
+    <!-- area-9：相册列表 -->
     <div class="mt-15">
       <div id="my-pohoto-nail" class="caption mb-10">
         <div class="i-tabler-photo mr-2"></div>
         我的相册
       </div>
-      <div v-if="column?.albumn?.length > 0" class="f-c-b flex-wrap">
-        <div
-          @click="Navigation.go({ path: RouterPath.Albumn(item.id), router: $router })"
-          class="mb-6 cursor-pointer hover text-ellipsis line-clamp-2"
-          v-for="item in column.albumn">
-          {{ item.text }}
+      <div v-if="column?.albumn?.length" class="f-c-b flex-wrap">
+        <div class="mb-6 text-ellipsis line-clamp-2 hover" v-for="item in column.albumn">
+          <router-link :to="RouterPath.Albumn(item.id)">
+            {{ item.text }}
+          </router-link>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.l-menu {
+  .static-menu {
+    background-color: var(--text-primary);
+    color: white;
+  }
+
+  .active-menu {
+    background-color: white;
+    color: var(--text-primary);
+  }
+
+  .close-menu-body {
+    left: -17.5rem;
+
+    .menu-list > div {
+      opacity: 0;
+    }
+  }
+
+  .open-menu-body {
+    left: 0;
+
+    @for $i from 0 to 9 {
+      .menu-list > div:nth-child(#{$i}) {
+        opacity: 1;
+        transition-delay: #{$i * 0.06}s !important;
+      }
+    }
+  }
+}
+</style>

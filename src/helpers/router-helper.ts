@@ -81,32 +81,41 @@ const routeRules = [
   {
     regex: RouterRegx.Arbeiten,
     name: RouterName.Arbeiten,
-    params: { id: Textual.split(window.location.href, RouterRegx.Arbeiten, [2, 0], ["/", "."]) },
+    params: {
+      id: Textual.regexSplit(window.location.href, RouterRegx.Arbeiten, [2, 0], ["/", "."])
+    },
     before: indexesWorksComment
   },
   {
     regex: RouterRegx.ArbeitenBySort,
     name: RouterName.ArbeitenBySort,
     params: {
-      id: Textual.split(window.location.href, RouterRegx.ArbeitenBySort, [2, 0], ["/", "."])
+      id: Textual.regexSplit(window.location.href, RouterRegx.ArbeitenBySort, [2, 0], ["/", "."])
     }
   },
   {
     regex: RouterRegx.ArbeitenByMark,
     name: RouterName.ArbeitenByMark,
     params: {
-      tag: Textual.split(decodeURI(window.location.href), RouterRegx.ArbeitenByMark, [2], ["/"])
+      tag: Textual.regexSplit(
+        decodeURI(window.location.href),
+        RouterRegx.ArbeitenByMark,
+        [2],
+        ["/"]
+      )
     }
   },
   {
     regex: RouterRegx.AlbumnItem,
     name: RouterName.AlbumnItem,
-    params: { id: Textual.split(window.location.href, RouterRegx.AlbumnItem, [3], ["/"]) }
+    params: { id: Textual.regexSplit(window.location.href, RouterRegx.AlbumnItem, [3], ["/"]) }
   },
   {
     regex: RouterRegx.Articles,
     name: RouterName.Arbeiten,
-    params: { id: Textual.split(window.location.href, RouterRegx.Articles, [2, 0], ["/", "."]) }
+    params: {
+      id: Textual.regexSplit(window.location.href, RouterRegx.Articles, [2, 0], ["/", "."])
+    }
   }
 ];
 

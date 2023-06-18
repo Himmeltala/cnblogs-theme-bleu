@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WorksApi } from "@/apis";
+import { ArbeitenApi } from "@/apis";
 
 const route = useRoute();
 const typeL2Arbeiten = shallowRef();
@@ -11,8 +11,8 @@ async function fetchData(index?: any) {
   Broswer.startLoading();
   const id = route.params.id;
 
-  const val1 = await WorksApi.getByL1(`${id}`, index);
-  const val2 = await WorksApi.getByL2(`${id}`, val1.isArticle);
+  const val1 = await ArbeitenApi.getByL1(`${id}`, index);
+  const val2 = await ArbeitenApi.getByL2(`${id}`, val1.isArticle);
 
   typeL1Arbeiten.value = val1;
   typeL2Arbeiten.value = val2;
@@ -35,7 +35,7 @@ watch(route, async () => {
 </script>
 
 <template>
-  <div id="l-works-by-sort" class="page">
+  <div id="l-arbeiten-by-sort" class="page">
     <div class="content">
       <Pagination
         @nexpr="fetchData"
@@ -44,7 +44,7 @@ watch(route, async () => {
         :count="typeL1Arbeiten.page"
         :disabled="!typeL1Arbeiten.data.length">
         <template #content>
-          <el-page-header :icon="null" @back="Navigation.go({ path: 'back', router: $router })">
+          <el-page-header :icon="null" @back="$router.back()">
             <template #title>
               <div class="f-c-c">
                 <i-ep-back />
@@ -57,7 +57,7 @@ watch(route, async () => {
           <div
             class="mb-10 text-0.9rem text-c"
             v-html="typeL1Arbeiten.desc2 || typeL1Arbeiten.desc"></div>
-          <div class="text-0.9rem" v-if="typeL2Arbeiten.length > 0">
+          <div class="mb-10 text-0.9rem" v-if="typeL2Arbeiten?.length">
             <div
               class="hover f-c-s text-b"
               v-for="(item, index) in typeL2Arbeiten"
@@ -67,11 +67,12 @@ watch(route, async () => {
             </div>
           </div>
           <ArbeitenItem
-            v-if="typeL1Arbeiten.data.length > 0"
+            v-if="typeL1Arbeiten?.data?.length"
             v-for="(item, index) in typeL1Arbeiten.data"
             :key="item.id"
             :item="item"
             :index="index"
+            :length="typeL1Arbeiten.data.length"
             :cover="arbeitenCouverture[couvertureIndexs[index]]" />
         </template>
       </Pagination>

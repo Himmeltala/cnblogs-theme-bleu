@@ -21,16 +21,10 @@ const props = defineProps({
 });
 
 async function confirmDeleteComment() {
-  const data = await CommentApi.del({
+  await CommentApi.del({
     commentId: props.comment.commentId,
     parentId: parseInt(props.postId)
   });
-  if (data) {
-    props.comments.splice(props.itemIndex, 1);
-    ElMessage({ message: "删除评论成功！", grouping: true, type: "success" });
-  } else {
-    ElMessage({ message: "这不是你的评论，没有权限删除！", grouping: true, type: "error" });
-  }
 }
 </script>
 

@@ -43,7 +43,7 @@ export default defineConfig(({ mode }) => {
               "Navigation",
               "PrettifyLog",
               "Random",
-              "LocalStorage",
+              "BleuStorage",
               "Textual"
             ]
           },
@@ -79,7 +79,7 @@ export default defineConfig(({ mode }) => {
             enabledCollections: ["ep"]
           })
         ],
-        dirs: ["./src/views/**", "./src/components/**"]
+        dirs: ["./src/views/**", "./src/components/**", "./src/fragments/**"]
       }),
       Icons({
         autoInstall: true

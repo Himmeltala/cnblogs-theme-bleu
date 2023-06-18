@@ -4,7 +4,7 @@ import { RouterPath } from "./router-path";
 import { RouterRegx } from "./router-regx";
 
 export enum ProvideKey {
-  Katalog = "katalogDisabled"
+  Catalog = "catalogDisabled"
 }
 
 export { BleuVars, RouterName, RouterRegx, RouterPath };

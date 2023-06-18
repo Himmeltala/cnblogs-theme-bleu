@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import { getMarkList } from "@/apis";
-import { useLoading } from "@/hooks/use-loading";
+import { DatumApi } from "@/apis";
 
 const markList = shallowRef();
 
 async function fetchData() {
-  markList.value = await getMarkList();
+  Broswer.startLoading();
+  markList.value = await DatumApi.getMarkList();
+  Broswer.endLoading();
 }
 
-useLoading(fetchData);
+await fetchData();
 </script>
 
 <template>
   <div id="l-mark-list" class="page">
     <div class="content" v-if="markList">
-      <el-page-header
-        class="mt-4 mb-6"
-        :icon="null"
-        @back="Navigation.go({ path: 'back', router: $router })">
+      <el-page-header class="mt-4 mb-6" :icon="null" @back="$router.back()">
         <template #title>
           <div class="f-c-c">
             <i-ep-back />

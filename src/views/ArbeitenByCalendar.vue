@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WorksApi } from "@/apis";
+import { DatumApi } from "@/apis";
 
 const date = new Date();
 const calendar = shallowRef();
@@ -13,7 +13,7 @@ function findDate(data: any) {
 }
 
 async function fetchData() {
-  calendar.value = await WorksApi.getCalendar(
+  calendar.value = await DatumApi.getCalendar(
     `${dateModel.value.getFullYear()}/${
       dateModel.value.getMonth() + 1
     }/${dateModel.value.getDate()}`
@@ -34,12 +34,9 @@ watch(dateModel, async (newVal, oldVal) => {
 </script>
 
 <template>
-  <div class="l-works-by-calendar page">
+  <div class="l-arbeiten-by-calendar page">
     <div class="content" v-if="calendar">
-      <el-page-header
-        class="mt-4 mb-15"
-        :icon="null"
-        @back="Navigation.go({ path: 'back', router: $router })">
+      <el-page-header class="mt-4 mb-15" :icon="null" @back="$router.back()">
         <template #title>
           <div class="f-c-c">
             <i-ep-back />
@@ -53,12 +50,7 @@ watch(dateModel, async (newVal, oldVal) => {
         <template #date-cell="{ data }">
           <div
             class="w-100% h-100%"
-            @click="
-              Navigation.go({
-                path: RouterPath.ArbeitenByArchive('d', data.day),
-                router: $router
-              })
-            "
+            @click="$router.push(RouterPath.ArbeitenByArchive('d', data.day))"
             v-if="findDate(data)">
             <u>
               {{ data.day.split("-")[2] }}

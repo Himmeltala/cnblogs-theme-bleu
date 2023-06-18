@@ -30,9 +30,6 @@ async function AddComment() {
       const comments = await CommentApi.getList(props.postId, 0);
       comment.value.body = "";
       emits("onPost", { count, comments });
-      ElMessage({ message: "发送评论成功！", grouping: true, type: "success" });
-    } else {
-      ElMessage({ message: "发送评论失败！", grouping: true, type: "error" });
     }
   } else ElMessage({ message: "评论字数不够！", grouping: true, type: "error" });
   loading.value = false;
@@ -40,7 +37,6 @@ async function AddComment() {
 </script>
 
 <template>
-  <!-- 发表评论 -->
   <div>
     <div class="text-primary font-art text-1.4rem letter-spacing-0.2 f-c-s" m="b-10">
       <div class="i-tabler-mail-fast mr-2"></div>

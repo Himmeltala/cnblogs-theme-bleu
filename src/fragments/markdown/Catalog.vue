@@ -1,32 +1,45 @@
 <script setup lang="ts">
-import { createKatalog } from "./index";
+import { createCatalog } from "./index";
 
-const props = defineProps(["realHtml"]);
+const props = defineProps({
+  strHtml: {
+    type: String,
+    required: true
+  },
+  realHtml: {
+    type: Object as PropType<any>,
+    required: false
+  }
+});
+
 const toRefRealHtml = toRef(props, "realHtml");
+const toRefStrHtml = toRef(props, "strHtml");
+
+const disabled = inject<boolean>(ProvideKey.Catalog);
 
 const translate = shallowRef("");
-const disabled = inject<boolean>(ProvideKey.Katalog);
-const katalogList = shallowRef();
-let observer: IntersectionObserver = null;
+const catalogList = shallowRef();
 
-function moveSlider(entries: any) {
-  for (let i = 0; i < katalogList.value.length; i++) {
+function controlSlider(entries: any) {
+  for (let i = 0; i < catalogList.value.length; i++) {
     document
-      .querySelector(`#katalog-${katalogList.value[i].id}`)
-      ?.classList.remove("katalog-active");
+      .querySelector(`#catalog-${catalogList.value[i].id}`)
+      ?.classList.remove("catalog-active");
   }
-  const item = document.querySelector(`#katalog-${entries[0].target.id}`);
+  const item = document.querySelector(`#catalog-${entries[0].target.id}`);
   const step = item?.getAttribute("data-step");
   translate.value = step;
-  item?.classList.add("katalog-active");
+  item?.classList.add("catalog-active");
 }
 
 function isTouchedTitle(offsetTop: number) {
   return window.scrollY >= offsetTop && window.scrollY <= offsetTop + offsetTop * 0.2;
 }
 
-watch(toRefRealHtml, newVal => {
-  katalogList.value = createKatalog(newVal);
+let observer: IntersectionObserver = null;
+
+function renderCatalog() {
+  catalogList.value = createCatalog(toRefRealHtml.value);
 
   observer = new IntersectionObserver(
     entries => {
@@ -34,11 +47,11 @@ watch(toRefRealHtml, newVal => {
         window.innerHeight * 0.5 + entries[0].target.offsetTop - entries[0].target.clientHeight;
 
       if (isTouchedTitle(offsetTop)) {
-        moveSlider(entries);
+        controlSlider(entries);
       } else {
         const offsetTop = entries[0].target.offsetTop;
         if (isTouchedTitle(offsetTop)) {
-          moveSlider(entries);
+          controlSlider(entries);
         }
       }
     },
@@ -47,10 +60,13 @@ watch(toRefRealHtml, newVal => {
     }
   );
 
-  for (let i = 0; i < katalogList.value.length; i++) {
-    observer.observe(katalogList.value[i].item);
+  for (let i = 0; i < catalogList.value.length; i++) {
+    observer.observe(catalogList.value[i].item);
   }
-});
+}
+
+watch(toRefRealHtml, renderCatalog);
+watch(toRefStrHtml, renderCatalog);
 
 onUnmounted(() => {
   observer.disconnect();
@@ -59,58 +75,58 @@ onUnmounted(() => {
 
 <template>
   <div
-    id="l-katalog"
-    :class="{ 'katalog-disable': disabled, 'katalog-show': !disabled }"
-    class="fixed top-4vh pl-4 py-6 w-16rem h-92vh l-back-bg rd-2 scroll-none flow-auto z-90"
-    v-if="katalogList && katalogList.length">
-    <div class="relative l-back-bg">
+    id="l-catalog"
+    :class="{ 'catalog-disable': disabled, 'catalog-show': !disabled }"
+    class="fixed top-4vh pl-4 py-6 w-16rem h-92vh rd-2 scroll-none flow-auto z-90"
+    v-if="catalogList && catalogList.length">
+    <div class="relative">
       <div class="ml-6 text-b">
         <div
           class="text-0.8rem mb-4 h-1.5rem f-c-s text-ellipsis line-clamp-1"
-          v-for="item in katalogList"
+          v-for="item in catalogList"
           @click="Broswer.scrollIntoView('#' + item.id)">
           <div v-html="item.content"></div>
         </div>
       </div>
       <div class="absolute slider-track"></div>
       <div
-        class="absolute slider"
+        class="absolute slider transition-all-300"
         :style="{ transform: 'translate(0, ' + translate + 'rem)' }"></div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-.katalog-active {
+.catalog-active {
   color: var(--l-hight-color-1);
 }
 </style>
 
 <style scoped lang="scss">
-@mixin katalog($left) {
-  .katalog-disable {
-    animation: katalog-disable-animation 0.3s ease-in;
+@mixin catalog-mixin($step) {
+  .catalog-disable {
+    animation: catalog-disable-animation 0.3s ease-in;
     left: 100vw;
   }
 
-  @keyframes katalog-disable-animation {
+  @keyframes catalog-disable-animation {
     @for $i from 0 to 11 {
       #{ $i * 10%} {
         // 100 -> 80
-        left: $left + $i * math.div(100vw - $left, 10);
+        left: $step + $i * math.div(100vw - $step, 10);
       }
     }
   }
 
-  .katalog-show {
-    animation: katalog-show-animation 0.3s ease-in;
-    left: $left;
+  .catalog-show {
+    animation: catalog-show-animation 0.3s ease-in;
+    left: $step;
   }
 
-  @keyframes katalog-show-animation {
+  @keyframes catalog-show-animation {
     @for $i from 0 to 11 {
       #{ $i * 10%} {
-        left: 100vw - $i * math.div(100vw - $left, 10);
+        left: 100vw - $i * math.div(100vw - $step, 10);
       }
     }
   }
@@ -118,16 +134,15 @@ onUnmounted(() => {
 
 @include pc() {
   $left: calc(55vw * 1.45);
-  @include katalog($left);
+  @include catalog-mixin($left);
 }
 
 @include mb() {
   $left: 50vw;
-  @include katalog($left);
+  @include catalog-mixin($left);
 }
 
 .slider {
-  transition: var(--l-animation-effect);
   width: 0.25rem;
   height: 1.5rem;
   border-radius: 0.25rem;

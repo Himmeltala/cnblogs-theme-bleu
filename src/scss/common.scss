@@ -45,10 +45,8 @@ a:link {
 }
 
 .scroll-none {
-  & {
-    scrollbar-color: initial;
-    scrollbar-width: none;
-  }
+  scrollbar-color: initial;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
@@ -71,7 +69,7 @@ a:link {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% auto;
-  animation: shine-animation 10s ease infinite;
+  animation: shine-animation 8s ease infinite;
 }
 
 .shine-bg {
@@ -126,10 +124,14 @@ a:link {
 }
 
 .textarea {
-  --uno: mb-5 rd-2;
-  border: 1px solid var(--el-border-color-darker);
+  --uno: mb-5 rd-2 transition-all-300;
   background-color: transparent;
-  @include hover($border-color: all, $font-color: false);
+  border: 1px solid var(--el-border-color-darker);
+
+  &:hover {
+    color: var(--el-color-primary) !important;
+    border-color: var(--el-color-primary) !important;
+  }
 
   textarea {
     --uno: rd-2 p-2 text-0.9rem;

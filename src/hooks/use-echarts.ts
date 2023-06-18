@@ -33,7 +33,7 @@ function delayRendering(dom: HTMLElement, options: any, flag?: Ref<number>) {
 }
 
 export function useRadarChart(dom: HTMLElement) {
-  renderEChart(dom, BleuVars.config.chart);
+  renderEChart(dom, BleuVars.config.chart.tech);
 }
 
 export function usePieChart(

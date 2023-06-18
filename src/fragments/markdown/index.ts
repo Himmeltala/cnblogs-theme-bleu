@@ -9,7 +9,7 @@ export function createCodeTools(ele: HTMLElement) {
 
   const eleClipboard = document.createElement("div");
   eleClipboard.setAttribute("class", "code-clipboard hover");
-  eleClipboard.innerText = "复制代码";
+  eleClipboard.innerText = "复制";
 
   const eleLang = document.createElement("div");
   eleLang.setAttribute("class", "code-language");
@@ -56,10 +56,11 @@ export function createCodeModal(ele: HTMLElement) {
  * @param  eleHighslide - The element to be toggled on click.
  * @param  eleHighslideImage - The element that displays the clicked image.
  */
-export function createHigslide(
+export function wrapImgInAmplifier(
   el: HTMLElement | HTMLElement[],
   eleHighslide: HTMLElement,
-  eleHighslideImage: HTMLImageElement
+  eleHighslideImage: HTMLImageElement,
+  config?: any
 ) {
   function addEvent(image: HTMLImageElement) {
     const eleTip = document.createElement("div");
@@ -67,7 +68,10 @@ export function createHigslide(
     eleTip.innerText = image.alt;
 
     if (image.parentElement.tagName === "P") {
-      image.parentElement.setAttribute("class", "f-c-c flex-col");
+      image.parentElement.setAttribute(
+        "class",
+        `${config?.align ? config.align : "f-c-c flex-col"}`
+      );
       image.parentElement.insertAdjacentElement("beforeend", eleTip);
     }
 
@@ -96,8 +100,8 @@ export function createHigslide(
   }
 }
 
-export function createKatalog(html: HTMLElement) {
-  const katalog: { id: string; content: string; item: Element }[] = [];
+export function createCatalog(html: HTMLElement) {
+  const catalogList: { id: string; content: string; item: Element }[] = [];
   let step = 0;
 
   const titles = html.querySelectorAll("h1, h2, h3");
@@ -114,14 +118,14 @@ export function createKatalog(html: HTMLElement) {
     }
 
     const content = `
-      <div id="katalog-${id}" class="hover" data-step="${step}" style="margin-left: ${marginLeft}">
+      <div id="catalog-${id}" class="hover" data-step="${step}" style="margin-left: ${marginLeft}">
         ${titles[i].textContent}
       </div>
     `;
 
-    katalog.push({ id, content, item: titles[i] });
+    catalogList.push({ id, content, item: titles[i] });
     step += 2.5;
   }
 
-  return katalog;
+  return catalogList;
 }

@@ -1,3 +1,9 @@
+/**
+ * 操作浏览器
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ */
 export namespace Broswer {
   /**
    * 设置标题

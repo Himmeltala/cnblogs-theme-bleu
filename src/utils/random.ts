@@ -1,3 +1,9 @@
+/**
+ * 操作随机数
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ */
 export namespace Random {
   function select(min: number, max: number) {
     let sum = max - min + 1;
