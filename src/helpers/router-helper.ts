@@ -23,16 +23,19 @@ export const routes = <RouteRecordRaw[]>[
   {
     name: RouterName.ArbeitenList,
     path: RouterPath.ArbeitenList(),
+    props: true,
     component: () => import("@/views/ArbeitenList.vue")
   },
   {
     name: RouterName.ArbeitenByMark,
     path: RouterPath.ArbeitenByMark(),
+    props: true,
     component: () => import("@/views/ArbeitenByMark.vue")
   },
   {
     name: RouterName.ArbeitenBySort,
-    path: RouterPath.ArbeitenBySort(),
+    path: RouterPath.ArbeitenBySort('', '', false),
+    props: true,
     component: () => import("@/views/ArbeitenBySort.vue")
   },
   {

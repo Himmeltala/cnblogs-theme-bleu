@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { createCatalog } from "./index";
-
 const props = defineProps({
   strHtml: {
     type: String,
@@ -14,13 +12,11 @@ const props = defineProps({
 
 const toRefRealHtml = toRef(props, "realHtml");
 const toRefStrHtml = toRef(props, "strHtml");
-
 const disabled = inject<boolean>(ProvideKey.Catalog);
-
 const translate = shallowRef("");
 const catalogList = shallowRef();
 
-function controlSlider(entries: any) {
+function controlLump(entries: any) {
   for (let i = 0; i < catalogList.value.length; i++) {
     document
       .querySelector(`#catalog-${catalogList.value[i].id}`)
@@ -36,10 +32,40 @@ function isTouchedTitle(offsetTop: number) {
   return window.scrollY >= offsetTop && window.scrollY <= offsetTop + offsetTop * 0.2;
 }
 
+function generateList() {
+  const catalogList: { id: string; content: string; item: Element }[] = [];
+  let step = 0;
+
+  const titles = toRefRealHtml.value.querySelectorAll("h1, h2, h3");
+
+  for (let i = 0; i < titles.length; i++) {
+    const id = titles[i].getAttribute("id");
+    const type = titles[i].localName;
+    let marginLeft = "";
+
+    if (type === "h2") {
+      marginLeft = "10px";
+    } else if (type === "h3") {
+      marginLeft = "20px";
+    }
+
+    const content = `
+      <div id="catalog-${id}" class="hover" data-step="${step}" style="margin-left: ${marginLeft}">
+        ${titles[i].textContent}
+      </div>
+    `;
+
+    catalogList.push({ id, content, item: titles[i] });
+    step += 2.5;
+  }
+
+  return catalogList;
+}
+
 let observer: IntersectionObserver = null;
 
 function renderCatalog() {
-  catalogList.value = createCatalog(toRefRealHtml.value);
+  catalogList.value = generateList();
 
   observer = new IntersectionObserver(
     entries => {
@@ -47,11 +73,11 @@ function renderCatalog() {
         window.innerHeight * 0.5 + entries[0].target.offsetTop - entries[0].target.clientHeight;
 
       if (isTouchedTitle(offsetTop)) {
-        controlSlider(entries);
+        controlLump(entries);
       } else {
         const offsetTop = entries[0].target.offsetTop;
         if (isTouchedTitle(offsetTop)) {
-          controlSlider(entries);
+          controlLump(entries);
         }
       }
     },
@@ -67,10 +93,7 @@ function renderCatalog() {
 
 watch(toRefRealHtml, renderCatalog);
 watch(toRefStrHtml, renderCatalog);
-
-onUnmounted(() => {
-  observer.disconnect();
-});
+onUnmounted(() => observer.disconnect());
 </script>
 
 <template>
@@ -88,9 +111,9 @@ onUnmounted(() => {
           <div v-html="item.content"></div>
         </div>
       </div>
-      <div class="absolute slider-track"></div>
+      <div class="absolute lump-track"></div>
       <div
-        class="absolute slider transition-all-300"
+        class="absolute lump transition-all-300"
         :style="{ transform: 'translate(0, ' + translate + 'rem)' }"></div>
     </div>
   </div>
@@ -142,7 +165,7 @@ onUnmounted(() => {
   @include catalog-mixin($left);
 }
 
-.slider {
+.lump {
   width: 0.25rem;
   height: 1.5rem;
   border-radius: 0.25rem;
@@ -151,7 +174,7 @@ onUnmounted(() => {
   left: 0;
 }
 
-.slider-track {
+.lump-track {
   width: 0.25rem;
   height: 100%;
   border-radius: 0.25rem;

@@ -7,46 +7,34 @@
 
 code {
   margin: 0;
-  --uno: rd-2;
-  letter-spacing: 1.5px;
   color: var(--el-color-danger-light-3);
   font-family: var(--l-code-family);
   font-size: var(--l-code-size);
 
   span {
-    line-height: 1.8;
     font-family: var(--l-code-family);
     font-size: var(--l-code-size);
   }
 }
 
-pre {
+.bleu-pre {
   --uno: rd-2;
-  position: relative;
+  margin: 1.5rem 0;
+  background: var(--l-bg-3);
 
-  code {
-    background: var(--l-blockcode-bg);
+  pre {
+    margin: 0;
+    padding: 0 1.2rem 1.5rem 1.2rem;
   }
 
-  .code-tools {
-    --uno: absolute top-2 right-2 f-c-e text-0.8rem w-100%;
-
-    .code-language {
-      --uno: ml-4 text-c;
+  .tools {
+    .right {
+      padding: 0.5rem 1.2rem 0.5rem 1.2rem;
+      --uno: b-b-primary b-b-1 b-b-solid text-primary;
     }
-  }
 
-  .code-modal {
-    --uno: absolute bottom-0 left-0 f-c-c rd-2 w-100%;
-    height: 3rem;
-    background-image: linear-gradient(
-      -180deg,
-      rgba(255, 255, 255, 0) 0%,
-      var(--l-codemodal-bg) 100%
-    );
-
-    .display-btn {
-      --uno: text-0.9rem;
+    .left {
+      padding: 0.5rem 1.2rem 0.5rem 1.2rem;
     }
   }
 }
@@ -62,27 +50,27 @@ a > code {
   h4,
   h5,
   h6 {
-    font-weight: 600 !important;
+    font-weight: 500 !important;
   }
 
   h1 {
-    font-size: 1.5rem !important;
-  }
-
-  h2 {
-    font-size: 1.4rem !important;
-  }
-
-  h3 {
-    font-size: 1.3rem !important;
-  }
-
-  h4 {
     font-size: 1.2rem !important;
   }
 
-  h5 {
+  h2 {
     font-size: 1.1rem !important;
+  }
+
+  h3 {
+    font-size: 1rem !important;
+  }
+
+  h4 {
+    font-size: 1rem !important;
+  }
+
+  h5 {
+    font-size: 1rem !important;
   }
 
   h6 {
@@ -90,7 +78,7 @@ a > code {
   }
 
   blockquote {
-    background-color: var(--l-blockquote-bg);
+    background-color: var(--l-bg-1);
     color: var(--text-b);
     margin: 0;
     border: {
@@ -123,7 +111,6 @@ a > code {
 
   p {
     margin: 1.5rem 0;
-    line-height: 1.8;
   }
 
   img {
@@ -138,7 +125,6 @@ a > code {
     li {
       margin-bottom: 0.5rem;
       position: relative;
-      line-height: 1.8;
       list-style-type: none;
       counter-increment: step-counter;
 
@@ -153,7 +139,7 @@ a > code {
         --uno: f-c-c text-0.8rem;
         font-weight: 400;
         color: var(--text-a);
-        background: var(--l-step-bg);
+        background: var(--l-bg-2);
       }
     }
 

@@ -31,19 +31,21 @@ export namespace BleuVars {
   /**
    * 获取博主自己的 blogUserGuid。在一些请求中需要使用该变量才能调用对应博客 API。
    */
-  export function getBlogGuid() {
+  export function getUserGuid() {
     if (import.meta.env.DEV) {
       return import.meta.env.VITE_BLOG_GUID;
-    } else return visitorUserId;
+    } else {
+      return visitorUserId;
+    }
   }
 
   /**
    * 获取对方博主的 blogUserGuid。在一些请求中需要使用该变量才能调用对应博客 API。
    */
   export function getOppositeGuid() {
-    const eleA = document.querySelector("#p_b_follow > a");
-    if (eleA) {
-      const attr = eleA.getAttribute("onclick");
+    const aInst = document.querySelector("#p_b_follow > a");
+    if (aInst) {
+      const attr = aInst.getAttribute("onclick");
       return attr?.split("(")[1]?.split(")")[0]?.replaceAll("'", "") ?? "";
     } else return "";
   }
@@ -64,15 +66,5 @@ export namespace BleuVars {
    */
   export function isPcDevice() {
     return !/iPhone|iPad|iPod|Android|IEMobile/.test(navigator.userAgent);
-  }
-
-  /**
-   * 初始化博客重要变量，这些变量不能通过 head script 获取，在一些元素属性上。
-   */
-  export function isFollow() {
-    const eleText = document.querySelector("#p_b_follow > a");
-    if (eleText) {
-      return eleText.innerText === "-取消关注" || false;
-    } else return false;
   }
 }

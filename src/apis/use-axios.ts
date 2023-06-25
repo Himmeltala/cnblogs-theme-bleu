@@ -5,11 +5,12 @@ const request = axios.create({
   baseURL: `${BleuVars.getBaseURL()}`,
   timeout: 5000
 });
+const loading = new Broswer.Loading();
 
 function getToken() {
   let token = "";
-  const ele = document.getElementById("antiforgery_token");
-  if (!!ele) token = ele.getAttribute("value");
+  const tokenInst = document.getElementById("antiforgery_token");
+  if (!!tokenInst) token = tokenInst.getAttribute("value");
   return token;
 }
 
@@ -30,9 +31,9 @@ request.interceptors.response.use(
     return config;
   },
   error => {
-    ElMessage({ message: "失败请求，请稍后再试！", type: "error", grouping: true });
-    Broswer.endLoading();
+    ElMessage({ message: "请求失败！", type: "error", grouping: true });
     router.push("/");
+    loading.endLoading();
     return Promise.reject(error);
   }
 );

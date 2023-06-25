@@ -169,6 +169,37 @@ pnpm run build
 <script src="https://blog-static.cnblogs.com/files/yjlblog/cursor-effects.js"></script>
 ```
 
+# 主题特性
+
+## 代码块左上角标注
+
+有时候代码块需要特意说明是哪个文件的，或者说明文件的路径等标注信息，在文本中直接说明有点繁琐，因此你只需要按照以下格式就可以实现一个代码块标注。
+
+`file:src/math_utils.js`
+
+```js
+file:src/math_utils.js
+function add(x, y) {
+  return x + y;
+}
+```
+
+## 代码块删除增加高亮
+
+我们可以在很多的博客、文档中看到代码块有删除、增加的背景高亮。这样可以让我们阅读的时候清楚地知道哪里改动，不需要过多的文字描述。
+
+所以，我特地开发了这一项功能。你只需要使用以下格式就可以让你的代码块中呈现删除或增加的高亮背景。
+
+- 删除 `del:[]`
+- 增加 `add:[]`
+
+```js
+function add(x, y) {
+  del:[return x + y]
+  add:[return y + x]
+}
+```
+
 # 配置主题
 
 ## icon
@@ -187,7 +218,7 @@ window.__BLEU_CONFIG__ = {
 ## signature
 
 - 类型：string
-- 是否必填：是
+- 是否必填：否
 
 个性签名显示在博客信息底部，文字超过两行会被隐藏（出于布局的考虑）。
 
@@ -213,15 +244,15 @@ window.__BLEU_CONFIG__ = {
 ## images
 
 - 类型：object
-- 是否必填：是
+- 是否必填：否
 
-该配置项包括了背景图片、首页轮播图、文章和随笔列表封面图。
+该配置项包括了背景图片、首页轮播图、文章和随笔列表封面图。一下 background、home 等对象都是可选。
 
 ```js
 window.__BLEU_CONFIG__ = {
   images: {
     // 背景
-    bg: {
+    background: {
       // 网络图片
       src: ""
       // 透明度
@@ -329,6 +360,48 @@ window.__BLEU_CONFIG__ = {
 };
 ```
 
+## styleCss
+
+- 类型：object
+- 是否必填：否
+
+配置 markdown 以及图片放大器样式。arbeiten 和 comment 符合 JS 的 style 样式对象。
+
+```js
+window.__BLEU_CONFIG__ = {
+  styleCss: {
+    arbeiten: {
+      fontSize: "1.1rem"
+    },
+    comment: {
+      fontSize: "1rem"
+    }
+  }
+};
+```
+
+对于图片放大器，值必须是 UnoCSS，如 flex flex-wrap flex-col 等，具体可以查阅 [UnoCSS 交互文档](https://unocss.dev/interactive/)。
+
+其中 f-c-c 是本主题设置的 shortcuts，对照以下的值来设置。
+
+```js
+const keys = [
+  { k: "c", v: "center" },
+  { k: "s", v: "start" },
+  { k: "e", v: "end" },
+  { k: "b", v: "between" },
+  { k: "a", v: "around" }
+];
+```
+
+```js
+window.__BLEU_CONFIG__ = {
+  styleCss: {
+    amplifier: "f-c-c flex-col"
+  }
+};
+```
+
 ## 完整配置
 
 ```html
@@ -339,11 +412,12 @@ window.__BLEU_CONFIG__ = {
     signature: "Time tick away, dream faded away.",
     avatar: "",
     images: {
-      bg: {
+      background: {
         src: ""
         opacity: 0.03,
         size: "50% auto",
-        repeat: "repeat"
+        repeat: "repeat",
+        posotion: "100%"
       },
       home: {
         opacity: 0.5,
@@ -407,6 +481,18 @@ window.__BLEU_CONFIG__ = {
         name: "ZCOOL KuaiLe",
         size: "1.2rem"
       }
+    },
+    markdownStyle: {
+      arbeiten: {
+        fontSize: "1.1rem"
+      },
+      comment: {
+        fontSize: "1rem"
+      }
+    },
+    amplifierUnoCSS: {
+      arbeiten: "f-c-c flex-col",
+      comment: "f-s-s flex-col"
     }
   };
 </script>

@@ -2,35 +2,35 @@
 import { ArbeitenApi } from "@/apis";
 
 const route = useRoute();
-const arbeiten = shallowRef();
-const arbProps = shallowRef();
-const arbPrevNext = shallowRef();
-const arbViewPoint = shallowRef();
+const arbeiten = shallowRef<BleuArbeiten>();
+const arbProps = shallowRef<BleuArbeitenProps>();
+const arbPrevNext = shallowRef<BleuArbeitenPrevNext>();
+const arbViewPoint = shallowRef<BlogArbeitenViewPoint>();
+const arbeitenState = ref<BleuArbeitenState>();
 const arbIsLock = ref(false);
-const blogInfo = ref();
-const realHtml = ref();
 const arbeitenId = ref(route.params.id as string);
+const loading = new Broswer.Loading();
 
-async function fetchData(mouted?: boolean) {
-  Broswer.startLoading();
+async function fetchData(isInMounted?: boolean) {
+  loading.startLoading();
 
   const [val1, val2, val3, val4, val5] = await Promise.all([
     ArbeitenApi.getArbeiten(arbeitenId.value),
     ArbeitenApi.getProps(arbeitenId.value),
     ArbeitenApi.getPrevNext(arbeitenId.value),
     ArbeitenApi.getViewPoint(arbeitenId.value),
-    ArbeitenApi.getArbeitenInfo(arbeitenId.value)
+    ArbeitenApi.getArbeitenState(arbeitenId.value)
   ]);
 
   arbeiten.value = val1;
   arbProps.value = val2;
   arbPrevNext.value = val3;
   arbViewPoint.value = val4;
+  arbeitenState.value = val5;
   arbIsLock.value = val1.isLocked;
-  blogInfo.value = val5;
 
   Broswer.setTitle(arbeiten.value.text);
-  mouted && Broswer.endLoading();
+  !isInMounted && loading.endLoading();
 }
 
 const arbPassword = ref("");
@@ -57,7 +57,7 @@ async function vote(type: VoteType) {
 watch(route, async () => {
   if (route.name === RouterName.Arbeiten) {
     arbeitenId.value = route.params.id as string;
-    await fetchData(true);
+    await fetchData(false);
   }
 });
 
@@ -70,16 +70,18 @@ onMounted(() => {
     }, 500);
   }
 
-  Broswer.endLoading();
+  loading.endLoading();
 });
 
-await fetchData();
+const realHtml = ref<HTMLElement>();
+
+await fetchData(true);
 </script>
 
 <template>
   <div id="l-arbeiten" class="page">
     <div class="content mt-4" v-if="!arbIsLock">
-      <div class="text-1.6rem w-100%">{{ arbeiten.text }}</div>
+      <div class="text-1.4rem w-100%">{{ arbeiten.text }}</div>
       <div class="f-c-s lt-sm:flex-wrap mt-6 text-0.9rem">
         <div class="f-c-c mr-4">
           <div class="i-tabler-calendar-stats mr-2"></div>
@@ -116,7 +118,7 @@ await fetchData();
             v-for="(item, index) in arbProps.sorts"
             :class="{ 'mr-4': index !== arbProps.sorts.length - 1 }">
             <HollowedBox hover line="dotted" round>
-              <router-link :to="RouterPath.ArbeitenBySort(item.href)">
+              <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
                 {{ item.text }}
               </router-link>
             </HollowedBox>
@@ -140,24 +142,14 @@ await fetchData();
         </div>
       </div>
       <Markdown
-        :style-css="BleuVars.config.markdown.arbeiten"
+        :style-css="BleuVars.config.styleCss?.arbeiten || { fontSize: '1rem' }"
         :str-html="arbeiten.content"
         v-model:real-html="realHtml" />
-      <div class="text-b mt-15 f-c-e text-0.9rem">
-        <div class="f-c-c mr-4">
-          <div class="i-tabler-calendar-stats mr-2"></div>
-          {{ arbeiten.date }}
-        </div>
-        <div class="f-c-c mr-4">
-          <div class="i-tabler-eye mr-2"></div>
-          {{ arbeiten.view }}次阅读
-        </div>
-        <div class="f-c-c">
-          <div class="i-tabler-message-2 mr-2"></div>
-          {{ arbeiten.comm }}条评论
-        </div>
-      </div>
-      <div class="copyright p-5 text-b mt-15">
+      <Amplifier
+        :style-css="BleuVars.config.styleCss?.amplifier || 'f-c-c flex-col'"
+        :str-html="arbeiten.content"
+        :real-html="realHtml" />
+      <div class="bg-b3 text-0.8rem p-5 text-b mt-5">
         <div class="f-c-s flex-wrap">
           <div class="i-tabler-user mr-2"></div>
           作者：<span
@@ -179,7 +171,7 @@ await fetchData();
           >」许可协议进行许可。
         </div>
       </div>
-      <div class="mt-15 text-0.9rem">
+      <div class="mt-5 text-0.9rem text-b">
         <div class="f-s-s mb-2" v-if="arbPrevNext?.prev?.href">
           <router-link class="hover" :to="RouterPath.Arbeiten(arbPrevNext.prev.href)">
             上一篇：{{ arbPrevNext.prev.text }}
@@ -191,40 +183,31 @@ await fetchData();
           </router-link>
         </div>
       </div>
-      <div class="my-10 f-c-e" v-if="!isBlogOwner">
-        <div class="f-c-c">
-          <el-button type="primary" plain round size="small">
-            <span v-if="blogInfo.isFollowed" @click="ArbeitenApi.unfollow">- 取消关注</span>
-            <span v-else @click="ArbeitenApi.follow">+ 关注博主</span>
-          </el-button>
-        </div>
+      <div v-if="!isBlogOwner && isLogined" class="mt-10 f-c-e">
+        <el-button type="primary" plain round size="small">
+          <span v-if="arbeitenState.isFollowed" @click="ArbeitenApi.unfollow">- 取消关注</span>
+          <span v-else @click="ArbeitenApi.follow">+ 关注博主</span>
+        </el-button>
       </div>
-      <div class="my-10 f-c-c">
-        <div class="f-c-c hover mr-8" @click="vote('Digg')">
-          <div class="i-tabler-thumb-up mr-2"></div>
+      <div class="mt-20 f-c-c">
+        <el-button type="primary" plain @click="vote('Digg')" class="mr-5">
+          <div class="i-tabler-thumb-up mr-1"></div>
           赞成{{ arbViewPoint.diggCount }}
-        </div>
-        <div class="f-c-c hover mr-8" @click="vote('Bury')">
-          <div class="i-tabler-thumb-down mr-2"></div>
+        </el-button>
+        <el-button type="danger" plain @click="vote('Bury')" class="mr-5">
+          <div class="i-tabler-thumb-down mr-1"></div>
           反对{{ arbViewPoint.buryCount }}
-        </div>
-        <div class="f-c-c hover" @click="Native.saveArbeiten(arbeitenId)">
-          <div class="i-tabler-heart mr-2"></div>
-          收藏该文
-        </div>
+        </el-button>
+        <el-button type="success" plain @click="Native.saveArbeiten(arbeitenId)">
+          <div class="i-tabler-heart mr-1"></div>
+          收藏
+        </el-button>
       </div>
-      <div class="my-10 f-c-e text-0.9rem">
+      <div class="my-20 f-c-e text-0.9rem">
         分享：
-        <div class="f-c-c hover" @click="Native.shareToWechat">
-          <div class="i-tabler-brand-wechat mr-2"></div>
-          微信
-        </div>
+        <div class="i-tabler-brand-wechat mr-2 hover" @click="Native.shareToWechat"></div>
       </div>
       <Catalog :str-html="arbeiten.content" :real-html="realHtml" />
-      <Amplifier
-        :config="BleuVars.config.amplifier.arbeiten"
-        :str-html="arbeiten.content"
-        :real-html="realHtml" />
       <Comment :post-id="arbeitenId" />
     </div>
     <div class="content" v-else>
@@ -245,9 +228,3 @@ await fetchData();
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.copyright {
-  background: var(--l-blockcode-bg);
-}
-</style>

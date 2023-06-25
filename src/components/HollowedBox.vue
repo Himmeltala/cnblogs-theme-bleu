@@ -1,9 +1,5 @@
 <script setup lang="ts">
 defineProps({
-  hover: {
-    type: Boolean,
-    default: false
-  },
   line: {
     type: String as PropType<"solid" | "dotted">,
     default: "solid"
@@ -36,7 +32,6 @@ function translate(prop: string): string {
     class="l-hollobox"
     :class="{
       round: round,
-      hover: hover,
       [translate(textColor)]: textColor,
       [translate(fontSize)]: fontSize,
       padding: padding

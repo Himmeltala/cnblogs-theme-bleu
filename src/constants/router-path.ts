@@ -18,30 +18,35 @@ export namespace RouterPath {
 
   /**
    * @param tag 标签
-   * @returns "/mark/:tag"
+   * @returns "/mark" 或者 "/mark?name=C/C++"
    */
   export function ArbeitenByMark(tag?: string) {
     if (tag) {
-      return `/mark/${tag}`;
-    } else return "/mark/:tag";
+      return `/mark?name=${tag}`;
+    } else return "/mark";
   }
 
   /**
    * @param id 文章或随笔 ID
-   * @returns "/sort/:id"
+   * @returns "/sort?id=1&page=1" 或者 "/sort"
    */
-  export function ArbeitenBySort(id?: string | number) {
-    if (id) {
-      return `/sort/${id}`;
-    } else return "/sort/:id";
+  export function ArbeitenBySort(id?: string | number, page?: number | string, obj?: boolean) {
+    if (obj) {
+      return { path: "/sort", query: { id, page } };
+    } else {
+      if (id && page) return `/sort?id=${id}&page=${page}`;
+      else return "/sort";
+    }
   }
 
   /**
-   * @param id 岁别列表
-   * @returns "/list"
+   * @param page 作品列表
+   * @returns "/list" 或者 "/list?page=1"
    */
-  export function ArbeitenList() {
-    return `/list`;
+  export function ArbeitenList(page?: string | number) {
+    if (page) {
+      return `/list?page=${page}`;
+    } else return "/list";
   }
 
   /**

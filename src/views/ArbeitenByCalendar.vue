@@ -2,10 +2,11 @@
 import { DatumApi } from "@/apis";
 
 const date = new Date();
-const calendar = shallowRef();
 const dateModel = ref(date);
+const calendar = shallowRef<string[]>();
+const loading = new Broswer.Loading();
 
-Broswer.startLoading();
+loading.startLoading();
 
 function findDate(data: any) {
   const date = data.day.replaceAll("-", "/");
@@ -21,16 +22,16 @@ async function fetchData() {
 }
 
 onMounted(() => {
-  Broswer.endLoading();
+  loading.endLoading();
 });
-
-await fetchData();
 
 watch(dateModel, async (newVal, oldVal) => {
   if (newVal.getMonth() !== oldVal.getMonth()) {
     await fetchData();
   }
 });
+
+await fetchData();
 </script>
 
 <template>
@@ -49,13 +50,12 @@ watch(dateModel, async (newVal, oldVal) => {
       <el-calendar v-model="dateModel">
         <template #date-cell="{ data }">
           <div
+            v-if="findDate(data)"
             class="w-100% h-100%"
-            @click="$router.push(RouterPath.ArbeitenByArchive('d', data.day))"
-            v-if="findDate(data)">
-            <u>
+            @click="$router.push(RouterPath.ArbeitenByArchive('d', data.day))">
+            <u class="font-bold">
               {{ data.day.split("-")[2] }}
             </u>
-            <div class="mt-2 text-b text-0.8rem">点击查看</div>
           </div>
           <span v-else>{{ data.day.split("-")[2] }}</span>
         </template>

@@ -2,14 +2,15 @@
 import { DatumApi } from "@/apis";
 
 const route = useRoute();
-const albumn = shallowRef();
-const srcList = shallowRef();
+const albumn = shallowRef<BleuAlbumn>();
+const srcList = shallowRef<string[]>();
+const loading = new Broswer.Loading();
 
 async function fetchData() {
-  Broswer.startLoading();
+  loading.startLoading();
   albumn.value = await DatumApi.getAlbumn(route.params.id as string);
   srcList.value = albumn.value.data.map((i: any) => i.src);
-  Broswer.endLoading();
+  loading.endLoading();
 }
 
 watch(route, async () => {
@@ -37,9 +38,10 @@ await fetchData();
       <div class="mb-4 text-0.9rem text-b">{{ albumn.desc }}</div>
       <div class="f-c-b flex-wrap">
         <el-image
+          class="mb-4 mr-4"
           v-for="(item, index) in srcList"
-          :initial-index="index"
           :src="item"
+          :initial-index="index"
           :preview-src-list="srcList" />
         <el-result
           v-if="!albumn.data.length"

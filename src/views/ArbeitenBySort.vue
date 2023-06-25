@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { ArbeitenApi } from "@/apis";
 
+const router = useRouter();
 const route = useRoute();
-const typeL2Arbeiten = shallowRef();
-const typeL1Arbeiten = shallowRef();
-const arbeitenCouverture = BleuVars.config.images.arbeiten;
-const couvertureIndexs = shallowRef();
+const typeL1Arbeiten = shallowRef<BleuArbeitenList2>();
+const typeL2Arbeiten = shallowRef<BleuArbeitenL2[]>();
+const arbeitenCouverture = BleuVars.config.images?.arbeiten || [];
+const couvertureIndexs = shallowRef<number[]>();
+const loading = new Broswer.Loading();
 
-async function fetchData(index?: any) {
-  Broswer.startLoading();
-  const id = route.params.id;
+const defaultIndex = ref(1);
 
+async function fetchData(index: any) {
+  loading.startLoading();
+  const id = route.query.id;
+  router.replace(RouterPath.ArbeitenBySort(`${id}`, index, false));
   const val1 = await ArbeitenApi.getByL1(`${id}`, index);
   const val2 = await ArbeitenApi.getByL2(`${id}`, val1.isArticle);
 
@@ -20,25 +24,32 @@ async function fetchData(index?: any) {
   couvertureIndexs.value = Random.get(arbeitenCouverture, typeL1Arbeiten.value.data.length);
 
   nextTick(() => {
-    Broswer.endLoading();
+    loading.endLoading();
     Broswer.setTitle(typeL1Arbeiten.value.hint);
   });
 }
 
-await fetchData();
+async function takeQueryToFetchData() {
+  const page = route.query.page || 1;
+  defaultIndex.value = Number(page);
+  await fetchData(page);
+}
+
+await takeQueryToFetchData();
 
 watch(route, async () => {
   if (route.name === RouterName.ArbeitenBySort) {
-    await fetchData();
+    await takeQueryToFetchData();
   }
 });
 </script>
 
 <template>
   <div id="l-arbeiten-by-sort" class="page">
-    <div class="content">
+    <div class="content" v-if="typeL1Arbeiten">
       <Pagination
-        @nexpr="fetchData"
+        :default-index="defaultIndex"
+        @change="fetchData"
         @next="fetchData"
         @prev="fetchData"
         :count="typeL1Arbeiten.page"
@@ -63,11 +74,13 @@ watch(route, async () => {
               v-for="(item, index) in typeL2Arbeiten"
               :class="{ 'mb-3': index != typeL2Arbeiten.length - 1 }">
               <div class="i-tabler-folder-plus mr-2"></div>
-              <router-link :to="RouterPath.ArbeitenBySort(item.id)">{{ item.text }}</router-link>
+              <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">{{
+                item.text
+              }}</router-link>
             </div>
           </div>
           <ArbeitenItem
-            v-if="typeL1Arbeiten?.data?.length"
+            v-if="typeL1Arbeiten.data?.length"
             v-for="(item, index) in typeL1Arbeiten.data"
             :key="item.id"
             :item="item"

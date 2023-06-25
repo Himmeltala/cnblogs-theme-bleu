@@ -4,15 +4,16 @@ import { ArbeitenApi, DatumApi } from "@/apis";
 import { useWheelRollsUpAndDown } from "@/hooks/use-mouse";
 import {} from "@/utils/native";
 
-const list = shallowRef();
-const news = shallowRef();
-const status = shallowRef();
-const topList = shallowRef();
+const list = shallowRef<BleuArbeitenList>();
+const news = shallowRef<BleuMenuItemData[]>();
+const status = shallowRef<BleuMenuItemData[]>();
+const topList = shallowRef<BleuTopList>();
 const column = shallowRef<BleuMenuColumn>();
 const markList = shallowRef<BleuMark[]>();
+const loading = new Broswer.Loading();
 
 async function fetchData() {
-  Broswer.startLoading();
+  loading.startLoading();
 
   const [val1, val2, val3, val4, val5, val6] = await Promise.all([
     ArbeitenApi.getList(),
@@ -31,7 +32,7 @@ async function fetchData() {
   column.value = val5;
   markList.value = val6;
 
-  Broswer.endLoading();
+  loading.endLoading();
 }
 
 const radarInst = ref<HTMLElement>();
@@ -93,15 +94,17 @@ onMounted(() => {
   );
 });
 
-const carouselList = shallowRef(BleuVars.config.images.home.carousel);
+const carouselList = shallowRef(BleuVars.config.images?.home?.carousel || []);
 const carouselIndex = ref(0);
 
-setInterval(() => {
-  carouselIndex.value++;
-  if (carouselIndex.value > BleuVars.config.images.home.carousel.length) {
-    carouselIndex.value = 0;
-  }
-}, BleuVars.config.images.home.interval);
+if (BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel) {
+  setInterval(() => {
+    carouselIndex.value++;
+    if (carouselIndex.value > BleuVars.config.images.home.carousel.length) {
+      carouselIndex.value = 0;
+    }
+  }, BleuVars.config.images.home.interval || 5000);
+}
 
 const searchVal = ref("");
 
@@ -131,7 +134,7 @@ await fetchData();
         </div>
       </div>
       <div
-        class="transition-all-300 fixed-lt w-70 h-100vh z-90 bg-drop-primary"
+        class="transition-all-300 fixed-lt w-70 h-100vh z-90 bg-b1"
         :class="{ 'close-menu-body': !isActiveMenu, 'open-menu-body': isActiveMenu }">
         <div class="flow-auto select-none scroll-none h-100% mt-30">
           <div class="menu-list ml-10">
@@ -174,7 +177,7 @@ await fetchData();
       <div
         class="f-c-c flex-col"
         @click="Navigation.go('http://github.com/' + BleuVars.getBlogApp())">
-        <div class="write-vertical-left text-0.9rem text-b bounce shine-text hover mb-4">
+        <div class="write-vertical-left text-0.9rem text-b bounce hover mb-4">
           {{ BleuVars.getBlogApp() }}'s github
         </div>
         <div class="i-tabler-brand-github hover mb-4 text-1.2rem text-b"></div>
@@ -233,13 +236,13 @@ await fetchData();
       </div>
       <!-- 轮播图 -->
       <div
-        v-if="!BleuVars.config.images.home.disabled"
+        v-if="BleuVars.config.images?.home?.disabled ? BleuVars.config.images.home.disabled : false"
         class="lg:w-49% lt-lg:hidden h-100vh f-c-b relative">
         <img
           v-for="(item, index) in carouselList"
           :style="
             carouselIndex == index
-              ? { zIndex: 9, opacity: BleuVars.config.images.home.opacity }
+              ? { zIndex: 9, opacity: BleuVars.config.images?.home?.opacity || 0.5 }
               : { zIndex: 0, opacity: 0 }
           "
           class="w-100% h-100% transition-all-800 absolute top-0 left-0 object-cover"
@@ -249,7 +252,7 @@ await fetchData();
       <div
         v-else
         class="lg:w-49% lg:ml-10 lg:h-100vh"
-        :class="{ 'py-4': BleuVars.config.images.home.disabled }">
+        :class="{ 'py-4': BleuVars.config.images?.home?.disabled }">
         <div>
           <div class="caption mb-10">
             <div class="i-tabler-info-square-rounded mr-2"></div>
@@ -260,7 +263,7 @@ await fetchData();
             <img
               class="w-25 h-25 rd-50% lt-lg:mr-8 lg:mr-10 object-cover"
               :src="BleuVars.config.avatar" />
-            <div class="f-s-b flex-col h-100%">
+            <div class="f-s-b flex-col py-4 h-100%">
               <!-- 积分和排名 -->
               <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
                 <div
@@ -270,7 +273,7 @@ await fetchData();
                 </div>
               </div>
               <div class="text-0.8rem text-ellipsis line-clamp-1 shine-text">
-                个签：{{ BleuVars.config.signature }}
+                {{ BleuVars.config.signature || "这个人很懒，什么也没有留下" }}
               </div>
               <div class="w-60">
                 <el-input
@@ -337,7 +340,9 @@ await fetchData();
       </div>
     </div>
     <!-- area-4：开启轮播图，个人数据 -->
-    <div v-if="!BleuVars.config.images.home.disabled" class="sm:f-s-b mt-20">
+    <div
+      v-if="BleuVars.config.images?.home?.disabled ? BleuVars.config.images.home.disabled : false"
+      class="sm:f-s-b mt-20">
       <div class="sm:w-49%">
         <div class="caption mb-10">
           <div class="i-tabler-info-square-rounded mr-2"></div>
@@ -347,8 +352,8 @@ await fetchData();
           <!-- 头像 -->
           <img
             class="w-25 h-25 rd-50% lt-lg:mr-8 lg:mr-10 object-cover"
-            :src="BleuVars.config.avatar" />
-          <div class="f-s-b flex-col h-100%">
+            :src="BleuVars.config.avatar || ''" />
+          <div class="f-s-b flex-col py-4 h-100%">
             <!-- 积分和排名 -->
             <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
               <div
@@ -358,7 +363,7 @@ await fetchData();
               </div>
             </div>
             <div class="text-0.8rem text-ellipsis line-clamp-1 shine-text">
-              个签：{{ BleuVars.config.signature }}
+              {{ BleuVars.config.signature || "这个人很懒，什么也没有留下" }}
             </div>
             <div class="w-60">
               <el-input
@@ -456,7 +461,7 @@ await fetchData();
       <!-- 图表 -->
       <div
         :class="{ 'scale-0': !isShowPieChart1, 'scale-100': isShowPieChart1 }"
-        class="transition-all-300 z-9 rd-2 bg-drop-primary absolute left-0 top-0">
+        class="transition-all-300 z-9 rd-2 bg-b1 absolute left-0 top-0">
         <div text="c 1rem">
           <div p="r-4 t-4" class="f-c-e hover" @click="isShowPieChart1 = !isShowPieChart1">
             <div class="i-tabler-arrows-minimize mr-2"></div>
@@ -494,7 +499,7 @@ await fetchData();
           </div>
           <div v-if="column?.essaySort?.length" class="f-c-b flex-wrap">
             <div class="mb-6 mr-4 hover" v-for="item in column.essaySort">
-              <router-link :to="RouterPath.ArbeitenBySort(item.id)">
+              <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
                 {{ item.text }}
               </router-link>
             </div>
@@ -503,7 +508,7 @@ await fetchData();
         <!-- 图表 -->
         <div
           :class="{ 'scale-0': !isShowPieChart2, 'scale-100': isShowPieChart2 }"
-          class="transition-all-300 z-9 rd-2 bg-drop-primary absolute left-0 top-0">
+          class="transition-all-300 z-9 rd-2 bg-b1 absolute left-0 top-0">
           <div text="c 1rem">
             <div p="r-4 t-4" class="f-c-e hover" @click="isShowPieChart2 = !isShowPieChart2">
               <div class="i-tabler-arrows-minimize mr-2"></div>
@@ -523,7 +528,7 @@ await fetchData();
         </div>
         <div v-if="column?.articleSort?.length" class="f-c-b flex-wrap">
           <div class="mb-6 mr-4 hover" v-for="item in column.articleSort">
-            <router-link :to="RouterPath.ArbeitenBySort(item.id)">
+            <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
               {{ item.text }}
             </router-link>
           </div>
@@ -565,7 +570,7 @@ await fetchData();
       <!-- 图表 -->
       <div
         :class="{ 'scale-0': !isShowLineChart, 'scale-100': isShowLineChart }"
-        class="transition-all-300 z-9 rd-2 bg-drop-primary absolute left-0 top-0">
+        class="transition-all-300 z-9 rd-2 bg-b1 absolute left-0 top-0">
         <div text="c 1rem">
           <div p="r-4 t-4" class="f-c-e hover" @click="isShowLineChart = !isShowLineChart">
             <div class="i-tabler-arrows-minimize mr-2"></div>
@@ -585,7 +590,7 @@ await fetchData();
       </div>
       <div v-if="column?.articleArchive?.length" class="f-c-b flex-wrap">
         <div class="mb-6 mr-4 hover" v-for="item in column.articleArchive">
-          <router-link :to="RouterPath.ArbeitenBySort(item.id)">
+          <router-link :to="RouterPath.ArbeitenByArchive('a', item.id)">
             {{ item.text }}
           </router-link>
         </div>

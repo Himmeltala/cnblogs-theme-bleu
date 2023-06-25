@@ -15,7 +15,7 @@ export namespace ArbeitenApi {
    *
    * @param form 随笔、文章实体。必须包含：isAbandoned、postId、voteType 三个字段。
    */
-  export async function vote(form: BlogWorks): Promise<AjaxType> {
+  export async function vote(form: BlogArbeiten): Promise<AjaxType> {
     const { data } = await request.post<AjaxType>(`/ajax/vote/blogpost`, form);
     ElMessage({
       message: data.message,
@@ -30,7 +30,7 @@ export namespace ArbeitenApi {
    *
    * @param id 传递一个数组，数组第一个就是 postId 的值
    */
-  export async function getViewPoint(id: string): Promise<BlogWorksViewPoint> {
+  export async function getViewPoint(id: string): Promise<BlogArbeitenViewPoint> {
     const { data } = await request.post(`/ajax/GetPostStat`, [id]);
     return data[0];
   }
@@ -43,7 +43,7 @@ export namespace ArbeitenApi {
    */
   export async function getByL1(id: string, page?: number | string) {
     const { data } = await request.get(`/category/${id}.html?page=${page || 1}`);
-    return ArbeitenTransform.toArbeitenListFull(strToDOM(data));
+    return ArbeitenTransform.toArbeitenList2(strToDOM(data));
   }
 
   /**
@@ -84,21 +84,21 @@ export namespace ArbeitenApi {
    */
   export async function getList(page?: number | string) {
     const { data } = await request.get(`/default.html?page=${page || 1}`);
-    return ArbeitenTransform.toArbeitenList(strToDOM(data));
+    return ArbeitenTransform.toArbeitenList1(strToDOM(data));
   }
 
   /**
-   * 获取随笔档案、文章档案
+   * 获取随笔归档、文章归档
    *
-   * @param date 日期
+   * @param date 例如：2023/02，请求的是 2023 年 2 月下的随笔或文章归档
    * @param type 文章的请求链接是 archives，随笔的请求链接是 archive
    */
-  export async function getListByArchive(date: string, type: "article" | "works") {
-    const split = date.split("-");
+  export async function getListByArchive(date: string, type: "article" | "arbeiten") {
+    const splitDate = date.split("-");
     const { data } = await request.get(
-      `/${type === "article" ? "archives" : "archive"}/${split[0]}/${split[1]}.html}`
+      `/${type === "article" ? "archives" : "archive"}/${splitDate[0]}/${splitDate[1]}.html`
     );
-    return ArbeitenTransform.toArbeitenListFull(strToDOM(data));
+    return ArbeitenTransform.toArbeitenList2(strToDOM(data));
   }
 
   /**
@@ -142,29 +142,30 @@ export namespace ArbeitenApi {
   }
 
   /**
-   * 获取日期分类的随笔、文章列表
+   * 获取某天下的随笔或文章的列表
    *
-   * @param date 例如：2023/02/28
+   * @param date 例如：2023/02/28，请求的是 2023 年 2 月 28 日的随笔或文章列表
    */
   export async function getListByDay(date: string) {
     const { data } = await request.get(`/archive/${date}.html`);
-    return ArbeitenTransform.toArbeitenList(strToDOM(data));
+    return ArbeitenTransform.toArbeitenList1(strToDOM(data));
   }
 
   /**
-   * 获取作品的关注信息
+   * 获取作品状态信息
    *
    * @param id 作品 ID
    */
-  export async function getArbeitenInfo(id: string) {
-    let info = { isFollowed: false, isDigg: false };
-    try {
+  export async function getArbeitenState(id: string): Promise<BleuArbeitenState> {
+    let resp = { isFollowed: false, isDigg: false };
+    const blogUserGuid = BleuVars.getUserGuid();
+    if (blogUserGuid && isLogined) {
       const { data } = await request.get(
-        `/ajax/BlogPostInfo.aspx?blogId=${BleuVars.getBlogId()}&postId=${id}&blogUserGuid=${BleuVars.getBlogGuid()}`
+        `/ajax/BlogPostInfo.aspx?blogId=${BleuVars.getBlogId()}&postId=${id}&blogUserGuid=${blogUserGuid}`
       );
-      info = ArbeitenTransform.toArbeitenInfo(strToDOM(data));
-    } catch (e) {}
-    return info;
+      resp = ArbeitenTransform.toArbeitenInfo(strToDOM(data));
+    }
+    return resp;
   }
 
   /**
@@ -178,41 +179,32 @@ export namespace ArbeitenApi {
       postId: id,
       voteType: "Digg"
     });
-    if (data.isSuccess) {
-      ElMessage.success(data.message);
-    } else {
-      ElMessage.error(data.message);
-    }
+    if (data.isSuccess) ElMessage.success(data.message);
+    else ElMessage.error(data.message);
   }
 
   /**
    * 关注博主
    */
   export async function follow() {
-    try {
-      const { data } = await request.post(`/ajax/Follow/FollowBlogger.aspx`, {
-        blogUserGuid: BleuVars.getOppositeGuid()
-      });
-      if (data == "关注成功") ElMessage.success("关注成功！");
-      else if (data == "未登录") ElMessage.error("没有登录！");
-      else ElMessage.error("关注失败！");
-    } catch (e: any) {
-      ElMessage.error("操作失败！");
-    }
+    const blogUserGuid = BleuVars.getOppositeGuid();
+    const { data } = await request.post(`/ajax/Follow/FollowBlogger.aspx`, {
+      blogUserGuid
+    });
+    if (data == "关注成功") ElMessage.success("关注成功！");
+    else if (data == "未登录") ElMessage.error("没有登录！");
+    else ElMessage.error("关注失败！");
   }
 
   /**
    * 取消关注
    */
   export async function unfollow() {
-    try {
-      const { data } = await request.post(`/ajax/Follow/RemoveFollow.aspx`, {
-        blogUserGuid: BleuVars.getOppositeGuid()
-      });
-      if (data == "取消成功") ElMessage.success("取关成功！");
-      else ElMessage.error("取关失败！");
-    } catch (e: any) {
-      ElMessage.error("操作失败！");
-    }
+    const blogUserGuid = BleuVars.getOppositeGuid();
+    const { data } = await request.post(`/ajax/Follow/RemoveFollow.aspx`, {
+      blogUserGuid
+    });
+    if (data == "取消成功") ElMessage.success("取关成功！");
+    else ElMessage.error("取关失败！");
   }
 }

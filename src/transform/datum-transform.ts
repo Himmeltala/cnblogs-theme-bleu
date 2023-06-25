@@ -282,7 +282,7 @@ export namespace DatumTransform {
     return dom.getElementById("ViewPicture1_GalleryImage").getAttribute("src");
   }
 
-  export function toAlbumn(dom: Document) {
+  export function toAlbumn(dom: Document): BleuAlbumn {
     const data: BleuAlbumnItem[] = [];
     const eles = dom.getElementsByClassName("divPhoto");
 

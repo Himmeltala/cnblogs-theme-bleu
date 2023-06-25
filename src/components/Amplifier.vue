@@ -1,24 +1,20 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-import { wrapImgInAmplifier } from "./index";
-
 const props = defineProps({
   strHtml: {
-    type: String,
     required: true
   },
   realHtml: {
-    type: Object as PropType<any>,
+    type: Object as PropType<HTMLElement | HTMLElement[]>,
     required: false
   },
-  config: {
-    type: Object,
+  styleCss: {
+    type: String,
     required: false
   }
 });
 
-const toRefRealHtml = toRef(props, "realHtml");
 const toRefStrHtml = toRef(props, "strHtml");
+const toRefRealHtml = toRef(props, "realHtml");
 
 const amplifierInst = ref<HTMLElement>();
 const imageInst = ref<HTMLImageElement>();
@@ -35,8 +31,8 @@ useDraggable(imageInst, {
     positionY.value = position.y;
   },
   onStart() {
-    width.value = parseInt(imageInst.value.style.width);
-    height.value = parseInt(imageInst.value.style.height);
+    width.value = Number(imageInst.value.style.width);
+    height.value = Number(imageInst.value.style.height);
     isOpenAnima.value = false;
   }
 });
@@ -51,22 +47,58 @@ function close() {
 }
 
 function zoomIn() {
-  width.value = parseInt(imageInst.value.style.width);
-  height.value = parseInt(imageInst.value.style.height);
+  width.value = Number(imageInst.value.style.width);
+  height.value = Number(imageInst.value.style.height);
   isOpenAnima.value = true;
   height.value += height.value * 0.15;
   width.value += width.value * 0.15;
 }
 
 function zoomOut() {
-  width.value = parseInt(imageInst.value.style.width);
-  height.value = parseInt(imageInst.value.style.height);
+  width.value = Number(imageInst.value.style.width);
+  height.value = Number(imageInst.value.style.height);
   isOpenAnima.value = true;
   height.value -= height.value * 0.15;
   width.value -= width.value * 0.15;
 }
 
-onMounted(() => {
+function registerAmplifier(imgEl: HTMLImageElement) {
+  const captionEl = document.createElement("div");
+  captionEl.setAttribute("class", "text-b text-0.9rem mt-2");
+  captionEl.innerText = imgEl.alt;
+
+  if (imgEl.parentElement.tagName === "P") {
+    imgEl.parentElement.setAttribute("class", `${props.styleCss}`);
+    imgEl.parentElement.insertAdjacentElement("beforeend", captionEl);
+  }
+
+  imgEl.addEventListener("click", () => {
+    amplifierInst.value.classList.toggle("noactive");
+    amplifierInst.value.classList.toggle("active");
+    imageInst.value.src = imgEl.getAttribute("src");
+    imageInst.value.style.width = `${imgEl.width}px`;
+    imageInst.value.style.height = `${imgEl.height}px`;
+    document.documentElement.style.overflow = "hidden";
+  });
+}
+
+function renderAmplifier() {
+  if (Array.isArray(toRefRealHtml.value)) {
+    toRefRealHtml.value.forEach(mkEl => {
+      const imgElArr = mkEl.querySelectorAll("img");
+      imgElArr.forEach((imgEl: any) => {
+        registerAmplifier(imgEl);
+      });
+    });
+  } else {
+    const imgElArr = toRefRealHtml.value.querySelectorAll("img");
+    imgElArr.forEach((imgEl: any) => {
+      registerAmplifier(imgEl);
+    });
+  }
+}
+
+function registerMouseWheel() {
   imageInst.value.addEventListener("mousewheel", e => {
     isOpenAnima.value = false;
     width.value = parseInt(imageInst.value.style.width);
@@ -80,15 +112,11 @@ onMounted(() => {
       width.value -= width.value * 0.15;
     }
   });
-});
+}
 
-watch(toRefRealHtml, () => {
-  wrapImgInAmplifier(toRefRealHtml.value, amplifierInst.value, imageInst.value, props.config);
-});
-
-watch(toRefStrHtml, () => {
-  wrapImgInAmplifier(toRefRealHtml.value, amplifierInst.value, imageInst.value, props.config);
-});
+onMounted(registerMouseWheel);
+watch(toRefRealHtml, renderAmplifier);
+watch(toRefStrHtml, renderAmplifier);
 </script>
 
 <template>

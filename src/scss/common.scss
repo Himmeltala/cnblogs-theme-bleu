@@ -10,12 +10,7 @@ body {
   padding: 0;
   color: var(--text-a);
   font-size: var(--l-respond-text);
-  background-color: var(--l-background-bg);
-
-  & {
-    scrollbar-color: initial;
-    scrollbar-width: none;
-  }
+  background-color: var(--l-bg-1);
 
   &::-webkit-scrollbar {
     display: none;
@@ -69,7 +64,7 @@ a:link {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% auto;
-  animation: shine-animation 8s ease infinite;
+  animation: shine-animation 5s ease infinite;
 }
 
 .shine-bg {
@@ -146,9 +141,9 @@ a:link {
 }
 
 .fade-in-out {
-  animation: transition-animation 0.9s ease-in;
+  animation: opacity-animation 0.9s ease-in forwards;
 
-  @keyframes transition-animation {
+  @keyframes opacity-animation {
     @for $index from 0 to 10 {
       #{$index * 10%} {
         opacity: math.div($index, 10);

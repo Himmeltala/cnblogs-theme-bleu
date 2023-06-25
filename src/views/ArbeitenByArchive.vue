@@ -2,48 +2,47 @@
 import { ArbeitenApi } from "@/apis";
 
 const route = useRoute();
-let archiveDate = route.params.date;
-let archiveMode = route.params.mode;
+let archiveDate = route.params.date as string;
+let archiveMode = route.params.mode as string;
 const archiveList = shallowRef();
-const images = BleuVars.config.images.arbeiten;
-const imgsIndexs = shallowRef();
+const images = BleuVars.config.images?.arbeiten || [];
+const imgsIndexs = shallowRef<number[]>();
+const loading = new Broswer.Loading();
 
 async function fetchData() {
-  Broswer.startLoading();
-
-  let fetchDataPromise;
+  loading.startLoading();
+  let promise;
 
   if (archiveMode == "a") {
-    fetchDataPromise = ArbeitenApi.getListByArchive(`${archiveDate}`, "article");
+    promise = ArbeitenApi.getListByArchive(`${archiveDate}`, "article");
   } else if (archiveMode == "p") {
-    fetchDataPromise = ArbeitenApi.getListByArchive(`${archiveDate}`, "works");
+    promise = ArbeitenApi.getListByArchive(`${archiveDate}`, "arbeiten");
   } else {
-    fetchDataPromise = ArbeitenApi.getListByDay(`${String(archiveDate).replaceAll("-", "/")}`);
+    promise = ArbeitenApi.getListByDay(`${archiveDate.replaceAll("-", "/")}`);
   }
 
-  archiveList.value = await fetchDataPromise;
-
+  archiveList.value = await promise;
   imgsIndexs.value = Random.get(images, archiveList.value.data.length);
+
   Broswer.setTitle(archiveList.value.hint);
-
-  Broswer.endLoading();
+  loading.endLoading();
 }
-
-await fetchData();
 
 watch(route, async () => {
   if (route.name === RouterName.ArbeitenByArchive) {
-    archiveMode = route.params.mode;
-    archiveDate = route.params.date;
+    archiveMode = route.params.mode as string;
+    archiveDate = route.params.date as string;
     await fetchData();
   }
 });
+
+await fetchData();
 </script>
 
 <template>
   <div id="l-arbeiten-by-archive" class="page">
     <div class="content" v-if="archiveList">
-      <Pagination @nexpr="fetchData" @next="fetchData" @prev="fetchData" :count="archiveList.page">
+      <Pagination @change="fetchData" @next="fetchData" @prev="fetchData" :count="archiveList.page">
         <template #content>
           <el-page-header :icon="null" @back="$router.back()">
             <template #title>

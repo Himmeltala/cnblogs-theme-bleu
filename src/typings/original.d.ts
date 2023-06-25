@@ -32,7 +32,7 @@ interface BlogComment {
 /**
  * 获取随笔，返回的博客园接口的字段
  */
-interface BlogWorks {
+interface BlogArbeiten {
   postId?: number;
   voteType?: VoteType;
   isAbandoned?: boolean;
@@ -41,7 +41,7 @@ interface BlogWorks {
 /**
  * 随笔投票，博客园接口需要的正确字段
  */
-interface BlogWorksViewPoint {
+interface BlogArbeitenViewPoint {
   buryCount: number;
   diggCount: number;
   feedbackCount: number;

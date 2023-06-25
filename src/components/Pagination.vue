@@ -7,11 +7,15 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  defaultIndex: {
+    type: Number,
+    default: 1
   }
 });
 
-const emits = defineEmits(["next", "prev", "nexpr"]);
-const index = ref(1);
+const emits = defineEmits(["next", "prev", "change"]);
+const index = ref(props.defaultIndex);
 
 function nextChange() {
   if (index.value < props.count) {
@@ -27,27 +31,27 @@ function prevChange() {
   }
 }
 
-function currentChange(elIndex: number) {
-  index.value = elIndex;
-  emits("nexpr", index.value);
+function currentChange(ind: number) {
+  index.value = ind;
+  emits("change", index.value);
 }
 </script>
 
 <template>
-  <div class="pagination" relative>
+  <div class="pagination relative">
     <div
       v-if="!disabled"
-      class="button hover left rd-l-4 f-c-c text-c"
+      class="button hover left f-c-c text-c"
       @click="prevChange"
       v-show="index !== 1 && count">
       <i-ep-arrow-left-bold />
     </div>
     <div>
-      <slot name="content" />
+      <slot name="content"></slot>
     </div>
     <div
       v-if="!disabled"
-      class="button hover right rd-l-4 f-c-c text-c"
+      class="button hover right f-c-c text-c"
       @click="nextChange"
       v-show="index !== count && count">
       <i-ep-arrow-right-bold />
@@ -73,9 +77,9 @@ function currentChange(elIndex: number) {
   .button {
     position: fixed;
     top: 50vh;
-    opacity: 0.7;
-    width: 2.5rem;
-    height: 2.5rem;
+    opacity: 0.5;
+    width: 1rem;
+    height: 1rem;
   }
 
   .button:hover {
@@ -83,11 +87,11 @@ function currentChange(elIndex: number) {
   }
 
   .button.left {
-    left: calc(calc(45vw / 2) - 4rem);
+    left: calc(math.div(50vw, 2) - 5rem);
   }
 
   .button.right {
-    right: calc(calc(45vw / 2) - 4rem);
+    right: calc(math.div(50vw, 2) - 5rem);
   }
 }
 </style>

@@ -5,7 +5,6 @@
  * @date 2023 年 1 月 16 日
  */
 .hljs {
-  padding: 1.5rem 1.2rem;
   display: block;
   overflow-x: auto;
   overflow-y: hidden;
@@ -21,7 +20,8 @@
   }
 
   &:hover::-webkit-scrollbar-thumb {
-    background-color: var(--l-strip-bg);
+    --uno: rd-2;
+    background-color: var(--l-bg-4);
   }
 }
 

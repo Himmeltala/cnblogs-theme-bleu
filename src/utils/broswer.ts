@@ -26,37 +26,42 @@ export namespace Broswer {
     document.querySelector(selector).scrollIntoView();
   }
 
-  /**
-   * 关闭 loading 屏
-   */
-  export function endLoading() {
-    const loadingInst = document.querySelector<HTMLElement>(".loading");
-    loadingInst.classList.toggle("fade-in-out");
-    loadingInst.style.display = "none";
+  export class Loading {
+    trackInst: HTMLElement;
+    barInst: HTMLElement;
 
-    document.getElementById("l-content").classList.toggle("fade-in-out");
+    constructor() {
+      this.trackInst = document.querySelector<HTMLElement>("#l-progress > .track");
+      this.barInst = document.querySelector<HTMLElement>("#l-progress > .track > .bar");
+    }
 
-    const eleTrack = document.querySelector("#l-progress > .track");
-    eleTrack.classList.remove("track-active");
-    eleTrack.classList.add("track-static");
+    /**
+     * 关闭 loading 屏
+     */
+    endLoading() {
+      this.trackInst.classList.remove("track-active");
+      this.trackInst.classList.add("track-static");
 
-    const eleBar = document.querySelector("#l-progress > .track > .bar");
-    eleBar.classList.remove("bar-active");
-    eleBar.classList.add("bar-static");
-  }
+      this.barInst.classList.remove("bar-active");
+      this.barInst.classList.add("bar-static");
 
-  /**
-   * 开启 loading 屏
-   */
-  export function startLoading() {
-    document.getElementById("l-content").classList.toggle("fade-in-out");
+      const loadingInst = document.querySelector<HTMLElement>(".loading");
+      loadingInst.classList.toggle("fade-in-out");
+      loadingInst.style.display = "none";
 
-    const eleTrack = document.querySelector("#l-progress > .track");
-    eleTrack.classList.remove("track-static");
-    eleTrack.classList.add("track-active");
+      document.getElementById("l-content").classList.toggle("fade-in-out");
+    }
 
-    const eleBar = document.querySelector("#l-progress > .track > .bar");
-    eleBar.classList.remove("bar-static");
-    eleBar.classList.add("bar-active");
+    /**
+     * 开启 loading 屏
+     */
+    startLoading() {
+      this.trackInst.classList.remove("track-static");
+      this.trackInst.classList.add("track-active");
+      this.barInst.classList.remove("bar-static");
+      this.barInst.classList.add("bar-active");
+
+      document.getElementById("l-content").classList.toggle("fade-in-out");
+    }
   }
 }

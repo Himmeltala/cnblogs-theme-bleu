@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { DatumApi } from "@/apis";
 
-const markList = shallowRef();
+const markList = shallowRef<BleuMark[]>();
+const loading = new Broswer.Loading();
 
 async function fetchData() {
-  Broswer.startLoading();
+  loading.startLoading();
   markList.value = await DatumApi.getMarkList();
-  Broswer.endLoading();
+  loading.endLoading();
 }
 
 await fetchData();

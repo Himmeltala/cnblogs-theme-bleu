@@ -17,39 +17,46 @@ export namespace ArbeitenTransform {
   }
 
   /**
-   * 获取首页随笔列表：日期下的随笔和文章。列表项包含描述、评论、点赞的随笔列表。
+   * 获取首页随笔列表、某日下的随笔或文章列表。
+   *
+   * 列表项包含描述、评论、点赞的随笔列表。
    */
-  export function toArbeitenList(dom: Document): BleuArbeitenList {
+  export function toArbeitenList1(dom: Document): BleuArbeitenList {
+    const data: BleuArbeiten[] = [];
+
     const id = dom.getElementsByClassName("postTitle2");
     const head = dom.getElementsByClassName("postTitle");
     const desc = dom.getElementsByClassName("c_b_p_desc");
     const notes = dom.getElementsByClassName("postDesc");
     const hint = dom.getElementsByClassName("dayTitle");
-    const data: BleuArbeiten[] = [];
 
-    for (let index = 0; index < desc.length; index++) {
-      const eleDescImg = desc[index].getElementsByClassName("desc_img")[0];
+    const dateReg =
+      /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g;
+    const viewReg = /阅读\([0-9]+\)/g;
+    const commReg = /评论\([0-9]+\)/g;
+    const diggReg = /推荐\([0-9]+\)/g;
+
+    for (let i = 0; i < desc.length; i++) {
+      const eleDescImg = desc[i].getElementsByClassName("desc_img")[0];
       const surface = eleDescImg ? eleDescImg.getAttribute("src") : "";
 
-      const eleLock = id[index].querySelector(`img[title="密码保护"]`);
+      const eleLock = id[i].querySelector(`img[title="密码保护"]`);
       const isLocked = !!eleLock;
 
-      const eleOnlyMe = id[index].querySelector(`img[title="仅自己可见"]`);
+      const eleOnlyMe = id[i].querySelector(`img[title="仅自己可见"]`);
       const isOnlyMe = !!eleOnlyMe;
 
-      const eleTop = head[index].getElementsByClassName("pinned-post-mark")[0];
+      const eleTop = head[i].getElementsByClassName("pinned-post-mark")[0];
       const isTop = eleTop && eleTop.innerText === "[置顶]";
 
       data.push({
-        id: id[index].getAttribute("href").match(/[0-9]+/g)[0],
-        text: Textual.regexReplace(head[index].innerText.trim(), [/\[置顶\]/g]),
-        desc: Textual.regexReplace(desc[index].innerText, [/阅读全文/g]),
-        date: notes[index].innerText.match(
-          /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g
-        )[0],
-        view: notes[index].innerText.match(/阅读\([0-9]+\)/g)[0],
-        comm: notes[index].innerText.match(/评论\([0-9]+\)/g)[0],
-        digg: notes[index].innerText.match(/推荐\([0-9]+\)/g)[0],
+        id: id[i].getAttribute("href").match(/[0-9]+/g)[0],
+        text: Textual.regexReplace(head[i].innerText.trim(), [/\[置顶\]/g]),
+        desc: Textual.regexReplace(desc[i].innerText, [/阅读全文/g]),
+        date: notes[i].innerText.match(dateReg)[0],
+        view: notes[i].innerText.match(viewReg)[0],
+        comm: notes[i].innerText.match(commReg)[0],
+        digg: notes[i].innerText.match(diggReg)[0],
         surface,
         isLocked,
         isOnlyMe,
@@ -60,7 +67,7 @@ export namespace ArbeitenTransform {
     return {
       data,
       page: getPage(dom.querySelector("#homepage_top_pager > .pager")),
-      hint: hint[0].innerText + " 档案" ?? ""
+      hint: hint[0].innerText + " 档案"
     };
   }
 
@@ -99,7 +106,7 @@ export namespace ArbeitenTransform {
 
     for (let i = 0; i < eleCates.length; i++) {
       data.sorts.push({
-        href: eleCates[i]
+        id: eleCates[i]
           .getAttribute("href")
           .match(/\/category\/\d+/g)[0]
           .split("/")[2]
@@ -151,9 +158,11 @@ export namespace ArbeitenTransform {
   }
 
   /**
-   * 获取随笔档案、文章档案、随笔分类、档案分类四种列表。列表项包含描述、评论、点赞的随笔列表。
+   * 获取随笔档案、文章档案、随笔分类、档案分类四种列表。
+   *
+   * 列表项包含描述、评论、点赞的随笔列表。
    */
-  export function toArbeitenListFull(dom: Document): BleuArbeitenList2 {
+  export function toArbeitenList2(dom: Document): BleuArbeitenList2 {
     const data: BleuArbeiten[] = [];
 
     const dateReg =
@@ -196,9 +205,9 @@ export namespace ArbeitenTransform {
     return {
       desc,
       desc2,
-      page: getPage(dom.querySelectorAll("#mainContent .pager")[0]),
       hint,
       data,
+      page: getPage(dom.querySelectorAll("#mainContent .pager")[0]),
       isArticle
     };
   }

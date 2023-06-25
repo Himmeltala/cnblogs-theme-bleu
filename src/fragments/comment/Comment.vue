@@ -18,16 +18,6 @@ const currIndex = ref(1);
 async function fetchData() {
   comments.value = await CommentApi.getList(props.postId, currIndex.value, anchor.value);
   pageCount.value = await CommentApi.getCount(props.postId);
-  // comments.value = [
-  //   {
-  //     postId: "1",
-  //     content: `<img src="https://img0.baidu.com/it/u=325115911,3259356982&fm=253&fmt=auto&app=138&f=JPG?w=889&h=500"/>`
-  //   },
-  //   {
-  //     postId: "2",
-  //     content: `<img src="https://img0.baidu.com/it/u=325115911,3259356982&fm=253&fmt=auto&app=138&f=JPG?w=889&h=500"/>`
-  //   }
-  // ];
 }
 
 function onPost(response: any) {
@@ -94,7 +84,9 @@ await fetchData();
         <!-- 内容 -->
         <div class="mt-4 relative" style="margin-left: 4.5rem">
           <textarea class="z--1 opacity-0 absolute top-0 left-0" :id="'upload-img-' + index" />
-          <Markdown :style-css="BleuVars.config.markdown.comment" :str-html="item.content ?? ''" />
+          <Markdown
+            :style-css="BleuVars.config.styleCss?.comment || { fontSize: '0.9rem' }"
+            :str-html="item.content" />
         </div>
         <div class="more-action float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>
@@ -132,10 +124,6 @@ await fetchData();
           :curr-page-index="currIndex"
           :comment="item" />
       </div>
-      <Amplifier
-        :config="BleuVars.config.amplifier.comment"
-        :str-html="postId ?? ''"
-        :real-html="commentInst" />
       <div class="mt-10 f-c-e" v-if="pageCount > 1">
         <el-pagination
           @current-change="fetchData"

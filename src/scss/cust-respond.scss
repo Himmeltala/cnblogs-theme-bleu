@@ -4,16 +4,16 @@
  * @author Himmelbleu
  * @date 2023 年 1 月 15 日
  */
-:root {
+html {
   --l-respond-text: 14px;
 }
 
-// 375 ~ 1400 都是 14px，超过 1500px 就开始依次往上递增
-@for $i from 1 through 30 {
-  $min: $i * 100 + 1500px;
+// 小于 1400px 都是 14px，超过 1400px 就开始依次往上递增
+@for $i from 1 through 20 {
+  $min: $i * 100 + 1400px;
 
   @media screen and (min-width: $min) {
-    :root {
+    html {
       --l-respond-text: #{calc($min / 100)};
     }
   }

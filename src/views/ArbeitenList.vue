@@ -1,25 +1,38 @@
 <script setup lang="ts">
 import { ArbeitenApi } from "@/apis";
 
+const route = useRoute();
+const router = useRouter();
 const arbeitenList = shallowRef<BleuArbeitenList>();
-const couvertureIndexs = shallowRef<number[]>([]);
-const couverture = BleuVars.config.images.arbeiten;
+const couvertureIndexs = shallowRef<number[]>();
+const couverture = BleuVars.config.images?.arbeiten || [];
+const loading = new Broswer.Loading();
+
+const defaultIndex = ref(1);
 
 async function fetchData(index: any) {
-  Broswer.startLoading();
-  arbeitenList.value = await ArbeitenApi.getList(index || 1);
+  loading.startLoading();
+  router.replace(RouterPath.ArbeitenList(index));
+  arbeitenList.value = await ArbeitenApi.getList(index);
   couvertureIndexs.value = Random.get(couverture, arbeitenList.value.data.length);
-  Broswer.endLoading();
+  loading.endLoading();
 }
 
-await fetchData(0);
+async function takeQueryToFetchData() {
+  const page = route.query.page || 1;
+  defaultIndex.value = Number(page);
+  await fetchData(page);
+}
+
+await takeQueryToFetchData();
 </script>
 
 <template>
   <div id="l-arbeiten-list" class="page">
-    <div class="content">
+    <div class="content" v-if="arbeitenList?.data?.length">
       <Pagination
-        @nexpr="fetchData"
+        :default-index="defaultIndex"
+        @change="fetchData"
         @next="fetchData"
         @prev="fetchData"
         :count="arbeitenList?.page">
@@ -35,7 +48,6 @@ await fetchData(0);
             </template>
           </el-page-header>
           <ArbeitenItem
-            v-if="arbeitenList?.data?.length"
             v-for="(item, index) in arbeitenList.data"
             :key="item.id"
             :item="item"

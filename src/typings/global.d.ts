@@ -58,7 +58,7 @@ interface BleuMark {
 }
 
 /**
- * 随笔列表
+ * 首页随笔列表、某日下的随笔或文章列表
  */
 type BleuArbeitenList = Partial<{
   page: number;
@@ -67,11 +67,17 @@ type BleuArbeitenList = Partial<{
 }>;
 
 /**
- * 随笔列表，用于分类或标签区分的随笔列表
+ * 随笔档案、文章档案、随笔分类、档案分类四种列表，扩展 BleuArbeitenList 接口，
+ * 以上四种列表比 BleuArbeitenList 多了三个属性值。
  */
 interface BleuArbeitenList2 extends BleuArbeitenList {
+  /**
+   * 父分类描述
+   */
   desc?: string;
-  // 子分类描述
+  /**
+   * 子分类描述
+   */
   desc2?: string;
   isArticle?: boolean;
 }
@@ -81,7 +87,7 @@ interface BleuArbeitenList2 extends BleuArbeitenList {
  */
 interface BleuArbeitenProps {
   tags: { text: string }[];
-  sorts: { href: string; text: string }[];
+  sorts: { id: string; text: string }[];
 }
 
 /**
@@ -147,57 +153,65 @@ interface BleuAlbumnItem {
   src: string;
 }
 
+interface BleuAlbumn {
+  title: string;
+  desc: string;
+  data: BleuMenuItemData[];
+}
+
+/**
+ * 作品状态，是否关注过博主，是否点过赞
+ */
+interface BleuArbeitenState {
+  isFollowed: boolean;
+  isDigg: boolean;
+}
+
 /**
  * 博客配置项
  */
 interface BleuConfig {
   icon?: string;
   avatar?: string;
-  signature: string;
+  signature?: string;
   images: {
     /**
      * 背景的相关配置
      */
-    background: {
-      src: string;
-      size: string;
-      repeat: string;
-      opacity: number;
-      position: string;
+    background?: {
+      src?: string;
+      size?: string;
+      repeat?: string;
+      opacity?: number;
+      position?: string;
     };
     /**
      * 随笔、文章的相关配置
      */
-    arbeiten: string[];
+    arbeiten?: string[];
     /**
      * 首页的相关配置
      */
-    home: {
+    home?: {
       /**
        * 轮播图透明度
        */
-      opacity: number;
+      opacity?: number;
       /**
        * 轮播图播放间隔
        */
-      interval: number;
-      carousel: string[];
-      disabled: boolean;
+      interval?: number;
+      carousel?: string[];
+      disabled?: boolean;
     };
   };
   /**
    * markdown 样式配置
    */
-  markdown?: {
-    arbeiten: any;
-    comment: any;
-  };
-  /**
-   * 放大器配置
-   */
-  amplifier?: {
-    arbeiten: any;
-    comment: any;
+  styleCss?: {
+    arbeiten?: any;
+    comment?: any;
+    amplifier?: any;
   };
   /**
    * 图表

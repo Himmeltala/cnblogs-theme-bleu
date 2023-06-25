@@ -38,11 +38,11 @@ async function AddComment() {
 
 <template>
   <div>
-    <div class="text-primary font-art text-1.4rem letter-spacing-0.2 f-c-s" m="b-10">
+    <div class="caption">
       <div class="i-tabler-mail-fast mr-2"></div>
       发表评论
     </div>
-    <div class="mb-12 relative">
+    <div class="mb-10 relative">
       <div class="tools mb-2 f-c-e">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
           <span class="hover" @click="uploadImage('main-upload-img')">
@@ -58,12 +58,14 @@ async function AddComment() {
       <div class="z--1 opacity-0 absolute top-0 left-0">
         <textarea id="main-upload-img" />
       </div>
-      <el-button plain :disabled="!isLogined" :loading="loading" @click="AddComment">
-        <template #icon>
-          <div class="i-tabler-send"></div>
-        </template>
-        发送评论
-      </el-button>
+      <div class="f-c-e">
+        <el-button plain :disabled="!isLogined" :loading="loading" @click="AddComment">
+          <template #icon>
+            <div class="i-tabler-send"></div>
+          </template>
+          发送评论
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
