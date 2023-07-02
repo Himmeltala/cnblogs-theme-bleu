@@ -41,7 +41,7 @@ function afterUseBleu() {
   document.head.append(icon);
 
   PrettifyLog.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-bleu");
-  PrettifyLog.primary("v2.7.2", "The Theme was Created By Himmelbleu, and Powered By Vue3 & Vite.");
+  PrettifyLog.primary("v2.7.3", "The Theme was Created By Himmelbleu, and Powered By Vue3 & Vite.");
 }
 
 export function useBleu(develop: Function, product: Function) {
@@ -65,9 +65,17 @@ export function useBleu(develop: Function, product: Function) {
           "https://anime.shochiku.co.jp/sukimega/wp-content/themes/sukimega_first_theme/common2/images/top_content_kv02.jpg",
           "https://anime.shochiku.co.jp/sukimega/wp-content/themes/sukimega_first_theme/common2/images/top_content_kv03.jpg",
           "https://anime.shochiku.co.jp/sukimega/wp-content/themes/sukimega_first_theme/common2/images/top_content_kv04.jpg"
-        ]
+        ],
+        home: {
+          carousel: [
+            "https://anime.shochiku.co.jp/sukimega/wp-content/themes/sukimega_first_theme/common2/images/top_content_kv01.jpg",
+            "https://anime.shochiku.co.jp/sukimega/wp-content/themes/sukimega_first_theme/common2/images/top_content_kv02.jpg",
+            "https://anime.shochiku.co.jp/sukimega/wp-content/themes/sukimega_first_theme/common2/images/top_content_kv03.jpg",
+            "https://anime.shochiku.co.jp/sukimega/wp-content/themes/sukimega_first_theme/common2/images/top_content_kv04.jpg"
+          ],
+          disabled: true
+        }
       },
-      styleCss: {},
       chart: {
         tech: {
           radar: {
@@ -85,9 +93,6 @@ export function useBleu(develop: Function, product: Function) {
           },
           series: [
             {
-              tooltip: {
-                trigger: "item"
-              },
               areaStyle: {},
               type: "radar",
               data: [

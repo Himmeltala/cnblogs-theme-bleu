@@ -186,7 +186,7 @@ interface BleuConfig {
       position?: string;
     };
     /**
-     * 随笔、文章的相关配置
+     * 随笔、文章列表封面
      */
     arbeiten?: string[];
     /**

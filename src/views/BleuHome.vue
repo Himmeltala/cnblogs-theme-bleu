@@ -2,7 +2,6 @@
 import { useRadarChart, usePieChart, useLineChart } from "@/hooks/use-echarts";
 import { ArbeitenApi, DatumApi } from "@/apis";
 import { useWheelRollsUpAndDown } from "@/hooks/use-mouse";
-import {} from "@/utils/native";
 
 const list = shallowRef<BleuArbeitenList>();
 const news = shallowRef<BleuMenuItemData[]>();
@@ -94,13 +93,14 @@ onMounted(() => {
   );
 });
 
-const carouselList = shallowRef(BleuVars.config.images?.home?.carousel || []);
+const carouselList = shallowRef(BleuVars.config.images?.home?.carousel);
 const carouselIndex = ref(0);
+const carouseLength = BleuVars.config.images?.home?.carousel?.length;
 
-if (BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel) {
+if (!BleuVars.config.images?.home?.disabled && carouseLength) {
   setInterval(() => {
     carouselIndex.value++;
-    if (carouselIndex.value > BleuVars.config.images.home.carousel.length) {
+    if (carouselIndex.value > carouseLength - 1) {
       carouselIndex.value = 0;
     }
   }, BleuVars.config.images.home.interval || 5000);
@@ -185,10 +185,10 @@ await fetchData();
     </div>
     <!-- area-3：开屏 -->
     <div class="lg:f-s-b">
-      <div class="lg:w-49% lg:h-100vh py-4">
-        <div class="f-c-b flex-col h-100%">
+      <div class="lg:w-49% lg:h-100vh py-4" v-if="list?.data">
+        <div class="h-100%" :class="{ 'f-c-b flex-col': list.data.length >= 4 }">
           <!-- 随笔列表 -->
-          <div class="lt-lg:mb-15" v-if="list?.data" v-for="item in list.data">
+          <div class="lt-lg:mb-15" :class="{ 'mb-10': list.data.length < 4 }" v-for="item in list.data">
             <!-- 日期 -->
             <div class="f-c-s text-b text-0.9rem mb-2">
               <div class="i-tabler-clock-hour3 mr-2"></div>
@@ -227,7 +227,7 @@ await fetchData();
               </div>
             </div>
           </div>
-          <div class="f-c-e">
+          <div class="f-c-e w-100%">
             <HollowedBox round dotted hover @click="$router.push(RouterPath.ArbeitenList())">
               <router-link :to="RouterPath.ArbeitenList()">MORE</router-link>
             </HollowedBox>
@@ -236,7 +236,9 @@ await fetchData();
       </div>
       <!-- 轮播图 -->
       <div
-        v-if="BleuVars.config.images?.home?.disabled ? BleuVars.config.images.home.disabled : false"
+        v-if="
+          !BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel?.length
+        "
         class="lg:w-49% lt-lg:hidden h-100vh f-c-b relative">
         <img
           v-for="(item, index) in carouselList"
@@ -248,7 +250,7 @@ await fetchData();
           class="w-100% h-100% transition-all-800 absolute top-0 left-0 object-cover"
           :src="item" />
       </div>
-      <!-- area-4：不开启轮播图，个人数据 -->
+      <!-- area-4：关闭轮播图，个人数据 -->
       <div
         v-else
         class="lg:w-49% lg:ml-10 lg:h-100vh"
@@ -279,6 +281,7 @@ await fetchData();
                 <el-input
                   v-model="searchVal"
                   @keyup.enter="Native.searchArbeiten(searchVal)"
+                  size="small"
                   placeholder="输入关键字"
                   clearable>
                   <template #prefix>
@@ -341,7 +344,9 @@ await fetchData();
     </div>
     <!-- area-4：开启轮播图，个人数据 -->
     <div
-      v-if="BleuVars.config.images?.home?.disabled ? BleuVars.config.images.home.disabled : false"
+      v-if="
+        !BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel?.length
+      "
       class="sm:f-s-b mt-20">
       <div class="sm:w-49%">
         <div class="caption mb-10">
@@ -369,6 +374,7 @@ await fetchData();
               <el-input
                 v-model="searchVal"
                 @keyup.enter="Native.searchArbeiten(searchVal)"
+                size="small"
                 placeholder="输入关键字"
                 clearable>
                 <template #prefix>
@@ -429,7 +435,7 @@ await fetchData();
       </div>
     </div>
     <!-- area-5：随笔标签 -->
-    <div class="mt-20 relative">
+    <div class="mt-20 relative" v-if="markList?.length">
       <div
         class="transition-all-500"
         :class="{ 'opacity-100': !isShowPieChart1, 'opacity-30': isShowPieChart1 }">
@@ -450,7 +456,7 @@ await fetchData();
             图表
           </div>
         </div>
-        <div v-if="markList?.length" class="f-s-b flex-wrap overflow-auto scroll-none">
+        <div class="f-s-b flex-wrap overflow-auto scroll-none">
           <HollowedBox v-for="item in markList" hover line="dotted" round class="mr-4 mb-6">
             <router-link :to="RouterPath.ArbeitenByMark(item.text)">
               {{ item.text }}
@@ -476,7 +482,7 @@ await fetchData();
     <!-- area-6：随笔分类 -->
     <div class="sm:f-s-b mt-15 relative">
       <!-- 随笔分类 -->
-      <div class="sm:w-49%">
+      <div class="sm:w-49%" v-if="column?.essaySort?.length">
         <div
           class="transition-all-500"
           :class="{ 'opacity-100': !isShowPieChart2, 'opacity-30': isShowPieChart2 }">
@@ -497,7 +503,7 @@ await fetchData();
               图表
             </div>
           </div>
-          <div v-if="column?.essaySort?.length" class="f-c-b flex-wrap">
+          <div class="f-c-b flex-wrap">
             <div class="mb-6 mr-4 hover" v-for="item in column.essaySort">
               <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
                 {{ item.text }}
@@ -521,12 +527,12 @@ await fetchData();
         </div>
       </div>
       <!-- 文章分类 -->
-      <div class="sm:w-49% lt-sm:mt-15">
+      <div class="sm:w-49% lt-sm:mt-15" v-if="column?.articleSort?.length">
         <div id="article-nail" class="caption mb-10">
           <div class="i-tabler-sort-a-z mr-2"></div>
           文章分类
         </div>
-        <div v-if="column?.articleSort?.length" class="f-c-b flex-wrap">
+        <div class="f-c-b flex-wrap">
           <div class="mb-6 mr-4 hover" v-for="item in column.articleSort">
             <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
               {{ item.text }}
@@ -536,7 +542,7 @@ await fetchData();
       </div>
     </div>
     <!-- area-7：随笔归档 -->
-    <div class="mt-15 relative">
+    <div class="mt-15 relative" v-if="column?.essayArchive?.length">
       <div>
         <div
           class="transition-all-500"
@@ -558,7 +564,7 @@ await fetchData();
               图表
             </div>
           </div>
-          <div v-if="column?.essayArchive?.length" class="f-c-b flex-wrap">
+          <div class="f-c-b flex-wrap">
             <div class="mb-6 mr-4 hover" v-for="item in column.essayArchive">
               <router-link :to="RouterPath.ArbeitenByArchive('p', item.id)">
                 {{ item.text }}
@@ -583,12 +589,12 @@ await fetchData();
       </div>
     </div>
     <!-- area-8：文章归档 -->
-    <div class="mt-15">
+    <div class="mt-15" v-if="column?.articleArchive?.length">
       <div id="article-archive-nail" class="caption mb-10">
         <div class="i-tabler-folder-check mr-2"></div>
         文章归档
       </div>
-      <div v-if="column?.articleArchive?.length" class="f-c-b flex-wrap">
+      <div class="f-c-b flex-wrap">
         <div class="mb-6 mr-4 hover" v-for="item in column.articleArchive">
           <router-link :to="RouterPath.ArbeitenByArchive('a', item.id)">
             {{ item.text }}
@@ -597,12 +603,12 @@ await fetchData();
       </div>
     </div>
     <!-- area-9：相册列表 -->
-    <div class="mt-15">
+    <div class="mt-15" v-if="column?.albumn?.length">
       <div id="my-pohoto-nail" class="caption mb-10">
         <div class="i-tabler-photo mr-2"></div>
         我的相册
       </div>
-      <div v-if="column?.albumn?.length" class="f-c-b flex-wrap">
+      <div class="f-c-b flex-wrap">
         <div class="mb-6 text-ellipsis line-clamp-2 hover" v-for="item in column.albumn">
           <router-link :to="RouterPath.Albumn(item.id)">
             {{ item.text }}

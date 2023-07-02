@@ -6,8 +6,13 @@
  */
 export namespace Formatter {
   function fixed(trimed: string, suffix?: string, uint?: number, fix?: number) {
-    const result = (Number(trimed) / uint || 1000).toFixed(fix || 2);
-    return `${result}${suffix || ""}`;
+    const num = Number(trimed);
+    if (num >= 10000) {
+      const res = (num / (uint || 10000)).toFixed(fix || 2);
+      return `${res}${suffix || ""}`;
+    } else {
+      return num.toString();
+    }
   }
 
   /**

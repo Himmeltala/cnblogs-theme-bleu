@@ -1,5 +1,5 @@
 import request from "./use-axios";
-import { strToDOM, CommentTransform } from "@/transform";
+import { toDOM, CommentTransform } from "@/transform";
 
 export namespace CommentApi {
   /**
@@ -89,7 +89,7 @@ export namespace CommentApi {
    * 获取随笔的评论列表
    *
    * @param postId 随笔 ID。
-   * @param page 页数，从 1 开始，0 表示最后一页。1 页最多有 50 条评论
+   * @param page 页码，从 1 开始，0 表示最后一页。1 页最多有 50 条评论
    * @param anchorId 当进入的是一个回复评论时，需要传递该参数，默认可以不传递
    */
   export async function getList(postId: string, page: number, anchorId?: number) {
@@ -97,6 +97,6 @@ export namespace CommentApi {
     if (anchorId)
       url = `/ajax/GetComments.aspx?postId=${postId}&pageIndex=0&anchorCommentId=${anchorId}`;
     const { data } = await request.get(url);
-    return CommentTransform.toCommentList(strToDOM(data));
+    return CommentTransform.toCommentList(toDOM(data));
   }
 }

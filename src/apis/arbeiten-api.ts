@@ -1,13 +1,15 @@
 import request from "./use-axios";
-import { strToDOM, ArbeitenTransform } from "@/transform";
+import { toDOM, ArbeitenTransform } from "@/transform";
 
 export namespace ArbeitenApi {
   /**
    * 获取随笔、文章内容
+   * 
+   * @param id 随笔、文章 ID
    */
   export async function getArbeiten(id: string) {
     const { data } = await request.get(`/p/${id}.html`);
-    return ArbeitenTransform.toArbeiten(id, strToDOM(data));
+    return ArbeitenTransform.toArbeiten(id, toDOM(data));
   }
 
   /**
@@ -43,7 +45,7 @@ export namespace ArbeitenApi {
    */
   export async function getByL1(id: string, page?: number | string) {
     const { data } = await request.get(`/category/${id}.html?page=${page || 1}`);
-    return ArbeitenTransform.toArbeitenList2(strToDOM(data));
+    return ArbeitenTransform.toArbeitenList2(toDOM(data));
   }
 
   /**
@@ -56,35 +58,39 @@ export namespace ArbeitenApi {
     const { data } = await request.get(
       `/ajax/TreeCategoryList.aspx?parentId=${id}&categoryType=${isArticle ? 2 : 1}`
     );
-    return ArbeitenTransform.toArbeitenByL2(strToDOM(data));
+    return ArbeitenTransform.toArbeitenByL2(toDOM(data));
   }
 
   /**
    * 获取随笔、文章的标签和分类
+   * 
+   * @param id 随笔、文章 ID
    */
   export async function getProps(id: string) {
     const { data } = await request.get(
       `/ajax/CategoriesTags.aspx?blogId=${BleuVars.getBlogId()}&postId=${id}`
     );
-    return ArbeitenTransform.toProps(strToDOM(data));
+    return ArbeitenTransform.toProps(toDOM(data));
   }
 
   /**
    * 获取随笔、文章的上下篇
+   * 
+   * @param 随笔、文章 ID
    */
   export async function getPrevNext(id: string) {
     const { data } = await request.get(`/ajax/post/prevnext?postId=${id}`);
-    return ArbeitenTransform.toPrevNext(strToDOM(data));
+    return ArbeitenTransform.toPrevNext(toDOM(data));
   }
 
   /**
    * 获取首页随笔列表
    *
-   * @param page 页数，可以是 0，也可以是 1，都代表第一页
+   * @param page 页码，可以是 0，也可以是 1，都代表第一页
    */
   export async function getList(page?: number | string) {
     const { data } = await request.get(`/default.html?page=${page || 1}`);
-    return ArbeitenTransform.toArbeitenList1(strToDOM(data));
+    return ArbeitenTransform.toArbeitenList1(toDOM(data));
   }
 
   /**
@@ -98,15 +104,18 @@ export namespace ArbeitenApi {
     const { data } = await request.get(
       `/${type === "article" ? "archives" : "archive"}/${splitDate[0]}/${splitDate[1]}.html`
     );
-    return ArbeitenTransform.toArbeitenList2(strToDOM(data));
+    return ArbeitenTransform.toArbeitenList2(toDOM(data));
   }
 
   /**
    * 通过标签获取随笔列表
+   * 
+   * @param tag 标签名称
+   * @param page 页码
    */
   export async function getListByMark(tag: string, page?: string | number) {
     const { data } = await request.get(`/tag/${tag}/default.html?page=${page ?? 1}`);
-    return ArbeitenTransform.toArbeitenListPart(strToDOM(data));
+    return ArbeitenTransform.toArbeitenListPart(toDOM(data));
   }
 
   /**
@@ -119,7 +128,7 @@ export namespace ArbeitenApi {
     const formData = new FormData();
     formData.append("Password", pwd);
     const { data } = await request.post(`/protected/p/${id}.html`, formData);
-    const isPassed = ArbeitenTransform.toIsUnLock(strToDOM(data));
+    const isPassed = ArbeitenTransform.toIsUnLock(toDOM(data));
     ElMessage({
       message: isPassed ? "密码正确！" : "密码错误！",
       grouping: true,
@@ -138,7 +147,7 @@ export namespace ArbeitenApi {
     const formData = new FormData();
     formData.append("Password", pwd);
     const { data } = await request.post(`/protected/p/${id}.html`, formData);
-    return ArbeitenTransform.toArbeiten(id, strToDOM(data));
+    return ArbeitenTransform.toArbeiten(id, toDOM(data));
   }
 
   /**
@@ -148,7 +157,7 @@ export namespace ArbeitenApi {
    */
   export async function getListByDay(date: string) {
     const { data } = await request.get(`/archive/${date}.html`);
-    return ArbeitenTransform.toArbeitenList1(strToDOM(data));
+    return ArbeitenTransform.toArbeitenList1(toDOM(data));
   }
 
   /**
@@ -163,7 +172,7 @@ export namespace ArbeitenApi {
       const { data } = await request.get(
         `/ajax/BlogPostInfo.aspx?blogId=${BleuVars.getBlogId()}&postId=${id}&blogUserGuid=${blogUserGuid}`
       );
-      resp = ArbeitenTransform.toArbeitenInfo(strToDOM(data));
+      resp = ArbeitenTransform.toArbeitenInfo(toDOM(data));
     }
     return resp;
   }

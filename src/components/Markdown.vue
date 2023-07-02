@@ -40,19 +40,19 @@ function generateMarkdown() {
 }
 
 function refactorMarkdown(str: string) {
-  const mt = str.match(/file:([a-zA-Z0-9.\-_\/]+)/);
-  const addLine = str.match(/add:\[(.*?)\]/);
-  const delLine = str.match(/del:\[(.*?)\]/);
+  const mtMark = str.match(/file:([a-zA-Z0-9.\-_\/]+)/);
+  const mtAddLine = str.match(/add:\[(.*?)\]/);
+  const mtDelLine = str.match(/del:\[(.*?)\]/);
 
   let addLineNum = 0,
     delLineNum = 0,
     addTemp,
     delTemp;
 
-  if (addLine || delLine) {
+  if (mtAddLine || mtDelLine) {
     const len = str.split("\n");
 
-    if (addLine) {
+    if (mtAddLine) {
       len.forEach((i, index) => {
         const mtAdd = i.match(/add:\[(.*?)\]/);
         if (mtAdd) {
@@ -62,10 +62,10 @@ function refactorMarkdown(str: string) {
       addTemp = `<div class="added-line bg-emerald absolute left-0 w-100% opacity-10" style="top: ${
         addLineNum * 1.5
       }rem; height: 1rem"></div>`;
-      str = str.replace(/add:\[(.*?)\]/g, `${addLine[1]}`);
+      str = str.replace(/add:\[(.*?)\]/g, `${mtAddLine[1]}`);
     }
 
-    if (delLine) {
+    if (mtDelLine) {
       len.forEach((i, index) => {
         const mtDel = i.match(/del:\[(.*?)\]/);
         if (mtDel) {
@@ -75,17 +75,17 @@ function refactorMarkdown(str: string) {
       delTemp = `<div class="deled-line bg-red absolute left-0 w-100% opacity-10" style="top: ${
         delLineNum * 1.5
       }rem; height: 1rem"></div>`;
-      str = str.replace(/del:\[(.*?)\]/g, `${delLine[1]}`);
+      str = str.replace(/del:\[(.*?)\]/g, `${mtDelLine[1]}`);
     }
   }
 
-  const mark = mt ? mt[1] : "";
+  const mark = mtMark ? mtMark[1] : "";
   const lang = str.match(/<code class="language-([\d\w]+)"/)[1].toUpperCase();
 
-  const t = `
+  const late = `
     <div class="tools ${mark ? "f-c-b" : "f-c-e"} f-c-b rd-2 text-0.8rem w-100%">
-      ${mark ? `<div class="right">${mark}</div>` : ""}
-      <div class="left f-c-b text-c">
+      ${mark ? `<div class="right max-w-70% flow-auto white-nowrap scroll-none">${mark}</div>` : ""}
+      <div class="left w-30% f-c-e text-c">
         <div class="language mr-2">${lang}</div>
         <div class="clipboard hover">复制</div>
       </div>
@@ -96,7 +96,7 @@ function refactorMarkdown(str: string) {
 
   str = str.replace(
     "<pre>",
-    `<div class="bleu-pre">${t}<pre class="relative">${addTemp || ""}${delTemp || ""}`
+    `<div class="bleu-pre">${late}<pre class="relative">${addTemp || ""}${delTemp || ""}`
   );
 
   return str + "</div></pre>";

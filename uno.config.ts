@@ -59,6 +59,7 @@ export default defineConfig({
       ([, d]) => ({ overflow: `${d}` })
     ],
     [/^letter-spacing-(\d+|\d+\.\d+)$/, ([, d]) => ({ "letter-spacing": `${d}rem` })],
+    [/^white-(normal|nowrap)$/, ([, d]) => ({ "white-space": `${d}` })],
     [
       /^font-(art)$/,
       ([, d]) => ({

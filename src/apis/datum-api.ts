@@ -1,5 +1,5 @@
 import request from "./use-axios";
-import { strToDOM, DatumTransform } from "@/transform";
+import { toDOM, DatumTransform } from "@/transform";
 
 export namespace DatumApi {
   /**
@@ -7,7 +7,7 @@ export namespace DatumApi {
    */
   export async function getColumn() {
     const { data } = await request.get(`/ajax/sidecolumn.aspx`);
-    return DatumTransform.toMenuColumn(strToDOM(data));
+    return DatumTransform.toMenuColumn(toDOM(data));
   }
 
   /**
@@ -16,7 +16,7 @@ export namespace DatumApi {
    */
   export async function getNews() {
     const { data } = await request.get(`/ajax/news.aspx`);
-    return DatumTransform.toAuthorData(strToDOM(data));
+    return DatumTransform.toAuthorData(toDOM(data));
   }
 
   /**
@@ -24,7 +24,7 @@ export namespace DatumApi {
    */
   export async function getStats() {
     const { data } = await request.get(`/ajax/blogStats`);
-    return DatumTransform.toMasterData(strToDOM(data));
+    return DatumTransform.toMasterData(toDOM(data));
   }
 
   /**
@@ -32,7 +32,7 @@ export namespace DatumApi {
    */
   export async function getTopList() {
     const { data } = await request.get(`/ajax/TopLists.aspx`);
-    return DatumTransform.toTopList(strToDOM(data));
+    return DatumTransform.toTopList(toDOM(data));
   }
 
   /**
@@ -40,7 +40,7 @@ export namespace DatumApi {
    */
   export async function getMarkList() {
     const { data } = await request.get(`/tag`);
-    return DatumTransform.toMarkList(strToDOM(data));
+    return DatumTransform.toMarkList(toDOM(data));
   }
 
   /**
@@ -50,7 +50,7 @@ export namespace DatumApi {
    */
   export async function getAlbumnItem(id: string) {
     const { data } = await request.get(`/gallery/image/${id}.html`);
-    return DatumTransform.toAlbumnItem(strToDOM(data));
+    return DatumTransform.toAlbumnItem(toDOM(data));
   }
 
   /**
@@ -58,7 +58,7 @@ export namespace DatumApi {
    */
   export async function getAlbumn(id: string) {
     const { data } = await request.get(`/gallery/${id}.html`);
-    return DatumTransform.toAlbumn(strToDOM(data));
+    return DatumTransform.toAlbumn(toDOM(data));
   }
 
   /**
@@ -68,6 +68,6 @@ export namespace DatumApi {
    */
   export async function getCalendar(date: string) {
     const { data } = await request.get(`/ajax/calendar.aspx?dateStr=${date}`);
-    return DatumTransform.toCalendar(strToDOM(data));
+    return DatumTransform.toCalendar(toDOM(data));
   }
 }

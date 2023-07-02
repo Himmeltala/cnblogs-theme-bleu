@@ -57,8 +57,7 @@ pnpm run build
 
 ![](./docs/image-3.png)
 
-- 数学公式必须选择 MathJax3。
-- 其余的选项可以自行设置。
+编辑器推荐选择 markdown，主题特性是基于 markdown 编辑的文本内容进行开发的。数学公式必须选择 MathJax3，其余的选项可以自行设置。
 
 ## 控件设置
 
@@ -69,16 +68,27 @@ pnpm run build
 ## 页首 HTML 代码
 
 ```html
+<!-- 移除不必要的 DOM -->
 <script>
   $("head > link").remove();
   $("#top_nav").remove();
 </script>
 
+<!-- 主题样式 -->
 <link
   rel="stylesheet"
-  href="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.css?t=202306172" />
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css" />
+  href="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.css?t=202307031708" />
 
+<!-- 推荐字体 -->
+<link rel="stylesheet" href="https://fonts.loli.net/icon?family=ZCOOL+KuaiLe" />
+<link
+  rel="stylesheet"
+  href="https://cdn.bootcdn.net/ajax/libs/hack-font/3.3.0/web/hack-subset.min.css" />
+<link
+  rel="stylesheet"
+  href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-webfont/1.6.0/style.min.css" />
+
+<!-- 加载动画 CSS -->
 <style>
   #home {
     display: none !important;
@@ -145,6 +155,7 @@ pnpm run build
   }
 </style>
 
+<!-- 加载动画 HTML 结构 -->
 <div class="loading">
   <div>
     <div class="triangle1"></div>
@@ -157,13 +168,15 @@ pnpm run build
 ## 页脚 HTML 代码
 
 ```html
+<!-- 主题配置 -->
 <script>
   // 主题的配置对象
   window.__BLEU_CONFIG__ = {};
 </script>
+<!-- 主题 JS -->
 <script
   type="module"
-  src="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=202306172"></script>
+  src="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=202307031708"></script>
 
 <!-- 鼠标特效 -->
 <script src="https://blog-static.cnblogs.com/files/yjlblog/cursor-effects.js"></script>
@@ -171,27 +184,31 @@ pnpm run build
 
 # 主题特性
 
-## 代码块左上角标注
+## 代码块标注
 
 有时候代码块需要特意说明是哪个文件的，或者说明文件的路径等标注信息，在文本中直接说明有点繁琐，因此你只需要按照以下格式就可以实现一个代码块标注。
 
 `file:src/math_utils.js`
 
+在代码块内第一行写上代码块标注。
+
 ```js
-file:src/math_utils.js
+file: src / math_utils.js;
 function add(x, y) {
   return x + y;
 }
 ```
 
-## 代码块删除增加高亮
+## 代码块行高亮
 
-我们可以在很多的博客、文档中看到代码块有删除、增加的背景高亮。这样可以让我们阅读的时候清楚地知道哪里改动，不需要过多的文字描述。
+很多的博客、文档的代码块有删除行、增加行的背景高亮。这样让我们阅读的时候清楚地知道哪里改动，不需要过多的文字描述。
 
-所以，我特地开发了这一项功能。你只需要使用以下格式就可以让你的代码块中呈现删除或增加的高亮背景。
+所以，你只需要使用以下格式就可以让你的代码块中呈现删除或增加的高亮背景。
 
 - 删除 `del:[]`
 - 增加 `add:[]`
+
+在代码块中需要显示的地方使用 del:[] 或者 add:[]。
 
 ```js
 function add(x, y) {
@@ -199,6 +216,10 @@ function add(x, y) {
   add:[return y + x]
 }
 ```
+
+## 主题更新
+
+因博客园有缓存，更改 `https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=202307031708` 链接中 `t` 等于的值，可以是日期，也可以是其他值。更改完成之后，就可以获取到最新的主题。
 
 # 配置主题
 
@@ -246,12 +267,12 @@ window.__BLEU_CONFIG__ = {
 - 类型：object
 - 是否必填：否
 
-该配置项包括了背景图片、首页轮播图、文章和随笔列表封面图。一下 background、home 等对象都是可选。
+该配置项包括了背景图片、首页轮播图、文章和随笔列表封面图。以下的 background、home 等对象都是可选，也就是可以忽略不填，但是 arbeiten 字段至少要给一个网络图片地址，否则随笔列表的封面就是破损图片，除非你在发表一篇博客之前给了一个封面。
 
 ```js
 window.__BLEU_CONFIG__ = {
   images: {
-    // 背景
+    // 背景，不填背景图片就是纯色背景
     background: {
       // 网络图片
       src: ""
@@ -262,7 +283,7 @@ window.__BLEU_CONFIG__ = {
       // 同 css background-repeat
       repeat: "repeat"
     },
-    // 首页轮播图
+    // 首页轮播图，不填代表关闭
     home: {
       // 透明度
       opacity: 0.5,
@@ -272,7 +293,7 @@ window.__BLEU_CONFIG__ = {
       carousel: [
         ""
       ],
-      // 是否开启轮播图，不开启就不显示轮播图
+      // 首页轮播图不开启时，以第二种布局代替轮播图位置。
       disabled: true
     },
     // 随笔和文章列表封面图
@@ -283,16 +304,14 @@ window.__BLEU_CONFIG__ = {
 };
 ```
 
-随笔和文章列表封面图不超过 10 个时，会重复看到图片。首页轮播图不开启时，以第二种布局代替轮播图位置。
+随笔和文章列表封面图不超过 10 个时，会重复看到图片。
 
 ## chart
 
 - 类型：object
 - 是否必填：是
 
-我的技能、随笔分类、我的标签的图表统计。
-
-其中，我的技能雷达图完全符合 echart 雷达图的配置。
+我的技能、随笔分类、我的标签的图表统计。其中，我的技能雷达图完全符合 echart 雷达图的配置。
 
 ```js
 window.__BLEU_CONFIG__ = {
@@ -322,7 +341,7 @@ window.__BLEU_CONFIG__ = {
 2. 得到字体名称。
 3. 在配置文件中配置。
 
-页首 HTML 代码：
+在 “页首 HTML 代码” 处添加以下三个 link 标签，如果你有其他的字体可以替换我给的例子：
 
 ```html
 <link rel="stylesheet" href="https://fonts.loli.net/icon?family=ZCOOL+KuaiLe" />
@@ -347,13 +366,16 @@ window.__BLEU_CONFIG__ = {
   font: {
     code: {
       name: "Hack, LXGW WenKai",
+      // 修改代码块的字体大小，单位建议 rem
       size: "0.8rem"
     },
     main: {
+      // 主要的字体样式，建议 LXGW WenKai，这个字体我认为非常美观
       name: "LXGW WenKai"
     },
     art: {
       name: "ZCOOL KuaiLe",
+      // 修改艺术字体大小，单位建议 rem
       size: "1.2rem"
     }
   }
@@ -402,11 +424,10 @@ window.__BLEU_CONFIG__ = {
 };
 ```
 
-## 完整配置
+## 完整配置示例
 
 ```html
 <script>
-  // 主题的配置对象
   window.__BLEU_CONFIG__ = {
     icon: "",
     signature: "Time tick away, dream faded away.",
@@ -482,17 +503,14 @@ window.__BLEU_CONFIG__ = {
         size: "1.2rem"
       }
     },
-    markdownStyle: {
+    styleCss: {
       arbeiten: {
         fontSize: "1.1rem"
       },
       comment: {
         fontSize: "1rem"
-      }
-    },
-    amplifierUnoCSS: {
-      arbeiten: "f-c-c flex-col",
-      comment: "f-s-s flex-col"
+      },
+      amplifier: "f-c-c flex-col"
     }
   };
 </script>

@@ -16,22 +16,6 @@ const disabled = inject<boolean>(ProvideKey.Catalog);
 const translate = shallowRef("");
 const catalogList = shallowRef();
 
-function controlLump(entries: any) {
-  for (let i = 0; i < catalogList.value.length; i++) {
-    document
-      .querySelector(`#catalog-${catalogList.value[i].id}`)
-      ?.classList.remove("catalog-active");
-  }
-  const item = document.querySelector(`#catalog-${entries[0].target.id}`);
-  const step = item?.getAttribute("data-step");
-  translate.value = step;
-  item?.classList.add("catalog-active");
-}
-
-function isTouchedTitle(offsetTop: number) {
-  return window.scrollY >= offsetTop && window.scrollY <= offsetTop + offsetTop * 0.2;
-}
-
 function generateList() {
   const catalogList: { id: string; content: string; item: Element }[] = [];
   let step = 0;
@@ -63,6 +47,22 @@ function generateList() {
 }
 
 let observer: IntersectionObserver = null;
+
+function isTouchedTitle(offsetTop: number) {
+  return window.scrollY >= offsetTop && window.scrollY <= offsetTop + offsetTop * 0.2;
+}
+
+function controlLump(entries: any) {
+  for (let i = 0; i < catalogList.value.length; i++) {
+    document
+      .querySelector(`#catalog-${catalogList.value[i].id}`)
+      ?.classList.remove("catalog-active");
+  }
+  const item = document.querySelector(`#catalog-${entries[0].target.id}`);
+  const step = item?.getAttribute("data-step");
+  translate.value = step;
+  item?.classList.add("catalog-active");
+}
 
 function renderCatalog() {
   catalogList.value = generateList();
