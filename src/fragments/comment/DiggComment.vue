@@ -26,7 +26,6 @@ async function diggComment() {
 </script>
 
 <template>
-  <!-- 同意评论 -->
   <div
     v-show="!comment.isEditing && !comment.isAnsling"
     class="hover f-c-c text-0.9rem text-b"

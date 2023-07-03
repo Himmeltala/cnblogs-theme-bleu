@@ -2,29 +2,17 @@
 defineProps({
   line: {
     type: String as PropType<"solid" | "dotted">,
-    default: "solid"
-  },
-  fontSize: {
-    type: String,
-    default: "text-0.8rem"
-  },
-  textColor: {
-    type: String,
-    default: "text-a"
+    default: "dotted"
   },
   round: {
     type: Boolean,
-    default: false
+    default: true
   },
   padding: {
     type: Boolean,
     default: true
   }
 });
-
-function translate(prop: string): string {
-  return prop;
-}
 </script>
 
 <template>
@@ -32,30 +20,29 @@ function translate(prop: string): string {
     class="l-hollobox"
     :class="{
       round: round,
-      [translate(textColor)]: textColor,
-      [translate(fontSize)]: fontSize,
       padding: padding
     }"
     :style="{ 'border-style': line }">
-    <slot />
+    <slot></slot>
   </div>
 </template>
 
 <style scoped lang="scss">
 .l-hollobox {
+  --uno: text-0.8rem;
   border-width: 1px;
 }
 
 .l-hollobox.padding {
   padding: {
-    top: 0.3rem;
-    bottom: 0.3rem;
+    top: 0.1rem;
+    bottom: 0.1rem;
     left: 0.6rem;
     right: 0.6rem;
   }
 }
 
 .l-hollobox.round {
-  border-radius: 50px;
+  border-radius: 1rem;
 }
 </style>

@@ -27,13 +27,7 @@ await fetchData();
         </template>
       </el-page-header>
       <div class="tags">
-        <HollowedBox
-          round
-          hover
-          :padding="false"
-          line="dotted"
-          class="item mb-4"
-          v-for="item of markList">
+        <HollowedBox hover :padding="false" class="item mb-4" v-for="item of markList">
           <div class="f-c-c w-100% h-100%">
             <router-link :to="RouterPath.ArbeitenByMark(item.text)">
               {{ item.text }} ({{ item.count }})

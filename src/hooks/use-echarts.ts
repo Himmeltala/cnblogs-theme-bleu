@@ -67,8 +67,10 @@ export function usePieChart(
 
 export function useLineChart(
   dom: HTMLElement,
-  seriesData: number | string[],
   xAxis: string[],
+  seriesData: number | string[],
+  areaStyle?: any,
+  lineStyle?: any,
   flag?: Ref<number>
 ) {
   const options = {
@@ -93,10 +95,8 @@ export function useLineChart(
         name: "篇数",
         data: seriesData,
         type: "line",
-        areaStyle: {
-          color: "rgb(83,102,163)",
-          opacity: 0.5
-        }
+        areaStyle,
+        lineStyle
       }
     ]
   };

@@ -61,7 +61,6 @@ function cancel() {
 </script>
 
 <template>
-  <!-- 回复评论 -->
   <div>
     <div class="float-right w-100%" v-show="comment.isAnsling">
       <div class="mb-2 f-c-e">

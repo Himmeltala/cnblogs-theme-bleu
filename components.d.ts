@@ -9,7 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     Albumn: typeof import('./src/views/Albumn.vue')['default']
     AlbumnItem: typeof import('./src/views/AlbumnItem.vue')['default']
-    Amplifier: typeof import('./src/components/Amplifier.vue')['default']
     AnswerComment: typeof import('./src/fragments/comment/AnswerComment.vue')['default']
     Arbeiten: typeof import('./src/views/Arbeiten.vue')['default']
     ArbeitenByArchive: typeof import('./src/views/ArbeitenByArchive.vue')['default']
@@ -59,8 +58,6 @@ declare module 'vue' {
     IEpStar: typeof import('~icons/ep/star')['default']
     IEpSunny: typeof import('~icons/ep/sunny')['default']
     IEpView: typeof import('~icons/ep/view')['default']
-    IEpZoomIn: typeof import('~icons/ep/zoom-in')['default']
-    IEpZoomOut: typeof import('~icons/ep/zoom-out')['default']
     Markdown: typeof import('./src/components/Markdown.vue')['default']
     MarkList: typeof import('./src/views/MarkList.vue')['default']
     Pagination: typeof import('./src/components/Pagination.vue')['default']

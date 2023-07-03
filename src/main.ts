@@ -1,10 +1,11 @@
+import "uno.css";
+import "@/style.scss";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import App from "@/App.vue";
 import router from "@/router";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import "uno.css";
-import "@/style.scss";
-import { useBleu } from "./bleu";
+import { useBleu } from "@/bleu";
 
 const app = createApp(App);
 

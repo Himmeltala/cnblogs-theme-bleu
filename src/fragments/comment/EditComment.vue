@@ -56,7 +56,6 @@ function cancel() {
 </script>
 
 <template>
-  <!-- 编辑评论 -->
   <div>
     <div class="float-right w-100%" v-show="comment.isEditing">
       <div class="mb-2 f-c-e">

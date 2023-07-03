@@ -217,19 +217,18 @@ interface BleuConfig {
    * 图表
    */
   chart: {
-    /**
-     * 技能表
-     */
     tech: any;
-    /**
-     * 我的标签
-     */
     mark?: {
       count?: number;
     };
     category?: {
       count?: number;
+      areaStyle?: any;
+      lineStyle?: any;
     };
+  };
+  theme?: {
+    color?: string;
   };
   /**
    * 字体

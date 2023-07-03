@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import hljs from "highlight.js";
+import { Fancybox } from "@fancyapps/ui";
 
 hljs.configure({
   ignoreUnescapedHTML: true
@@ -15,8 +16,12 @@ const props = defineProps({
     required: false
   },
   styleCss: {
-    type: Object,
+    type: String,
     required: false
+  },
+  fancyGroup: {
+    type: String,
+    required: true
   }
 });
 
@@ -27,20 +32,49 @@ const strHtmlRef = toRef(props, "strHtml");
 const markdown = ref("");
 
 function generateMarkdown() {
-  let mtc;
+  let mtcCode, mtcImg;
   let str = props.strHtml;
-  let regex = /<pre>[\s\S]*?<\/pre>/g;
+  let codeRegex = /<pre>[\s\S]*?<\/pre>/g;
+  let imgRegex = /<img[\s\S]*?>/g;
 
-  while ((mtc = regex.exec(props.strHtml)) !== null) {
-    const pre = refactorMarkdown(mtc[0]);
-    str = str.replace(mtc[0], pre);
+  while ((mtcCode = codeRegex.exec(str)) !== null) {
+    const r = refactorPreCode(mtcCode[0]);
+    str = str.replace(mtcCode[0], r);
   }
 
-  return str;
+  let n = str;
+  let index = 0;
+
+  while ((mtcImg = imgRegex.exec(str)) !== null) {
+    const r = refactorImg(mtcImg[0], index);
+    n = n.replace(mtcImg[0], r);
+    index++;
+  }
+
+  return n;
 }
 
-function refactorMarkdown(str: string) {
-  const mtMark = str.match(/file:([a-zA-Z0-9.\-_\/]+)/);
+function refactorImg(str: string, index: number) {
+  const mtSrc = str.match(/src="([^"]*)/);
+  const mtAlt = str.match(/alt="([^"]*)"/);
+
+  const late = `
+    <div class="bleu-img ${props.styleCss}">
+      <div>
+        <a href="${mtSrc[1]}" data-fancybox="bleu-gallery-${props.fancyGroup}"
+          data-download-src="${mtSrc[1]}" data-caption="${mtAlt ? mtAlt[1] : ""}">
+          <img src="${mtSrc[1]}" class="rd-2" alt="${mtAlt ? mtAlt[1] : ""}" />
+        </a>
+        <div class="bleu-caption f-c-c text-0.8rem text-b">${mtAlt ? mtAlt[1] : ""}</div>
+      </div>
+    </div>
+  `;
+
+  return late;
+}
+
+function refactorPreCode(str: string) {
+  const mtMark = str.match(/file:\[([\u4e00-\u9fffa-zA-Z0-9.\-_\s\/]+)\]/);
   const mtAddLine = str.match(/add:\[(.*?)\]/);
   const mtDelLine = str.match(/del:\[(.*?)\]/);
 
@@ -92,7 +126,7 @@ function refactorMarkdown(str: string) {
     </div>
   `;
 
-  if (mark) str = str.replace(/file:([a-zA-Z0-9.\-_\/]+)/g, "");
+  if (mark) str = str.replace(/file:\[([\u4e00-\u9fffa-zA-Z0-9.\-_\s\/]+)\]/g, "");
 
   str = str.replace(
     "<pre>",
@@ -130,6 +164,23 @@ function renderMarkdown() {
         })
         .catch(console.error);
     }
+
+    let options = {
+      Toolbar: {
+        display: {
+          left: ["infobar"],
+          middle: ["zoomIn", "zoomOut", "toggle1to1", "rotateCCW", "rotateCW", "flipX", "flipY"],
+          right: ["slideshow", "thumbs", "close"]
+        }
+      },
+      Hash: false
+    };
+
+    if (!BleuVars.isPcDevice()) {
+      options["Toolbar"]["display"]["middle"] = [];
+    }
+
+    Fancybox.bind("[data-fancybox]", options);
 
     emits("update:realHtml", htmlInst.value);
   });

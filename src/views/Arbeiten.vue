@@ -82,7 +82,7 @@ await fetchData(true);
   <div id="l-arbeiten" class="page">
     <div class="content mt-4" v-if="!arbIsLock">
       <div class="text-1.4rem w-100%">{{ arbeiten.text }}</div>
-      <div class="f-c-s lt-sm:flex-wrap mt-6 text-0.9rem">
+      <div class="f-c-s lt-sm:flex-wrap mt-4 text-0.9rem">
         <div class="f-c-c mr-4">
           <div class="i-tabler-calendar-stats mr-2"></div>
           {{ arbeiten.date }}
@@ -107,9 +107,9 @@ await fetchData(true);
           编辑
         </div>
       </div>
-      <div class="mt-6 mb-10">
-        <div class="mb-4 f-c-s flex-wrap" v-if="arbProps?.sorts?.length">
-          <div class="f-c-s mt-2 mr-2 text-1rem">
+      <div class="mt-4 mb-10">
+        <div class="mb-2 f-c-s flex-wrap text-0.9rem" v-if="arbProps?.sorts?.length">
+          <div class="f-c-s mt-2 mr-2">
             <div class="i-tabler-category-2 mr-2"></div>
             分类：
           </div>
@@ -117,15 +117,15 @@ await fetchData(true);
             class="mt-2"
             v-for="(item, index) in arbProps.sorts"
             :class="{ 'mr-4': index !== arbProps.sorts.length - 1 }">
-            <HollowedBox hover line="dotted" round>
-              <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
+            <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
+              <HollowedBox hover>
                 {{ item.text }}
-              </router-link>
-            </HollowedBox>
+              </HollowedBox>
+            </router-link>
           </div>
         </div>
-        <div class="f-c-s flex-wrap" v-if="arbProps?.tags?.length">
-          <div class="f-c-s mt-2 mr-2 text-1rem">
+        <div class="f-c-s flex-wrap text-0.9rem" v-if="arbProps?.tags?.length">
+          <div class="f-c-s mt-2 mr-2">
             <div class="i-tabler-bookmarks mr-2"></div>
             标签：
           </div>
@@ -133,23 +133,21 @@ await fetchData(true);
             class="mt-2"
             v-for="(item, index) in arbProps.tags"
             :class="{ 'mr-4': index !== arbProps.tags.length - 1 }">
-            <HollowedBox line="dotted" hover round>
-              <router-link :to="RouterPath.ArbeitenByMark(item.text)">
+            <router-link :to="RouterPath.ArbeitenByMark(item.text)">
+              <HollowedBox hover>
                 {{ item.text }}
-              </router-link>
-            </HollowedBox>
+              </HollowedBox>
+            </router-link>
           </div>
         </div>
       </div>
       <Markdown
-        :style-css="BleuVars.config.styleCss?.arbeiten || { fontSize: '1rem' }"
+        :style-css="BleuVars.config.styleCss?.arbeiten || 'f-c-c'"
         :str-html="arbeiten.content"
-        v-model:real-html="realHtml" />
-      <Amplifier
-        :style-css="BleuVars.config.styleCss?.amplifier || 'f-c-c flex-col'"
-        :str-html="arbeiten.content"
-        :real-html="realHtml" />
-      <div class="bg-b3 text-0.8rem p-5 text-b mt-5">
+        v-model:real-html="realHtml"
+        :fancy-group="'arbeiten'" />
+      <Catalog :str-html="arbeiten.content" :real-html="realHtml" />
+      <div class="bg-b3 text-0.9rem p-5 text-b mt-10">
         <div class="f-c-s flex-wrap">
           <div class="i-tabler-user mr-2"></div>
           作者：<span
@@ -160,7 +158,9 @@ await fetchData(true);
         </div>
         <div class="f-c-s flex-wrap">
           <div class="i-tabler-sign-right mr-2"></div>
-          出处：<span class="hover">https://www.cnblogs.com/himmelbleu/#/p/{{ arbeitenId }}</span>
+          出处：<span class="hover">
+            https://www.cnblogs.com/{{ BleuVars.getBlogApp() }}/#/p/{{ arbeitenId }}
+          </span>
         </div>
         <div class="f-c-s flex-wrap">
           <div class="i-tabler-license mr-2"></div>
@@ -171,7 +171,7 @@ await fetchData(true);
           >」许可协议进行许可。
         </div>
       </div>
-      <div class="mt-5 text-0.9rem text-b">
+      <div class="mt-4 text-0.9rem text-b">
         <div class="f-s-s mb-2" v-if="arbPrevNext?.prev?.href">
           <router-link class="hover" :to="RouterPath.Arbeiten(arbPrevNext.prev.href)">
             上一篇：{{ arbPrevNext.prev.text }}
@@ -190,15 +190,15 @@ await fetchData(true);
         </el-button>
       </div>
       <div class="mt-20 f-c-c">
-        <el-button type="primary" plain @click="vote('Digg')" class="mr-5">
+        <el-button text type="primary" bg @click="vote('Digg')" class="mr-5">
           <div class="i-tabler-thumb-up mr-1"></div>
           赞成{{ arbViewPoint.diggCount }}
         </el-button>
-        <el-button type="danger" plain @click="vote('Bury')" class="mr-5">
+        <el-button text type="danger" bg @click="vote('Bury')" class="mr-5">
           <div class="i-tabler-thumb-down mr-1"></div>
           反对{{ arbViewPoint.buryCount }}
         </el-button>
-        <el-button type="success" plain @click="Native.saveArbeiten(arbeitenId)">
+        <el-button text type="success" bg @click="Native.saveArbeiten(arbeitenId)">
           <div class="i-tabler-heart mr-1"></div>
           收藏
         </el-button>
@@ -207,7 +207,6 @@ await fetchData(true);
         分享：
         <div class="i-tabler-brand-wechat mr-2 hover" @click="Native.shareToWechat"></div>
       </div>
-      <Catalog :str-html="arbeiten.content" :real-html="realHtml" />
       <Comment :post-id="arbeitenId" />
     </div>
     <div class="content" v-else>

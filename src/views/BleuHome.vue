@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useRadarChart, usePieChart, useLineChart } from "@/hooks/use-echarts";
 import { ArbeitenApi, DatumApi } from "@/apis";
 import { useWheelRollsUpAndDown } from "@/hooks/use-mouse";
+import { useRadarChart, usePieChart, useLineChart } from "@/hooks/use-echarts";
 
 const list = shallowRef<BleuArbeitenList>();
 const news = shallowRef<BleuMenuItemData[]>();
@@ -48,9 +48,15 @@ const openLineChartCount = ref(0);
 const isWinUp = ref(false);
 const isActiveMenu = ref(false);
 
+const carouselList = shallowRef(BleuVars.config.images?.home?.carousel);
+const carouselIndex = ref(0);
+const carouseLength = BleuVars.config.images?.home?.carousel?.length;
+
 onMounted(() => {
+  // 技能雷达
   useRadarChart(radarInst.value);
 
+  // 我的标签
   usePieChart(
     pie1Inst.value,
     markList.value.map((i, index) => {
@@ -62,6 +68,7 @@ onMounted(() => {
     "90%"
   );
 
+  // 随笔分类
   usePieChart(
     pie2Inst.value,
     column.value.essaySort.map((i, index) => {
@@ -73,10 +80,13 @@ onMounted(() => {
     ["40%", "70%"]
   );
 
+  // 随笔归档
   useLineChart(
     lineInst.value,
-    column.value.essayArchive.map(i => i.count),
     column.value.essayArchive.map(i => i.id),
+    column.value.essayArchive.map(i => i.count),
+    BleuVars.config.chart?.category?.areaStyle || {},
+    BleuVars.config.chart?.category?.lineStyle || {},
     openLineChartCount
   );
 
@@ -91,29 +101,24 @@ onMounted(() => {
       throttle: 50
     }
   );
+
+  if (!BleuVars.config.images?.home?.disabled && carouseLength) {
+    setInterval(() => {
+      carouselIndex.value++;
+      if (carouselIndex.value > carouseLength - 1) {
+        carouselIndex.value = 0;
+      }
+    }, BleuVars.config.images.home.interval || 5000);
+  }
 });
 
-const carouselList = shallowRef(BleuVars.config.images?.home?.carousel);
-const carouselIndex = ref(0);
-const carouseLength = BleuVars.config.images?.home?.carousel?.length;
-
-if (!BleuVars.config.images?.home?.disabled && carouseLength) {
-  setInterval(() => {
-    carouselIndex.value++;
-    if (carouselIndex.value > carouseLength - 1) {
-      carouselIndex.value = 0;
-    }
-  }, BleuVars.config.images.home.interval || 5000);
-}
-
-const searchVal = ref("");
+const findValue = ref("");
 
 await fetchData();
 </script>
 
 <template>
   <div id="l-home" class="xl:px-18vw lt-xl:px-15vw lt-lg:px-10vw lt-md:px-5vw lt-sm:px-1rem">
-    <!-- area-1：菜单栏 -->
     <div class="l-menu">
       <div
         @click="isActiveMenu = !isActiveMenu"
@@ -172,7 +177,6 @@ await fetchData();
         </div>
       </div>
     </div>
-    <!-- area-2：GitHub -->
     <div v-show="!isActiveMenu" class="l-github lt-sm:hidden fixed-lb z-9 ml-2">
       <div
         class="f-c-c flex-col"
@@ -183,28 +187,25 @@ await fetchData();
         <div class="i-tabler-brand-github hover mb-4 text-1.2rem text-b"></div>
       </div>
     </div>
-    <!-- area-3：开屏 -->
     <div class="lg:f-s-b">
       <div class="lg:w-49% lg:h-100vh py-4" v-if="list?.data">
         <div class="h-100%" :class="{ 'f-c-b flex-col': list.data.length >= 4 }">
-          <!-- 随笔列表 -->
-          <div class="lt-lg:mb-15" :class="{ 'mb-10': list.data.length < 4 }" v-for="item in list.data">
-            <!-- 日期 -->
+          <div
+            class="lt-lg:mb-15"
+            :class="{ 'mb-10': list.data.length < 4 }"
+            v-for="item in list.data">
             <div class="f-c-s text-b text-0.9rem mb-2">
               <div class="i-tabler-clock-hour3 mr-2"></div>
               {{ item.date }}
             </div>
-            <!-- 标题 -->
             <div class="text-ellipsis lg:line-clamp-2 mb-2">
               <router-link class="hover" :to="RouterPath.Arbeiten(item.id)">
                 {{ item.text }}
               </router-link>
             </div>
-            <!-- 简介 -->
             <div class="text-ellipsis lg:line-clamp-1 lt-lg:line-clamp-3 text-0.9rem text-b ml-10">
               {{ item.desc }}
             </div>
-            <!-- 简要信息 -->
             <div class="f-c-e" text="0.8rem c" m="t-5">
               <div class="mr-2 text-b">
                 <router-link class="hover" :to="RouterPath.Arbeiten(item.id)">
@@ -228,13 +229,12 @@ await fetchData();
             </div>
           </div>
           <div class="f-c-e w-100%">
-            <HollowedBox round dotted hover @click="$router.push(RouterPath.ArbeitenList())">
-              <router-link :to="RouterPath.ArbeitenList()">MORE</router-link>
-            </HollowedBox>
+            <el-button bg text type="primary" @click="$router.push(RouterPath.ArbeitenList('1'))">
+              More
+            </el-button>
           </div>
         </div>
       </div>
-      <!-- 轮播图 -->
       <div
         v-if="
           !BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel?.length
@@ -250,23 +250,20 @@ await fetchData();
           class="w-100% h-100% transition-all-800 absolute top-0 left-0 object-cover"
           :src="item" />
       </div>
-      <!-- area-4：关闭轮播图，个人数据 -->
       <div
         v-else
         class="lg:w-49% lg:ml-10 lg:h-100vh"
         :class="{ 'py-4': BleuVars.config.images?.home?.disabled }">
         <div>
-          <div class="caption mb-10">
+          <div class="caption mb-5">
             <div class="i-tabler-info-square-rounded mr-2"></div>
             博客信息
           </div>
-          <div class="f-c-s h-30 mb-10 text-1rem text-b">
-            <!-- 头像 -->
+          <div class="f-c-s h-30 mb-5 text-1rem text-b">
             <img
               class="w-25 h-25 rd-50% lt-lg:mr-8 lg:mr-10 object-cover"
               :src="BleuVars.config.avatar" />
             <div class="f-s-b flex-col py-4 h-100%">
-              <!-- 积分和排名 -->
               <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
                 <div
                   v-for="(item, index) in column.rankings"
@@ -279,8 +276,8 @@ await fetchData();
               </div>
               <div class="w-60">
                 <el-input
-                  v-model="searchVal"
-                  @keyup.enter="Native.searchArbeiten(searchVal)"
+                  v-model="findValue"
+                  @keyup.enter="Native.searchArbeiten(findValue)"
                   size="small"
                   placeholder="输入关键字"
                   clearable>
@@ -325,12 +322,11 @@ await fetchData();
               </div>
               <div class="f-c-s mt-5">
                 <div class="i-tabler-chart-bar mr-2"></div>
-                阅读的数量：{{ status[3].digg }}次
+                阅读的数量：{{ status[3].digg }}
               </div>
             </div>
           </div>
         </div>
-        <!-- 技能雷达图 -->
         <div class="lg:mt-5 lt-lg:mt-15">
           <div class="caption mb-5">
             <div class="i-tabler-chart-radar mr-2"></div>
@@ -342,24 +338,21 @@ await fetchData();
         </div>
       </div>
     </div>
-    <!-- area-4：开启轮播图，个人数据 -->
     <div
       v-if="
         !BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel?.length
       "
-      class="sm:f-s-b mt-20">
+      class="sm:f-s-b mt-10">
       <div class="sm:w-49%">
-        <div class="caption mb-10">
+        <div class="caption mb-5">
           <div class="i-tabler-info-square-rounded mr-2"></div>
           博客信息
         </div>
-        <div class="f-c-s h-30 mb-10 text-1rem text-b">
-          <!-- 头像 -->
+        <div class="f-c-s h-30 mb-5 text-1rem text-b">
           <img
             class="w-25 h-25 rd-50% lt-lg:mr-8 lg:mr-10 object-cover"
             :src="BleuVars.config.avatar || ''" />
           <div class="f-s-b flex-col py-4 h-100%">
-            <!-- 积分和排名 -->
             <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
               <div
                 v-for="(item, index) in column.rankings"
@@ -372,8 +365,8 @@ await fetchData();
             </div>
             <div class="w-60">
               <el-input
-                v-model="searchVal"
-                @keyup.enter="Native.searchArbeiten(searchVal)"
+                v-model="findValue"
+                @keyup.enter="Native.searchArbeiten(findValue)"
                 size="small"
                 placeholder="输入关键字"
                 clearable>
@@ -418,12 +411,11 @@ await fetchData();
             </div>
             <div class="f-c-s mt-5">
               <div class="i-tabler-chart-bar mr-2"></div>
-              阅读的数量：{{ status[3].digg }}次
+              阅读的数量：{{ status[3].digg }}
             </div>
           </div>
         </div>
       </div>
-      <!-- 技能雷达图 -->
       <div class="sm:w-49% lt-sm:mt-15">
         <div class="caption mb-5">
           <div class="i-tabler-chart-radar mr-2"></div>
@@ -434,8 +426,7 @@ await fetchData();
         </div>
       </div>
     </div>
-    <!-- area-5：随笔标签 -->
-    <div class="mt-20 relative" v-if="markList?.length">
+    <div class="mt-10 relative" v-if="markList?.length">
       <div
         class="transition-all-500"
         :class="{ 'opacity-100': !isShowPieChart1, 'opacity-30': isShowPieChart1 }">
@@ -453,18 +444,16 @@ await fetchData();
             "
             class="f-c-c cursor-pointer hover text-c text-1rem">
             <div class="i-tabler-zoom-in mr-2"></div>
-            图表
           </div>
         </div>
         <div class="f-s-b flex-wrap overflow-auto scroll-none">
-          <HollowedBox v-for="item in markList" hover line="dotted" round class="mr-4 mb-6">
-            <router-link :to="RouterPath.ArbeitenByMark(item.text)">
+          <router-link v-for="item in markList" :to="RouterPath.ArbeitenByMark(item.text)">
+            <HollowedBox hover class="mr-4 mb-6">
               {{ item.text }}
-            </router-link>
-          </HollowedBox>
+            </HollowedBox>
+          </router-link>
         </div>
       </div>
-      <!-- 图表 -->
       <div
         :class="{ 'scale-0': !isShowPieChart1, 'scale-100': isShowPieChart1 }"
         class="transition-all-300 z-9 rd-2 bg-b1 absolute left-0 top-0">
@@ -479,9 +468,7 @@ await fetchData();
         </div>
       </div>
     </div>
-    <!-- area-6：随笔分类 -->
     <div class="sm:f-s-b mt-15 relative">
-      <!-- 随笔分类 -->
       <div class="sm:w-49%" v-if="column?.essaySort?.length">
         <div
           class="transition-all-500"
@@ -500,7 +487,6 @@ await fetchData();
               "
               class="f-c-c cursor-pointer hover text-c text-1rem mr-4">
               <div class="i-tabler-zoom-in mr-2"></div>
-              图表
             </div>
           </div>
           <div class="f-c-b flex-wrap">
@@ -511,7 +497,6 @@ await fetchData();
             </div>
           </div>
         </div>
-        <!-- 图表 -->
         <div
           :class="{ 'scale-0': !isShowPieChart2, 'scale-100': isShowPieChart2 }"
           class="transition-all-300 z-9 rd-2 bg-b1 absolute left-0 top-0">
@@ -526,7 +511,6 @@ await fetchData();
           </div>
         </div>
       </div>
-      <!-- 文章分类 -->
       <div class="sm:w-49% lt-sm:mt-15" v-if="column?.articleSort?.length">
         <div id="article-nail" class="caption mb-10">
           <div class="i-tabler-sort-a-z mr-2"></div>
@@ -541,7 +525,6 @@ await fetchData();
         </div>
       </div>
     </div>
-    <!-- area-7：随笔归档 -->
     <div class="mt-15 relative" v-if="column?.essayArchive?.length">
       <div>
         <div
@@ -561,7 +544,6 @@ await fetchData();
               "
               class="f-c-c cursor-pointer hover text-c text-1rem mr-4">
               <div class="i-tabler-zoom-in mr-2"></div>
-              图表
             </div>
           </div>
           <div class="f-c-b flex-wrap">
@@ -573,7 +555,6 @@ await fetchData();
           </div>
         </div>
       </div>
-      <!-- 图表 -->
       <div
         :class="{ 'scale-0': !isShowLineChart, 'scale-100': isShowLineChart }"
         class="transition-all-300 z-9 rd-2 bg-b1 absolute left-0 top-0">
@@ -588,7 +569,6 @@ await fetchData();
         </div>
       </div>
     </div>
-    <!-- area-8：文章归档 -->
     <div class="mt-15" v-if="column?.articleArchive?.length">
       <div id="article-archive-nail" class="caption mb-10">
         <div class="i-tabler-folder-check mr-2"></div>
@@ -602,7 +582,6 @@ await fetchData();
         </div>
       </div>
     </div>
-    <!-- area-9：相册列表 -->
     <div class="mt-15" v-if="column?.albumn?.length">
       <div id="my-pohoto-nail" class="caption mb-10">
         <div class="i-tabler-photo mr-2"></div>

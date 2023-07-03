@@ -77,7 +77,7 @@ pnpm run build
 <!-- 主题样式 -->
 <link
   rel="stylesheet"
-  href="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.css?t=202307031708" />
+  href="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.css?t=202307090102" />
 
 <!-- 推荐字体 -->
 <link rel="stylesheet" href="https://fonts.loli.net/icon?family=ZCOOL+KuaiLe" />
@@ -176,7 +176,7 @@ pnpm run build
 <!-- 主题 JS -->
 <script
   type="module"
-  src="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=202307031708"></script>
+  src="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=202307090102"></script>
 
 <!-- 鼠标特效 -->
 <script src="https://blog-static.cnblogs.com/files/yjlblog/cursor-effects.js"></script>
@@ -188,16 +188,9 @@ pnpm run build
 
 有时候代码块需要特意说明是哪个文件的，或者说明文件的路径等标注信息，在文本中直接说明有点繁琐，因此你只需要按照以下格式就可以实现一个代码块标注。
 
-`file:src/math_utils.js`
-
 在代码块内第一行写上代码块标注。
 
-```js
-file: src / math_utils.js;
-function add(x, y) {
-  return x + y;
-}
-```
+`file:[src/math_utils.js]`
 
 ## 代码块行高亮
 
@@ -205,10 +198,10 @@ function add(x, y) {
 
 所以，你只需要使用以下格式就可以让你的代码块中呈现删除或增加的高亮背景。
 
+在代码块中需要显示的地方使用 del:[] 或者 add:[]。
+
 - 删除 `del:[]`
 - 增加 `add:[]`
-
-在代码块中需要显示的地方使用 del:[] 或者 add:[]。
 
 ```js
 function add(x, y) {
@@ -219,9 +212,36 @@ function add(x, y) {
 
 ## 主题更新
 
-因博客园有缓存，更改 `https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=202307031708` 链接中 `t` 等于的值，可以是日期，也可以是其他值。更改完成之后，就可以获取到最新的主题。
+因博客园有缓存，更改 `https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=20230708117` 链接中 `t` 等于的值，可以是日期，也可以是其他值。更改完成之后，就可以获取到最新的主题。
 
 # 配置主题
+
+## theme
+
+- 类型：object
+- 是否必填：否
+
+主题相关，比如颜色。
+
+```js
+window.__BLEU_CONFIG__ = {
+  theme: {
+    // 默认颜色
+    color: "#409EFF"
+  }
+};
+```
+
+<span style="color: #409EFF">#409EFF</span>
+<span style="color: #2D8CF0">#2D8CF0</span>
+<span style="color: #FA7298">#FA7298</span>
+<span style="color: #42B983">#42B983</span>
+<span style="color: #607D8B">#607D8B</span>
+<span style="color: #5E72E4">#5E72E4</span>
+<span style="color: #FF9700">#FF9700</span>
+<span style="color: #009688">#009688</span>
+<span style="color: #673BB7">#673BB7</span>
+<span style="color: #906f61">#906f61</span>
 
 ## icon
 
@@ -311,20 +331,68 @@ window.__BLEU_CONFIG__ = {
 - 类型：object
 - 是否必填：是
 
-我的技能、随笔分类、我的标签的图表统计。其中，我的技能雷达图完全符合 echart 雷达图的配置。
+（1）技能雷达
+
+技能雷达完全符合 echart 雷达图的配置，具体请查看 [echart 雷达图示例](https://echarts.apache.org/examples/zh/index.html#chart-type-radar)。
 
 ```js
 window.__BLEU_CONFIG__ = {
   chart: {
     // 我的技能，该属性和 echart 雷达图配置完全一致，可以参考官方文档来填写
-    tech: {},
-    // 我的标签饼状图统计前 count 个，可以不填，默认 10 个
-    mark: {
-      count: 12
-    },
+    tech: {
+      radar: {
+        // 点
+        indicator: [
+          { name: "Vue", max: 5 },
+          { name: "React", max: 5 },
+          { name: "JS", max: 5 },
+          { name: "TS", max: 5 },
+          { name: "Python", max: 5 },
+          { name: "C", max: 5 },
+          { name: "Java", max: 5 },
+          { name: "MySQL", max: 5 },
+          { name: "Mybatis", max: 5 }
+        ]
+      },
+      // 雷达图
+      series: [
+        {
+          // 区域颜色
+          areaStyle: {},
+          // 线条颜色
+          lineStyle: {},
+          // 图表类型
+          type: "radar",
+          // 数据，与 indicator 的数量保持一致
+          data: [
+            {
+              value: [4, 1, 4, 3, 3.5, 1, 3.5, 2.5, 3.5],
+              name: "技能掌握程度"
+            }
+          ]
+        }
+      ]
+    }
+  }
+};
+```
+
+技能雷达的区域颜色和线条颜色的配置：[areaStyle](https://echarts.apache.org/zh/option.html#series-radar.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-radar.lineStyle)。
+
+这两个属性是 series 数组中对象元素下的属性，配置时不要配置错误了。
+
+（2）随笔归档折线图
+
+点击链接查看 [areaStyle](https://echarts.apache.org/zh/option.html#series-line.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-line.lineStyle)。
+
+```js
+window.__BLEU_CONFIG__ = {
+  chart: {
     // 随笔分类饼状图统计前 count 个，可以不填，默认 10 个
     category: {
-      count: 12
+      count: 10,
+      areaStyle: {},
+      lineStyle: {}
     }
   }
 };
@@ -419,99 +487,7 @@ const keys = [
 ```js
 window.__BLEU_CONFIG__ = {
   styleCss: {
-    amplifier: "f-c-c flex-col"
+    amplifier: "f-c-c"
   }
 };
-```
-
-## 完整配置示例
-
-```html
-<script>
-  window.__BLEU_CONFIG__ = {
-    icon: "",
-    signature: "Time tick away, dream faded away.",
-    avatar: "",
-    images: {
-      background: {
-        src: ""
-        opacity: 0.03,
-        size: "50% auto",
-        repeat: "repeat",
-        posotion: "100%"
-      },
-      home: {
-        opacity: 0.5,
-        interval: 5000,
-        carousel: [
-          ""
-        ],
-        disabled: true
-      },
-      arbeiten: [
-        ""
-      ]
-    },
-    chart: {
-      tech: {
-        radar: {
-          indicator: [
-            { name: "Vue", max: 5 },
-            { name: "React", max: 5 },
-            { name: "JS", max: 5 },
-            { name: "TS", max: 5 },
-            { name: "Python", max: 5 },
-            { name: "C", max: 5 },
-            { name: "Java", max: 5 },
-            { name: "MySQL", max: 5 },
-            { name: "Mybatis", max: 5 }
-          ]
-        },
-        series: [
-          {
-            tooltip: {
-              trigger: "item"
-            },
-            areaStyle: {},
-            type: "radar",
-            data: [
-              {
-                value: [4, 1, 4, 3, 3.5, 1, 3.5, 2.5, 3.5],
-                name: "技能掌握程度"
-              }
-            ]
-          }
-        ]
-      },
-      mark: {
-        count: 12
-      },
-      category: {
-        count: 12
-      }
-    },
-    font: {
-      code: {
-        name: "Hack, LXGW WenKai",
-        size: "0.8rem"
-      },
-      main: {
-        name: "LXGW WenKai"
-      },
-      art: {
-        name: "ZCOOL KuaiLe",
-        size: "1.2rem"
-      }
-    },
-    styleCss: {
-      arbeiten: {
-        fontSize: "1.1rem"
-      },
-      comment: {
-        fontSize: "1rem"
-      },
-      amplifier: "f-c-c flex-col"
-    }
-  };
-</script>
 ```

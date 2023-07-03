@@ -29,7 +29,6 @@ async function confirmDeleteComment() {
 </script>
 
 <template>
-  <!-- 删除评论 -->
   <div class="text-b text-0.9rem" v-show="!comment.isEditing && !comment.isAnsling">
     <el-popconfirm
       confirm-button-text="确定"

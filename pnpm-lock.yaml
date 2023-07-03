@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@fancyapps/ui':
+    specifier: ^5.0.20
+    version: 5.0.20
   '@vueuse/core':
     specifier: ^10.1.2
     version: 10.1.2(vue@3.2.47)
@@ -322,6 +325,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@fancyapps/ui@5.0.20:
+    resolution: {integrity: sha512-g7go/W0mIplnpVCWNm6uHF6VZeDSAJnPHzx0bxyETfzyYqtwpv0LpNYP8TbWqFELvXdXwNkQwHvHxkI9FvGlqQ==}
+    dev: false
 
   /@floating-ui/core@1.2.6:
     resolution: {integrity: sha512-EvYTiXet5XqweYGClEmpu3BoxmsQ4hkj3QaYA6qEnigCWffTP3vNRwBReTdrwDwo7OoJ3wM8Uoe9Uk4n+d4hfg==}

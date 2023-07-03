@@ -65,9 +65,9 @@ defineProps({
         </div>
       </div>
       <div v-show="item.isTop || item.isOnlyMe || item.isLocked" class="mt-4 text-c">
-        <HollowedBox round plain v-if="item.isTop" class="mr-2">置顶随笔</HollowedBox>
-        <HollowedBox round plain v-else-if="item.isOnlyMe" class="mr-2">自己可见</HollowedBox>
-        <HollowedBox round plain v-else-if="item.isLocked" class="mr-2">密码锁定</HollowedBox>
+        <HollowedBox v-if="item.isTop" class="mr-2">置顶随笔</HollowedBox>
+        <HollowedBox v-else-if="item.isOnlyMe" class="mr-2">自己可见</HollowedBox>
+        <HollowedBox v-else-if="item.isLocked" class="mr-2">密码锁定</HollowedBox>
       </div>
     </div>
     <div v-if="index % 2 === 0" class="w-45% h-100% flow-hidden relative">
@@ -76,7 +76,6 @@ defineProps({
       <div class="mask absolute bottom-0 left-0 w-100% h-15%"></div>
     </div>
   </div>
-  <!-- 移动端 -->
   <div v-else class="item mb-15 h-20rem rd-2">
     <div class="text-ellipsis line-clamp-2 mb-6 text-1.3rem">
       <router-link :to="RouterPath.Arbeiten(item.id)" class="hover">
@@ -113,9 +112,9 @@ defineProps({
       </div>
     </div>
     <div v-if="item.isTop || item.isOnlyMe || item.isLocked" class="mt-4">
-      <HollowedBox round plain v-if="item.isTop" class="mr-2">置顶随笔</HollowedBox>
-      <HollowedBox round plain v-else-if="item.isOnlyMe" class="mr-2">自己可见</HollowedBox>
-      <HollowedBox round plain v-else-if="item.isLocked" class="mr-2">密码锁定</HollowedBox>
+      <HollowedBox v-if="item.isTop" class="mr-2">置顶随笔</HollowedBox>
+      <HollowedBox v-else-if="item.isOnlyMe" class="mr-2">自己可见</HollowedBox>
+      <HollowedBox v-else-if="item.isLocked" class="mr-2">密码锁定</HollowedBox>
     </div>
     <div class="f-c-b mt-6 text-0.9rem text-b">
       <div class="f-c-c hover">

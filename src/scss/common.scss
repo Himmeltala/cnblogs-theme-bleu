@@ -51,48 +51,49 @@ a:link {
 .shine-text {
   background: linear-gradient(
     to right,
-    #4b89ac,
-    #7bb1d1,
-    #9cc6d8,
-    #b2d1d1,
-    #f5b0cb,
-    #d395d7,
-    #a595d3,
-    #5d4e6d
+    #409eff,
+    #2d8cf0,
+    #5e72e4,
+    #673bb7,
+    #fa7298,
+    #ff9700,
+    #607d8b,
+    #009688,
+    #42b983,
+    #906f61
   );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-size: 200% auto;
-  animation: shine-animation 5s ease infinite;
+  background-size: 400% auto;
+  animation: shine-animation 10s linear infinite alternate;
 }
 
 .shine-bg {
   background: linear-gradient(
     to right,
-    #4b89ac,
-    #7bb1d1,
-    #9cc6d8,
-    #b2d1d1,
-    #f5b0cb,
-    #d395d7,
-    #a595d3,
-    #5d4e6d
+    #409eff,
+    #2d8cf0,
+    #5e72e4,
+    #673bb7,
+    #fa7298,
+    #ff9700,
+    #607d8b,
+    #009688,
+    #42b983,
+    #906f61
   );
-  background-size: 200% auto;
-  animation: shine-animation 5s ease infinite;
+  background-size: 400% auto;
+  animation: shine-animation 10s linear infinite alternate;
   filter: blur(55px);
 }
 
 @keyframes shine-animation {
   0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
+    background-position: 0% center;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 100% center;
   }
 }
 

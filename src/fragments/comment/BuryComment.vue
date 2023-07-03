@@ -24,7 +24,6 @@ async function buryComment() {
 </script>
 
 <template>
-  <!-- 反对评论 -->
   <div
     v-show="!comment.isEditing && !comment.isAnsling"
     class="hover f-c-c text-0.8rem text-b"

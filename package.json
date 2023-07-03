@@ -1,7 +1,7 @@
 {
   "name": "cnblogs-theme-bleu",
   "private": true,
-  "version": "2.7.3",
+  "version": "2.8.1",
   "author": "Himmelbleu",
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
+    "@fancyapps/ui": "^5.0.20",
     "@vueuse/core": "^10.1.2",
     "axios": "^1.4.0",
     "echarts": "^5.4.2",
