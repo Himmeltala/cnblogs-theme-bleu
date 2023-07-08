@@ -206,13 +206,22 @@ interface BleuConfig {
     };
   };
   /**
-   * markdown 样式配置
+   * 自定义 unocss，对作品和评论进行自定义
    */
-  styleCss?: {
-    arbeiten?: any;
-    comment?: any;
-    amplifier?: any;
+  unocss?: {
+    ab?: {
+      img?: string;
+      text?: string;
+    };
+    co?: {
+      img?: string;
+      text?: string;
+    };
   };
+  /**
+   * fancybox 配置
+   */
+  fancybox?: any;
   /**
    * 图表
    */
@@ -235,8 +244,8 @@ interface BleuConfig {
    */
   font?: {
     main?: { name?: string };
-    code?: { name?: string; size?: string };
-    art?: { name?: string; size?: string };
+    code?: { name?: string; size?: number };
+    art?: { name?: string; size?: number };
   };
 }
 

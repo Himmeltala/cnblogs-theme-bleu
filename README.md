@@ -15,8 +15,6 @@
 - 界面简洁优雅，响应式网页设计。
 - 轻量配置，非常容易使用。
 - 提供暗黑模式和多种色彩主题，可随时切换。
-- 支持自定义导航栏菜单项、悬浮标题目录等。
-- 项目结构清晰，代码简单，可实现高度定制化开发。
 
 ## 开发
 
@@ -57,13 +55,14 @@ pnpm run build
 
 ![](./docs/image-3.png)
 
-编辑器推荐选择 markdown，主题特性是基于 markdown 编辑的文本内容进行开发的。数学公式必须选择 MathJax3，其余的选项可以自行设置。
+- 编辑器推荐选择 markdown，主题特性是基于 markdown 编辑的文本内容进行开发的。
+- 数学公式必须选择 MathJax3，其余的选项可以自行设置。
 
 ## 控件设置
 
 ![](./docs/image-4.png)
 
-- 控件选项仅供参考。
+上图所示控件选项仅供参考。
 
 ## 页首 HTML 代码
 
@@ -184,6 +183,26 @@ pnpm run build
 
 # 主题特性
 
+## 提示块
+
+提示块可以让我们写下一些提示，这块内容会被绿色背景包裹，按照以下格式：
+
+![](./docs/image-5.png)
+
+以 `tip:[start]` 开始，以 `tip:[end]` 结尾，把提示内容写在中间。写完之后，打开随笔页面，就可以查看到效果：
+
+![](./docs/image-6.png)
+
+## 注意块
+
+注意块可以让我们写下一些注意，这块内容会被红色背景包裹，按照以下格式：
+
+![](./docs/image-7.png)
+
+以 `war:[start]` 开始，以 `war:[end]` 结尾，把注意内容写在中间。写完之后，打开随笔页面，就可以查看到效果：
+
+![](./docs/image-8.png)
+
 ## 代码块标注
 
 有时候代码块需要特意说明是哪个文件的，或者说明文件的路径等标注信息，在文本中直接说明有点繁琐，因此你只需要按照以下格式就可以实现一个代码块标注。
@@ -194,21 +213,23 @@ pnpm run build
 
 ## 代码块行高亮
 
-很多的博客、文档的代码块有删除行、增加行的背景高亮。这样让我们阅读的时候清楚地知道哪里改动，不需要过多的文字描述。
-
-所以，你只需要使用以下格式就可以让你的代码块中呈现删除或增加的高亮背景。
-
-在代码块中需要显示的地方使用 del:[] 或者 add:[]。
+在有些时候，代码块可能需要标注哪一行是增加的，哪一行是删除的，或者多行删除，多行增加。为此，我开发了这一项功能，你只需要使用以下格式就可以让你的代码块中呈现删除或增加的高亮背景。
 
 - 删除 `del:[]`
 - 增加 `add:[]`
 
 ```js
-function add(x, y) {
+del:[function add(x, y) {]
+add:[function calc(x, y) {]
   del:[return x + y]
   add:[return y + x]
 }
 ```
+
+如下所示，我们阅读的时候可以很清楚地知道哪里改动，不需要过多的文字描述。
+
+![](./docs/image-9.png)
+![](./docs/image-10.png)
 
 ## 主题更新
 
@@ -301,7 +322,9 @@ window.__BLEU_CONFIG__ = {
       // 同 css background-size
       size: "50% auto",
       // 同 css background-repeat
-      repeat: "repeat"
+      repeat: "repeat",
+      // 同 css background-position
+      position: "100%"
     },
     // 首页轮播图，不填代表关闭
     home: {
@@ -333,7 +356,7 @@ window.__BLEU_CONFIG__ = {
 
 （1）技能雷达
 
-技能雷达完全符合 echart 雷达图的配置，具体请查看 [echart 雷达图示例](https://echarts.apache.org/examples/zh/index.html#chart-type-radar)。
+查看官方示例 [echart 雷达图示例](https://echarts.apache.org/examples/zh/index.html#chart-type-radar)。
 
 ```js
 window.__BLEU_CONFIG__ = {
@@ -377,13 +400,11 @@ window.__BLEU_CONFIG__ = {
 };
 ```
 
-技能雷达的区域颜色和线条颜色的配置：[areaStyle](https://echarts.apache.org/zh/option.html#series-radar.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-radar.lineStyle)。
-
-这两个属性是 series 数组中对象元素下的属性，配置时不要配置错误了。
+查看官方文档说明：[areaStyle](https://echarts.apache.org/zh/option.html#series-radar.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-radar.lineStyle)。
 
 （2）随笔归档折线图
 
-点击链接查看 [areaStyle](https://echarts.apache.org/zh/option.html#series-line.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-line.lineStyle)。
+查看官方文档说明：[areaStyle](https://echarts.apache.org/zh/option.html#series-line.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-line.lineStyle)。
 
 ```js
 window.__BLEU_CONFIG__ = {
@@ -403,7 +424,7 @@ window.__BLEU_CONFIG__ = {
 - 类型：object
 - 是否必填：否
 
-配置主题的字体，默认字体使用 Element-Plus 的字体集。你可以配置你自己喜欢的字体。
+配置主题的字体，默认字体使用 Element-Plus 的字体集。
 
 1. 在“页首 HTML 代码”处插入一个字体 cdn 或者字体网址的 link 标签，表示引入字体到博客中。
 2. 得到字体名称。
@@ -434,8 +455,8 @@ window.__BLEU_CONFIG__ = {
   font: {
     code: {
       name: "Hack, LXGW WenKai",
-      // 修改代码块的字体大小，单位建议 rem
-      size: "0.8rem"
+      // 修改文章中代码块字体大小，单位建议 rem
+      size: 0.8
     },
     main: {
       // 主要的字体样式，建议 LXGW WenKai，这个字体我认为非常美观
@@ -444,35 +465,18 @@ window.__BLEU_CONFIG__ = {
     art: {
       name: "ZCOOL KuaiLe",
       // 修改艺术字体大小，单位建议 rem
-      size: "1.2rem"
+      size: 1.2
     }
   }
 };
 ```
 
-## styleCss
+## unocss
 
 - 类型：object
 - 是否必填：否
 
-配置 markdown 以及图片放大器样式。arbeiten 和 comment 符合 JS 的 style 样式对象。
-
-```js
-window.__BLEU_CONFIG__ = {
-  styleCss: {
-    arbeiten: {
-      fontSize: "1.1rem"
-    },
-    comment: {
-      fontSize: "1rem"
-    }
-  }
-};
-```
-
-对于图片放大器，值必须是 UnoCSS，如 flex flex-wrap flex-col 等，具体可以查阅 [UnoCSS 交互文档](https://unocss.dev/interactive/)。
-
-其中 f-c-c 是本主题设置的 shortcuts，对照以下的值来设置。
+自定义 unocss。具体可以查阅 [UnoCSS 交互文档](https://unocss.dev/interactive/)。以下是本主题设置的 shortcuts，简化 flex items-center 等值的设置，对照以下列表来设置。
 
 ```js
 const keys = [
@@ -486,8 +490,41 @@ const keys = [
 
 ```js
 window.__BLEU_CONFIG__ = {
-  styleCss: {
-    amplifier: "f-c-c"
+  unocss: {
+    ab: {
+      // 自定义文章内容图片的对其方式，左、中、右
+      img: "f-c-c",
+      // 自定义文章内容字体大小
+      text: "text-1rem"
+    },
+    co: {
+      // 自定义评论内容图片的对其方式，左、中、右
+      img: "f-c-s",
+      // 自定义评论内容字体大小
+      text: "text-0.9rem"
+    }
+  }
+};
+```
+
+## fancybox
+
+- 类型：object
+- 是否必填：否
+
+配置图片查看器。具体可以查阅 [Options | Fancybox](https://fancyapps.com/fancybox/api/options/)。
+
+```js
+window.__BLEU_CONFIG__ = {
+  fancybox: {
+    Toolbar: {
+      display: {
+        left: ["infobar"],
+        middle: ["zoomIn", "zoomOut", "toggle1to1", "rotateCCW", "rotateCW", "flipX", "flipY"],
+        right: ["slideshow", "thumbs", "close"]
+      }
+    },
+    Hash: false
   }
 };
 ```

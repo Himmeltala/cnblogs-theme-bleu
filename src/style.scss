@@ -1,57 +1,151 @@
-@import "element-plus/theme-chalk/dark/css-vars.css";
-@import "@/scss/index";
+@use "@/scss/themes";
+@use "@/scss/custs/cust-respond";
+@use "@/scss/custs/cust-markdown";
+@use "@/scss/custs/cust-highlightjs";
+@use "@/scss/custs/cust-element-plus";
 
-/**
- * 设置昼夜模式下使用的颜色
- *
- * @author Himmelbleu
- * @date 2023 年 2 月 14 日
- */
-html.dark {
-  --l-bg-4: #7f7f7f;
-  --l-bg-3: #222222bd;
-  --l-bg-2: #2e2e2e;
-  --l-bg-1: #222222;
-  --text-a: #a7a7a7;
-  --text-b: #8b8b8b;
-  --text-c: #6e6e6e;
-  --text-d: #656565;
-  --l-hight-color-1: white;
-  --hljs-color: #abb2bf;
-  --hljs-bg: #282c34;
-  --hljs-comment-color: #5c6370;
-  --hljs-keyword: #c678dd;
-  --hljs-section: #e06c75;
-  --hljs-literal: #56b6c2;
-  --hljs-addition: #98c379;
-  --hljs-attr: #d19a66;
-  --hljs-bullet: #61aeee;
-  --hljs-built: #e6c07b;
-}
-
-html.light {
-  --l-bg-4: #d5d5d5;
-  --l-bg-3: #f1f1f1bd;
-  --l-bg-2: #eaeaea;
-  --l-bg-1: #f8f8f8;
-  --text-a: #393939;
-  --text-b: #6e6e6e;
-  --text-c: #a0a0a0;
-  --text-d: #dedede;
-  --l-hight-color-1: black;
-  --hljs-color: #383a42;
-  --hljs-bg: #fafafa;
-  --hljs-comment-color: #a0a1a7;
-  --hljs-keyword: #a626a4;
-  --hljs-section: #e45649;
-  --hljs-literal: #0184bb;
-  --hljs-addition: #50a14f;
-  --hljs-attr: #986801;
-  --hljs-bullet: #986801;
-  --hljs-built: #986801;
-}
+@use "element-plus/theme-chalk/dark/css-vars.css";
+@use "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 html {
-  --text-primary: var(--el-color-primary);
   --l-animation-effect: all 0.3s ease-in-out;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--text-a);
+  font-size: var(--l-respond-text);
+  background-color: var(--bg-1);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// a 标签
+a:link {
+  text-decoration: none;
+}
+
+// 设置 PC 端的 page 和 content 样式
+@include mixins.pc() {
+  .page {
+    --uno: f-s-c relative;
+    z-index: 2;
+
+    & > .content {
+      width: 55vw;
+    }
+  }
+}
+
+// 设置移动端的 page 和 content 样式
+@include mixins.mb() {
+  .page {
+    --uno: px-4;
+    width: 100%;
+  }
+}
+
+// 不出现滚动条
+.scroll-none {
+  scrollbar-color: initial;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// 文字效果
+.shine-text {
+  background: linear-gradient(
+    to right,
+    #409eff,
+    #2d8cf0,
+    #5e72e4,
+    #673bb7,
+    #fa7298,
+    #ff9700,
+    #607d8b,
+    #009688,
+    #42b983,
+    #906f61
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 400% auto;
+  animation: shine-animation 10s linear infinite alternate;
+
+  @keyframes shine-animation {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 100% center;
+    }
+  }
+}
+
+// 抖动效果
+.bounce {
+  animation: bounce-animation 0.8s ease alternate infinite;
+
+  @keyframes bounce-animation {
+    0% {
+      transform: translateY(0px) scale(1);
+    }
+
+    100% {
+      transform: translateY(-8px) scale(0.95, 1);
+    }
+  }
+}
+
+// 清除浮动
+.clearfix:after {
+  content: "";
+  height: 0;
+  clear: both;
+  display: block;
+  visibility: hidden;
+}
+
+// 评论区和发表评论的输入框
+.textarea {
+  --uno: mb-5 rd-2 transition-all-300;
+  background-color: transparent;
+  border: 1px solid var(--el-border-color-darker);
+
+  &:hover {
+    color: var(--el-color-primary) !important;
+    border-color: var(--el-color-primary) !important;
+  }
+
+  textarea {
+    --uno: rd-2 p-2 text-0.9rem;
+    background-color: transparent;
+    width: 100%;
+    height: 15rem;
+    border: none;
+    outline: none;
+    color: var(--text-a);
+    resize: none;
+  }
+}
+
+// 淡入淡出效果
+.fade-in-out {
+  animation: opacity-animation 0.9s ease-in forwards;
+
+  @keyframes opacity-animation {
+    @for $index from 0 to 10 {
+      #{$index * 10%} {
+        opacity: math.div($index, 10);
+      }
+    }
+  }
 }

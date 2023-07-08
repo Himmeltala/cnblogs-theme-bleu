@@ -67,13 +67,13 @@ function currentChange(ind: number) {
 </template>
 
 <style scoped lang="scss">
-@include mb() {
+@include mixins.mb() {
   .button {
     display: none;
   }
 }
 
-@include pc() {
+@include mixins.pc() {
   .button {
     position: fixed;
     top: 50vh;

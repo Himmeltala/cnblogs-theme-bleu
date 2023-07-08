@@ -52,7 +52,7 @@ await fetchData();
     --uno: py-4;
   }
 
-  @include pc() {
+  @include mixins.pc() {
     .item {
       flex: 1 1 20%;
 
@@ -62,7 +62,7 @@ await fetchData();
     }
   }
 
-  @include mb() {
+  @include mixins.mb() {
     .item {
       flex: 1 1 40%;
 

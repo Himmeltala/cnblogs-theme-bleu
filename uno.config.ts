@@ -29,10 +29,10 @@ export default defineConfig({
       c: "var(--text-c)",
       d: "var(--text-d)",
       primary: "var(--text-primary)",
-      b1: "var(--l-bg-1)",
-      b2: "var(--l-bg-2)",
-      b3: "var(--l-bg-3)",
-      b4: "var(--l-bg-4)"
+      b1: "var(--bg-1)",
+      b2: "var(--bg-2)",
+      b3: "var(--bg-3)",
+      b4: "var(--bg-4)"
     }
   },
   preflights: [

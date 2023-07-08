@@ -89,13 +89,13 @@ function cancel() {
 </template>
 
 <style scoped lang="scss">
-@include pc() {
+@include mixins.pc() {
   .edit-item {
     --uno: w-8%;
   }
 }
 
-@include mb() {
+@include mixins.mb() {
   .edit-item {
     --uno: w-18%;
   }

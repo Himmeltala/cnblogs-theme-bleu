@@ -121,7 +121,7 @@ onUnmounted(() => observer.disconnect());
 
 <style lang="scss">
 .catalog-active {
-  color: var(--l-hight-color-1);
+  color: var(--hight-color-1);
 }
 </style>
 
@@ -155,12 +155,12 @@ onUnmounted(() => observer.disconnect());
   }
 }
 
-@include pc() {
+@include mixins.pc() {
   $left: calc(55vw * 1.45);
   @include catalog-mixin($left);
 }
 
-@include mb() {
+@include mixins.mb() {
   $left: 50vw;
   @include catalog-mixin($left);
 }

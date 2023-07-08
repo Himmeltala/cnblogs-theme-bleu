@@ -144,7 +144,7 @@ defineProps({
   backdrop-filter: blur(6px);
 }
 
-@include pc() {
+@include mixins.pc() {
   .item {
     &:hover {
       img {
@@ -160,7 +160,7 @@ defineProps({
   }
 }
 
-@include mb() {
+@include mixins.mb() {
   .item {
     img {
       --uno: rd-2;

@@ -1,0 +1,264 @@
+@use "../common/mixins";
+
+/**
+ * markdown 样式
+ *
+ * @author Himmelbleu
+ * @date 2023 年 6 月 11 日
+ */
+.markdown-textual {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 800 !important;
+  }
+
+  h1 {
+    font-size: 1.2rem !important;
+    color: #f0f0f0;
+    position: relative;
+    display: inline-block;
+    background: var(--text-primary);
+    padding: 0.3rem 1.5rem 0.1rem 1rem;
+    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0.5rem;
+    box-shadow: 6px 3px 0 0 rgba(160, 160, 160, 0.2);
+
+    &::before {
+      content: " ";
+      display: inline-block;
+    }
+
+    @include mixins.mb() {
+      &::after {
+        content: " ";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: calc(100vw - 2rem);
+        border-bottom: 2px solid var(--text-primary);
+      }
+    }
+
+    @include mixins.pc() {
+      &::after {
+        content: " ";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: 55vw;
+        border-bottom: 2px solid var(--text-primary);
+      }
+    }
+  }
+
+  h2 {
+    position: relative;
+    padding-left: 1rem;
+    font-size: 1.1rem !important;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: inline-block;
+      width: 0.5rem;
+      height: 100%;
+      border-top-right-radius: 0.5rem;
+      border-bottom-left-radius: 0.5rem;
+      background-color: var(--text-primary);
+    }
+  }
+
+  h3 {
+    font-size: 1.2rem !important;
+  }
+
+  h4 {
+    font-size: 1.1rem !important;
+  }
+
+  h5 {
+    font-size: 1rem !important;
+  }
+
+  h6 {
+    font-size: 1rem !important;
+  }
+
+  blockquote {
+    background-color: var(--bg-1);
+    color: var(--text-b);
+    margin: 0;
+    border-left-width: 0.3rem;
+    border-left-color: var(--text-primary);
+    border-left-style: solid;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+
+    p {
+      margin: 0 !important;
+      padding-left: 1rem;
+    }
+  }
+
+  u {
+    text-decoration: none;
+    padding-bottom: 1px;
+    border-bottom: 1px dotted var(--text-a);
+  }
+
+  code {
+    margin: 0;
+    color: #d44a4a;
+  }
+
+  p,
+  .bleu-tip,
+  .bleu-war {
+    margin: 1.5rem 0;
+
+    a {
+      --uno: hover b-b-a b-b-1 b-b-dotted text-a;
+      padding-bottom: 2px;
+
+      &::before {
+        content: "🔗";
+        display: inline-block;
+        margin-right: 0.2rem;
+      }
+    }
+  }
+
+  img {
+    cursor: zoom-in;
+    max-width: 100%;
+  }
+
+  ol,
+  ul {
+    padding-left: 4rem;
+
+    li {
+      position: relative;
+      list-style-type: none;
+      counter-increment: step-counter;
+      margin-bottom: 0.5rem;
+
+      &::before {
+        content: counter(step-counter);
+        border-radius: 0.5rem;
+        height: 1.5rem;
+        width: 1.5rem;
+        position: absolute;
+        top: 0;
+        left: -2.5rem;
+        --uno: f-c-c text-0.8rem;
+        color: var(--text-a);
+        background: var(--bg-2);
+      }
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  table {
+    th {
+      font-weight: 600;
+    }
+
+    th,
+    td {
+      padding: 0.7rem 1.5rem;
+      border: 1px dotted #464646;
+      border-radius: 0.5rem;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+.bleu-pre {
+  --uno: rd-2;
+  margin: 1.5rem 0;
+  background: var(--bg-3);
+
+  pre {
+    margin: 0;
+    padding: 0 1.2rem 1.5rem 1.2rem;
+  }
+
+  .tools {
+    .left {
+      --uno: b-b-c b-b-1 b-b-solid text-a;
+      padding: 0.5rem 1.2rem 0.5rem 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .right {
+      border-top-right-radius: 0.5rem;
+      border-top-left-radius: 0.5rem;
+      margin-top: 0.5rem;
+      background-color: var(--bg-2);
+      padding: 0.5rem 1.2rem 0.5rem 1.2rem;
+    }
+  }
+}
+
+.bleu-img {
+  margin: 1.5rem 0;
+}
+
+.bleu-war,
+.bleu-tip {
+  --uno: rd-2;
+  position: relative;
+  border-radius: 0.5rem;
+  padding: 1rem 1rem 1rem 1.5rem;
+}
+
+@mixin war-tip-before {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 0.3rem;
+    height: 100%;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    @content;
+  }
+}
+
+.bleu-war {
+  color: var(--hight-color-2);
+  background-color: var(--bg-war-1);
+
+  @include war-tip-before() {
+    background-color: var(--bg-war-2);
+  }
+}
+
+.bleu-tip {
+  color: var(--hight-color-2);
+  background-color: var(--bg-tip-1);
+
+  @include war-tip-before() {
+    background-color: var(--bg-tip-2);
+  }
+}
+
+a > code {
+  color: var(--text-primary) !important;
+}

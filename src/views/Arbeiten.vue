@@ -81,8 +81,8 @@ await fetchData(true);
 <template>
   <div id="l-arbeiten" class="page">
     <div class="content mt-4" v-if="!arbIsLock">
-      <div class="text-1.4rem w-100%">{{ arbeiten.text }}</div>
-      <div class="f-c-s lt-sm:flex-wrap mt-4 text-0.9rem">
+      <div class="text-1.4rem w-100% font-bold">{{ arbeiten.text }}</div>
+      <div class="f-c-s lt-sm:flex-wrap mt-4 text-0.9rem text-b">
         <div class="f-c-c mr-4">
           <div class="i-tabler-calendar-stats mr-2"></div>
           {{ arbeiten.date }}
@@ -142,10 +142,11 @@ await fetchData(true);
         </div>
       </div>
       <Markdown
-        :style-css="BleuVars.config.styleCss?.arbeiten || 'f-c-c'"
+        :unocss-img="BleuVars.config.unocss?.ab?.img || 'f-c-c'"
+        :unocss-text="BleuVars.config.unocss?.ab?.text || 'text-1rem'"
+        :fancy-group="'arbeiten'"
         :str-html="arbeiten.content"
-        v-model:real-html="realHtml"
-        :fancy-group="'arbeiten'" />
+        v-model:real-html="realHtml" />
       <Catalog :str-html="arbeiten.content" :real-html="realHtml" />
       <div class="bg-b3 text-0.9rem p-5 text-b mt-10">
         <div class="f-c-s flex-wrap">
@@ -171,7 +172,7 @@ await fetchData(true);
           >」许可协议进行许可。
         </div>
       </div>
-      <div class="mt-4 text-0.9rem text-b">
+      <div class="mt-4 text-0.9rem">
         <div class="f-s-s mb-2" v-if="arbPrevNext?.prev?.href">
           <router-link class="hover" :to="RouterPath.Arbeiten(arbPrevNext.prev.href)">
             上一篇：{{ arbPrevNext.prev.text }}

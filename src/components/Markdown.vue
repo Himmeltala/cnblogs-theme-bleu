@@ -15,9 +15,11 @@ const props = defineProps({
     type: HTMLElement,
     required: false
   },
-  styleCss: {
-    type: String,
-    required: false
+  unocssImg: {
+    type: String
+  },
+  unocssText: {
+    type: String
   },
   fancyGroup: {
     type: String,
@@ -32,40 +34,53 @@ const strHtmlRef = toRef(props, "strHtml");
 const markdown = ref("");
 
 function generateMarkdown() {
-  let mtcCode, mtcImg;
-  let str = props.strHtml;
-  let codeRegex = /<pre>[\s\S]*?<\/pre>/g;
-  let imgRegex = /<img[\s\S]*?>/g;
+  let mtcCode, mtcImg, mtcTip, mtcWar;
+  let regex1 = /<pre>[\s\S]*?<\/pre>/g;
+  let regex2 = /<img[\s\S]*?>/g;
+  let regex3 = /tip:\[start\]([\s\S]*?)tip:\[end\]/g;
+  let regex4 = /war:\[start\]([\s\S]*?)war:\[end\]/g;
 
-  while ((mtcCode = codeRegex.exec(str)) !== null) {
+  let step1 = props.strHtml;
+
+  while ((mtcCode = regex1.exec(step1)) !== null) {
     const r = refactorPreCode(mtcCode[0]);
-    str = str.replace(mtcCode[0], r);
+    step1 = step1.replace(mtcCode[0], r);
   }
 
-  let n = str;
-  let index = 0;
+  let step2 = step1;
 
-  while ((mtcImg = imgRegex.exec(str)) !== null) {
-    const r = refactorImg(mtcImg[0], index);
-    n = n.replace(mtcImg[0], r);
-    index++;
+  while ((mtcImg = regex2.exec(step1)) !== null) {
+    const r = refactorImg(mtcImg[0]);
+    step2 = step2.replace(mtcImg[0], r);
   }
 
-  return n;
+  let step3 = step2;
+  while ((mtcTip = regex3.exec(step2)) !== null) {
+    const r = refactorTip(mtcTip[1]);
+    step3 = step3.replace(mtcTip[0], r);
+  }
+
+  let step4 = step3;
+  while ((mtcWar = regex4.exec(step3)) !== null) {
+    const r = refactorWar(mtcWar[1]);
+    step4 = step4.replace(mtcWar[0], r);
+  }
+
+  return step4;
 }
 
-function refactorImg(str: string, index: number) {
+function refactorImg(str: string) {
   const mtSrc = str.match(/src="([^"]*)/);
   const mtAlt = str.match(/alt="([^"]*)"/);
 
   const late = `
-    <div class="bleu-img ${props.styleCss}">
+    <div class="bleu-img ${props.unocssImg}">
       <div>
         <a href="${mtSrc[1]}" data-fancybox="bleu-gallery-${props.fancyGroup}"
           data-download-src="${mtSrc[1]}" data-caption="${mtAlt ? mtAlt[1] : ""}">
           <img src="${mtSrc[1]}" class="rd-2" alt="${mtAlt ? mtAlt[1] : ""}" />
         </a>
-        <div class="bleu-caption f-c-c text-0.8rem text-b">${mtAlt ? mtAlt[1] : ""}</div>
+        <div class="f-c-c text-0.9rem text-b">${mtAlt ? mtAlt[1] : ""}</div>
       </div>
     </div>
   `;
@@ -73,64 +88,76 @@ function refactorImg(str: string, index: number) {
   return late;
 }
 
+function refactorTip(str: string) {
+  return `<div class="bleu-tip"><div class="mb-2 font-bold">💡提示</div><div>${str}</div></div>`;
+}
+
+function refactorWar(str: string) {
+  return `<div class="bleu-war"><div class="mb-2 font-bold">❗注意</div><div>${str}</div></div>`;
+}
+
 function refactorPreCode(str: string) {
-  const mtMark = str.match(/file:\[([\u4e00-\u9fffa-zA-Z0-9.\-_\s\/]+)\]/);
+  const mtMark = str.match(/file:\[([\u4e00-\u9fffa-zA-Z0-9\.\-_\s\/:\\]+)\]/);
   const mtAddLine = str.match(/add:\[(.*?)\]/);
   const mtDelLine = str.match(/del:\[(.*?)\]/);
 
   let addLineNum = 0,
-    delLineNum = 0,
-    addTemp,
-    delTemp;
+    delLineNum = 0;
+  let addTemp = "",
+    delTemp = "";
 
   if (mtAddLine || mtDelLine) {
+    const rootElement = document.documentElement;
+    const computedStyle = getComputedStyle(rootElement);
+    const fontSize = Number(computedStyle.fontSize.replace("px", ""));
+    const stepTop = (BleuVars.config.font.code.size || 0.8) * fontSize * 1.7;
     const len = str.split("\n");
 
-    if (mtAddLine) {
-      len.forEach((i, index) => {
-        const mtAdd = i.match(/add:\[(.*?)\]/);
-        if (mtAdd) {
-          addLineNum = index;
-        }
-      });
-      addTemp = `<div class="added-line bg-emerald absolute left-0 w-100% opacity-10" style="top: ${
-        addLineNum * 1.5
-      }rem; height: 1rem"></div>`;
-      str = str.replace(/add:\[(.*?)\]/g, `${mtAddLine[1]}`);
-    }
+    len.forEach((ele, index) => {
+      const mtAdd = ele.match(/add:\[(.*?)\]/);
+      const mtDel = ele.match(/del:\[(.*?)\]/);
 
-    if (mtDelLine) {
-      len.forEach((i, index) => {
-        const mtDel = i.match(/del:\[(.*?)\]/);
-        if (mtDel) {
-          delLineNum = index;
-        }
-      });
-      delTemp = `<div class="deled-line bg-red absolute left-0 w-100% opacity-10" style="top: ${
-        delLineNum * 1.5
-      }rem; height: 1rem"></div>`;
-      str = str.replace(/del:\[(.*?)\]/g, `${mtDelLine[1]}`);
-    }
+      if (mtAdd) {
+        addLineNum = index;
+
+        addTemp += `<div class="added-line bg-emerald absolute left-0 w-100% opacity-10" style="top: ${
+          addLineNum * stepTop
+        }px; height: ${stepTop}px"></div>`;
+
+        str = str.replace(`add:[${mtAdd[1]}]`, `${mtAdd[1]}`);
+      }
+
+      if (mtDel) {
+        delLineNum = index;
+
+        delTemp += `<div class="deled-line bg-red absolute left-0 w-100% opacity-10" style="top: ${
+          delLineNum * stepTop
+        }px; height: ${stepTop}px"></div>`;
+
+        str = str.replace(`del:[${mtDel[1]}]`, `${mtDel[1]}`);
+      }
+    });
   }
 
   const mark = mtMark ? mtMark[1] : "";
   const lang = str.match(/<code class="language-([\d\w]+)"/)[1].toUpperCase();
 
   const late = `
-    <div class="tools ${mark ? "f-c-b" : "f-c-e"} f-c-b rd-2 text-0.8rem w-100%">
-      ${mark ? `<div class="right max-w-70% flow-auto white-nowrap scroll-none">${mark}</div>` : ""}
-      <div class="left w-30% f-c-e text-c">
-        <div class="language mr-2">${lang}</div>
-        <div class="clipboard hover">复制</div>
+      <div class="tools ${mark ? "f-c-b" : "f-c-e"} f-c-b rd-2 text-0.8rem w-100%">
+        <div class="left flow-auto white-nowrap scroll-none">${mark || lang + " Code"}</div>
+        <div class="right flex-auto f-c-e text-c">
+          <div class="language mr-2">${lang}</div>
+          <div class="clipboard hover">复制</div>
+        </div>
       </div>
-    </div>
-  `;
+      ${!mark ? `<div class="mb-6"></div>` : ""}
+    `;
 
-  if (mark) str = str.replace(/file:\[([\u4e00-\u9fffa-zA-Z0-9.\-_\s\/]+)\]/g, "");
+  if (mark) str = str.replace(/file:\[([\u4e00-\u9fffa-zA-Z0-9\.\-_\s\/:\\]+)\]/g, "");
 
   str = str.replace(
     "<pre>",
-    `<div class="bleu-pre">${late}<pre class="relative">${addTemp || ""}${delTemp || ""}`
+    `<div class="bleu-pre">${late}<pre class="relative">${addTemp}${delTemp}`
   );
 
   return str + "</div></pre>";
@@ -169,18 +196,21 @@ function renderMarkdown() {
       Toolbar: {
         display: {
           left: ["infobar"],
-          middle: ["zoomIn", "zoomOut", "toggle1to1", "rotateCCW", "rotateCW", "flipX", "flipY"],
+          middle: BleuVars.isPcDevice()
+            ? ["zoomIn", "zoomOut", "toggle1to1", "rotateCCW", "rotateCW", "flipX", "flipY"]
+            : [],
           right: ["slideshow", "thumbs", "close"]
         }
       },
       Hash: false
     };
 
-    if (!BleuVars.isPcDevice()) {
-      options["Toolbar"]["display"]["middle"] = [];
+    if (BleuVars.config?.fancybox) {
+      const merged = Object.assign({}, options, BleuVars.config.fancybox);
+      Fancybox.bind("[data-fancybox]", merged);
+    } else {
+      Fancybox.bind("[data-fancybox]", options);
     }
-
-    Fancybox.bind("[data-fancybox]", options);
 
     emits("update:realHtml", htmlInst.value);
   });
@@ -191,5 +221,5 @@ watch(strHtmlRef, renderMarkdown);
 </script>
 
 <template>
-  <div class="markdown-textual" ref="htmlInst" :style="styleCss" v-html="markdown"></div>
+  <div class="markdown-textual" :class="unocssText" ref="htmlInst" v-html="markdown"></div>
 </template>

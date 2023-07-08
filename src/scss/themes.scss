@@ -1,0 +1,17 @@
+@use "./common/variables";
+
+html.light {
+  $light-theme: map-get(variables.$themes, light);
+
+  @each $key, $value in $light-theme {
+    --#{$key}: #{$value};
+  }
+}
+
+html.dark {
+  $dark-theme: map-get(variables.$themes, dark);
+
+  @each $key, $value in $dark-theme {
+    --#{$key}: #{$value};
+  }
+}
