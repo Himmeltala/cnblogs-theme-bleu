@@ -13,24 +13,22 @@ const props = defineProps({
 });
 
 async function diggComment() {
-  const data = await CommentApi.vote({
+  const { isSuccess } = await CommentApi.vote({
     isAbandoned: false,
-    commentId: props.comment.commentId,
+    commentId: parseInt(props.comment.commentId),
     postId: parseInt(props.postId),
     voteType: "Digg"
   });
-  if (data.isSuccess) {
-    props.comment.digg = props.comment.digg! + 1;
-  }
+  isSuccess && props.comment.digg++;
 }
 </script>
 
 <template>
   <div
     v-show="!comment.isEditing && !comment.isAnsling"
-    class="hover f-c-c text-0.9rem text-b"
+    class="hover f-c-c text-0.8rem text-b"
     @click="diggComment">
     <div class="i-tabler-thumb-up mr-1"></div>
-    <div>支持{{ comment.digg }}</div>
+    <div>支持 {{ comment.digg }}</div>
   </div>
 </template>

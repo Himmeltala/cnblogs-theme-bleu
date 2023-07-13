@@ -66,7 +66,7 @@ watch(route, async () => {
             </template>
           </el-page-header>
           <div
-            class="mb-10 text-0.9rem text-c"
+            class="mb-5 text-0.9rem text-c"
             v-html="typeL1Arbeiten.desc2 || typeL1Arbeiten.desc"></div>
           <div class="mb-10 text-0.9rem" v-if="typeL2Arbeiten?.length">
             <div

@@ -22,14 +22,14 @@ const props = defineProps({
 
 async function confirmDeleteComment() {
   await CommentApi.del({
-    commentId: props.comment.commentId,
+    commentId: parseInt(props.comment.commentId),
     parentId: parseInt(props.postId)
   });
 }
 </script>
 
 <template>
-  <div class="text-b text-0.9rem" v-show="!comment.isEditing && !comment.isAnsling">
+  <div class="text-b text-0.8rem" v-show="!comment.isEditing && !comment.isAnsling">
     <el-popconfirm
       confirm-button-text="确定"
       cancel-button-text="取消"

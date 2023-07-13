@@ -25,7 +25,7 @@ watch(route, async () => {
 <template>
   <div id="l-arbeiten-by-mark" class="page">
     <div class="content" v-if="markWorks">
-      <el-page-header :icon="null" @back="$router.back()">
+      <el-page-header :icon="null" @back="$router.back()" class="mb-6">
         <template #title>
           <div class="f-c-c">
             <i-ep-back />

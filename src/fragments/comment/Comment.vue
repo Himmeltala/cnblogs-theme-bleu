@@ -79,7 +79,9 @@ await fetchData();
           </div>
         </div>
         <div class="mt-4 relative" style="margin-left: 4.5rem">
-          <textarea class="z--1 opacity-0 absolute top-0 left-0" :id="'upload-img-' + index" />
+          <textarea
+            class="z--1 opacity-0 absolute top-0 left-0"
+            :id="'upload-img-' + index"></textarea>
           <Markdown
             :unocss-img="BleuVars.config.unocss?.co?.img || 'f-c-s'"
             :unocss-text="BleuVars.config.unocss?.co?.text || 'text-0.9rem'"

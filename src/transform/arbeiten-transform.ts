@@ -75,25 +75,32 @@ export namespace ArbeitenTransform {
    * 解析随笔详细页面
    */
   export function toArbeiten(id: string, dom: Document): BleuArbeiten {
-    const text = dom.querySelector(".postTitle > a > span").innerText;
+    const text = dom.querySelector(".postTitle > a > span")?.innerText;
     const content = dom.getElementById("cnblogs_post_body");
-    const p = content.querySelectorAll("p:not(pre)");
-    let str = "";
 
-    for (let i = 0; i < p.length; i++) {
-      str += p[i].innerText.trim();
+    if (text && content) {
+      const p = content.querySelectorAll("p:not(pre)");
+      let str = "";
+
+      for (let i = 0; i < p.length; i++) {
+        str += p[i].innerText.trim();
+      }
+
+      return {
+        id,
+        text,
+        content: content.innerHTML,
+        date: dom.getElementById("post-date").innerText,
+        view: dom.getElementById("post_view_count").innerText,
+        comm: dom.getElementById("post_comment_count").innerText,
+        isLocked: !text && !content,
+        wordCount: Textual.calcChineseWords(str)
+      };
+    } else {
+      return {
+        isLocked: !text && !content
+      };
     }
-
-    return {
-      id,
-      text,
-      content: content.innerHTML,
-      date: dom.getElementById("post-date").innerText,
-      view: dom.getElementById("post_view_count").innerText,
-      comm: dom.getElementById("post_comment_count").innerText,
-      isLocked: !text && !content,
-      wordCount: Textual.calcChineseWords(str)
-    };
   }
 
   /**

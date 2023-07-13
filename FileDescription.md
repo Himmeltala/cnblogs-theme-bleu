@@ -1,19 +1,11 @@
-components：高可复用的组件。
-
-constants：常量。
-
-helpers：辅助函数，如辅助 vue-router、directive。
-
-hooks：自定义 hook，复用组件状态逻辑。
-
-scss：各种 scss 样式。
-
-transform：如解析 apis 获取的页面的数据。
-
-types：全局或局部的 ts 类型声明。
-
-utils：全局非组件状态逻辑，辅助业务开发。
-
-views：视图
-
-style.scss：不可复用的 scss，区别于 scss 中的文件。
+| 文件名     | 描述                                                                    |
+| :--------- | :---------------------------------------------------------------------- |
+| components | 高可复用的组件                                                          |
+| constants  | 各种常量，比如主题相关的常量、配置                                      |
+| helpers    | 辅助处理主题的业务函数，函数可以拆，与业务不强行绑定，如辅助 vue-router |
+| hooks      | 与组件的逻辑强相关，并且可能多处使用                                    |
+| scss       | 各个视图中的或全局的 scss 样式                                          |
+| transform  | 解析 apis 获取的页面的数据                                              |
+| types      | 全局的 ts 类型声明                                                      |
+| utils      | 非组件的逻辑或业务，处理的是主题相关的内容                              |
+| views      | 视图组件                                                                |

@@ -30,6 +30,9 @@ export namespace CommentTransform {
       const eleAvatar = eles[i].querySelector(`#comment_${anchorId}_avatar`);
       const avatar = eleAvatar ? eleAvatar.innerText.trim() : "";
 
+      const digg = eles[i].getElementsByClassName("comment_digg")[0].innerText.match(/[\d]+/)[0];
+      const bury = eles[i].getElementsByClassName("comment_burry")[0].innerText.match(/[\d]+/)[0];
+
       data.push({
         isEditing: false,
         isAnsling: false,
@@ -39,8 +42,8 @@ export namespace CommentTransform {
         layer: layer.innerText,
         date: eles[i].getElementsByClassName("comment_date")[0].innerText,
         content: eles[i].querySelector(`#comment_body_${anchorId}`).innerHTML,
-        digg: eles[i].getElementsByClassName("comment_digg")[0].innerText.trim(),
-        bury: eles[i].getElementsByClassName("comment_burry")[0].innerText.trim(),
+        digg: Number(digg),
+        bury: Number(bury),
         avatar
       });
     }

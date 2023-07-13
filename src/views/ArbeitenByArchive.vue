@@ -44,7 +44,7 @@ await fetchData();
     <div class="content" v-if="archiveList">
       <Pagination @change="fetchData" @next="fetchData" @prev="fetchData" :count="archiveList.page">
         <template #content>
-          <el-page-header :icon="null" @back="$router.back()">
+          <el-page-header :icon="null" @back="$router.back()" class="mb-6">
             <template #title>
               <div class="f-c-c">
                 <i-ep-back />

@@ -37,7 +37,7 @@ await fetchData();
 <template>
   <div class="l-arbeiten-by-calendar page">
     <div class="content" v-if="calendar">
-      <el-page-header class="mt-4 mb-15" :icon="null" @back="$router.back()">
+      <el-page-header class="mt-4 mb-10" :icon="null" @back="$router.back()">
         <template #title>
           <div class="f-c-c">
             <i-ep-back />

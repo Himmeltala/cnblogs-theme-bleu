@@ -37,14 +37,16 @@ await takeQueryToFetchData();
         @prev="fetchData"
         :count="arbeitenList?.page">
         <template #content>
-          <el-page-header :icon="null" @back="$router.back()">
+          <el-page-header :icon="null" @back="$router.back()" class="mb-6">
             <template #title>
               <div class="f-c-c">
                 <i-ep-back />
               </div>
             </template>
             <template #content>
-              <div class="text-1.2rem mb-5 mt-4">随笔列表</div>
+              <div class="text-1.2rem mb-5 mt-4">
+                <span class="shine-text">{{ BleuVars.getBlogApp() }}</span> 的随笔列表
+              </div>
             </template>
           </el-page-header>
           <ArbeitenItem

@@ -29,12 +29,12 @@ defineProps({
       <img class="w-100% h-100% object-cover" :src="item.surface || cover" />
       <div class="mask absolute bottom-0 left-0 w-100% h-15%"></div>
     </div>
-    <div class="w-52%">
-      <div class="text-ellipsis line-clamp-2 mb-6 text-1.3rem">
-        <router-link :to="RouterPath.Arbeiten(item.id)" class="hover">
-          {{ item.text }}
-        </router-link>
-      </div>
+    <div class="w-50%">
+      <router-link
+        class="text-ellipsis line-clamp-2 mb-6 text-1.3rem hover"
+        :to="RouterPath.Arbeiten(item.id)">
+        {{ item.text }}
+      </router-link>
       <div class="f-c-s mb-4 text-0.9rem text-b">
         <div class="mr-3 f-c-c">
           <i-ep-view class="mr-2" />
@@ -59,15 +59,15 @@ defineProps({
         </router-link>
       </div>
       <div class="mt-4 f-c-e">
+        <div>
+          <el-tag type="success" v-if="item.isTop" class="mr-2">置顶随笔</el-tag>
+          <el-tag type="danger" v-if="item.isOnlyMe" class="mr-2">自己可见</el-tag>
+          <el-tag type="warning" v-if="item.isLocked" class="mr-2">密码锁定</el-tag>
+        </div>
         <div class="text-0.9rem text-b f-c-c">
           <i-ep-clock class="mr-2" />
           {{ item.date }}
         </div>
-      </div>
-      <div v-show="item.isTop || item.isOnlyMe || item.isLocked" class="mt-4 text-c">
-        <HollowedBox v-if="item.isTop" class="mr-2">置顶随笔</HollowedBox>
-        <HollowedBox v-else-if="item.isOnlyMe" class="mr-2">自己可见</HollowedBox>
-        <HollowedBox v-else-if="item.isLocked" class="mr-2">密码锁定</HollowedBox>
       </div>
     </div>
     <div v-if="index % 2 === 0" class="w-45% h-100% flow-hidden relative">
@@ -77,19 +77,28 @@ defineProps({
     </div>
   </div>
   <div v-else class="item mb-15 h-20rem rd-2">
-    <div class="text-ellipsis line-clamp-2 mb-6 text-1.3rem">
-      <router-link :to="RouterPath.Arbeiten(item.id)" class="hover">
-        {{ item.text }}
-      </router-link>
-    </div>
+    <router-link
+      class="text-ellipsis line-clamp-2 mb-6 text-1.3rem hover"
+      :to="RouterPath.Arbeiten(item.id)">
+      {{ item.text }}
+    </router-link>
     <div class="f-c-b mb-4">
       <div v-if="index % 2 !== 0" class="w-45% h-100% relative">
         <div class="mask absolute top-0 left-0 w-100% h-15%"></div>
         <img class="w-100% h-8rem object-cover" :src="item.surface || cover" />
         <div class="mask absolute bottom-0 left-0 w-100% h-15%"></div>
       </div>
-      <div class="w-52% text-c text-ellipsis line-clamp-5">
-        {{ item.desc }}
+      <div class="w-52% text-c">
+        <div
+          class="text-ellipsis"
+          :class="item.isTop || item.isOnlyMe || item.isLocked ? 'line-clamp-2' : 'line-clamp-5'">
+          {{ item.desc }}
+        </div>
+        <div>
+          <el-tag type="success" v-if="item.isTop" class="mr-2 mt-2">置顶随笔</el-tag>
+          <el-tag type="danger" v-if="item.isOnlyMe" class="mr-2 mt-2">自己可见</el-tag>
+          <el-tag type="warning" v-if="item.isLocked" class="mr-2 mt-2">密码锁定</el-tag>
+        </div>
       </div>
       <div v-if="index % 2 === 0" class="w-45% h-100% relative">
         <div class="mask absolute top-0 left-0 w-100% h-15%"></div>
@@ -110,11 +119,6 @@ defineProps({
         <i-ep-star class="mr-2" />
         {{ item.digg }}
       </div>
-    </div>
-    <div v-if="item.isTop || item.isOnlyMe || item.isLocked" class="mt-4">
-      <HollowedBox v-if="item.isTop" class="mr-2">置顶随笔</HollowedBox>
-      <HollowedBox v-else-if="item.isOnlyMe" class="mr-2">自己可见</HollowedBox>
-      <HollowedBox v-else-if="item.isLocked" class="mr-2">密码锁定</HollowedBox>
     </div>
     <div class="f-c-b mt-6 text-0.9rem text-b">
       <div class="f-c-c hover">

@@ -37,8 +37,8 @@ type BleuComment = Partial<{
   layer: string;
   date: string;
   author: string;
-  digg: string;
-  bury: string;
+  digg: number;
+  bury: number;
   avatar: string;
   postId: string;
   content: string;
@@ -174,10 +174,8 @@ interface BleuConfig {
   icon?: string;
   avatar?: string;
   signature?: string;
+  status?: string;
   images: {
-    /**
-     * 背景的相关配置
-     */
     background?: {
       src?: string;
       size?: string;
@@ -185,63 +183,24 @@ interface BleuConfig {
       opacity?: number;
       position?: string;
     };
-    /**
-     * 随笔、文章列表封面
-     */
     arbeiten?: string[];
-    /**
-     * 首页的相关配置
-     */
     home?: {
-      /**
-       * 轮播图透明度
-       */
       opacity?: number;
-      /**
-       * 轮播图播放间隔
-       */
       interval?: number;
       carousel?: string[];
       disabled?: boolean;
     };
   };
-  /**
-   * 自定义 unocss，对作品和评论进行自定义
-   */
   unocss?: {
-    ab?: {
-      img?: string;
-      text?: string;
-    };
-    co?: {
-      img?: string;
-      text?: string;
-    };
+    ab?: { img?: string; text?: string };
+    co?: { img?: string; text?: string };
   };
-  /**
-   * fancybox 配置
-   */
   fancybox?: any;
-  /**
-   * 图表
-   */
   chart: {
     tech: any;
-    mark?: {
-      count?: number;
-    };
-    category?: {
-      count?: number;
-      areaStyle?: any;
-      lineStyle?: any;
-    };
+    category?: any;
   };
-  theme?: {
-    color?: string;
-  };
-  /**
-   * 字体
-   */
+  theme?: { color?: string };
   font?: {
     main?: { name?: string };
     code?: { name?: string; size?: number };

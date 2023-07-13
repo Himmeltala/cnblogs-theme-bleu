@@ -60,7 +60,7 @@ onMounted(() => {
   usePieChart(
     pie1Inst.value,
     markList.value.map((i, index) => {
-      if (index <= (BleuVars.config.chart.mark?.count || 10)) {
+      if (index <= 10) {
         return { value: i.count, name: i.text };
       }
     }),
@@ -72,7 +72,7 @@ onMounted(() => {
   usePieChart(
     pie2Inst.value,
     column.value.essaySort.map((i, index) => {
-      if (index <= (BleuVars.config.chart.category?.count || 10)) {
+      if (index <= 10) {
         return { value: i.count, name: i.text };
       }
     }),
@@ -85,8 +85,7 @@ onMounted(() => {
     lineInst.value,
     column.value.essayArchive.map(i => i.id),
     column.value.essayArchive.map(i => i.count),
-    BleuVars.config.chart?.category?.areaStyle || {},
-    BleuVars.config.chart?.category?.lineStyle || {},
+    BleuVars.config.chart.category,
     openLineChartCount
   );
 
@@ -187,47 +186,55 @@ await fetchData();
         <div class="i-tabler-brand-github hover mb-4 text-1.2rem text-a"></div>
       </div>
     </div>
+    <!-- pc -->
     <div class="lg:f-s-b">
       <div class="lg:w-49% lg:h-100vh py-4" v-if="list?.data">
         <div class="h-100%" :class="{ 'f-c-b flex-col': list.data.length >= 4 }">
-          <div
-            class="lt-lg:mb-15 w-100%"
-            :class="{ 'mb-10': list.data.length < 4 }"
-            v-for="item in list.data">
-            <div class="f-c-s text-b text-0.9rem mb-2">
-              <div class="i-tabler-clock-hour3 mr-2"></div>
-              {{ item.date }}
-            </div>
-            <div class="text-ellipsis lg:line-clamp-2 mb-2">
-              <router-link class="hover" :to="RouterPath.Arbeiten(item.id)">
-                {{ item.text }}
-              </router-link>
-            </div>
-            <div class="text-ellipsis lg:line-clamp-1 lt-lg:line-clamp-3 text-0.9rem text-b ml-10">
-              {{ item.desc }}
-            </div>
-            <div class="f-c-e" text="0.8rem c" m="t-5">
-              <div class="mr-2 text-b">
+          <template v-for="item in list.data">
+            <div
+              v-if="!item.isTop"
+              class="lt-lg:mb-15 w-100%"
+              :class="{ 'mb-10': list.data.length < 4 }">
+              <div class="f-c-s text-b text-0.9rem mb-2">
+                <div class="i-tabler-clock-hour3 mr-2"></div>
+                {{ item.date }}
+              </div>
+              <div class="text-ellipsis lg:line-clamp-2 mb-2">
                 <router-link class="hover" :to="RouterPath.Arbeiten(item.id)">
-                  阅读全文
+                  {{ item.text }}
                 </router-link>
               </div>
-              <div class="f-c-e">
-                <div class="f-c-c mr-2">
-                  <div class="i-tabler-message2 mr-1"></div>
-                  {{ item.comm }}
+              <div
+                class="text-ellipsis lg:line-clamp-1 lt-lg:line-clamp-3 text-0.9rem text-b ml-10">
+                {{ item.desc }}
+              </div>
+              <div class="f-c-e text-0.8rem mt-5">
+                <div class="mr-2 text-b">
+                  <router-link class="hover" :to="RouterPath.Arbeiten(item.id)">
+                    阅读全文
+                  </router-link>
                 </div>
-                <div class="f-c-c mr-2">
-                  <div class="i-tabler-brand-tinder mr-1"></div>
-                  {{ item.digg }}
-                </div>
-                <div class="f-c-c">
-                  <div class="i-tabler-eye mr-1"></div>
-                  {{ item.view }}
+                <div class="f-c-e">
+                  <div class="f-c-c mr-2">
+                    <div class="i-tabler-message2 mr-1"></div>
+                    {{ item.comm }}
+                  </div>
+                  <div class="f-c-c mr-2">
+                    <div class="i-tabler-brand-tinder mr-1"></div>
+                    {{ item.digg }}
+                  </div>
+                  <div class="f-c-c">
+                    <div class="i-tabler-eye mr-1"></div>
+                    {{ item.view }}
+                  </div>
                 </div>
               </div>
+              <div class="f-c-s">
+                <el-tag type="danger" v-if="item.isOnlyMe" class="mr-2">自己可见</el-tag>
+                <el-tag type="warning" v-if="item.isLocked" class="mr-2">密码锁定</el-tag>
+              </div>
             </div>
-          </div>
+          </template>
           <div class="f-c-e w-100%">
             <el-button bg text type="primary" @click="$router.push(RouterPath.ArbeitenList('1'))">
               More
@@ -235,6 +242,7 @@ await fetchData();
           </div>
         </div>
       </div>
+      <!-- open carousel -->
       <div
         v-if="
           !BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel?.length
@@ -250,6 +258,7 @@ await fetchData();
           class="w-100% h-100% transition-all-800 absolute top-0 left-0 object-cover"
           :src="item" />
       </div>
+      <!-- close carousel -->
       <div
         v-else
         class="lg:w-49% lg:ml-10 lg:h-100vh"
@@ -260,9 +269,13 @@ await fetchData();
             博客信息
           </div>
           <div class="f-c-s h-30 mb-5 text-1rem text-b">
-            <img
-              class="w-25 h-25 rd-50% lt-lg:mr-8 lg:mr-10 object-cover"
-              :src="BleuVars.config.avatar" />
+            <div class="relative lt-lg:mr-8 lg:mr-10">
+              <img class="w-25 h-25 rd-50% object-cover" :src="BleuVars.config.avatar" />
+              <div
+                class="absolute bottom-0 right-0 f-c-c w-8 h-8 dark:bg-#323232 light:bg-#f2f2f2 rd-50%">
+                {{ BleuVars.config.status || "🐟" }}
+              </div>
+            </div>
             <div class="f-s-b flex-col py-4 h-100%">
               <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
                 <div
@@ -308,15 +321,19 @@ await fetchData();
               </div>
             </div>
             <div v-if="status?.length" class="text-0.9rem">
-              <div class="f-c-s">
+              <div class="f-c-s hover" @click="Navigation.go('https://i.cnblogs.com/posts')">
                 <div class="i-tabler-pencil-minus mr-2"></div>
                 发表的随笔：{{ status[0].digg }}
               </div>
-              <div class="f-c-s mt-5">
+              <div
+                class="f-c-s hover mt-5"
+                @click="Navigation.go('https://i.cnblogs.com/articles')">
                 <div class="i-tabler-books mr-2"></div>
                 发表的文章：{{ status[1].digg }}
               </div>
-              <div class="f-c-s mt-5">
+              <div
+                class="f-c-s hover mt-5"
+                @click="Navigation.go('https://i.cnblogs.com/comments')">
                 <div class="i-tabler-message-circle mr-2"></div>
                 拥有的评论：{{ status[2].digg }}
               </div>
@@ -338,6 +355,7 @@ await fetchData();
         </div>
       </div>
     </div>
+    <!-- mb -->
     <div
       v-if="
         !BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel?.length
@@ -349,9 +367,13 @@ await fetchData();
           博客信息
         </div>
         <div class="f-c-s h-30 mb-5 text-1rem text-b">
-          <img
-            class="w-25 h-25 rd-50% lt-lg:mr-8 lg:mr-10 object-cover"
-            :src="BleuVars.config.avatar || ''" />
+          <div class="relative lt-lg:mr-8 lg:mr-10">
+            <img class="w-25 h-25 rd-50% object-cover" :src="BleuVars.config.avatar" />
+            <div
+              class="absolute bottom-0 right-0 f-c-c w-8 h-8 dark:bg-#323232 light:bg-#f2f2f2 rd-50%">
+              {{ BleuVars.config.status || "🐟" }}
+            </div>
+          </div>
           <div class="f-s-b flex-col py-4 h-100%">
             <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
               <div

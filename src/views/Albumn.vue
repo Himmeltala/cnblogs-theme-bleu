@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { DatumApi } from "@/apis";
+import { useFancybox } from "@/hooks/use-fancybox";
 
 const route = useRoute();
 const albumn = shallowRef<BleuAlbumn>();
@@ -10,6 +11,7 @@ async function fetchData() {
   loading.startLoading();
   albumn.value = await DatumApi.getAlbumn(route.params.id as string);
   srcList.value = albumn.value.data.map((i: any) => i.src);
+  useFancybox();
   loading.endLoading();
 }
 
@@ -37,23 +39,13 @@ await fetchData();
       </el-page-header>
       <div class="mb-4 text-0.9rem text-b">{{ albumn.desc }}</div>
       <div class="f-c-b flex-wrap">
-        <el-image
-          class="mb-4 mr-4"
-          v-for="(item, index) in srcList"
-          :src="item"
-          :initial-index="index"
-          :preview-src-list="srcList" />
-        <el-result
-          v-if="!albumn.data.length"
-          icon="error"
-          title="相册加载失败"
-          sub-title="相册可能被移除">
-          <template #extra>
-            <el-button @click="$router.push(RouterPath.BleuHome())" type="primary">
-              返回首页
-            </el-button>
-          </template>
-        </el-result>
+        <a
+          v-for="item in srcList"
+          :href="item"
+          data-fancybox="bleu-albumn"
+          :data-download-src="item">
+          <img class="mb-4 max-w-100%" :src="item" />
+        </a>
       </div>
     </div>
   </div>

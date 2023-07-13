@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import hljs from "highlight.js";
-import { Fancybox } from "@fancyapps/ui";
+import { useFancybox } from "@/hooks/use-fancybox";
 
 hljs.configure({
   ignoreUnescapedHTML: true
@@ -34,21 +34,20 @@ const strHtmlRef = toRef(props, "strHtml");
 const markdown = ref("");
 
 function generateMarkdown() {
-  let mtcCode, mtcImg, mtcTip, mtcWar;
+  let mtcCode, mtcImg, mtcTip, mtcWar, mtPot;
   let regex1 = /<pre>[\s\S]*?<\/pre>/g;
   let regex2 = /<img[\s\S]*?>/g;
   let regex3 = /tip:\[start\]([\s\S]*?)tip:\[end\]/g;
   let regex4 = /war:\[start\]([\s\S]*?)war:\[end\]/g;
+  let regex5 = /<pot>([\s\S]*?)<\/pot>/g;
 
   let step1 = props.strHtml;
-
   while ((mtcCode = regex1.exec(step1)) !== null) {
     const r = refactorPreCode(mtcCode[0]);
     step1 = step1.replace(mtcCode[0], r);
   }
 
   let step2 = step1;
-
   while ((mtcImg = regex2.exec(step1)) !== null) {
     const r = refactorImg(mtcImg[0]);
     step2 = step2.replace(mtcImg[0], r);
@@ -66,14 +65,20 @@ function generateMarkdown() {
     step4 = step4.replace(mtcWar[0], r);
   }
 
-  return step4;
+  let step5 = step4;
+  while ((mtPot = regex5.exec(step4)) !== null) {
+    const r = rfactorPorter(mtPot[1]);
+    step5 = step5.replace(mtPot[0], r);
+  }
+
+  return step5;
 }
 
 function refactorImg(str: string) {
   const mtSrc = str.match(/src="([^"]*)/);
   const mtAlt = str.match(/alt="([^"]*)"/);
 
-  const late = `
+  const content = `
     <div class="bleu-img ${props.unocssImg}">
       <div>
         <a href="${mtSrc[1]}" data-fancybox="bleu-gallery-${props.fancyGroup}"
@@ -85,7 +90,7 @@ function refactorImg(str: string) {
     </div>
   `;
 
-  return late;
+  return content;
 }
 
 function refactorTip(str: string) {
@@ -96,8 +101,33 @@ function refactorWar(str: string) {
   return `<div class="bleu-war"><div class="mb-2 font-bold">❗注意</div><div>${str}</div></div>`;
 }
 
+function rfactorPorter(str: string) {
+  const linkMatch = str.match(/link:\((.*?)\)/);
+  const titleMatch = str.match(/title:\((.*?)\)/);
+  const coverMatch = str.match(/cover:\((.*?)\)/);
+
+  const link = linkMatch ? linkMatch[1].trim() : "";
+  const title = titleMatch ? titleMatch[1].trim() : "";
+  const cover = coverMatch ? coverMatch[1].trim() : "";
+
+  return `
+  <div class="bleu-porter f-c-c">
+    <div class="hover-porter lg:w-50% transition-all-500 dark:bg-#232323 light:bg-#f2f2f2 rd-2 px-5 py-5">
+      <a href="${link}" target="_blank">
+        <div class="f-c-b">
+          <img class="w-15 h-15 rd-50% object-cover" src="${cover}" />
+          <div class="w-80%">
+            <div class="font-bold text-ellipsis line-clamp-1">${title}</div>
+            <div class="text-c text-ellipsis line-clamp-1">${link}</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>`;
+}
+
 const size = Number(getComputedStyle(document.documentElement).fontSize.replace("px", ""));
-const step = (BleuVars.config.font.code.size || 0.8) * size * 1.7;
+const step = (BleuVars.config.font?.code?.size || 0.8) * size * 1.7;
 
 function refactorPreCode(str: string) {
   const mtMark = str.match(/file:\[([\s\S]*?)\]/);
@@ -111,17 +141,23 @@ function refactorPreCode(str: string) {
     const mtDel = ele.match(/del:\[([\s\S]*)\]/);
 
     if (mtAdd) {
-      addTemp += `<div class="added-line bg-emerald absolute left-0 w-100% opacity-10" style="top: ${
+      addTemp += `<div class="added-line absolute left-0 w-100%" style="top: ${
         index * step
-      }px; height: ${step}px"></div>`;
+      }px; height: ${step}px">
+        <div class="bg-emerald opacity-10 absolute left-0 top-0 w-100% h-100%"></div>
+        <div class="absolute left-0 top-0 w-100% h-100% text-c f-c-s">＋</div>
+      </div>`;
 
       str = str.replace(`add:[${mtAdd[1]}]`, `${mtAdd[1]}`);
     }
 
     if (mtDel) {
-      delTemp += `<div class="deled-line bg-red absolute left-0 w-100% opacity-10" style="top: ${
+      delTemp += `<div class="added-line absolute left-0 w-100%" style="top: ${
         index * step
-      }px; height: ${step}px"></div>`;
+      }px; height: ${step}px">
+        <div class="bg-red opacity-10 absolute left-0 top-0 w-100% h-100%"></div>
+        <div class="absolute left-0 top-0 w-100% h-100% text-c f-c-s">－</div>
+      </div>`;
 
       str = str.replace(`del:[${mtDel[1]}]`, `${mtDel[1]}`);
     }
@@ -130,7 +166,7 @@ function refactorPreCode(str: string) {
   const label = mtMark ? mtMark[1] : "";
   const lang = str.match(/<code class="language-([\d\w]+)"/)[1].toUpperCase();
 
-  const late = `
+  const content = `
       <div class="tools ${label ? "f-c-b" : "f-c-e"} f-c-b rd-2 text-0.8rem w-100%">
         <div class="left flow-auto white-nowrap scroll-none">${label || lang + " code"}</div>
         <div class="right flex-auto f-c-e text-c">
@@ -145,7 +181,7 @@ function refactorPreCode(str: string) {
 
   str = str.replace(
     "<pre>",
-    `<div class="bleu-pre">${late}<pre class="relative">${addTemp}${delTemp}`
+    `<div class="bleu-pre">${content}<pre class="relative">${addTemp}${delTemp}`
   );
 
   return str + "</div></pre>";
@@ -180,25 +216,7 @@ function renderMarkdown() {
         .catch(console.error);
     }
 
-    let options = {
-      Toolbar: {
-        display: {
-          left: ["infobar"],
-          middle: BleuVars.isPcDevice()
-            ? ["zoomIn", "zoomOut", "toggle1to1", "rotateCCW", "rotateCW", "flipX", "flipY"]
-            : [],
-          right: ["slideshow", "thumbs", "close"]
-        }
-      },
-      Hash: false
-    };
-
-    if (BleuVars.config?.fancybox) {
-      const merged = Object.assign({}, options, BleuVars.config.fancybox);
-      Fancybox.bind("[data-fancybox]", merged);
-    } else {
-      Fancybox.bind("[data-fancybox]", options);
-    }
+    useFancybox();
 
     emits("update:realHtml", htmlInst.value);
   });

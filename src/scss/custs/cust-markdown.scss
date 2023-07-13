@@ -109,8 +109,8 @@
 
   u {
     text-decoration: none;
-    padding-bottom: 1px;
-    border-bottom: 1px dotted var(--text-a);
+    padding-bottom: 2px;
+    --uno: b-b-a b-b-1 b-b-solid;
   }
 
   code {
@@ -124,14 +124,8 @@
     margin: 1.5rem 0;
 
     a {
-      --uno: hover b-b-a b-b-1 b-b-dotted text-a;
+      --uno: hover b-b-a b-b-1 b-b-dotted text-a hover:b-b-primary;
       padding-bottom: 2px;
-
-      &::before {
-        content: "🔗";
-        display: inline-block;
-        margin-right: 0.2rem;
-      }
     }
   }
 
@@ -140,9 +134,45 @@
     max-width: 100%;
   }
 
-  ol,
-  ul {
+  ul,
+  ol {
     padding-left: 4rem;
+  }
+
+  ul {
+    li {
+      position: relative;
+      list-style-type: none;
+      margin-bottom: 0.5rem;
+
+      &::before {
+        content: "";
+        border-radius: 0.5rem;
+        height: 0.7rem;
+        width: 1.7rem;
+        position: absolute;
+        top: 0.5rem;
+        left: -2.5rem;
+        --uno: f-c-c text-0.8rem dark:bg-#3e3e3e light:bg-#e8e8e8;
+      }
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ol {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 2.3rem;
+      top: 0;
+      height: 100%;
+      --uno: hover b-b-a b-l-1 b-l-dotted text-a;
+    }
 
     li {
       position: relative;
@@ -153,14 +183,12 @@
       &::before {
         content: counter(step-counter);
         border-radius: 0.5rem;
-        height: 1.5rem;
-        width: 1.5rem;
+        height: 1.7rem;
+        width: 1.7rem;
         position: absolute;
         top: 0;
         left: -2.5rem;
-        --uno: f-c-c text-0.8rem;
-        color: var(--text-a);
-        background: var(--bg-2);
+        --uno: f-c-c text-0.8rem text-a dark:bg-#313131 light:bg-#e0e0e0;
       }
     }
 
@@ -200,7 +228,7 @@
   .tools {
     .left {
       --uno: b-b-c b-b-1 b-b-solid text-a;
-      padding: 0.5rem 1.2rem 0.5rem 1.2rem;
+      padding: 0.5rem 1.2rem 0.4rem 1.2rem;
       margin-top: 0.5rem;
     }
 
@@ -256,6 +284,12 @@
 
   @include war-tip-before() {
     background-color: var(--bg-tip-2);
+  }
+}
+
+.bleu-porter {
+  .hover-porter:hover {
+    box-shadow: 0 4px 8px 0px rgba(0,0,0,0.1), 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
   }
 }
 

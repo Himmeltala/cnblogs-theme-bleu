@@ -183,6 +183,18 @@ pnpm run build
 
 # 主题特性
 
+## 传送门
+
+区别于普通的文字链接，传送门居中，是一个卡片的链接，可以展示封面、标题和链接。
+
+在 markdown 中，我们这样写：
+
+![](./docs/image-11.png)
+
+打开随笔，查看效果：
+
+![](./docs/image-12.png)
+
 ## 提示块
 
 提示块可以让我们写下一些提示，这块内容会被绿色背景包裹，按照以下格式：
@@ -290,6 +302,19 @@ window.__BLEU_CONFIG__ = {
 };
 ```
 
+## status
+
+- 类型：string
+- 是否必填：否
+
+插入一个 emoji 表情，表示自己的状态，例如：🐟 表示自己在摸鱼中。
+
+```js
+window.__BLEU_CONFIG__ = {
+  status: "🐟"
+};
+```
+
 ## avatar
 
 - 类型：string
@@ -384,6 +409,9 @@ window.__BLEU_CONFIG__ = {
           areaStyle: {},
           // 线条颜色
           lineStyle: {},
+          itemStyle: {
+            color: "rgba(255, 0, 0, 0.7)" // 设置点的颜色，这里是红色，透明度为 0.7
+          },
           // 图表类型
           type: "radar",
           // 数据，与 indicator 的数量保持一致
@@ -400,7 +428,7 @@ window.__BLEU_CONFIG__ = {
 };
 ```
 
-查看官方文档说明：[areaStyle](https://echarts.apache.org/zh/option.html#series-radar.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-radar.lineStyle)。
+查看官方文档说明：[areaStyle](https://echarts.apache.org/zh/option.html#series-radar.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-radar.lineStyle)、[itemStyle](https://echarts.apache.org/zh/option.html#legend.itemStyle)。
 
 （2）随笔归档折线图
 
@@ -411,9 +439,11 @@ window.__BLEU_CONFIG__ = {
   chart: {
     // 随笔分类饼状图统计前 count 个，可以不填，默认 10 个
     category: {
-      count: 10,
       areaStyle: {},
-      lineStyle: {}
+      lineStyle: {},
+      itemStyle: {
+        color: "rgba(255, 0, 0, 0.7)" // 设置点的颜色，这里是红色，透明度为 0.7
+      }
     }
   }
 };

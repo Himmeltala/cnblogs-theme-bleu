@@ -68,9 +68,8 @@ export function usePieChart(
 export function useLineChart(
   dom: HTMLElement,
   xAxis: string[],
-  seriesData: number | string[],
-  areaStyle?: any,
-  lineStyle?: any,
+  data: number | string[],
+  series?: any,
   flag?: Ref<number>
 ) {
   const options = {
@@ -93,13 +92,15 @@ export function useLineChart(
     series: [
       {
         name: "篇数",
-        data: seriesData,
-        type: "line",
-        areaStyle,
-        lineStyle
+        data: data,
+        type: "line"
       }
     ]
   };
+
+  if (series) {
+    options.series[0] = Object.assign({}, options.series[0], series);
+  }
 
   delayRendering(dom, options, flag);
 }
