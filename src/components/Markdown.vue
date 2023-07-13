@@ -96,64 +96,52 @@ function refactorWar(str: string) {
   return `<div class="bleu-war"><div class="mb-2 font-bold">❗注意</div><div>${str}</div></div>`;
 }
 
-function refactorPreCode(str: string) {
-  const mtMark = str.match(/file:\[([\u4e00-\u9fffa-zA-Z0-9\.\-_\s\/:\\]+)\]/);
-  const mtAddLine = str.match(/add:\[(.*?)\]/);
-  const mtDelLine = str.match(/del:\[(.*?)\]/);
+const size = Number(getComputedStyle(document.documentElement).fontSize.replace("px", ""));
+const step = (BleuVars.config.font.code.size || 0.8) * size * 1.7;
 
-  let addLineNum = 0,
-    delLineNum = 0;
+function refactorPreCode(str: string) {
+  const mtMark = str.match(/file:\[([\s\S]*?)\]/);
+  const lines = str.split("\n");
+
   let addTemp = "",
     delTemp = "";
 
-  if (mtAddLine || mtDelLine) {
-    const rootElement = document.documentElement;
-    const computedStyle = getComputedStyle(rootElement);
-    const fontSize = Number(computedStyle.fontSize.replace("px", ""));
-    const stepTop = (BleuVars.config.font.code.size || 0.8) * fontSize * 1.7;
-    const len = str.split("\n");
+  lines.forEach((ele, index) => {
+    const mtAdd = ele.match(/add:\[([\s\S]*)\]/);
+    const mtDel = ele.match(/del:\[([\s\S]*)\]/);
 
-    len.forEach((ele, index) => {
-      const mtAdd = ele.match(/add:\[(.*?)\]/);
-      const mtDel = ele.match(/del:\[(.*?)\]/);
+    if (mtAdd) {
+      addTemp += `<div class="added-line bg-emerald absolute left-0 w-100% opacity-10" style="top: ${
+        index * step
+      }px; height: ${step}px"></div>`;
 
-      if (mtAdd) {
-        addLineNum = index;
+      str = str.replace(`add:[${mtAdd[1]}]`, `${mtAdd[1]}`);
+    }
 
-        addTemp += `<div class="added-line bg-emerald absolute left-0 w-100% opacity-10" style="top: ${
-          addLineNum * stepTop
-        }px; height: ${stepTop}px"></div>`;
+    if (mtDel) {
+      delTemp += `<div class="deled-line bg-red absolute left-0 w-100% opacity-10" style="top: ${
+        index * step
+      }px; height: ${step}px"></div>`;
 
-        str = str.replace(`add:[${mtAdd[1]}]`, `${mtAdd[1]}`);
-      }
+      str = str.replace(`del:[${mtDel[1]}]`, `${mtDel[1]}`);
+    }
+  });
 
-      if (mtDel) {
-        delLineNum = index;
-
-        delTemp += `<div class="deled-line bg-red absolute left-0 w-100% opacity-10" style="top: ${
-          delLineNum * stepTop
-        }px; height: ${stepTop}px"></div>`;
-
-        str = str.replace(`del:[${mtDel[1]}]`, `${mtDel[1]}`);
-      }
-    });
-  }
-
-  const mark = mtMark ? mtMark[1] : "";
+  const label = mtMark ? mtMark[1] : "";
   const lang = str.match(/<code class="language-([\d\w]+)"/)[1].toUpperCase();
 
   const late = `
-      <div class="tools ${mark ? "f-c-b" : "f-c-e"} f-c-b rd-2 text-0.8rem w-100%">
-        <div class="left flow-auto white-nowrap scroll-none">${mark || lang + " Code"}</div>
+      <div class="tools ${label ? "f-c-b" : "f-c-e"} f-c-b rd-2 text-0.8rem w-100%">
+        <div class="left flow-auto white-nowrap scroll-none">${label || lang + " code"}</div>
         <div class="right flex-auto f-c-e text-c">
           <div class="language mr-2">${lang}</div>
           <div class="clipboard hover">复制</div>
         </div>
       </div>
-      ${!mark ? `<div class="mb-6"></div>` : ""}
+      ${!label ? `<div class="mb-6"></div>` : ""}
     `;
 
-  if (mark) str = str.replace(/file:\[([\u4e00-\u9fffa-zA-Z0-9\.\-_\s\/:\\]+)\]/g, "");
+  if (label) str = str.replace(/file:\[([\s\S]*?)\]/, "");
 
   str = str.replace(
     "<pre>",
