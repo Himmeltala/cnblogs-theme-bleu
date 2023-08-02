@@ -2,121 +2,113 @@
 import { ArbeitenApi } from "@/apis";
 
 const route = useRoute();
-const arbeiten = shallowRef<BleuArbeiten>();
-const arbProps = shallowRef<BleuArbeitenProps>();
-const arbPrevNext = shallowRef<BleuArbeitenPrevNext>();
-const arbViewPoint = shallowRef<BlogArbeitenViewPoint>();
-const arbeitenState = ref<BleuArbeitenState>();
-const arbIsLock = ref(false);
-const arbeitenId = ref(route.params.id as string);
+const id = ref(route.params.id as string);
+
+const ArbeData = shallowRef<BleuArbeiten>();
+const propsData = shallowRef<BleuArbeitenProps>();
+const prevNextData = shallowRef<BleuArbeitenPrevNext>();
+const viewPointData = shallowRef<BlogArbeitenViewPoint>();
+const stateData = ref<BleuArbeitenState>();
+const isLocked = ref(false);
+
 const loading = new Broswer.Loading();
 
 async function fetchData(isInMounted?: boolean) {
   loading.startLoading();
 
   const [val1, val2, val3, val4, val5] = await Promise.all([
-    ArbeitenApi.getArbeiten(arbeitenId.value),
-    ArbeitenApi.getProps(arbeitenId.value),
-    ArbeitenApi.getPrevNext(arbeitenId.value),
-    ArbeitenApi.getViewPoint(arbeitenId.value),
-    ArbeitenApi.getArbeitenState(arbeitenId.value)
+    ArbeitenApi.getArbeiten(id.value),
+    ArbeitenApi.getProps(id.value),
+    ArbeitenApi.getPrevNext(id.value),
+    ArbeitenApi.getViewPoint(id.value),
+    ArbeitenApi.getArbeitenState(id.value)
   ]);
 
-  arbeiten.value = val1;
-  arbProps.value = val2;
-  arbPrevNext.value = val3;
-  arbViewPoint.value = val4;
-  arbeitenState.value = val5;
-  arbIsLock.value = val1.isLocked;
+  ArbeData.value = val1;
+  propsData.value = val2;
+  prevNextData.value = val3;
+  viewPointData.value = val4;
+  stateData.value = val5;
+  isLocked.value = val1.isLocked;
 
-  Broswer.setTitle(arbeiten.value.text);
+  Broswer.setTitle(ArbeData.value.text);
   !isInMounted && loading.endLoading();
 }
 
-const arbPassword = ref("");
+const password = ref("");
 
 async function submit() {
-  const isPassed = await ArbeitenApi.isPassed(arbPassword.value, arbeitenId.value);
+  const isPassed = await ArbeitenApi.isPassed(password.value, id.value);
   if (isPassed) {
-    arbeiten.value = await ArbeitenApi.getLockedArbeiten(arbPassword.value, arbeitenId.value);
-    arbIsLock.value = false;
+    ArbeData.value = await ArbeitenApi.getLockedArbeiten(password.value, id.value);
+    isLocked.value = false;
   }
 }
 
 async function vote(type: VoteType) {
   const response = await ArbeitenApi.vote({
-    postId: parseInt(arbeitenId.value),
+    postId: parseInt(id.value),
     isAbandoned: false,
     voteType: type
   });
   if (response?.isSuccess) {
-    type == "Bury" ? arbViewPoint.value.buryCount++ : arbViewPoint.value.diggCount++;
+    type == "Bury" ? viewPointData.value.buryCount++ : viewPointData.value.diggCount++;
   }
 }
 
 watch(route, async () => {
   if (route.name === RouterName.Arbeiten) {
-    arbeitenId.value = route.params.id as string;
+    id.value = route.params.id as string;
     await fetchData(false);
   }
 });
 
 onMounted(() => {
-  const anchor = route.hash.match(/#.+/g);
-
-  if (anchor) {
-    setTimeout(() => {
-      Broswer.scrollIntoView(`#${anchor[0].replace("#", "")}`);
-    }, 500);
-  }
-
   loading.endLoading();
 });
-
-const realHtml = ref<HTMLElement>();
 
 await fetchData(true);
 </script>
 
 <template>
   <div id="l-arbeiten" class="page">
-    <div class="content mt-4" v-if="!arbIsLock">
-      <div class="text-1.4rem w-100% font-bold">{{ arbeiten.text }}</div>
+    <div class="content mt-4" v-if="!isLocked">
+      <div class="text-1.4rem w-100% font-bold">{{ ArbeData.text }}</div>
       <div class="f-c-s lt-sm:flex-wrap mt-4 text-0.9rem text-b">
         <div class="f-c-c mr-4">
           <div class="i-tabler-calendar-stats mr-2"></div>
-          {{ arbeiten.date }}
+          {{ ArbeData.date }}
         </div>
         <div class="f-c-c mr-4">
           <div class="i-tabler-eye mr-2"></div>
-          {{ arbeiten.view }}次阅读
+          {{ ArbeData.view }}次阅读
         </div>
         <div class="f-c-c mr-4">
           <div class="i-tabler-message-2 mr-2"></div>
-          {{ arbeiten.comm }}条评论
+          {{ ArbeData.comm }}条评论
         </div>
         <div class="f-c-c mr-4">
           <div class="i-tabler-language mr-2"></div>
-          {{ arbeiten.wordCount }}字
+          {{ ArbeData.wordCount }}字
         </div>
         <div
           v-if="isBlogOwner"
           class="f-c-c hover"
-          @click="Navigation.go('https://i.cnblogs.com/EditPosts.aspx?postid=' + arbeitenId)">
+          @click="Navigation.go('https://i.cnblogs.com/EditPosts.aspx?postid=' + id)">
           <div class="i-tabler-pencil-minus mr-2"></div>
           编辑
         </div>
       </div>
       <div class="mt-4 mb-10">
-        <div class="mb-2 f-c-s flex-wrap text-0.9rem" v-if="arbProps?.sorts?.length">
+        <div class="mb-2 f-c-s flex-wrap text-0.9rem" v-if="propsData?.sorts?.length">
           <div class="f-c-s mt-2 mr-2">
             <div class="i-tabler-category-2 mr-2"></div>
             分类：
           </div>
           <div
             class="mt-2"
-            v-for="(item, index) in arbProps.sorts"
-            :class="{ 'mr-4': index !== arbProps.sorts.length - 1 }">
+            v-for="(item, index) in propsData.sorts"
+            :class="{ 'mr-4': index !== propsData.sorts.length - 1 }">
             <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
               <HollowedBox hover>
                 {{ item.text }}
@@ -124,15 +116,15 @@ await fetchData(true);
             </router-link>
           </div>
         </div>
-        <div class="f-c-s flex-wrap text-0.9rem" v-if="arbProps?.tags?.length">
+        <div class="f-c-s flex-wrap text-0.9rem" v-if="propsData?.tags?.length">
           <div class="f-c-s mt-2 mr-2">
             <div class="i-tabler-bookmarks mr-2"></div>
             标签：
           </div>
           <div
             class="mt-2"
-            v-for="(item, index) in arbProps.tags"
-            :class="{ 'mr-4': index !== arbProps.tags.length - 1 }">
+            v-for="(item, index) in propsData.tags"
+            :class="{ 'mr-4': index !== propsData.tags.length - 1 }">
             <router-link :to="RouterPath.ArbeitenByMark(item.text)">
               <HollowedBox hover>
                 {{ item.text }}
@@ -142,12 +134,11 @@ await fetchData(true);
         </div>
       </div>
       <Markdown
+        enable-catalog
         :unocss-img="BleuVars.config.unocss?.ab?.img || 'f-c-c'"
         :unocss-text="BleuVars.config.unocss?.ab?.text || 'text-1rem'"
         :fancy-group="'arbeiten'"
-        :str-html="arbeiten.content"
-        v-model:real-html="realHtml" />
-      <Catalog :str-html="arbeiten.content" :real-html="realHtml" />
+        :textual="ArbeData.content" />
       <div class="bg-b3 text-0.9rem p-5 text-b mt-10">
         <div class="f-c-s flex-wrap">
           <div class="i-tabler-user mr-2"></div>
@@ -160,7 +151,7 @@ await fetchData(true);
         <div class="f-c-s flex-wrap">
           <div class="i-tabler-sign-right mr-2"></div>
           出处：<span class="hover">
-            https://www.cnblogs.com/{{ BleuVars.getBlogApp() }}/#/p/{{ arbeitenId }}
+            https://www.cnblogs.com/{{ BleuVars.getBlogApp() }}/#/p/{{ id }}
           </span>
         </div>
         <div class="f-c-s flex-wrap">
@@ -173,33 +164,33 @@ await fetchData(true);
         </div>
       </div>
       <div class="mt-4 text-0.9rem">
-        <div class="f-s-s mb-2" v-if="arbPrevNext?.prev?.href">
-          <router-link class="hover" :to="RouterPath.Arbeiten(arbPrevNext.prev.href)">
-            上一篇：{{ arbPrevNext.prev.text }}
+        <div class="f-s-s mb-2" v-if="prevNextData?.prev?.href">
+          <router-link class="hover" :to="RouterPath.Arbeiten(prevNextData.prev.href)">
+            上一篇：{{ prevNextData.prev.text }}
           </router-link>
         </div>
-        <div class="f-s-e" v-if="arbPrevNext?.next?.href">
-          <router-link class="hover" :to="RouterPath.Arbeiten(arbPrevNext.next.href)">
-            下一篇：{{ arbPrevNext.next.text }}
+        <div class="f-s-e" v-if="prevNextData?.next?.href">
+          <router-link class="hover" :to="RouterPath.Arbeiten(prevNextData.next.href)">
+            下一篇：{{ prevNextData.next.text }}
           </router-link>
         </div>
       </div>
       <div v-if="!isBlogOwner && isLogined" class="mt-10 f-c-e">
         <el-button type="primary" plain round size="small">
-          <span v-if="arbeitenState.isFollowed" @click="ArbeitenApi.unfollow">- 取消关注</span>
+          <span v-if="stateData.isFollowed" @click="ArbeitenApi.unfollow">- 取消关注</span>
           <span v-else @click="ArbeitenApi.follow">+ 关注博主</span>
         </el-button>
       </div>
       <div class="mt-20 f-c-c">
         <el-button text type="primary" bg @click="vote('Digg')" class="mr-5">
           <div class="i-tabler-thumb-up mr-1"></div>
-          赞成{{ arbViewPoint.diggCount }}
+          赞成{{ viewPointData.diggCount }}
         </el-button>
         <el-button text type="danger" bg @click="vote('Bury')" class="mr-5">
           <div class="i-tabler-thumb-down mr-1"></div>
-          反对{{ arbViewPoint.buryCount }}
+          反对{{ viewPointData.buryCount }}
         </el-button>
-        <el-button text type="success" bg @click="Native.saveArbeiten(arbeitenId)">
+        <el-button text type="success" bg @click="Native.saveArbeiten(id)">
           <div class="i-tabler-heart mr-1"></div>
           收藏
         </el-button>
@@ -208,7 +199,7 @@ await fetchData(true);
         分享：
         <div class="i-tabler-brand-wechat mr-2 hover" @click="Native.shareToWechat"></div>
       </div>
-      <Comment :post-id="arbeitenId" />
+      <Comment :post-id="id" />
     </div>
     <div class="content" v-else>
       <div class="fixed-lt w-100vw h-100vh f-c-c z-99999">
@@ -217,7 +208,7 @@ await fetchData(true);
             <el-input
               show-password
               type="password"
-              v-model="arbPassword"
+              v-model="password"
               placeholder="输入博文阅读密码" />
           </el-form-item>
           <el-form-item>

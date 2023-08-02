@@ -3,7 +3,7 @@ import { DatumApi } from "@/apis";
 import { useFancybox } from "@/hooks/use-fancybox";
 
 const route = useRoute();
-const imgUrl = shallowRef<string>();
+const imgUrl = shallowRef();
 const loading = new Broswer.Loading();
 
 async function fetchData() {
@@ -31,17 +31,9 @@ await fetchData();
       </el-page-header>
       <div class="f-c-c">
         <a :href="imgUrl" data-fancybox="bleu-albumn" :data-download-src="imgUrl">
-          <img class="max-w-100%" :src="imgUrl" />
+          <img class="max-w-100% max-h-70vh" :src="imgUrl" />
         </a>
       </div>
     </div>
   </div>
 </template>
-
-<style lang="scss">
-.albumn-item {
-  img {
-    max-height: 70vh !important;
-  }
-}
-</style>

@@ -3,14 +3,14 @@ import { DatumApi } from "@/apis";
 import { useFancybox } from "@/hooks/use-fancybox";
 
 const route = useRoute();
-const albumn = shallowRef<BleuAlbumn>();
-const srcList = shallowRef<string[]>();
+const imgList = shallowRef();
 const loading = new Broswer.Loading();
+const albumn = shallowRef<BleuAlbumn>();
 
 async function fetchData() {
   loading.startLoading();
   albumn.value = await DatumApi.getAlbumn(route.params.id as string);
-  srcList.value = albumn.value.data.map((i: any) => i.src);
+  imgList.value = albumn.value.data.map((i: any) => i.src);
   useFancybox();
   loading.endLoading();
 }
@@ -40,7 +40,7 @@ await fetchData();
       <div class="mb-4 text-0.9rem text-b">{{ albumn.desc }}</div>
       <div class="f-c-b flex-wrap">
         <a
-          v-for="item in srcList"
+          v-for="item in imgList"
           :href="item"
           data-fancybox="bleu-albumn"
           :data-download-src="item">

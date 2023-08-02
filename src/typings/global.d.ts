@@ -196,9 +196,13 @@ interface BleuConfig {
     co?: { img?: string; text?: string };
   };
   fancybox?: any;
-  chart: {
-    tech: any;
-    category?: any;
+  echart: {
+    technics: {
+      radar: {
+        indicator: { name: string; max: number }[];
+      };
+      series: { type: string; data: any }[];
+    };
   };
   theme?: { color?: string };
   font?: {

@@ -2,14 +2,14 @@
 import { ArbeitenApi } from "@/apis";
 
 const route = useRoute();
-const markWorks = shallowRef<BleuArbeitenList2>();
+const arbeList = shallowRef<BleuArbeitenList2>();
 const loading = new Broswer.Loading();
 
 async function fetchData(index?: any) {
   loading.startLoading();
   const name = route.query.name;
-  markWorks.value = await ArbeitenApi.getListByMark(`${name}`, index);
-  Broswer.setTitle(markWorks.value.hint);
+  arbeList.value = await ArbeitenApi.getListByMark(`${name}`, index);
+  Broswer.setTitle(arbeList.value.hint);
   loading.endLoading();
 }
 
@@ -24,7 +24,7 @@ watch(route, async () => {
 
 <template>
   <div id="l-arbeiten-by-mark" class="page">
-    <div class="content" v-if="markWorks">
+    <div class="content" v-if="arbeList">
       <el-page-header :icon="null" @back="$router.back()" class="mb-6">
         <template #title>
           <div class="f-c-c">
@@ -32,12 +32,12 @@ watch(route, async () => {
           </div>
         </template>
         <template #content>
-          <div class="text-1.2rem mb-5 mt-4">{{ markWorks.hint }}</div>
+          <div class="text-1.2rem mb-5 mt-4">{{ arbeList.hint }}</div>
         </template>
       </el-page-header>
-      <Pagination @change="fetchData" @next="fetchData" @prev="fetchData" :count="markWorks.page">
+      <Pagination @change="fetchData" @next="fetchData" @prev="fetchData" :count="arbeList.page">
         <template #content>
-          <div class="relative mb-15" v-for="item of markWorks.data">
+          <div class="relative mb-15" v-for="item of arbeList.data">
             <div class="text-1.2rem">
               <router-link class="hover" :to="'/p/' + item.id">
                 {{ item.text }}

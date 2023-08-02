@@ -7,13 +7,9 @@ hljs.configure({
 });
 
 const props = defineProps({
-  strHtml: {
+  textual: {
     type: String,
     required: true
-  },
-  realHtml: {
-    type: HTMLElement,
-    required: false
   },
   unocssImg: {
     type: String
@@ -24,16 +20,18 @@ const props = defineProps({
   fancyGroup: {
     type: String,
     required: true
+  },
+  enableCatalog: {
+    type: Boolean,
+    default: false
   }
 });
 
-const emits = defineEmits(["update:realHtml"]);
+const textualInst = ref<HTMLElement>();
+const textualRef = toRef(props, "textual");
+const markdownTemplate = ref("");
 
-const htmlInst = ref<HTMLElement>();
-const strHtmlRef = toRef(props, "strHtml");
-const markdown = ref("");
-
-function generateMarkdown() {
+function generateMarkdownTemplate() {
   let mtcCode, mtcImg, mtcTip, mtcWar, mtPot;
   let regex1 = /<pre>[\s\S]*?<\/pre>/g;
   let regex2 = /<img[\s\S]*?>/g;
@@ -41,9 +39,9 @@ function generateMarkdown() {
   let regex4 = /war:\[start\]([\s\S]*?)war:\[end\]/g;
   let regex5 = /<pot>([\s\S]*?)<\/pot>/g;
 
-  let step1 = props.strHtml;
+  let step1 = props.textual;
   while ((mtcCode = regex1.exec(step1)) !== null) {
-    const r = refactorPreCode(mtcCode[0]);
+    const r = generatePreCode(mtcCode[0]);
     step1 = step1.replace(mtcCode[0], r);
   }
 
@@ -55,19 +53,19 @@ function generateMarkdown() {
 
   let step3 = step2;
   while ((mtcTip = regex3.exec(step2)) !== null) {
-    const r = refactorTip(mtcTip[1]);
+    const r = generateTip(mtcTip[1]);
     step3 = step3.replace(mtcTip[0], r);
   }
 
   let step4 = step3;
   while ((mtcWar = regex4.exec(step3)) !== null) {
-    const r = refactorWar(mtcWar[1]);
+    const r = generateWar(mtcWar[1]);
     step4 = step4.replace(mtcWar[0], r);
   }
 
   let step5 = step4;
   while ((mtPot = regex5.exec(step4)) !== null) {
-    const r = rfactorPorter(mtPot[1]);
+    const r = generatePorter(mtPot[1]);
     step5 = step5.replace(mtPot[0], r);
   }
 
@@ -93,22 +91,22 @@ function refactorImg(str: string) {
   return content;
 }
 
-function refactorTip(str: string) {
+function generateTip(str: string) {
   return `<div class="bleu-tip"><div class="mb-2 font-bold">💡提示</div><div>${str}</div></div>`;
 }
 
-function refactorWar(str: string) {
-  return `<div class="bleu-war"><div class="mb-2 font-bold">❗注意</div><div>${str}</div></div>`;
+function generateWar(str: string) {
+  return `<div class="bleu-war "><div class="mb-2 font-bold">❗注意</div><div>${str}</div></div>`;
 }
 
-function rfactorPorter(str: string) {
-  const linkMatch = str.match(/link:\((.*?)\)/);
-  const titleMatch = str.match(/title:\((.*?)\)/);
-  const coverMatch = str.match(/cover:\((.*?)\)/);
+function generatePorter(str: string) {
+  const linkMt = str.match(/link:\((.*?)\)/);
+  const titleMt = str.match(/title:\((.*?)\)/);
+  const coverMt = str.match(/cover:\((.*?)\)/);
 
-  const link = linkMatch ? linkMatch[1].trim() : "";
-  const title = titleMatch ? titleMatch[1].trim() : "";
-  const cover = coverMatch ? coverMatch[1].trim() : "";
+  const link = linkMt ? linkMt[1].trim() : "";
+  const title = titleMt ? titleMt[1].trim() : "";
+  const cover = coverMt ? coverMt[1].trim() : "";
 
   return `
   <div class="bleu-porter f-c-c">
@@ -118,7 +116,7 @@ function rfactorPorter(str: string) {
           <img class="w-15 h-15 rd-50% object-cover" src="${cover}" />
           <div class="w-80%">
             <div class="font-bold text-ellipsis line-clamp-1">${title}</div>
-            <div class="text-c text-ellipsis line-clamp-1">${link}</div>
+            <div class="text-0.9rem text-c text-ellipsis line-clamp-1">${link}</div>
           </div>
         </div>
       </a>
@@ -129,103 +127,179 @@ function rfactorPorter(str: string) {
 const size = Number(getComputedStyle(document.documentElement).fontSize.replace("px", ""));
 const step = (BleuVars.config.font?.code?.size || 0.8) * size * 1.7;
 
-function refactorPreCode(str: string) {
-  const mtMark = str.match(/file:\[([\s\S]*?)\]/);
-  const lines = str.split("\n");
+function extractTempFromPreCode(
+  str: string,
+  lines: string[],
+  regex: { before: RegExp; after: RegExp },
+  color: string
+) {
+  let startIndex = 0;
+  let endIndex = 0;
+  let temp = "";
 
-  let addTemp = "",
-    delTemp = "";
+  for (let i = 0; i < lines.length; i++) {
+    const mtStart = lines[i].match(regex.before);
+    const mtEnd = lines[i].match(regex.after);
 
-  lines.forEach((ele, index) => {
-    const mtAdd = ele.match(/add:\[([\s\S]*)\]/);
-    const mtDel = ele.match(/del:\[([\s\S]*)\]/);
-
-    if (mtAdd) {
-      addTemp += `<div class="added-line absolute left-0 w-100%" style="top: ${
-        index * step
-      }px; height: ${step}px">
-        <div class="bg-emerald opacity-10 absolute left-0 top-0 w-100% h-100%"></div>
-        <div class="absolute left-0 top-0 w-100% h-100% text-c f-c-s">＋</div>
-      </div>`;
-
-      str = str.replace(`add:[${mtAdd[1]}]`, `${mtAdd[1]}`);
+    if (mtStart) {
+      startIndex = i;
+      str = str.replace(`${mtStart[0]}`, `${mtStart[1]}`);
     }
 
-    if (mtDel) {
-      delTemp += `<div class="added-line absolute left-0 w-100%" style="top: ${
-        index * step
-      }px; height: ${step}px">
-        <div class="bg-red opacity-10 absolute left-0 top-0 w-100% h-100%"></div>
-        <div class="absolute left-0 top-0 w-100% h-100% text-c f-c-s">－</div>
+    if (mtEnd) {
+      endIndex = i;
+      str = str.replace(`${mtEnd[0]}`, `${mtEnd[1]}`);
+
+      const gap = endIndex - startIndex + 1;
+      temp += `<div class="${color} absolute left-0 w-100%" style="top: ${
+        startIndex * step
+      }px; height: ${step * gap}px">
       </div>`;
-
-      str = str.replace(`del:[${mtDel[1]}]`, `${mtDel[1]}`);
     }
-  });
+  }
 
-  const label = mtMark ? mtMark[1] : "";
+  return {
+    temp,
+    str
+  };
+}
+
+function extractLangTempFromPreCode(str: string) {
+  const name = str.match(/file:\[([\s\S]*?)\]/);
+  const label = name ? name[1] : "";
   const lang = str.match(/<code class="language-([\d\w]+)"/)[1].toUpperCase();
 
-  const content = `
+  const temp = `
       <div class="tools ${label ? "f-c-b" : "f-c-e"} f-c-b rd-2 text-0.8rem w-100%">
-        <div class="left flow-auto white-nowrap scroll-none">${label || lang + " code"}</div>
-        <div class="right flex-auto f-c-e text-c">
-          <div class="language mr-2">${lang}</div>
-          <div class="clipboard hover">复制</div>
+        ${label ? `<div class="left flow-auto white-nowrap scroll-none">${label}</div>` : ""}
+        <div class="right f-c-e flex-auto white-nowrap scroll-none select-none">
+          <div class="language mr-2 text-a">${lang} 语言</div>
+          <div class="clipboard hover mr-2 text-b">复制代码</div>
+          <div class="togglecode hover text-b">收起或展开</div>
         </div>
       </div>
       ${!label ? `<div class="mb-6"></div>` : ""}
     `;
 
-  if (label) str = str.replace(/file:\[([\s\S]*?)\]/, "");
+  label && (str = str.replace(/file:\[([\s\S]*?)\]/, ""));
+
+  return {
+    temp,
+    str
+  };
+}
+
+function generatePreCode(str: string) {
+  const lines = str.split("\n");
+
+  const langTemp = extractLangTempFromPreCode(str);
+  str = langTemp.str;
+
+  const addTemp = extractTempFromPreCode(
+    str,
+    lines,
+    {
+      before: /add:\[([\s\S]*)/,
+      after: /\]:([\s\S]*)add/
+    },
+    "bg-emerald opacity-10"
+  );
+  str = addTemp.str;
+
+  const delTemp = extractTempFromPreCode(
+    str,
+    lines,
+    {
+      before: /del:\[([\s\S]*)/,
+      after: /\]:([\s\S]*)del/
+    },
+    "bg-red opacity-10"
+  );
+  str = delTemp.str;
+
+  const litTemp = extractTempFromPreCode(
+    str,
+    lines,
+    {
+      before: /lit:\[([\s\S]*)/,
+      after: /\]:([\s\S]*)lit/
+    },
+    "dark:bg-#ffffff14 light:bg-#00000012 opacity-90"
+  );
+  str = litTemp.str;
 
   str = str.replace(
     "<pre>",
-    `<div class="bleu-pre">${content}<pre class="relative">${addTemp}${delTemp}`
+    `<div class="bleu-pre">${langTemp.temp}<pre class="bleu-pre-body scroll-none relative flow-hidden">${addTemp.temp}${delTemp.temp}${litTemp.temp}`
   );
 
   return str + "</div></pre>";
 }
 
-function registerMarkdown(mkd: HTMLElement, pre: HTMLElement) {
-  mkd.querySelector(".clipboard").addEventListener("click", () => {
+function registerMarkdownEvents(source: HTMLElement, pre: HTMLElement) {
+  let isToggled = false;
+  let lastHeight = 0;
+
+  source.querySelector(".clipboard").addEventListener("click", () => {
     navigator.clipboard.writeText(pre.innerText).then(
       () => ElMessage({ message: "复制成功！", type: "success", grouping: true }),
       () => ElMessage({ message: "没有权限！", type: "error", grouping: true })
     );
   });
+
+  source.querySelector(".togglecode").addEventListener("click", () => {
+    const dom = source.querySelector<HTMLElement>(".bleu-pre-body");
+    const currHeight = dom.getBoundingClientRect().height;
+
+    if (!isToggled) {
+      dom.style.height = (lastHeight || currHeight) * 0.5 + "px";
+    } else {
+      dom.style.height = lastHeight + "px";
+    }
+
+    isToggled = !isToggled;
+    lastHeight = lastHeight || currHeight;
+  });
 }
 
-function renderMarkdown() {
-  markdown.value = generateMarkdown();
+function createMarkdown() {
+  markdownTemplate.value = generateMarkdownTemplate();
 
   nextTick(() => {
-    htmlInst.value.querySelectorAll<HTMLElement>(".bleu-pre").forEach(i => {
-      const pre = i.querySelector<HTMLElement>("pre code");
+    textualInst.value.querySelectorAll<HTMLElement>(".bleu-pre").forEach(ele => {
+      const pre = ele.querySelector<HTMLElement>("pre code");
       hljs.highlightElement(pre);
-      registerMarkdown(i, pre);
+      registerMarkdownEvents(ele, pre);
     });
 
     // mathjax
-    const mathElArr = htmlInst.value.getElementsByClassName("math");
-    if (window.MathJax && mathElArr?.length > 0) {
+    const mathjaxEls = textualInst.value.getElementsByClassName("math");
+    if (window.MathJax && mathjaxEls?.length > 0) {
       window.MathJax.startup.promise = window.MathJax.startup.promise
         .then(() => {
-          window.MathJax.typesetPromise(mathElArr);
+          window.MathJax.typesetPromise(mathjaxEls);
         })
         .catch(console.error);
     }
 
     useFancybox();
-
-    emits("update:realHtml", htmlInst.value);
   });
 }
 
-onMounted(renderMarkdown);
-watch(strHtmlRef, renderMarkdown);
+onMounted(() => {
+  createMarkdown();
+});
+
+watch(textualRef, () => {
+  createMarkdown();
+});
 </script>
 
 <template>
-  <div class="markdown-textual" :class="unocssText" ref="htmlInst" v-html="markdown"></div>
+  <div
+    ref="textualInst"
+    class="markdown-textual"
+    :class="unocssText"
+    v-html="markdownTemplate"></div>
+  <Catalog v-if="enableCatalog" :textual="textual" :dom="textualInst" />
 </template>

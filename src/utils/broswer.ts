@@ -4,7 +4,6 @@
  * @author Himmelbleu
  * @date 2023 年 1 月 15 日
  */
-export namespace Broswer {
   /**
    * 设置标题
    *
@@ -64,4 +63,3 @@ export namespace Broswer {
       document.getElementById("l-content").classList.toggle("fade-in-out");
     }
   }
-}

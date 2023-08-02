@@ -1,6 +1,6 @@
 import { toDOM } from "./dom-transform";
-import { ArbeitenTransform } from "./arbeiten-transform";
-import { CommentTransform } from "./comment-transofm";
-import { DatumTransform } from "./datum-transform";
+import * as ArbeitenTransform from "./arbeiten-transform";
+import * as CommentTransform from "./comment-transofm";
+import * as DatumTransform from "./datum-transform";
 
 export { toDOM, ArbeitenTransform, CommentTransform, DatumTransform };

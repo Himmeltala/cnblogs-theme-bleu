@@ -36,7 +36,7 @@ function afterUseBleu() {
 
   PrettifyLog.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-bleu");
   PrettifyLog.primary(
-    "v2.10.3",
+    "v2.10.4",
     "The Theme was Created By Himmelbleu, and Powered By Vue3 & Vite."
   );
 }
@@ -68,8 +68,11 @@ export function useBleu(develop: Function, product: Function) {
           "https://anime.shochiku.co.jp/sukimega/wp-content/themes/sukimega_first_theme/common2/images/top_content_kv04.jpg"
         ]
       },
-      chart: {
-        tech: {
+      theme: {
+        color: "#85a1c0"
+      },
+      echart: {
+        technics: {
           radar: {
             indicator: [
               { name: "Vue", max: 5 },
@@ -86,7 +89,6 @@ export function useBleu(develop: Function, product: Function) {
           series: [
             {
               type: "radar",
-              areaStyle: {},
               data: [
                 {
                   value: [4, 1, 4, 3, 3.5, 1, 3.5, 2.5, 3.5],

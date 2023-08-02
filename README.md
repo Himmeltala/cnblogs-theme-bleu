@@ -223,25 +223,34 @@ pnpm run build
 
 `file:[src/math_utils.js]`
 
-## 代码块行高亮
+## 代码块删除行或增加行高亮
 
-在有些时候，代码块可能需要标注哪一行是增加的，哪一行是删除的，或者多行删除，多行增加。为此，我开发了这一项功能，你只需要使用以下格式就可以让你的代码块中呈现删除或增加的高亮背景。
+在编写文档时，标注代码块中某些行较上一次的改动，你只需要使用以下格式就可以让你的代码块中某些行呈现删除或增加的高亮背景。
 
-- 删除 `del:[]`
-- 增加 `add:[]`
+- 删除格式：`del:[xxxxxxxxxxxxxx]:del`
+- 增加格式：`add:[xxxxxxxxxxxx]:add`
 
 ```js
-del:[function add(x, y) {]
-add:[function calc(x, y) {]
-  del:[return x + y]
-  add:[return y + x]
-}
+del:[function add(x, y) {
+function calc(x, y) {]:del
+  add:[return x + y
+  return y + x
+}]:add
 ```
 
-如下所示，我们阅读的时候可以很清楚地知道哪里改动，不需要过多的文字描述。
+## 代码块行高亮提示
 
-![](./docs/image-9.png)
-![](./docs/image-10.png)
+在编写文档时，代码块中某些行需要额外注意时，你只需要使用以下格式就可以让你的代码块中某些行呈现高亮背景。
+
+格式：`lit:[]`
+
+```js
+lit:[function add(x, y) {
+function calc(x, y) {
+  return x + y
+  return y + x
+}]:lit
+```
 
 ## 主题更新
 

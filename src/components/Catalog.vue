@@ -1,17 +1,17 @@
 <script setup lang="ts">
 const props = defineProps({
-  strHtml: {
+  textual: {
     type: String,
     required: true
   },
-  realHtml: {
+  dom: {
     type: Object as PropType<any>,
     required: false
   }
 });
 
-const toRefRealHtml = toRef(props, "realHtml");
-const toRefStrHtml = toRef(props, "strHtml");
+const domRef = toRef(props, "dom");
+const textualRef = toRef(props, "textual");
 const disabled = inject<boolean>(ProvideKey.Catalog);
 const translate = shallowRef("");
 const catalogList = shallowRef();
@@ -20,7 +20,7 @@ function generateList() {
   const catalogList: { id: string; content: string; item: Element }[] = [];
   let step = 0;
 
-  const titles = toRefRealHtml.value.querySelectorAll("h1, h2, h3");
+  const titles = domRef.value.querySelectorAll("h1, h2, h3");
 
   for (let i = 0; i < titles.length; i++) {
     const id = titles[i].getAttribute("id");
@@ -64,7 +64,7 @@ function controlLump(entries: any) {
   item?.classList.add("catalog-active");
 }
 
-function renderCatalog() {
+function createCatalog() {
   catalogList.value = generateList();
 
   observer = new IntersectionObserver(
@@ -91,16 +91,25 @@ function renderCatalog() {
   }
 }
 
-watch(toRefRealHtml, renderCatalog);
-watch(toRefStrHtml, renderCatalog);
-onUnmounted(() => observer.disconnect());
+watch(domRef, () => {
+  createCatalog();
+});
+
+watch(textualRef, () => {
+  createCatalog();
+});
+
+onUnmounted(() => () => {
+  observer.disconnect();
+});
 </script>
 
 <template>
   <div
     id="l-catalog"
     :class="{ 'catalog-disable': disabled, 'catalog-show': !disabled }"
-    class="fixed top-4vh pl-4 py-6 w-16rem h-92vh rd-2 scroll-none flow-auto z-90"
+    p="l-4 y-6"
+    class="scroll-none fixed lt-sm:bg-b1 lt-sm:top-0 lt-sm:h-100vh sm:top-4vh sm:h-92vh w-16rem rd-2 flow-auto z-90"
     v-if="catalogList && catalogList.length">
     <div class="relative">
       <div class="ml-6 text-b">

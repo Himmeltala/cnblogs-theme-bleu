@@ -31,10 +31,10 @@ await takeQueryToFetchData();
   <div id="l-arbeiten-list" class="page">
     <div class="content" v-if="arbeitenList?.data?.length">
       <Pagination
-        :default-index="defaultIndex"
         @change="fetchData"
         @next="fetchData"
         @prev="fetchData"
+        :default-index="defaultIndex"
         :count="arbeitenList?.page">
         <template #content>
           <el-page-header :icon="null" @back="$router.back()" class="mb-6">

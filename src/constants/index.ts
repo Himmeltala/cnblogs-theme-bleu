@@ -1,7 +1,7 @@
 import { BleuVars } from "./vars";
 import { RouterName } from "./router-name";
-import { RouterPath } from "./router-path";
-import { RouterRegx } from "./router-regx";
+import * as RouterPath from "./router-path";
+import * as RouterRegx from "./router-regx";
 
 export enum ProvideKey {
   Catalog = "catalogDisabled"

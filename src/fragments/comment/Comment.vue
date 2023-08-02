@@ -86,7 +86,7 @@ await fetchData();
             :unocss-img="BleuVars.config.unocss?.co?.img || 'f-c-s'"
             :unocss-text="BleuVars.config.unocss?.co?.text || 'text-0.9rem'"
             :fancy-group="'comment-' + index"
-            :str-html="item.content" />
+            :textual="item.content" />
         </div>
         <div class="more-action float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>

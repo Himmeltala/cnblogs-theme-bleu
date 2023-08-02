@@ -3,11 +3,11 @@ import { ArbeitenApi, DatumApi } from "@/apis";
 import { useWheelRollsUpAndDown } from "@/hooks/use-mouse";
 import { useRadarChart, usePieChart, useLineChart } from "@/hooks/use-echarts";
 
-const list = shallowRef<BleuArbeitenList>();
-const news = shallowRef<BleuMenuItemData[]>();
-const status = shallowRef<BleuMenuItemData[]>();
-const topList = shallowRef<BleuTopList>();
-const column = shallowRef<BleuMenuColumn>();
+const arbeList = shallowRef<BleuArbeitenList>();
+const newsData = shallowRef<BleuMenuItemData[]>();
+const statusData = shallowRef<BleuMenuItemData[]>();
+const topListData = shallowRef<BleuTopList>();
+const columnData = shallowRef<BleuMenuColumn>();
 const markList = shallowRef<BleuMark[]>();
 const loading = new Broswer.Loading();
 
@@ -24,11 +24,11 @@ async function fetchData() {
   ]);
 
   val1.data.splice(4, 6);
-  list.value = val1;
-  news.value = val2;
-  status.value = val3;
-  topList.value = val4;
-  column.value = val5;
+  arbeList.value = val1;
+  newsData.value = val2;
+  statusData.value = val3;
+  topListData.value = val4;
+  columnData.value = val5;
   markList.value = val6;
 
   loading.endLoading();
@@ -57,37 +57,36 @@ onMounted(() => {
   useRadarChart(radarInst.value);
 
   // 我的标签
-  usePieChart(
-    pie1Inst.value,
-    markList.value.map((i, index) => {
+  usePieChart({
+    dom: pie1Inst.value,
+    data: markList.value.map((i, index) => {
       if (index <= 10) {
         return { value: i.count, name: i.text };
       }
     }),
-    openPieChartCount1,
-    "90%"
-  );
+    flag: openPieChartCount1,
+    radius: "90%"
+  });
 
   // 随笔分类
-  usePieChart(
-    pie2Inst.value,
-    column.value.essaySort.map((i, index) => {
+  usePieChart({
+    dom: pie2Inst.value,
+    data: columnData.value.essaySort.map((i, index) => {
       if (index <= 10) {
         return { value: i.count, name: i.text };
       }
     }),
-    openPieChartCount2,
-    ["40%", "70%"]
-  );
+    flag: openPieChartCount2,
+    radius: ["40%", "70%"]
+  });
 
   // 随笔归档
-  useLineChart(
-    lineInst.value,
-    column.value.essayArchive.map(i => i.id),
-    column.value.essayArchive.map(i => i.count),
-    BleuVars.config.chart.category,
-    openLineChartCount
-  );
+  useLineChart({
+    dom: lineInst.value,
+    xAxis: columnData.value.essayArchive.map(i => i.id),
+    data: columnData.value.essayArchive.map(i => i.count),
+    flag: openLineChartCount,
+  });
 
   useWheelRollsUpAndDown(
     () => {
@@ -188,13 +187,13 @@ await fetchData();
     </div>
     <!-- pc -->
     <div class="lg:f-s-b">
-      <div class="lg:w-49% lg:h-100vh py-4" v-if="list?.data">
-        <div class="h-100%" :class="{ 'f-c-b flex-col': list.data.length >= 4 }">
-          <template v-for="item in list.data">
+      <div class="lg:w-49% lg:h-100vh py-4" v-if="arbeList?.data">
+        <div class="h-100%" :class="{ 'f-c-b flex-col': arbeList.data.length >= 4 }">
+          <template v-for="item in arbeList.data">
             <div
               v-if="!item.isTop"
               class="lt-lg:mb-15 w-100%"
-              :class="{ 'mb-10': list.data.length < 4 }">
+              :class="{ 'mb-10': arbeList.data.length < 4 }">
               <div class="f-c-s text-b text-0.9rem mb-2">
                 <div class="i-tabler-clock-hour3 mr-2"></div>
                 {{ item.date }}
@@ -277,10 +276,10 @@ await fetchData();
               </div>
             </div>
             <div class="f-s-b flex-col py-4 h-100%">
-              <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
+              <div v-if="columnData?.rankings?.length" class="f-c-s text-0.8rem text-b">
                 <div
-                  v-for="(item, index) in column.rankings"
-                  :class="{ 'mr-4': index != column.rankings.length - 1 }">
+                  v-for="(item, index) in columnData.rankings"
+                  :class="{ 'mr-4': index != columnData.rankings.length - 1 }">
                   {{ item.text }}
                 </div>
               </div>
@@ -302,44 +301,44 @@ await fetchData();
             </div>
           </div>
           <div class="f-c-b text-1rem">
-            <div v-if="news?.length" class="text-0.9rem">
-              <div class="f-c-s cursor-pointer shine-text" @click="Navigation.go(news[0].href)">
+            <div v-if="newsData?.length" class="text-0.9rem">
+              <div class="f-c-s cursor-pointer shine-text" @click="Navigation.go(newsData[0].href)">
                 <div class="i-tabler-user mr-2"></div>
-                昵称：{{ news[0].text }}
+                昵称：{{ newsData[0].text }}
               </div>
-              <div class="f-c-s hover mt-5" @click="Navigation.go(news[1].href)">
+              <div class="f-c-s hover mt-5" @click="Navigation.go(newsData[1].href)">
                 <div class="i-tabler-calendar mr-2"></div>
-                园龄：{{ news[1].text }}
+                园龄：{{ newsData[1].text }}
               </div>
-              <div class="f-c-s hover mt-5" @click="Navigation.go(news[2].href)">
+              <div class="f-c-s hover mt-5" @click="Navigation.go(newsData[2].href)">
                 <div class="i-tabler-brand-twitch mr-2"></div>
-                粉丝：{{ news[2].text }}
+                粉丝：{{ newsData[2].text }}
               </div>
-              <div class="f-c-s hover mt-5" @click="Navigation.go(news[3].href)">
+              <div class="f-c-s hover mt-5" @click="Navigation.go(newsData[3].href)">
                 <div class="i-tabler-heart mr-2"></div>
-                关注：{{ news[3].text }}
+                关注：{{ newsData[3].text }}
               </div>
             </div>
-            <div v-if="status?.length" class="text-0.9rem">
+            <div v-if="statusData?.length" class="text-0.9rem">
               <div class="f-c-s hover" @click="Navigation.go('https://i.cnblogs.com/posts')">
                 <div class="i-tabler-pencil-minus mr-2"></div>
-                发表的随笔：{{ status[0].digg }}
+                发表的随笔：{{ statusData[0].digg }}
               </div>
               <div
                 class="f-c-s hover mt-5"
                 @click="Navigation.go('https://i.cnblogs.com/articles')">
                 <div class="i-tabler-books mr-2"></div>
-                发表的文章：{{ status[1].digg }}
+                发表的文章：{{ statusData[1].digg }}
               </div>
               <div
                 class="f-c-s hover mt-5"
                 @click="Navigation.go('https://i.cnblogs.com/comments')">
                 <div class="i-tabler-message-circle mr-2"></div>
-                拥有的评论：{{ status[2].digg }}
+                拥有的评论：{{ statusData[2].digg }}
               </div>
               <div class="f-c-s mt-5">
                 <div class="i-tabler-chart-bar mr-2"></div>
-                阅读的数量：{{ status[3].digg }}
+                阅读的数量：{{ statusData[3].digg }}
               </div>
             </div>
           </div>
@@ -375,10 +374,10 @@ await fetchData();
             </div>
           </div>
           <div class="f-s-b flex-col py-4 h-100%">
-            <div v-if="column?.rankings?.length" class="f-c-s text-0.8rem text-b">
+            <div v-if="columnData?.rankings?.length" class="f-c-s text-0.8rem text-b">
               <div
-                v-for="(item, index) in column.rankings"
-                :class="{ 'mr-4': index != column.rankings.length - 1 }">
+                v-for="(item, index) in columnData.rankings"
+                :class="{ 'mr-4': index != columnData.rankings.length - 1 }">
                 {{ item.text }}
               </div>
             </div>
@@ -400,40 +399,40 @@ await fetchData();
           </div>
         </div>
         <div class="f-c-b text-1rem">
-          <div v-if="news?.length" class="text-0.9rem">
-            <div class="f-c-s cursor-pointer shine-text" @click="Navigation.go(news[0].href)">
+          <div v-if="newsData?.length" class="text-0.9rem">
+            <div class="f-c-s cursor-pointer shine-text" @click="Navigation.go(newsData[0].href)">
               <div class="i-tabler-user mr-2"></div>
-              昵称：{{ news[0].text }}
+              昵称：{{ newsData[0].text }}
             </div>
-            <div class="f-c-s hover mt-5" @click="Navigation.go(news[1].href)">
+            <div class="f-c-s hover mt-5" @click="Navigation.go(newsData[1].href)">
               <div class="i-tabler-calendar mr-2"></div>
-              园龄：{{ news[1].text }}
+              园龄：{{ newsData[1].text }}
             </div>
-            <div class="f-c-s hover mt-5" @click="Navigation.go(news[2].href)">
+            <div class="f-c-s hover mt-5" @click="Navigation.go(newsData[2].href)">
               <div class="i-tabler-brand-twitch mr-2"></div>
-              粉丝：{{ news[2].text }}
+              粉丝：{{ newsData[2].text }}
             </div>
-            <div class="f-c-s hover mt-5" @click="Navigation.go(news[3].href)">
+            <div class="f-c-s hover mt-5" @click="Navigation.go(newsData[3].href)">
               <div class="i-tabler-heart mr-2"></div>
-              关注：{{ news[3].text }}
+              关注：{{ newsData[3].text }}
             </div>
           </div>
-          <div v-if="status?.length" class="text-0.9rem">
+          <div v-if="statusData?.length" class="text-0.9rem">
             <div class="f-c-s">
               <div class="i-tabler-pencil-minus mr-2"></div>
-              发表的随笔：{{ status[0].digg }}
+              发表的随笔：{{ statusData[0].digg }}
             </div>
             <div class="f-c-s mt-5">
               <div class="i-tabler-books mr-2"></div>
-              发表的文章：{{ status[1].digg }}
+              发表的文章：{{ statusData[1].digg }}
             </div>
             <div class="f-c-s mt-5">
               <div class="i-tabler-message-circle mr-2"></div>
-              拥有的评论：{{ status[2].digg }}
+              拥有的评论：{{ statusData[2].digg }}
             </div>
             <div class="f-c-s mt-5">
               <div class="i-tabler-chart-bar mr-2"></div>
-              阅读的数量：{{ status[3].digg }}
+              阅读的数量：{{ statusData[3].digg }}
             </div>
           </div>
         </div>
@@ -491,7 +490,7 @@ await fetchData();
       </div>
     </div>
     <div class="sm:f-s-b mt-15 relative">
-      <div class="sm:w-49%" v-if="column?.essaySort?.length">
+      <div class="sm:w-49%" v-if="columnData?.essaySort?.length">
         <div
           class="transition-all-500"
           :class="{ 'opacity-100': !isShowPieChart2, 'opacity-30': isShowPieChart2 }">
@@ -512,7 +511,7 @@ await fetchData();
             </div>
           </div>
           <div class="f-c-b flex-wrap">
-            <div class="mb-6 mr-4 hover" v-for="item in column.essaySort">
+            <div class="mb-6 mr-4 hover" v-for="item in columnData.essaySort">
               <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
                 {{ item.text }}
               </router-link>
@@ -533,13 +532,13 @@ await fetchData();
           </div>
         </div>
       </div>
-      <div class="sm:w-49% lt-sm:mt-15" v-if="column?.articleSort?.length">
+      <div class="sm:w-49% lt-sm:mt-15" v-if="columnData?.articleSort?.length">
         <div id="article-nail" class="caption mb-10">
           <div class="i-tabler-sort-a-z mr-2"></div>
           文章分类
         </div>
         <div class="f-c-b flex-wrap">
-          <div class="mb-6 mr-4 hover" v-for="item in column.articleSort">
+          <div class="mb-6 mr-4 hover" v-for="item in columnData.articleSort">
             <router-link :to="RouterPath.ArbeitenBySort(item.id, '1', true)">
               {{ item.text }}
             </router-link>
@@ -547,7 +546,7 @@ await fetchData();
         </div>
       </div>
     </div>
-    <div class="mt-15 relative" v-if="column?.essayArchive?.length">
+    <div class="mt-15 relative" v-if="columnData?.essayArchive?.length">
       <div>
         <div
           class="transition-all-500"
@@ -569,7 +568,7 @@ await fetchData();
             </div>
           </div>
           <div class="f-c-b flex-wrap">
-            <div class="mb-6 mr-4 hover" v-for="item in column.essayArchive">
+            <div class="mb-6 mr-4 hover" v-for="item in columnData.essayArchive">
               <router-link :to="RouterPath.ArbeitenByArchive('p', item.id)">
                 {{ item.text }}
               </router-link>
@@ -591,26 +590,26 @@ await fetchData();
         </div>
       </div>
     </div>
-    <div class="mt-15" v-if="column?.articleArchive?.length">
+    <div class="mt-15" v-if="columnData?.articleArchive?.length">
       <div id="article-archive-nail" class="caption mb-10">
         <div class="i-tabler-folder-check mr-2"></div>
         文章归档
       </div>
       <div class="f-c-b flex-wrap">
-        <div class="mb-6 mr-4 hover" v-for="item in column.articleArchive">
+        <div class="mb-6 mr-4 hover" v-for="item in columnData.articleArchive">
           <router-link :to="RouterPath.ArbeitenByArchive('a', item.id)">
             {{ item.text }}
           </router-link>
         </div>
       </div>
     </div>
-    <div class="mt-15" v-if="column?.albumn?.length">
+    <div class="mt-15" v-if="columnData?.albumn?.length">
       <div id="my-pohoto-nail" class="caption mb-10">
         <div class="i-tabler-photo mr-2"></div>
         我的相册
       </div>
       <div class="f-c-b flex-wrap">
-        <div class="mb-6 text-ellipsis line-clamp-2 hover" v-for="item in column.albumn">
+        <div class="mb-6 text-ellipsis line-clamp-2 hover" v-for="item in columnData.albumn">
           <router-link :to="RouterPath.Albumn(item.id)">
             {{ item.text }}
           </router-link>

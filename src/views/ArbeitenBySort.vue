@@ -48,10 +48,10 @@ watch(route, async () => {
   <div id="l-arbeiten-by-sort" class="page">
     <div class="content" v-if="typeL1Arbeiten">
       <Pagination
-        :default-index="defaultIndex"
         @change="fetchData"
         @next="fetchData"
         @prev="fetchData"
+        :default-index="defaultIndex"
         :count="typeL1Arbeiten.page"
         :disabled="!typeL1Arbeiten.data.length">
         <template #content>
