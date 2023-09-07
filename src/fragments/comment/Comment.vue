@@ -67,13 +67,13 @@ await fetchData();
               {{ item.author }}
             </div>
             <div
-              class="text-0.9rem text-b mt-2 f-c-c"
+              class="text-0.9rem text-thirdly mt-2 f-c-c"
               :id="'level-' + item.commentId"
               v-if="anchor == item.commentId"
               ref="level">
               {{ item.layer }} {{ item.date }}
             </div>
-            <div class="text-0.9rem text-b mt-2 f-c-c" :id="'level-' + item.commentId" v-else>
+            <div class="text-0.9rem text-thirdly mt-2 f-c-c" :id="'level-' + item.commentId" v-else>
               {{ item.layer }} {{ item.date }}
             </div>
           </div>
@@ -82,15 +82,11 @@ await fetchData();
           <textarea
             class="z--1 opacity-0 absolute top-0 left-0"
             :id="'upload-img-' + index"></textarea>
-          <Markdown
-            :unocss-img="BleuVars.config.unocss.co.img"
-            :unocss-text="BleuVars.config.unocss.co.text"
-            :fancy-group="'comment-' + index"
-            :textual="item.content" />
+          <Markdown :fancy-group="'comment-' + index" :textual="item.content" />
         </div>
         <div class="more-action float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>
-            <div class="f-c-e text-0.9rem text-b hover">
+            <div class="f-c-e text-0.9rem text-thirdly hover">
               <div class="i-tabler-dots-vertical mr-1"></div>
               <div>更多</div>
             </div>

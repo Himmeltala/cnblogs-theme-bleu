@@ -49,7 +49,7 @@ watch(route, async () => {
                 阅读全文
               </router-link>
             </div>
-            <div class="works-synopsis mt-6 f-c-s text-0.9rem text-b">
+            <div class="works-synopsis mt-6 f-c-s text-0.9rem text-thirdly">
               <div class="mr-3 f-c-c">
                 <i-ep-clock class="mr-1" />
                 {{ item.date }}

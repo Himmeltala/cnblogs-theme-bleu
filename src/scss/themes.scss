@@ -1,4 +1,4 @@
-@use "./common/variables";
+@use "./variables";
 
 html.light {
   $light-theme: map-get(variables.$themes, light);

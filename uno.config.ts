@@ -24,47 +24,23 @@ export default defineConfig({
   ],
   theme: {
     colors: {
-      a: "var(--text-a)",
-      b: "var(--text-b)",
-      c: "var(--text-c)",
-      d: "var(--text-d)",
-      primary: "var(--text-primary)",
-      b1: "var(--bg-1)",
-      b2: "var(--bg-2)",
-      b3: "var(--bg-3)",
-      b4: "var(--bg-4)"
+      primary: "var(--l-text-primary)",
+      secondary: "var(--l-text-secondary)",
+      thirdly: "var(--l-text-thirdly)",
+      ba: "var(--l-bg-a)"
     }
   },
-  preflights: [
-    {
-      getCSS: ({ theme }) => {
-        return `
-          * {
-            color: inherit;
-            line-height: 1.7;
-            letter-spacing: 0.05rem;
-            scroll-behavior: smooth;
-            font-family: var(--l-main-family);
-            word-break: break-all;
-            line-break: anywhere;
-            box-sizing: border-box;
-          }
-        `;
-      }
-    }
-  ],
   rules: [
     [
       /^flow-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,
       ([, d]) => ({ overflow: `${d}` })
     ],
-    [/^letter-spacing-(\d+|\d+\.\d+)$/, ([, d]) => ({ "letter-spacing": `${d}rem` })],
     [/^white-(normal|nowrap)$/, ([, d]) => ({ "white-space": `${d}` })],
     [
-      /^font-(art)$/,
+      /^font-art$/,
       ([, d]) => ({
-        "font-family": `var(--l-${d}-family) !important;`,
-        "font-size": `var(--l-${d}-size) !important;`
+        "font-family": `var(--l-art-family) !important;`,
+        "font-size": `var(--l-art-size) !important;`
       })
     ]
   ],
@@ -124,7 +100,7 @@ export default defineConfig({
     [
       /^caption$/,
       () => {
-        return `text-primary font-art letter-spacing-0.2 f-c-s`;
+        return `text-primary font-art f-c-s`;
       }
     ]
   ]

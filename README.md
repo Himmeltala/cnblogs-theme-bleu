@@ -263,16 +263,33 @@ function calc(x, y) {
 - 类型：object
 - 是否必填：否
 
-主题相关，比如颜色。
+默认字体使用 Element-Plus 的字体集。
 
-```js
-window.__BLEU_CONFIG__ = {
-  theme: {
-    // 默认颜色
-    color: "#409EFF"
-  }
-};
+1. 在“页首 HTML 代码”处插入一个字体 cdn 或者字体网址的 link 标签，表示引入字体到博客中。
+2. 得到字体名称。
+3. 在配置文件中配置。
+
+在 “页首 HTML 代码” 处添加以下三个 link 标签，如果你有其他的字体可以替换我给的例子：
+
+```html
+<link rel="stylesheet" href="https://fonts.loli.net/icon?family=ZCOOL+KuaiLe" />
+<link
+  rel="stylesheet"
+  href="https://cdn.bootcdn.net/ajax/libs/hack-font/3.3.0/web/hack-subset.min.css" />
+<link
+  rel="stylesheet"
+  href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-webfont/1.6.0/style.min.css" />
 ```
+
+字体有三处配置：
+
+（1）主要字体：所看见的绝大部分文字都是主要字体。
+
+（2）代码字体：代码块中的字体。
+
+（3）艺术字体：标题，菜单栏的字体。
+
+color、light 和 dark 都是全局 css 变量。我推荐的颜色有以下几个：
 
 <span style="color: #409EFF">#409EFF</span>
 <span style="color: #2D8CF0">#2D8CF0</span>
@@ -284,6 +301,35 @@ window.__BLEU_CONFIG__ = {
 <span style="color: #009688">#009688</span>
 <span style="color: #673BB7">#673BB7</span>
 <span style="color: #906f61">#906f61</span>
+
+```js
+window.__BLEU_CONFIG__ = {
+  theme: {
+    color: "#409EFF",
+    light: {
+      secondary: "#393939",
+      thirdly: "#6e6e6e",
+      bgA: "#f8f8f8"
+    },
+    dark: {
+      secondary: "#b9b9b9",
+      thirdly: "#8b8b8b",
+      bgA: "#222222"
+    },
+    style: {
+      artFontFamily: "ZCOOL KuaiLe",
+      artFontSize: 1.2,
+      mainFontSize: 1,
+      codeFontSize: 0.9,
+      codeFontFamily: "Hack",
+      mainLetterSpacing: 1.7,
+      codeLetterSpacing: 1.3,
+      mainLineHeight: 1.7,
+      codeLineHeight: 1.7
+    }
+  }
+};
+```
 
 ## icon
 
@@ -423,94 +469,6 @@ window.__BLEU_CONFIG__ = {
           ]
         }
       ]
-    }
-  }
-};
-```
-
-## font
-
-- 类型：object
-- 是否必填：否
-
-配置主题的字体，默认字体使用 Element-Plus 的字体集。
-
-1. 在“页首 HTML 代码”处插入一个字体 cdn 或者字体网址的 link 标签，表示引入字体到博客中。
-2. 得到字体名称。
-3. 在配置文件中配置。
-
-在 “页首 HTML 代码” 处添加以下三个 link 标签，如果你有其他的字体可以替换我给的例子：
-
-```html
-<link rel="stylesheet" href="https://fonts.loli.net/icon?family=ZCOOL+KuaiLe" />
-<link
-  rel="stylesheet"
-  href="https://cdn.bootcdn.net/ajax/libs/hack-font/3.3.0/web/hack-subset.min.css" />
-<link
-  rel="stylesheet"
-  href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-webfont/1.6.0/style.min.css" />
-```
-
-字体有三处配置：
-
-（1）主要字体：所看见的绝大部分文字都是主要字体。
-
-（2）代码字体：代码块中的字体。
-
-（3）艺术字体：标题，菜单栏的字体。
-
-```js
-window.__BLEU_CONFIG__ = {
-  font: {
-    code: {
-      name: "Hack, LXGW WenKai",
-      // 修改文章中代码块字体大小，单位建议 rem
-      size: 0.8
-    },
-    main: {
-      // 主要的字体样式，建议 LXGW WenKai，这个字体我认为非常美观
-      name: "LXGW WenKai"
-    },
-    art: {
-      name: "ZCOOL KuaiLe",
-      // 修改艺术字体大小，单位建议 rem
-      size: 1.2
-    }
-  }
-};
-```
-
-## unocss
-
-- 类型：object
-- 是否必填：否
-
-自定义 unocss。具体可以查阅 [UnoCSS 交互文档](https://unocss.dev/interactive/)。以下是本主题设置的 shortcuts，简化 flex items-center 等值的设置，对照以下列表来设置。
-
-```js
-const keys = [
-  { k: "c", v: "center" },
-  { k: "s", v: "start" },
-  { k: "e", v: "end" },
-  { k: "b", v: "between" },
-  { k: "a", v: "around" }
-];
-```
-
-```js
-window.__BLEU_CONFIG__ = {
-  unocss: {
-    ab: {
-      // 自定义文章内容图片的对其方式，左、中、右
-      img: "f-c-c",
-      // 自定义文章内容字体大小
-      text: "text-1rem"
-    },
-    co: {
-      // 自定义评论内容图片的对其方式，左、中、右
-      img: "f-c-s",
-      // 自定义评论内容字体大小
-      text: "text-0.9rem"
     }
   }
 };

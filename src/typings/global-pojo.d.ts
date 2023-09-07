@@ -183,17 +183,13 @@ interface BleuConfig {
       opacity: number;
       position: string;
     };
-    stochastic: string[];
     home: {
       opacity: number;
       interval: number;
       carousel: string[];
       disabled: boolean;
     };
-  };
-  unocss: {
-    ab: { img: string; text: string };
-    co: { img: string; text: string };
+    stochastic: string[];
   };
   fancybox: any;
   echart: {
@@ -204,11 +200,52 @@ interface BleuConfig {
       series: { type: string; data: any }[];
     };
   };
-  theme: { color: string };
-  font: {
-    main: { name?: string };
-    code: { name?: string; size: number };
-    art: { name?: string; size: number };
+  theme: {
+    color: string;
+    dark: Record<string, any>;
+    light: Record<string, any>;
+    style: {
+      /**
+       * 文章文字类型
+       */
+      mainFontFamily?: string;
+      /**
+       * 文章文字大小
+       */
+      mainFontSize: number;
+      /**
+       * 代码块文字类型
+       */
+      codeFontFamily?: string;
+      /**
+       * 代码块文字大小
+       */
+      codeFontSize: number;
+      /**
+       * 艺术字体类型
+       */
+      artFontFamily?: string;
+      /**
+       * 艺术字体大小
+       */
+      artFontSize: number;
+      /**
+       * 博文所有标签下的文字间距
+       */
+      mainLetterSpacing: number;
+      /**
+       * 代码块文字间距
+       */
+      codeLetterSpacing: number;
+      /**
+       *
+       */
+      mainLineHeight: number;
+      /**
+       *
+       */
+      codeLineHeight: number;
+    };
   };
 }
 

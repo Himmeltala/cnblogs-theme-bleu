@@ -29,7 +29,7 @@ async function confirmDeleteComment() {
 </script>
 
 <template>
-  <div class="text-b text-0.8rem" v-show="!comment.isEditing && !comment.isAnsling">
+  <div class="text-thirdly text-0.8rem" v-show="!comment.isEditing && !comment.isAnsling">
     <el-popconfirm
       confirm-button-text="确定"
       cancel-button-text="取消"

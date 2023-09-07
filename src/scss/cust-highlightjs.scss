@@ -8,13 +8,16 @@
   display: block;
   overflow-x: auto;
   overflow-y: hidden;
-  color: var(--text-a) !important;
+  color: var(--l-text-secondary) !important;
   font-family: var(--l-code-family) !important;
   font-size: var(--l-code-size) !important;
-
+  line-height: var(--l-code-line-height) !important;
+  letter-spacing: var(--l-code-letter-spacing) !important;
+  
   span {
     font-family: var(--l-code-family) !important;
     font-size: var(--l-code-size) !important;
+    letter-spacing: var(--l-code-letter-spacing) !important;
   }
 
   &::-webkit-scrollbar {
@@ -27,8 +30,7 @@
   }
 
   &:hover::-webkit-scrollbar-thumb {
-    --uno: rd-2;
-    background-color: var(--bg-4);
+    --uno: rd-2 dark:bg-#7f7f7f light:bg-#d5d5d5;
   }
 }
 

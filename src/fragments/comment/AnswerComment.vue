@@ -75,7 +75,7 @@ function cancel() {
       </div>
     </div>
     <div
-      class="float-right f-c-e text-0.9rem text-b"
+      class="float-right f-c-e text-0.9rem text-thirdly"
       :class="{ 'answer-item': !comment.isAnsling, ' w-100%': comment.isAnsling }">
       <div v-show="!comment.isAnsling && !comment.isEditing" class="hover f-c-e" @click="before">
         <div class="i-tabler-message-circle mr-1"></div>

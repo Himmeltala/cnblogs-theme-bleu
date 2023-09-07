@@ -66,11 +66,11 @@ watch(route, async () => {
             </template>
           </el-page-header>
           <div
-            class="mb-5 text-0.9rem text-c"
+            class="mb-5 text-0.9rem text-thirdly"
             v-html="typeL1Arbeiten.desc2 || typeL1Arbeiten.desc"></div>
           <div class="mb-10 text-0.9rem" v-if="typeL2Arbeiten?.length">
             <div
-              class="hover f-c-s text-b"
+              class="hover f-c-s text-thirdly"
               v-for="(item, index) in typeL2Arbeiten"
               :class="{ 'mb-3': index != typeL2Arbeiten.length - 1 }">
               <div class="i-tabler-folder-plus mr-2"></div>

@@ -1,0 +1,14 @@
+/**
+ * 覆盖 element-plus 样式
+ *
+ * @author Himmelbleu
+ * @date 2023 年 1 月 15 日
+ */
+:root {
+  --el-color-primary: var(--l-text-primary) !important;
+  --el-text-color-regular: var(--l-text-secondary) !important;
+  --el-text-color-primary: var(--l-text-secondary) !important;
+  --el-border-radius-base: 0.5rem !important;
+  --el-fill-color-blank: transparent !important;
+  --el-text-color-placeholder: var(--l-text-thirdly) !important;
+}

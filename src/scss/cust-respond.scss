@@ -5,7 +5,7 @@
  * @date 2023 年 1 月 15 日
  */
 html {
-  --l-respond-text: 14px;
+  --l-text-size: 14px;
 }
 
 // 小于 1400px 都是 14px，超过 1400px 就开始依次往上递增
@@ -14,7 +14,7 @@ html {
 
   @media screen and (min-width: $min) {
     html {
-      --l-respond-text: #{calc($min / 100)};
+      --l-text-size: #{calc($min / 100)};
     }
   }
 }

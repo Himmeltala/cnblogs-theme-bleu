@@ -1,4 +1,4 @@
-@use "../common/mixins";
+@use "./mixins";
 
 /**
  * markdown 样式
@@ -7,12 +7,14 @@
  * @date 2023 年 6 月 11 日
  */
 .markdown-textual {
+  font-size: var(--l-main-font-size);
+
   h2,
   h3,
   h4,
   h5,
   h6 {
-    font-weight: 800 !important;
+    font-weight: 600 !important;
   }
 
   h1 {
@@ -20,7 +22,7 @@
     color: #f0f0f0;
     position: relative;
     display: inline-block;
-    background: var(--text-primary);
+    background: var(--l-text-primary);
     padding: 0.3rem 1.5rem 0.1rem 1rem;
     border-top-right-radius: 0.5rem;
     border-top-left-radius: 0.5rem;
@@ -39,7 +41,7 @@
         left: 0;
         display: block;
         width: calc(100vw - 2rem);
-        border-bottom: 2px solid var(--text-primary);
+        border-bottom: 2px solid var(--l-text-primary);
       }
     }
 
@@ -51,7 +53,7 @@
         left: 0;
         display: block;
         width: 55vw;
-        border-bottom: 2px solid var(--text-primary);
+        border-bottom: 2px solid var(--l-text-primary);
       }
     }
   }
@@ -71,7 +73,7 @@
       height: 100%;
       border-top-right-radius: 0.5rem;
       border-bottom-left-radius: 0.5rem;
-      background-color: var(--text-primary);
+      background-color: var(--l-text-primary);
     }
   }
 
@@ -92,11 +94,11 @@
   }
 
   blockquote {
-    background-color: var(--bg-1);
-    color: var(--text-b);
+    background-color: var(--l-bg-a);
+    color: var(--l-text-thirdly);
     margin: 0;
     border-left-width: 0.3rem;
-    border-left-color: var(--text-primary);
+    border-left-color: var(--l-text-primary);
     border-left-style: solid;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
@@ -122,7 +124,7 @@
     margin: 1.5rem 0;
 
     a {
-      --uno: hover b-b-a b-b-1 b-b-dotted text-a hover:b-b-primary;
+      --uno: hover b-b-a b-b-1 b-b-dotted text-secondary hover:b-b-primary;
       padding-bottom: 2px;
     }
   }
@@ -143,7 +145,12 @@
       left: 2.3rem;
       top: 0;
       height: 100%;
-      --uno: hover b-b-a b-l-1 b-l-dotted text-a;
+      --uno: hover b-b-a b-l-1 b-l-dotted text-secondary;
+    }
+
+    a {
+      --uno: hover b-b-a b-b-1 b-b-dotted text-secondary hover:b-b-primary;
+      padding-bottom: 2px;
     }
 
     li {
@@ -160,7 +167,7 @@
         position: absolute;
         top: 0;
         left: -2.5rem;
-        --uno: f-c-c text-0.8rem text-a dark:bg-#313131 light:bg-#e0e0e0;
+        --uno: f-c-c text-0.8rem text-secondary dark:bg-#313131 light:bg-#e0e0e0;
       }
     }
 
@@ -188,9 +195,8 @@
 }
 
 .bleu-pre {
-  --uno: rd-2;
+  --uno: rd-2 dark:bg-#1f1f1fbd light:bg-#f1f1f1bd;
   margin: 1.5rem 0;
-  background: var(--bg-3);
 
   pre {
     margin: 0;
@@ -199,7 +205,7 @@
 
   .tools {
     .left {
-      --uno: b-b-c b-b-1 b-b-solid text-a;
+      --uno: b-b-c b-b-1 b-b-solid text-secondary;
       padding: 0.5rem 1.2rem 0.4rem 1.2rem;
       margin-top: 0.5rem;
     }
@@ -227,7 +233,7 @@
   padding: 1rem 1rem 1rem 1.5rem;
 
   a {
-    --uno: hover b-b-a b-b-1 b-b-dotted text-a hover:b-b-primary;
+    --uno: hover b-b-a b-b-1 b-b-dotted text-secondary hover:b-b-primary;
     padding-bottom: 2px;
   }
 }
@@ -248,8 +254,7 @@
 }
 
 .bleu-war {
-  color: var(--hight-color-2);
-  --uno: dark:bg-#4905058b light:bg-#ecc5c5bf;
+  --uno: dark:bg-#4905058b light:bg-#ecc5c5bf dark:color-#C8C8C8 light:color-#404040;
 
   @include war-tip-before() {
     --uno: dark:bg-#c32b2be2 light:bg-#d45959e2;
@@ -257,8 +262,7 @@
 }
 
 .bleu-tip {
-  color: var(--hight-color-2);
-  --uno: dark:bg-#012e018b light:bg-#c8d4c8bf;
+  --uno: dark:bg-#012e018b light:bg-#c8d4c8bf dark:color-#C8C8C8 light:color-#404040;
   
   @include war-tip-before() {
     --uno: dark:bg-#009400c2 light:bg-#5aa35ac2;
@@ -274,5 +278,5 @@
 }
 
 a > code {
-  color: var(--text-primary) !important;
+  color: var(--l-text-primary) !important;
 }

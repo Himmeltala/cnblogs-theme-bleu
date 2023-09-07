@@ -37,7 +37,7 @@ await fetchData();
           <div class="text-1.2rem mb-5 mt-4">相册 - {{ albumn.title }}</div>
         </template>
       </el-page-header>
-      <div class="mb-4 text-0.9rem text-b">{{ albumn.desc }}</div>
+      <div class="mb-4 text-0.9rem text-thirdly">{{ albumn.desc }}</div>
       <div class="f-c-b flex-wrap">
         <a
           v-for="item in imgList"

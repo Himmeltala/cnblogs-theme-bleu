@@ -3,7 +3,7 @@ import zhCn from "element-plus/lib/locale/lang/zh-cn";
 
 const disabled = ref(!BleuVars.isPcDevice());
 
-provide(ProvideKey.Catalog, disabled);
+provide(KeyVals.CATALOG_FLAG, disabled);
 </script>
 
 <template>
@@ -47,7 +47,7 @@ provide(ProvideKey.Catalog, disabled);
   .bar,
   .track {
     height: 100%;
-    background: var(--text-primary);
+    background: var(--l-text-primary);
   }
 
   .bar.bar-active {

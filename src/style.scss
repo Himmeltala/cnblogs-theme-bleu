@@ -1,8 +1,8 @@
 @use "@/scss/themes";
-@use "@/scss/custs/cust-respond";
-@use "@/scss/custs/cust-markdown";
-@use "@/scss/custs/cust-highlightjs";
-@use "@/scss/custs/cust-element-plus";
+@use "@/scss/cust-respond";
+@use "@/scss/cust-markdown";
+@use "@/scss/cust-highlightjs";
+@use "@/scss/cust-element-plus";
 
 @use "element-plus/theme-chalk/dark/css-vars.css";
 @use "@fancyapps/ui/dist/fancybox/fancybox.css";
@@ -15,9 +15,9 @@ html,
 body {
   margin: 0;
   padding: 0;
-  color: var(--text-a);
-  font-size: var(--l-respond-text);
-  background-color: var(--bg-1);
+  color: var(--l-text-secondary);
+  font-size: var(--l-text-size);
+  background-color: var(--l-bg-a);
 
   &::-webkit-scrollbar {
     display: none;
@@ -132,7 +132,7 @@ a:link {
     height: 15rem;
     border: none;
     outline: none;
-    color: var(--text-a);
+    color: var(--l-text-secondary);
     resize: none;
   }
 }

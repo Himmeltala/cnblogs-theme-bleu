@@ -41,7 +41,7 @@ function currentChange(ind: number) {
   <div class="pagination relative">
     <div
       v-if="!disabled"
-      class="button hover left f-c-c text-c"
+      class="button hover left f-c-c text-thirdly"
       @click="prevChange"
       v-show="index !== 1 && count">
       <i-ep-arrow-left-bold />
@@ -51,7 +51,7 @@ function currentChange(ind: number) {
     </div>
     <div
       v-if="!disabled"
-      class="button hover right f-c-c text-c"
+      class="button hover right f-c-c text-thirdly"
       @click="nextChange"
       v-show="index !== count && count">
       <i-ep-arrow-right-bold />

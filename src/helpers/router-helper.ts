@@ -11,7 +11,7 @@ export const routes = <RouteRecordRaw[]>[
   {
     name: RouterName.BleuHome,
     path: RouterPath.BleuHome(),
-    component: () => import("@/views/BleuHome.vue"),
+    component: () => import("@/views/home/BleuHome.vue"),
     meta: { title: "首页" }
   },
   {

@@ -11,12 +11,6 @@ const props = defineProps({
     type: String,
     required: true
   },
-  unocssImg: {
-    type: String
-  },
-  unocssText: {
-    type: String
-  },
   fancyGroup: {
     type: String,
     required: true
@@ -77,13 +71,17 @@ function refactorImg(str: string) {
   const mtAlt = str.match(/alt="([^"]*)"/);
 
   const content = `
-    <div class="bleu-img ${props.unocssImg}">
-      <div>
-        <a href="${mtSrc[1]}" data-fancybox="bleu-gallery-${props.fancyGroup}"
-          data-download-src="${mtSrc[1]}" data-caption="${mtAlt ? mtAlt[1] : ""}">
-          <img src="${mtSrc[1]}" class="rd-2" alt="${mtAlt ? mtAlt[1] : ""}" />
-        </a>
-        <div class="f-c-c text-0.9rem text-b">${mtAlt ? mtAlt[1] : ""}</div>
+    <div class="bleu-img f-c-c">
+      <div class="bleu-img__wrapper">
+        <div class="bleu-img__fancybox f-c-c">
+          <a href="${mtSrc[1]}" data-fancybox="bleu-gallery-${props.fancyGroup}"
+            data-download-src="${mtSrc[1]}" data-caption="${mtAlt ? mtAlt[1] : ""}">
+            <img src="${mtSrc[1]}" class="rd-2" />
+          </a>
+        </div>
+        <div class="bleu-img__caption text-center text-0.9rem text-thirdly">${
+          mtAlt ? mtAlt[1] : ""
+        }</div>
       </div>
     </div>
   `;
@@ -92,11 +90,11 @@ function refactorImg(str: string) {
 }
 
 function generateTip(str: string) {
-  return `<div class="bleu-tip"><div class="mb-2 font-bold">💡提示</div><div>${str}</div></div>`;
+  return `<div class="bleu-tip"><div class="bleu-tip__hint mb-2 font-bold">💡提示</div><div class="bleu-tip__content">${str}</div></div>`;
 }
 
 function generateWar(str: string) {
-  return `<div class="bleu-war "><div class="mb-2 font-bold">❗注意</div><div>${str}</div></div>`;
+  return `<div class="bleu-war "><div class="bleu-tip__hint mb-2 font-bold">❗注意</div><div class="bleu-tip__content">${str}</div></div>`;
 }
 
 function generatePorter(str: string) {
@@ -111,12 +109,12 @@ function generatePorter(str: string) {
   return `
   <div class="bleu-porter f-c-c">
     <div class="hover-porter lg:w-50% transition-all-500 dark:bg-#232323 light:bg-#f2f2f2 rd-2 px-5 py-5">
-      <a href="${link}" target="_blank">
-        <div class="f-c-b">
-          <img class="w-15 h-15 rd-50% object-cover" src="${cover}" />
-          <div class="w-80%">
-            <div class="font-bold text-ellipsis line-clamp-1">${title}</div>
-            <div class="text-0.9rem text-c text-ellipsis line-clamp-1">${link}</div>
+      <a class="hover-porter__a" href="${link}" target="_blank">
+        <div class="hover-porter__wrapper f-c-b">
+          <img class="hover-porter__img w-15 h-15 rd-50% object-cover" src="${cover}" />
+          <div class="hover-porter__content w-80%">
+            <div class="hover-porter__title font-bold text-ellipsis line-clamp-1">${title}</div>
+            <div class="hover-porter__link text-0.9rem text-thirdly text-ellipsis line-clamp-1">${link}</div>
           </div>
         </div>
       </a>
@@ -125,7 +123,7 @@ function generatePorter(str: string) {
 }
 
 const size = Number(getComputedStyle(document.documentElement).fontSize.replace("px", ""));
-const step = BleuVars.config.font.code.size * size * 1.7;
+const step = BleuVars.config.theme.style.codeFontSize * size * 1.7;
 
 function extractTempFromPreCode(
   str: string,
@@ -170,12 +168,16 @@ function extractLangTempFromPreCode(str: string) {
   const lang = str.match(/<code class="language-([\d\w]+)"/)[1].toUpperCase();
 
   const temp = `
-      <div class="tools ${label ? "f-c-b" : "f-c-e"} f-c-b rd-2 text-0.8rem w-100%">
-        ${label ? `<div class="left flow-auto white-nowrap scroll-none">${label}</div>` : ""}
-        <div class="right f-c-e flex-auto white-nowrap scroll-none select-none">
-          <div class="language mr-2 text-a">${lang} 语言</div>
-          <div class="clipboard hover mr-2 text-b">复制代码</div>
-          <div class="togglecode hover text-b">收起或展开</div>
+      <div class="tools ${label ? "f-c-b" : "f-c-e"} f-c-b rd-2 w-100%">
+        ${
+          label
+            ? `<div class="left text-0.9rem flow-auto white-nowrap scroll-none">${label}</div>`
+            : ""
+        }
+        <div class="right text-0.8rem f-c-e flex-auto white-nowrap scroll-none select-none">
+          <div class="language mr-2 text-secondary">${lang} 语言</div>
+          <div class="clipboard hover mr-2 text-thirdly">复制代码</div>
+          <div class="togglecode hover text-thirdly">收起或展开</div>
         </div>
       </div>
       ${!label ? `<div class="mb-6"></div>` : ""}
@@ -230,7 +232,7 @@ function generatePreCode(str: string) {
 
   str = str.replace(
     "<pre>",
-    `<div class="bleu-pre">${langTemp.temp}<pre class="bleu-pre-body scroll-none relative flow-hidden">${addTemp.temp}${delTemp.temp}${litTemp.temp}`
+    `<div class="bleu-pre">${langTemp.temp}<pre class="bleu-pre__body scroll-none relative flow-hidden">${addTemp.temp}${delTemp.temp}${litTemp.temp}`
   );
 
   return str + "</div></pre>";
@@ -296,10 +298,8 @@ watch(textualRef, () => {
 </script>
 
 <template>
-  <div
-    ref="textualInst"
-    class="markdown-textual"
-    :class="unocssText"
-    v-html="markdownTemplate"></div>
+  <div ref="textualInst" class="markdown-textual" v-html="markdownTemplate"></div>
   <Catalog v-if="enableCatalog" :textual="textual" :dom="textualInst" />
 </template>
+
+<style lang="scss" scoped></style>

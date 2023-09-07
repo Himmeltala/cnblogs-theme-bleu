@@ -12,7 +12,7 @@ const props = defineProps({
 
 const domRef = toRef(props, "dom");
 const textualRef = toRef(props, "textual");
-const disabled = inject<boolean>(ProvideKey.Catalog);
+const disabled = inject<boolean>(KeyVals.CATALOG_FLAG);
 const translate = shallowRef("");
 const catalogList = shallowRef();
 
@@ -109,10 +109,10 @@ onUnmounted(() => () => {
     id="l-catalog"
     :class="{ 'catalog-disable': disabled, 'catalog-show': !disabled }"
     p="l-4 y-6"
-    class="scroll-none fixed lt-sm:bg-b1 lt-sm:top-0 lt-sm:h-100vh sm:top-4vh sm:h-92vh w-16rem rd-2 flow-auto z-90"
+    class="scroll-none fixed lt-sm:bg-ba lt-sm:top-0 lt-sm:h-100vh sm:top-4vh sm:h-92vh w-16rem rd-2 flow-auto z-90"
     v-if="catalogList && catalogList.length">
     <div class="relative">
-      <div class="ml-6 text-b">
+      <div class="ml-6 text-thirdly">
         <div
           class="text-0.8rem mb-4 h-1.5rem f-c-s text-ellipsis line-clamp-1"
           v-for="item in catalogList"
@@ -130,7 +130,7 @@ onUnmounted(() => () => {
 
 <style lang="scss">
 .catalog-active {
-  color: var(--hight-color-1);
+  --uno: light:color-black dark:color-white;
 }
 </style>
 
@@ -187,7 +187,7 @@ onUnmounted(() => () => {
   width: 0.25rem;
   height: 100%;
   border-radius: 0.25rem;
-  background-color: var(--text-a);
+  background-color: var(--l-text-secondary);
   opacity: 0.15;
   top: 0;
   left: 0;

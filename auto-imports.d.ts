@@ -13,8 +13,6 @@ declare global {
   const KeyVals: typeof import('@/constants/index')['KeyVals']
   const Native: typeof import('@/utils/index')['Native']
   const Navigation: typeof import('@/utils/index')['Navigation']
-  const PrettifyLog: typeof import('@/utils/index')['PrettifyLog']
-  const ProvideKey: typeof import('@/constants/index')['ProvideKey']
   const Random: typeof import('@/utils/index')['Random']
   const RouterName: typeof import('@/constants/index')['RouterName']
   const RouterPath: typeof import('@/constants/index')['RouterPath']
@@ -329,8 +327,6 @@ declare module 'vue' {
     readonly KeyVals: UnwrapRef<typeof import('@/constants/index')['KeyVals']>
     readonly Native: UnwrapRef<typeof import('@/utils/index')['Native']>
     readonly Navigation: UnwrapRef<typeof import('@/utils/index')['Navigation']>
-    readonly PrettifyLog: UnwrapRef<typeof import('@/utils/index')['PrettifyLog']>
-    readonly ProvideKey: UnwrapRef<typeof import('@/constants/index')['ProvideKey']>
     readonly Random: UnwrapRef<typeof import('@/utils/index')['Random']>
     readonly RouterName: UnwrapRef<typeof import('@/constants/index')['RouterName']>
     readonly RouterPath: UnwrapRef<typeof import('@/constants/index')['RouterPath']>
@@ -635,8 +631,6 @@ declare module '@vue/runtime-core' {
     readonly KeyVals: UnwrapRef<typeof import('@/constants/index')['KeyVals']>
     readonly Native: UnwrapRef<typeof import('@/utils/index')['Native']>
     readonly Navigation: UnwrapRef<typeof import('@/utils/index')['Navigation']>
-    readonly PrettifyLog: UnwrapRef<typeof import('@/utils/index')['PrettifyLog']>
-    readonly ProvideKey: UnwrapRef<typeof import('@/constants/index')['ProvideKey']>
     readonly Random: UnwrapRef<typeof import('@/utils/index')['Random']>
     readonly RouterName: UnwrapRef<typeof import('@/constants/index')['RouterName']>
     readonly RouterPath: UnwrapRef<typeof import('@/constants/index')['RouterPath']>

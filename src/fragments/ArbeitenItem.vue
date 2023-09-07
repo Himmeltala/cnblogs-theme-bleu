@@ -35,7 +35,7 @@ defineProps({
         :to="RouterPath.Arbeiten(item.id)">
         {{ item.text }}
       </router-link>
-      <div class="f-c-s mb-4 text-0.9rem text-b">
+      <div class="f-c-s mb-4 text-0.9rem text-thirdly">
         <div class="mr-3 f-c-c">
           <i-ep-view class="mr-2" />
           {{ item.view }}
@@ -49,10 +49,10 @@ defineProps({
           {{ item.digg }}
         </div>
       </div>
-      <div class="text-c text-ellipsis line-clamp-4">
+      <div class="text-thirdly text-ellipsis line-clamp-4">
         {{ item.desc }}
       </div>
-      <div class="hover f-c-s mt-6 text-0.9rem text-b">
+      <div class="hover f-c-s mt-6 text-0.9rem text-thirdly">
         <i-ep-caret-right class="mr-2" />
         <router-link class="b-b-1 b-b-dotted p-b-0.5" :to="RouterPath.Arbeiten(item.id)">
           阅读全文
@@ -64,7 +64,7 @@ defineProps({
           <el-tag type="danger" v-if="item.isOnlyMe" class="mr-2">自己可见</el-tag>
           <el-tag type="warning" v-if="item.isLocked" class="mr-2">密码锁定</el-tag>
         </div>
-        <div class="text-0.9rem text-b f-c-c">
+        <div class="text-0.9rem text-thirdly f-c-c">
           <i-ep-clock class="mr-2" />
           {{ item.date }}
         </div>
@@ -88,7 +88,7 @@ defineProps({
         <img class="w-100% h-8rem object-cover" :src="item.surface || cover" />
         <div class="mask absolute bottom-0 left-0 w-100% h-15%"></div>
       </div>
-      <div class="w-52% text-c">
+      <div class="w-52% text-thirdly">
         <div
           class="text-ellipsis"
           :class="item.isTop || item.isOnlyMe || item.isLocked ? 'line-clamp-2' : 'line-clamp-5'">
@@ -106,7 +106,7 @@ defineProps({
         <div class="mask absolute bottom-0 left-0 w-100% h-15%"></div>
       </div>
     </div>
-    <div class="f-c-s mb-4 text-0.9rem text-b">
+    <div class="f-c-s mb-4 text-0.9rem text-thirdly">
       <div class="mr-3 f-c-c">
         <i-ep-view class="mr-2" />
         {{ item.view }}
@@ -120,7 +120,7 @@ defineProps({
         {{ item.digg }}
       </div>
     </div>
-    <div class="f-c-b mt-6 text-0.9rem text-b">
+    <div class="f-c-b mt-6 text-0.9rem text-thirdly">
       <div class="f-c-c hover">
         <i-ep-caret-right class="mr-2" />
         <router-link class="b-b-1 b-b-dotted p-b-0.5" :to="RouterPath.Arbeiten(item.id)">

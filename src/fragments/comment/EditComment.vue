@@ -70,7 +70,7 @@ function cancel() {
       </div>
     </div>
     <div
-      class="float-right f-c-e text-0.9rem text-b"
+      class="float-right f-c-e text-0.9rem text-thirdly"
       :class="{ 'edit-item': !comment.isEditing, 'w-100%': comment.isEditing }">
       <div v-show="!comment.isEditing && !comment.isAnsling" class="hover f-c-e" @click="before">
         <div class="i-tabler-pencil-minus mr-1"></div>

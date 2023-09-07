@@ -1,4 +1,5 @@
 import vue from "@vitejs/plugin-vue";
+import vueJsx from "@vitejs/plugin-vue-jsx";
 import { defineConfig, loadEnv } from "vite";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
@@ -12,6 +13,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       vue(),
+      vueJsx(),
       UnoCSS({
         configFile: "./uno.config.ts"
       }),
@@ -27,14 +29,7 @@ export default defineConfig(({ mode }) => {
           "vue-router",
           "@vueuse/core",
           {
-            "@/constants/index": [
-              "RouterName",
-              "RouterPath",
-              "RouterRegx",
-              "ProvideKey",
-              "BleuVars",
-              "KeyVals"
-            ]
+            "@/constants/index": ["RouterName", "RouterPath", "RouterRegx", "BleuVars", "KeyVals"]
           },
           {
             "@/utils/index": [
@@ -42,7 +37,6 @@ export default defineConfig(({ mode }) => {
               "Formatter",
               "Native",
               "Navigation",
-              "PrettifyLog",
               "Random",
               "BleuStorage",
               "Textual"
@@ -96,8 +90,8 @@ export default defineConfig(({ mode }) => {
         scss: {
           additionalData: `
             @use "sass:math";
-            @use "@/scss/common/mixins";
-            @use "@/scss/common/variables";
+            @use "@/scss/mixins";
+            @use "@/scss/variables";
           `
         }
       }

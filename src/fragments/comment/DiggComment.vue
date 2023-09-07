@@ -26,7 +26,7 @@ async function diggComment() {
 <template>
   <div
     v-show="!comment.isEditing && !comment.isAnsling"
-    class="hover f-c-c text-0.8rem text-b"
+    class="hover f-c-c text-0.8rem text-thirdly"
     @click="diggComment">
     <div class="i-tabler-thumb-up mr-1"></div>
     <div>支持 {{ comment.digg }}</div>
