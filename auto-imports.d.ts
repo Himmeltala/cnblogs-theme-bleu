@@ -10,6 +10,7 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const ElMessage: typeof import('element-plus/es')['ElMessage']
   const Formatter: typeof import('@/utils/index')['Formatter']
+  const KeyVals: typeof import('@/constants/index')['KeyVals']
   const Native: typeof import('@/utils/index')['Native']
   const Navigation: typeof import('@/utils/index')['Navigation']
   const PrettifyLog: typeof import('@/utils/index')['PrettifyLog']
@@ -325,6 +326,7 @@ declare module 'vue' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly Formatter: UnwrapRef<typeof import('@/utils/index')['Formatter']>
+    readonly KeyVals: UnwrapRef<typeof import('@/constants/index')['KeyVals']>
     readonly Native: UnwrapRef<typeof import('@/utils/index')['Native']>
     readonly Navigation: UnwrapRef<typeof import('@/utils/index')['Navigation']>
     readonly PrettifyLog: UnwrapRef<typeof import('@/utils/index')['PrettifyLog']>
@@ -630,6 +632,7 @@ declare module '@vue/runtime-core' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly Formatter: UnwrapRef<typeof import('@/utils/index')['Formatter']>
+    readonly KeyVals: UnwrapRef<typeof import('@/constants/index')['KeyVals']>
     readonly Native: UnwrapRef<typeof import('@/utils/index')['Native']>
     readonly Navigation: UnwrapRef<typeof import('@/utils/index')['Navigation']>
     readonly PrettifyLog: UnwrapRef<typeof import('@/utils/index')['PrettifyLog']>

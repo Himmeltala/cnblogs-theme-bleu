@@ -14,7 +14,4 @@ app.use(createPinia());
 app.config.globalProperties.isBlogOwner = isBlogOwner;
 app.config.globalProperties.isLogined = isLogined;
 
-useBleu(
-  () => app.mount("#app"),
-  () => app.mount("#app")
-);
+useBleu(app);

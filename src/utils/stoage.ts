@@ -8,7 +8,7 @@
  * 获取本地存储中的设置
  */
 export function getOptions() {
-  return useStorage<BleuOptions>(`l-${BleuVars.getBlogApp()}-setting`, {} as any);
+  return useStorage<BleuOptions>(KeyVals.OPS_KEY, {} as any);
 }
 
 /**

@@ -48,9 +48,9 @@ const openLineChartCount = ref(0);
 const isWinUp = ref(false);
 const isActiveMenu = ref(false);
 
-const carouselList = shallowRef(BleuVars.config.images?.home?.carousel);
+const carouselList = shallowRef(BleuVars.config.images.home.carousel);
 const carouselIndex = ref(0);
-const carouseLength = BleuVars.config.images?.home?.carousel?.length;
+const carouseLength = BleuVars.config.images.home.carousel.length;
 
 onMounted(() => {
   // 技能雷达
@@ -100,13 +100,13 @@ onMounted(() => {
     }
   );
 
-  if (!BleuVars.config.images?.home?.disabled && carouseLength) {
+  if (!BleuVars.config.images.home.disabled && carouseLength) {
     setInterval(() => {
       carouselIndex.value++;
       if (carouselIndex.value > carouseLength - 1) {
         carouselIndex.value = 0;
       }
-    }, BleuVars.config.images.home.interval || 5000);
+    }, BleuVars.config.images.home.interval);
   }
 });
 
@@ -244,14 +244,14 @@ await fetchData();
       <!-- open carousel -->
       <div
         v-if="
-          !BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel?.length
+          !BleuVars.config.images.home.disabled && BleuVars.config.images.home.carousel.length
         "
         class="lg:w-49% lt-lg:hidden h-100vh f-c-b relative">
         <img
           v-for="(item, index) in carouselList"
           :style="
             carouselIndex == index
-              ? { zIndex: 9, opacity: BleuVars.config.images?.home?.opacity || 0.5 }
+              ? { zIndex: 9, opacity: BleuVars.config.images.home.opacity }
               : { zIndex: 0, opacity: 0 }
           "
           class="w-100% h-100% transition-all-800 absolute top-0 left-0 object-cover"
@@ -261,7 +261,7 @@ await fetchData();
       <div
         v-else
         class="lg:w-49% lg:ml-10 lg:h-100vh"
-        :class="{ 'py-4': BleuVars.config.images?.home?.disabled }">
+        :class="{ 'py-4': BleuVars.config.images.home.disabled }">
         <div>
           <div class="caption mb-5">
             <div class="i-tabler-info-square-rounded mr-2"></div>
@@ -357,7 +357,7 @@ await fetchData();
     <!-- mb -->
     <div
       v-if="
-        !BleuVars.config.images?.home?.disabled && BleuVars.config.images?.home?.carousel?.length
+        !BleuVars.config.images.home.disabled && BleuVars.config.images.home.carousel.length
       "
       class="sm:f-s-b mt-10">
       <div class="sm:w-49%">

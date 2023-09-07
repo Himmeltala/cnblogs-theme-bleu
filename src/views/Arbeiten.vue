@@ -135,8 +135,8 @@ await fetchData(true);
       </div>
       <Markdown
         enable-catalog
-        :unocss-img="BleuVars.config.unocss?.ab?.img || 'f-c-c'"
-        :unocss-text="BleuVars.config.unocss?.ab?.text || 'text-1rem'"
+        :unocss-img="BleuVars.config.unocss.ab.img || 'f-c-c'"
+        :unocss-text="BleuVars.config.unocss.ab.text || 'text-1rem'"
         :fancy-group="'arbeiten'"
         :textual="ArbeData.content" />
       <div class="bg-b3 text-0.9rem p-5 text-b mt-10">

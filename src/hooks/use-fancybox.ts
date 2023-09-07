@@ -1,8 +1,8 @@
 import { Fancybox } from "@fancyapps/ui";
 
-export function useFancybox(options?: any) {
-  if (!options) {
-    options = {
+export function useFancybox() {
+  const options = Object.assign(
+    {
       Toolbar: {
         display: {
           left: ["infobar"],
@@ -13,13 +13,9 @@ export function useFancybox(options?: any) {
         }
       },
       Hash: false
-    };
-  }
+    },
+    BleuVars.config.fancybox
+  );
 
-  if (BleuVars.config?.fancybox) {
-    const merged = Object.assign({}, options, BleuVars.config.fancybox);
-    Fancybox.bind("[data-fancybox]", merged);
-  } else {
-    Fancybox.bind("[data-fancybox]", options);
-  }
+  Fancybox.bind("[data-fancybox]", options);
 }

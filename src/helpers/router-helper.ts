@@ -128,7 +128,7 @@ export function redirect(next: NavigationGuardNext) {
   const matched = routeRules.find(rule => rule.regex.test(window.location.href));
 
   if (matched) {
-    if (matched.before) matched.before();
+    matched.before && matched.before();
     window.history.pushState(
       "",
       "",

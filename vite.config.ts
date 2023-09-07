@@ -32,7 +32,8 @@ export default defineConfig(({ mode }) => {
               "RouterPath",
               "RouterRegx",
               "ProvideKey",
-              "BleuVars"
+              "BleuVars",
+              "KeyVals"
             ]
           },
           {

@@ -3,8 +3,8 @@ import { ArbeitenApi } from "@/apis";
 
 const route = useRoute();
 const archiveList = shallowRef();
-const imgList = BleuVars.config.images?.arbeiten || [];
-const imgIndexList = shallowRef<number[]>();
+const stochastic = BleuVars.config.images.stochastic;
+const stochasticIndexs = shallowRef<number[]>();
 const loading = new Broswer.Loading();
 
 let archiveDate = route.params.date as string;
@@ -23,7 +23,7 @@ async function fetchData() {
   }
 
   archiveList.value = await promise;
-  imgIndexList.value = Random.get(imgList, archiveList.value.data.length);
+  stochasticIndexs.value = Random.get(stochastic, archiveList.value.data.length);
 
   Broswer.setTitle(archiveList.value.hint);
   loading.endLoading();
@@ -62,7 +62,7 @@ await fetchData();
             :item="item"
             :index="index"
             :length="archiveList.data.length"
-            :cover="imgList[imgIndexList[index]]" />
+            :cover="stochastic[stochasticIndexs[index]]" />
         </template>
       </Pagination>
     </div>

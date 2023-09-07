@@ -125,7 +125,7 @@ function generatePorter(str: string) {
 }
 
 const size = Number(getComputedStyle(document.documentElement).fontSize.replace("px", ""));
-const step = (BleuVars.config.font?.code?.size || 0.8) * size * 1.7;
+const step = BleuVars.config.font.code.size * size * 1.7;
 
 function extractTempFromPreCode(
   str: string,

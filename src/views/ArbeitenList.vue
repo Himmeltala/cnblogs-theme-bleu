@@ -4,8 +4,8 @@ import { ArbeitenApi } from "@/apis";
 const route = useRoute();
 const router = useRouter();
 const arbeitenList = shallowRef<BleuArbeitenList>();
-const couvertureIndexs = shallowRef<number[]>();
-const couverture = BleuVars.config.images?.arbeiten || [];
+const stochasticIndexs = shallowRef<number[]>();
+const stochastic = BleuVars.config.images.stochastic;
 const loading = new Broswer.Loading();
 
 const defaultIndex = ref(1);
@@ -14,7 +14,7 @@ async function fetchData(index: any) {
   loading.startLoading();
   router.replace(RouterPath.ArbeitenList(index));
   arbeitenList.value = await ArbeitenApi.getList(index);
-  couvertureIndexs.value = Random.get(couverture, arbeitenList.value.data.length);
+  stochasticIndexs.value = Random.get(stochastic, arbeitenList.value.data.length);
   loading.endLoading();
 }
 
@@ -55,7 +55,7 @@ await takeQueryToFetchData();
             :item="item"
             :index="index"
             :length="arbeitenList.data.length"
-            :cover="couverture[couvertureIndexs[index]]" />
+            :cover="stochastic[stochasticIndexs[index]]" />
         </template>
       </Pagination>
     </div>

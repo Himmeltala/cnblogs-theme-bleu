@@ -374,7 +374,7 @@ window.__BLEU_CONFIG__ = {
       disabled: true
     },
     // 随笔和文章列表封面图
-    arbeiten: [
+    stochastic: [
       ""
     ]
   }
@@ -383,20 +383,18 @@ window.__BLEU_CONFIG__ = {
 
 随笔和文章列表封面图不超过 10 个时，会重复看到图片。
 
-## chart
+## echart
 
 - 类型：object
 - 是否必填：是
-
-（1）技能雷达
 
 查看官方示例 [echart 雷达图示例](https://echarts.apache.org/examples/zh/index.html#chart-type-radar)。
 
 ```js
 window.__BLEU_CONFIG__ = {
-  chart: {
+  echart: {
     // 我的技能，该属性和 echart 雷达图配置完全一致，可以参考官方文档来填写
-    tech: {
+    technics: {
       radar: {
         // 点
         indicator: [
@@ -414,13 +412,6 @@ window.__BLEU_CONFIG__ = {
       // 雷达图
       series: [
         {
-          // 区域颜色
-          areaStyle: {},
-          // 线条颜色
-          lineStyle: {},
-          itemStyle: {
-            color: "rgba(255, 0, 0, 0.7)" // 设置点的颜色，这里是红色，透明度为 0.7
-          },
           // 图表类型
           type: "radar",
           // 数据，与 indicator 的数量保持一致
@@ -432,27 +423,6 @@ window.__BLEU_CONFIG__ = {
           ]
         }
       ]
-    }
-  }
-};
-```
-
-查看官方文档说明：[areaStyle](https://echarts.apache.org/zh/option.html#series-radar.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-radar.lineStyle)、[itemStyle](https://echarts.apache.org/zh/option.html#legend.itemStyle)。
-
-（2）随笔归档折线图
-
-查看官方文档说明：[areaStyle](https://echarts.apache.org/zh/option.html#series-line.areaStyle)、[lineStyle](https://echarts.apache.org/zh/option.html#series-line.lineStyle)。
-
-```js
-window.__BLEU_CONFIG__ = {
-  chart: {
-    // 随笔分类饼状图统计前 count 个，可以不填，默认 10 个
-    category: {
-      areaStyle: {},
-      lineStyle: {},
-      itemStyle: {
-        color: "rgba(255, 0, 0, 0.7)" // 设置点的颜色，这里是红色，透明度为 0.7
-      }
     }
   }
 };

@@ -6,5 +6,6 @@ import * as PrettifyLog from "./prettify-log";
 import * as BleuStorage from "./stoage";
 import * as Textual from "./textual";
 import * as Random from "./random";
+import * as Objer from "./objer";
 
-export { Broswer, Formatter, Textual, Navigation, Native, PrettifyLog, BleuStorage, Random };
+export { Broswer, Formatter, Textual, Navigation, Native, PrettifyLog, BleuStorage, Random, Objer };

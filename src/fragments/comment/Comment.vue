@@ -83,8 +83,8 @@ await fetchData();
             class="z--1 opacity-0 absolute top-0 left-0"
             :id="'upload-img-' + index"></textarea>
           <Markdown
-            :unocss-img="BleuVars.config.unocss?.co?.img || 'f-c-s'"
-            :unocss-text="BleuVars.config.unocss?.co?.text || 'text-0.9rem'"
+            :unocss-img="BleuVars.config.unocss.co.img"
+            :unocss-text="BleuVars.config.unocss.co.text"
             :fancy-group="'comment-' + index"
             :textual="item.content" />
         </div>

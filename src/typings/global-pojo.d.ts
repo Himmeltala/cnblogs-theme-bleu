@@ -171,31 +171,31 @@ interface BleuArbeitenState {
  * 博客配置项
  */
 interface BleuConfig {
-  icon?: string;
-  avatar?: string;
-  signature?: string;
-  status?: string;
+  icon: string;
+  avatar: string;
+  signature: string;
+  status: string;
   images: {
-    background?: {
-      src?: string;
-      size?: string;
-      repeat?: string;
-      opacity?: number;
-      position?: string;
+    background: {
+      src: string;
+      size: string;
+      repeat: string;
+      opacity: number;
+      position: string;
     };
-    arbeiten?: string[];
-    home?: {
-      opacity?: number;
-      interval?: number;
-      carousel?: string[];
-      disabled?: boolean;
+    stochastic: string[];
+    home: {
+      opacity: number;
+      interval: number;
+      carousel: string[];
+      disabled: boolean;
     };
   };
-  unocss?: {
-    ab?: { img?: string; text?: string };
-    co?: { img?: string; text?: string };
+  unocss: {
+    ab: { img: string; text: string };
+    co: { img: string; text: string };
   };
-  fancybox?: any;
+  fancybox: any;
   echart: {
     technics: {
       radar: {
@@ -204,11 +204,11 @@ interface BleuConfig {
       series: { type: string; data: any }[];
     };
   };
-  theme?: { color?: string };
-  font?: {
-    main?: { name?: string };
-    code?: { name?: string; size?: number };
-    art?: { name?: string; size?: number };
+  theme: { color: string };
+  font: {
+    main: { name?: string };
+    code: { name?: string; size: number };
+    art: { name?: string; size: number };
   };
 }
 

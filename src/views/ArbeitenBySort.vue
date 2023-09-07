@@ -5,8 +5,8 @@ const router = useRouter();
 const route = useRoute();
 const typeL1Arbeiten = shallowRef<BleuArbeitenList2>();
 const typeL2Arbeiten = shallowRef<BleuArbeitenL2[]>();
-const arbeitenCouverture = BleuVars.config.images?.arbeiten || [];
-const couvertureIndexs = shallowRef<number[]>();
+const stochastic = BleuVars.config.images.stochastic;
+const stochasticIndexs = shallowRef<number[]>();
 const loading = new Broswer.Loading();
 
 const defaultIndex = ref(1);
@@ -21,7 +21,7 @@ async function fetchData(index: any) {
   typeL1Arbeiten.value = val1;
   typeL2Arbeiten.value = val2;
 
-  couvertureIndexs.value = Random.get(arbeitenCouverture, typeL1Arbeiten.value.data.length);
+  stochasticIndexs.value = Random.get(stochastic, typeL1Arbeiten.value.data.length);
 
   nextTick(() => {
     loading.endLoading();
@@ -86,7 +86,7 @@ watch(route, async () => {
             :item="item"
             :index="index"
             :length="typeL1Arbeiten.data.length"
-            :cover="arbeitenCouverture[couvertureIndexs[index]]" />
+            :cover="stochastic[stochasticIndexs[index]]" />
         </template>
       </Pagination>
       <div class="mt-30" v-if="!typeL1Arbeiten?.data?.length">
