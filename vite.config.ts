@@ -91,7 +91,6 @@ export default defineConfig(({ mode }) => {
           additionalData: `
             @use "sass:math";
             @use "@/scss/mixins";
-            @use "@/scss/variables";
           `
         }
       }

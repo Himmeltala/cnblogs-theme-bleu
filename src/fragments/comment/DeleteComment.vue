@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CommentApi } from "@/apis";
+import { CommentHttp } from "@/requests";
 
 const props = defineProps({
   comment: {
@@ -7,7 +7,7 @@ const props = defineProps({
     required: true
   },
   comments: {
-    type: Array as PropType<BleuComment[]>,
+    type: Array as PropType<CommentModel[]>,
     required: true
   },
   itemIndex: {
@@ -21,7 +21,7 @@ const props = defineProps({
 });
 
 async function confirmDeleteComment() {
-  await CommentApi.del({
+  await CommentHttp.del({
     commentId: parseInt(props.comment.commentId),
     parentId: parseInt(props.postId)
   });

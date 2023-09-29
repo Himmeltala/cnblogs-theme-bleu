@@ -1,8 +1,8 @@
 import {
   defineConfig,
   presetAttributify,
-  presetUno,
   presetIcons,
+  presetUno,
   transformerDirectives
 } from "unocss";
 
@@ -24,24 +24,41 @@ export default defineConfig({
   ],
   theme: {
     colors: {
-      primary: "var(--l-text-primary)",
-      secondary: "var(--l-text-secondary)",
-      thirdly: "var(--l-text-thirdly)",
-      ba: "var(--l-bg-a)"
+      theme: {
+        primary: "var(--bleu-theme-color-primary)",
+        1: "var(--bleu-theme-color-1)",
+        2: "var(--bleu-theme-color-2)",
+        3: "var(--bleu-theme-color-3)",
+        4: "var(--bleu-theme-color-4)",
+        5: "var(--bleu-theme-color-5)",
+        6: "var(--bleu-theme-color-6)"
+      },
+      text: {
+        primary: "var(--bleu-text-color-primary)",
+        regular: "var(--bleu-text-color-regular)",
+        secondary: "var(--bleu-text-color-secondary)",
+        placeholder: "var(--bleu-text-color-placeholder)",
+        disabled: "var(--bleu-text-color-disabled)"
+      },
+      bg: {
+        primary: "var(--bleu-bg-color)",
+        page: "var(--bleu-bg-color-page)",
+        overlay: "var(--bleu-bg-color-overlay)"
+      },
+      border: {
+        primary: "var(--bleu-border-color)",
+        darker: "var(--bleu-border-color-darker)",
+        dark: "var(--bleu-border-color-dark)",
+        light: "var(--bleu-border-color-light)",
+        lighter: "var(--bleu-border-color-lighter)",
+        extraLight: "var(--bleu-border-color-extra-light)"
+      }
     }
   },
   rules: [
     [
       /^flow-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,
       ([, d]) => ({ overflow: `${d}` })
-    ],
-    [/^white-(normal|nowrap)$/, ([, d]) => ({ "white-space": `${d}` })],
-    [
-      /^font-art$/,
-      ([, d]) => ({
-        "font-family": `var(--l-art-family) !important;`,
-        "font-size": `var(--l-art-size) !important;`
-      })
     ]
   ],
   shortcuts: [
@@ -69,38 +86,11 @@ export default defineConfig({
         return style;
       }
     ],
-    // fixed left-0 right-0
-    [
-      /^fixed-(l(t|b){0,1}|r(t|b){0,1}|(t|b))$/,
-      ([, g1]) => {
-        let style = `fixed `;
-        const temps = [
-          { k: "l", v: "left-0" },
-          { k: "r", v: "right-0" },
-          { k: "t", v: "top-0" },
-          { k: "b", v: "bottom-0" }
-        ];
-
-        for (let i = 0; i < g1.length; i++) {
-          const r = temps.find(r => r.k == g1[i]);
-          style += ` ${r?.v}`;
-        }
-
-        return style;
-      }
-    ],
     // 悬停改变字体颜色
     [
       /^hover$/,
       () => {
-        return `cursor-pointer hover:text-primary transition-all-300`;
-      }
-    ],
-    // 设置卡片标题
-    [
-      /^caption$/,
-      () => {
-        return `text-primary font-art f-c-s`;
+        return `cursor-pointer hover:text-theme-primary transition-all-300`;
       }
     ]
   ]

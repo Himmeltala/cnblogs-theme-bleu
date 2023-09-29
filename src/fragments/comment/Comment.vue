@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAnchorStore } from "@/store";
-import { CommentApi } from "@/apis";
+import { CommentHttp } from "@/requests";
 
 const props = defineProps({
   postId: { type: String, required: true }
@@ -11,13 +11,13 @@ const toRefPostId = toRef(props, "postId");
 const level = ref();
 const { anchor } = storeToRefs(useAnchorStore());
 const commentInst = ref();
-const comments = ref<BleuComment[]>();
+const comments = ref<CommentModel[]>();
 const pageCount = ref(0);
 const currIndex = ref(1);
 
 async function fetchData() {
-  comments.value = await CommentApi.getList(props.postId, currIndex.value, anchor.value);
-  pageCount.value = await CommentApi.getCount(props.postId);
+  comments.value = await CommentHttp.getList(props.postId, currIndex.value, anchor.value);
+  pageCount.value = await CommentHttp.getCount(props.postId);
 }
 
 function onPost(response: any) {
@@ -50,7 +50,7 @@ await fetchData();
 <template>
   <div class="l-comment">
     <PostComment :post-id="postId" @on-post="onPost" />
-    <div class="caption">
+    <div class="caption f-c-s">
       <div class="i-tabler-list mr-2"></div>
       评论列表
     </div>
@@ -82,7 +82,7 @@ await fetchData();
           <textarea
             class="z--1 opacity-0 absolute top-0 left-0"
             :id="'upload-img-' + index"></textarea>
-          <Markdown :fancy-group="'comment-' + index" :textual="item.content" />
+          <Markdown :fancy-group="'comment-' + index" :content="item.content" />
         </div>
         <div class="more-action float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>

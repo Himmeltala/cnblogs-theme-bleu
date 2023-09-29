@@ -1,26 +1,40 @@
 <script setup lang="ts">
-const props = defineProps({
-  textual: {
-    type: String,
-    required: true
-  },
-  dom: {
-    type: Object as PropType<any>,
+import { useWheelRollsUpAndDown } from "@/hooks/use-mouse";
+
+defineProps({
+  catalogList: {
+    type: Array,
     required: false
   }
 });
 
-const domRef = toRef(props, "dom");
-const textualRef = toRef(props, "textual");
-const disabled = inject<boolean>(KeyVals.CATALOG_FLAG);
-const translate = shallowRef("");
+const emits = defineEmits(["update:catalogList"]);
+
 const catalogList = shallowRef();
 
-function generateList() {
-  const catalogList: { id: string; content: string; item: Element }[] = [];
-  let step = 0;
+function highlightCurrentSection(
+  titles: NodeListOf<Element>,
+  inviewport: (title: Element) => void
+) {
+  const scrollPosition = window.scrollY || window.pageYOffset;
+  for (let i = 0; i < titles.length; i++) {
+    const foffset = titles[i]?.offsetTop;
+    const loffset = titles[i + 1]?.offsetTop;
 
-  const titles = domRef.value.querySelectorAll("h1, h2, h3");
+    if (scrollPosition < loffset && scrollPosition > foffset) {
+      inviewport(titles[i]);
+    } else if (scrollPosition > foffset && !loffset) {
+      inviewport(titles[i]);
+    }
+  }
+}
+
+let lastToc: Element;
+
+function generateList(content: HTMLDivElement) {
+  const catalogList: { id: string; content: string; item: Element }[] = [];
+
+  const titles = content.querySelectorAll("h1, h2, h3");
 
   for (let i = 0; i < titles.length; i++) {
     const id = titles[i].getAttribute("id");
@@ -28,168 +42,79 @@ function generateList() {
     let marginLeft = "";
 
     if (type === "h2") {
-      marginLeft = "10px";
+      marginLeft = "1rem";
     } else if (type === "h3") {
-      marginLeft = "20px";
+      marginLeft = "2rem";
     }
 
     const content = `
-      <div id="catalog-${id}" class="hover" data-step="${step}" style="margin-left: ${marginLeft}">
+      <div id="catalog-${id}" class="hover"  style="margin-left: ${marginLeft}">
         ${titles[i].textContent}
       </div>
     `;
 
     catalogList.push({ id, content, item: titles[i] });
-    step += 2.5;
   }
+
+  useWheelRollsUpAndDown(
+    {
+      on: () => {
+        highlightCurrentSection(titles, title => {
+          const target = document.querySelector("#catalog-" + title.id);
+
+          if (lastToc) {
+            lastToc.classList.remove("active-toc");
+          }
+
+          target.classList.add("active-toc");
+
+          lastToc = target;
+        });
+      }
+    },
+    { throttle: 50 }
+  );
 
   return catalogList;
 }
 
-let observer: IntersectionObserver = null;
-
-function isTouchedTitle(offsetTop: number) {
-  return window.scrollY >= offsetTop && window.scrollY <= offsetTop + offsetTop * 0.2;
+function renderCatalogFnc(content: HTMLDivElement) {
+  catalogList.value = generateList(content);
+  emits("update:catalogList", catalogList.value);
 }
 
-function controlLump(entries: any) {
-  for (let i = 0; i < catalogList.value.length; i++) {
-    document
-      .querySelector(`#catalog-${catalogList.value[i].id}`)
-      ?.classList.remove("catalog-active");
-  }
-  const item = document.querySelector(`#catalog-${entries[0].target.id}`);
-  const step = item?.getAttribute("data-step");
-  translate.value = step;
-  item?.classList.add("catalog-active");
+function clickToc(toc: any) {
+  Broswer.scrollIntoView(`#${toc.id}`);
 }
 
-function createCatalog() {
-  catalogList.value = generateList();
-
-  observer = new IntersectionObserver(
-    entries => {
-      const offsetTop =
-        window.innerHeight * 0.5 + entries[0].target.offsetTop - entries[0].target.clientHeight;
-
-      if (isTouchedTitle(offsetTop)) {
-        controlLump(entries);
-      } else {
-        const offsetTop = entries[0].target.offsetTop;
-        if (isTouchedTitle(offsetTop)) {
-          controlLump(entries);
-        }
-      }
-    },
-    {
-      threshold: [0, 1]
-    }
-  );
-
-  for (let i = 0; i < catalogList.value.length; i++) {
-    observer.observe(catalogList.value[i].item);
-  }
-}
-
-watch(domRef, () => {
-  createCatalog();
-});
-
-watch(textualRef, () => {
-  createCatalog();
-});
-
-onUnmounted(() => () => {
-  observer.disconnect();
+defineExpose({
+  renderCatalogFnc
 });
 </script>
 
 <template>
-  <div
-    id="l-catalog"
-    :class="{ 'catalog-disable': disabled, 'catalog-show': !disabled }"
-    p="l-4 y-6"
-    class="scroll-none fixed lt-sm:bg-ba lt-sm:top-0 lt-sm:h-100vh sm:top-4vh sm:h-92vh w-16rem rd-2 flow-auto z-90"
-    v-if="catalogList && catalogList.length">
-    <div class="relative">
-      <div class="ml-6 text-thirdly">
-        <div
-          class="text-0.8rem mb-4 h-1.5rem f-c-s text-ellipsis line-clamp-1"
-          v-for="item in catalogList"
-          @click="Broswer.scrollIntoView('#' + item.id)">
-          <div v-html="item.content"></div>
-        </div>
-      </div>
-      <div class="absolute lump-track"></div>
+  <div v-if="catalogList && catalogList.length" class="catalog flow-auto">
+    <div class="content w-80% h-100%">
+      <div class="mb-2">文章目录</div>
       <div
-        class="absolute lump transition-all-300"
-        :style="{ transform: 'translate(0, ' + translate + 'rem)' }"></div>
+        class="item"
+        @click="clickToc(item)"
+        v-for="item in catalogList"
+        v-html="item.content"></div>
     </div>
   </div>
 </template>
 
-<style lang="scss">
-.catalog-active {
-  --uno: light:color-black dark:color-white;
+<style scoped lang="scss">
+.catalog {
+  .item {
+    --uno: text-0.8rem text-text-regular mb-1;
+  }
 }
 </style>
 
-<style scoped lang="scss">
-@mixin catalog-mixin($step) {
-  .catalog-disable {
-    animation: catalog-disable-animation 0.3s ease-in;
-    left: 100vw;
-  }
-
-  @keyframes catalog-disable-animation {
-    @for $i from 0 to 11 {
-      #{ $i * 10%} {
-        // 100 -> 80
-        left: $step + $i * math.div(100vw - $step, 10);
-      }
-    }
-  }
-
-  .catalog-show {
-    animation: catalog-show-animation 0.3s ease-in;
-    left: $step;
-  }
-
-  @keyframes catalog-show-animation {
-    @for $i from 0 to 11 {
-      #{ $i * 10%} {
-        left: 100vw - $i * math.div(100vw - $step, 10);
-      }
-    }
-  }
-}
-
-@include mixins.pc() {
-  $left: calc(55vw * 1.45);
-  @include catalog-mixin($left);
-}
-
-@include mixins.mb() {
-  $left: 50vw;
-  @include catalog-mixin($left);
-}
-
-.lump {
-  width: 0.25rem;
-  height: 1.5rem;
-  border-radius: 0.25rem;
-  background-color: var(--el-color-primary);
-  top: 0;
-  left: 0;
-}
-
-.lump-track {
-  width: 0.25rem;
-  height: 100%;
-  border-radius: 0.25rem;
-  background-color: var(--l-text-secondary);
-  opacity: 0.15;
-  top: 0;
-  left: 0;
+<style>
+.active-toc {
+  --uno: text-theme-primary transition-all-300 text-0.9rem;
 }
 </style>

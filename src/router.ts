@@ -8,7 +8,7 @@ const router = createRouter({
     if (savedPosition) {
       return savedPosition;
     } else {
-      return { el: "#app", top: 0, behavior: "smooth" };
+      return { el: "#app", top: 0 };
     }
   }
 });

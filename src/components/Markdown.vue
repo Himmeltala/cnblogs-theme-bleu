@@ -7,23 +7,18 @@ hljs.configure({
 });
 
 const props = defineProps({
-  textual: {
+  content: {
     type: String,
     required: true
   },
   fancyGroup: {
     type: String,
     required: true
-  },
-  enableCatalog: {
-    type: Boolean,
-    default: false
   }
 });
 
-const textualInst = ref<HTMLElement>();
-const textualRef = toRef(props, "textual");
-const markdownTemplate = ref("");
+const markdownInst = ref<HTMLElement>();
+const templates = ref("");
 
 function generateMarkdownTemplate() {
   let mtcCode, mtcImg, mtcTip, mtcWar, mtPot;
@@ -33,7 +28,7 @@ function generateMarkdownTemplate() {
   let regex4 = /war:\[start\]([\s\S]*?)war:\[end\]/g;
   let regex5 = /<pot>([\s\S]*?)<\/pot>/g;
 
-  let step1 = props.textual;
+  let step1 = props.content;
   while ((mtcCode = regex1.exec(step1)) !== null) {
     const r = generatePreCode(mtcCode[0]);
     step1 = step1.replace(mtcCode[0], r);
@@ -123,7 +118,7 @@ function generatePorter(str: string) {
 }
 
 const size = Number(getComputedStyle(document.documentElement).fontSize.replace("px", ""));
-const step = BleuVars.config.theme.style.codeFontSize * size * 1.7;
+const step = size * 1.7;
 
 function extractTempFromPreCode(
   str: string,
@@ -169,15 +164,10 @@ function extractLangTempFromPreCode(str: string) {
 
   const temp = `
       <div class="tools ${label ? "f-c-b" : "f-c-e"} f-c-b rd-2 w-100%">
-        ${
-          label
-            ? `<div class="left text-0.9rem flow-auto white-nowrap scroll-none">${label}</div>`
-            : ""
-        }
-        <div class="right text-0.8rem f-c-e flex-auto white-nowrap scroll-none select-none">
-          <div class="language mr-2 text-secondary">${lang} 语言</div>
-          <div class="clipboard hover mr-2 text-thirdly">复制代码</div>
-          <div class="togglecode hover text-thirdly">收起或展开</div>
+        ${label ? `<div class="left text-0.9rem flow-auto">${label}</div>` : ""}
+        <div class="right text-0.8rem f-c-e flex-auto select-none">
+          <div class="language mr-2 text-text-regular">${lang}</div>
+          <div class="clipboard hover text-text-regular">复制代码</div>
         </div>
       </div>
       ${!label ? `<div class="mb-6"></div>` : ""}
@@ -232,50 +222,33 @@ function generatePreCode(str: string) {
 
   str = str.replace(
     "<pre>",
-    `<div class="bleu-pre">${langTemp.temp}<pre class="bleu-pre__body scroll-none relative flow-hidden">${addTemp.temp}${delTemp.temp}${litTemp.temp}`
+    `<div class="bleu-pre">${langTemp.temp}<pre class="bleu-pre__body relative flow-hidden">${addTemp.temp}${delTemp.temp}${litTemp.temp}`
   );
 
   return str + "</div></pre>";
 }
 
 function registerMarkdownEvents(source: HTMLElement, pre: HTMLElement) {
-  let isToggled = false;
-  let lastHeight = 0;
-
   source.querySelector(".clipboard").addEventListener("click", () => {
     navigator.clipboard.writeText(pre.innerText).then(
       () => ElMessage({ message: "复制成功！", type: "success", grouping: true }),
       () => ElMessage({ message: "没有权限！", type: "error", grouping: true })
     );
   });
-
-  source.querySelector(".togglecode").addEventListener("click", () => {
-    const dom = source.querySelector<HTMLElement>(".bleu-pre-body");
-    const currHeight = dom.getBoundingClientRect().height;
-
-    if (!isToggled) {
-      dom.style.height = (lastHeight || currHeight) * 0.5 + "px";
-    } else {
-      dom.style.height = lastHeight + "px";
-    }
-
-    isToggled = !isToggled;
-    lastHeight = lastHeight || currHeight;
-  });
 }
 
-function createMarkdown() {
-  markdownTemplate.value = generateMarkdownTemplate();
+function renderMarkdownFnc(callback: any) {
+  templates.value = generateMarkdownTemplate();
 
   nextTick(() => {
-    textualInst.value.querySelectorAll<HTMLElement>(".bleu-pre").forEach(ele => {
+    markdownInst.value.querySelectorAll<HTMLElement>(".bleu-pre").forEach(ele => {
       const pre = ele.querySelector<HTMLElement>("pre code");
       hljs.highlightElement(pre);
       registerMarkdownEvents(ele, pre);
     });
 
     // mathjax
-    const mathjaxEls = textualInst.value.getElementsByClassName("math");
+    const mathjaxEls = markdownInst.value.getElementsByClassName("math");
     if (window.MathJax && mathjaxEls?.length > 0) {
       window.MathJax.startup.promise = window.MathJax.startup.promise
         .then(() => {
@@ -285,21 +258,16 @@ function createMarkdown() {
     }
 
     useFancybox();
+
+    callback(markdownInst.value);
   });
 }
 
-onMounted(() => {
-  createMarkdown();
-});
-
-watch(textualRef, () => {
-  createMarkdown();
-});
+defineExpose({ renderMarkdownFnc });
 </script>
 
 <template>
-  <div ref="textualInst" class="markdown-textual" v-html="markdownTemplate"></div>
-  <Catalog v-if="enableCatalog" :textual="textual" :dom="textualInst" />
+  <div ref="markdownInst" class="markdown-textual" v-html="templates"></div>
 </template>
 
 <style lang="scss" scoped></style>

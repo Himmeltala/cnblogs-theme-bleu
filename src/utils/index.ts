@@ -1,13 +1,13 @@
-import * as Broswer from "./broswer";
-import * as Formatter from "./formatter";
-import * as Native from "./native";
-import * as Navigation from "./navigation";
-import * as PrettifyLog from "./prettify-log";
-import * as BleuStorage from "./stoage";
-import * as Textual from "./textual";
-import * as Random from "./random";
+export * as Broswer from "./broswer";
+export * as Formatter from "./formatter";
+export * as Native from "./native";
+export * as Navigation from "./navigation";
+export * as PrettifyLog from "./prettify-log";
+export * as BleuStorage from "./stoage";
+export * as Textual from "./textual";
+export * as Random from "./random";
 
-function deepMerge(target: any, source: any) {
+export function deepMerge(target: any, source: any) {
   for (const key in source) {
     if (source.hasOwnProperty(key)) {
       if (typeof source[key] === "object" && !Array.isArray(source[key])) {
@@ -22,15 +22,3 @@ function deepMerge(target: any, source: any) {
   }
   return target;
 }
-
-export {
-  Broswer,
-  Formatter,
-  Textual,
-  Navigation,
-  Native,
-  PrettifyLog,
-  BleuStorage,
-  Random,
-  deepMerge
-};

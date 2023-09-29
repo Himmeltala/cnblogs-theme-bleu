@@ -79,13 +79,9 @@ pnpm run build
   href="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.css?t=202307090102" />
 
 <!-- 推荐字体 -->
-<link rel="stylesheet" href="https://fonts.loli.net/icon?family=ZCOOL+KuaiLe" />
 <link
   rel="stylesheet"
   href="https://cdn.bootcdn.net/ajax/libs/hack-font/3.3.0/web/hack-subset.min.css" />
-<link
-  rel="stylesheet"
-  href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-webfont/1.6.0/style.min.css" />
 
 <!-- 加载动画 CSS -->
 <style>
@@ -263,69 +259,17 @@ function calc(x, y) {
 - 类型：object
 - 是否必填：否
 
-默认字体使用 Element-Plus 的字体集。
-
-1. 在“页首 HTML 代码”处插入一个字体 cdn 或者字体网址的 link 标签，表示引入字体到博客中。
-2. 得到字体名称。
-3. 在配置文件中配置。
-
-在 “页首 HTML 代码” 处添加以下三个 link 标签，如果你有其他的字体可以替换我给的例子：
-
 ```html
-<link rel="stylesheet" href="https://fonts.loli.net/icon?family=ZCOOL+KuaiLe" />
 <link
   rel="stylesheet"
   href="https://cdn.bootcdn.net/ajax/libs/hack-font/3.3.0/web/hack-subset.min.css" />
-<link
-  rel="stylesheet"
-  href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-webfont/1.6.0/style.min.css" />
 ```
-
-字体有三处配置：
-
-（1）主要字体：所看见的绝大部分文字都是主要字体。
-
-（2）代码字体：代码块中的字体。
-
-（3）艺术字体：标题，菜单栏的字体。
-
-color、light 和 dark 都是全局 css 变量。我推荐的颜色有以下几个：
-
-<span style="color: #409EFF">#409EFF</span>
-<span style="color: #2D8CF0">#2D8CF0</span>
-<span style="color: #FA7298">#FA7298</span>
-<span style="color: #42B983">#42B983</span>
-<span style="color: #607D8B">#607D8B</span>
-<span style="color: #5E72E4">#5E72E4</span>
-<span style="color: #FF9700">#FF9700</span>
-<span style="color: #009688">#009688</span>
-<span style="color: #673BB7">#673BB7</span>
-<span style="color: #906f61">#906f61</span>
 
 ```js
 window.__BLEU_CONFIG__ = {
   theme: {
-    color: "#409EFF",
-    light: {
-      secondary: "#393939",
-      thirdly: "#6e6e6e",
-      bgA: "#f8f8f8"
-    },
-    dark: {
-      secondary: "#b9b9b9",
-      thirdly: "#8b8b8b",
-      bgA: "#222222"
-    },
-    style: {
-      artFontFamily: "ZCOOL KuaiLe",
-      artFontSize: 1.2,
-      mainFontSize: 1,
-      codeFontSize: 0.9,
-      codeFontFamily: "Hack",
-      mainLetterSpacing: 1.7,
-      codeLetterSpacing: 1.3,
-      mainLineHeight: 1.7,
-      codeLineHeight: 1.7
+    cssvar: {
+      codeFamily: "Hack"
     }
   }
 };
@@ -436,9 +380,23 @@ window.__BLEU_CONFIG__ = {
 
 查看官方示例 [echart 雷达图示例](https://echarts.apache.org/examples/zh/index.html#chart-type-radar)。
 
+color 推荐的颜色选择：
+
+<span style="color: #409EFF">#409EFF</span>
+<span style="color: #2D8CF0">#2D8CF0</span>
+<span style="color: #FA7298">#FA7298</span>
+<span style="color: #42B983">#42B983</span>
+<span style="color: #607D8B">#607D8B</span>
+<span style="color: #5E72E4">#5E72E4</span>
+<span style="color: #FF9700">#FF9700</span>
+<span style="color: #009688">#009688</span>
+<span style="color: #673BB7">#673BB7</span>
+<span style="color: #906f61">#906f61</span>
+
 ```js
 window.__BLEU_CONFIG__ = {
   echart: {
+    color: "#409EFF",
     // 我的技能，该属性和 echart 雷达图配置完全一致，可以参考官方文档来填写
     technics: {
       radar: {

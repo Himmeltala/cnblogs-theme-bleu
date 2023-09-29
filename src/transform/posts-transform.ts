@@ -4,6 +4,7 @@
  * @author Himmelbleu
  * @date 2023 年 1 月 15 日
  */
+
 /**
  * 获取页数
  */
@@ -20,8 +21,8 @@ function getPage(dom: Element) {
  *
  * 列表项包含描述、评论、点赞的随笔列表。
  */
-export function toArbeitenList1(dom: Document): BleuArbeitenList {
-  const data: BleuArbeiten[] = [];
+export function toPostsList1(dom: Document): PostsListModel {
+  const data: PostModel[] = [];
 
   const id = dom.getElementsByClassName("postTitle2");
   const head = dom.getElementsByClassName("postTitle");
@@ -73,7 +74,7 @@ export function toArbeitenList1(dom: Document): BleuArbeitenList {
 /**
  * 解析随笔详细页面
  */
-export function toArbeiten(id: string, dom: Document): BleuArbeiten {
+export function toPostDetail(id: string, dom: Document): PostModel {
   const text = dom.querySelector(".postTitle > a > span")?.innerText;
   const content = dom.getElementById("cnblogs_post_body");
 
@@ -105,8 +106,8 @@ export function toArbeiten(id: string, dom: Document): BleuArbeiten {
 /**
  * 解析随笔详细页面中的属性：标签、分类
  */
-export function toProps(dom: Document): BleuArbeitenProps {
-  const data = <BleuArbeitenProps>{ tags: [], sorts: [] };
+export function toProps(dom: HTMLDivElement): PostPropsModel {
+  const data = <PostPropsModel>{ tags: [], sorts: [] };
 
   const eleCates = dom.querySelectorAll("#BlogPostCategory > a");
 
@@ -135,8 +136,8 @@ export function toProps(dom: Document): BleuArbeitenProps {
 /**
  * 解析上下篇随笔
  */
-export function toPrevNext(dom: Document): BleuArbeitenPrevNext {
-  const data: BleuArbeitenPrevNext = { prev: {}, next: {} };
+export function toPrevNext(dom: HTMLDivElement): PostPrevNextModel {
+  const data: any = { prev: {}, next: {} };
   const elems = dom.getElementsByTagName("a");
 
   for (let i = 0; i < elems.length; i++) {
@@ -147,7 +148,7 @@ export function toPrevNext(dom: Document): BleuArbeitenPrevNext {
       text: textElem.innerText.trim(),
       href: Textual.regexSplit(
         textElem.getAttribute("href"),
-        RouterRegx.Arbeiten,
+        RouterRegx.PostDetail,
         [2, 0],
         ["/", "."]
       )
@@ -168,8 +169,8 @@ export function toPrevNext(dom: Document): BleuArbeitenPrevNext {
  *
  * 列表项包含描述、评论、点赞的随笔列表。
  */
-export function toArbeitenList2(dom: Document): BleuArbeitenList2 {
-  const data: BleuArbeiten[] = [];
+export function toPostsList2(dom: Document): PostsList2Model {
+  const data: PostModel[] = [];
 
   const dateReg =
     /[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d/g;
@@ -221,11 +222,11 @@ export function toArbeitenList2(dom: Document): BleuArbeitenList2 {
 /**
  * 获取随笔和文章列表，列表通过标签查询。
  */
-export function toArbeitenListPart(dom: Document): BleuArbeitenList2 {
+export function toPostsListPart(dom: Document): PostsList2Model {
   const head = dom.querySelectorAll(".PostList > .postTitl2 > a");
   const desc = dom.querySelectorAll(".PostList > .postDesc2");
   const hint = dom.getElementsByClassName("PostListTitle")[0].innerText.trim();
-  const data: BleuArbeiten[] = [];
+  const data: PostModel[] = [];
 
   head.forEach((ele, index) => {
     data.push({
@@ -257,7 +258,7 @@ export function toIsUnLock(dom: Document): boolean {
   }
 }
 
-export function toArbeitenByL2(dom: Document): BleuArbeitenL2[] {
+export function toPostByL2(dom: Document): SubPostModel[] {
   const nodeList = dom.getElementsByTagName("li");
   return Array.from(nodeList).map(ele => ({
     id: ele.getAttribute("data-category-id"),
@@ -265,13 +266,47 @@ export function toArbeitenByL2(dom: Document): BleuArbeitenL2[] {
   }));
 }
 
-export function toArbeitenInfo(dom: Document) {
+/**
+ * 解析是否关注或已经点击推荐按钮
+ */
+export function toBols(dom: HTMLDivElement) {
   const followText = dom.querySelector("#green_channel_follow").innerText.trim();
   const diggText = dom.querySelector("#green_channel_digg").innerText.trim();
   const isFollowed = followText == "已关注" ? true : false;
   const isDigg = diggText == "已推荐" ? true : false;
+
+  return { isFollowed, isDigg };
+}
+
+/**
+ * 解析文章信息
+ *
+ * @since 2023年9月30日
+ */
+export function toPostDetailInfo(data: any) {
+  // categoriesTags => props
+  const categoriesTagsDom = document.createElement("div");
+  categoriesTagsDom.innerHTML = data.categoriesTags;
+  const props = toProps(categoriesTagsDom);
+
+  // prevNext
+  const prevNextDom = document.createElement("div");
+  prevNextDom.innerHTML = data.prevNext;
+  const prevNext = toPrevNext(prevNextDom);
+
+  // postBols
+  const postBolsDom = document.createElement("div");
+  postBolsDom.innerHTML = data.postInfo;
+  const bols = toBols(postBolsDom);
+
+  // historyToday
+
   return {
-    isFollowed,
-    isDigg
+    props,
+    prevNext,
+    headlines: data.headlines,
+    aggTopPosts: data.aggTopPosts,
+    historyToday: data.historyToday,
+    postStats: { ...data.postStats, ...bols }
   };
 }

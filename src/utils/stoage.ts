@@ -4,20 +4,20 @@
  * @author Himmelbleu
  * @date 2023 年 1 月 15 日
  */
+
 /**
  * 获取本地存储中的设置
  */
 export function getOptions() {
-  return useStorage<BleuOptions>(KeyVals.OPS_KEY, {} as any);
+  return useStorage<LocalOptionModel>(KeyVals.OPS_KEY, {});
 }
 
 /**
  * 获取本地存储中的模板
  */
-export function getOptionsTemp(): BleuOptions {
+export function getOptionsTemp(): LocalOptionModel {
   return {
-    theme: { mode: "dark" },
-    toolkits: { pin: true }
+    theme: { mode: "dark" }
   };
 }
 

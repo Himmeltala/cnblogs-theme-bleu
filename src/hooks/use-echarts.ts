@@ -19,30 +19,9 @@ echarts.use([
  * @param dom 图形实例
  * @param options 配置选项
  */
-function normalRendering(dom: HTMLElement, options: any) {
+function rendering(dom: HTMLElement, options: any) {
   const theChart = echarts.init(dom);
   theChart.setOption(options);
-}
-
-/**
- * 延迟渲染图形
- *
- * @param dom 图形实例
- * @param options 配置选项
- * @param flag 标志，判断打开次数
- */
-function delayRendering(dom: HTMLElement, options: any, flag?: Ref<number>) {
-  if (flag) {
-    const clearWatcher = watch(flag, newVal => {
-      if (newVal == 1) {
-        normalRendering(dom, options);
-      } else if (newVal > 1) {
-        clearWatcher();
-      }
-    });
-  } else {
-    normalRendering(dom, options);
-  }
 }
 
 /**
@@ -52,12 +31,12 @@ function delayRendering(dom: HTMLElement, options: any, flag?: Ref<number>) {
  */
 export function useRadarChart(dom: HTMLElement) {
   Object.assign(BleuVars.config.echart.technics.series[0], {
-    areaStyle: { color: `${BleuVars.config.theme.color}` },
-    lineStyle: { color: `${BleuVars.config.theme.color}a6` },
-    itemStyle: { color: `${BleuVars.config.theme.color}a6` }
+    areaStyle: { color: `${BleuVars.config.echart.color}` },
+    lineStyle: { color: `${BleuVars.config.echart.color}a6` },
+    itemStyle: { color: `${BleuVars.config.echart.color}a6` }
   });
 
-  normalRendering(dom, BleuVars.config.echart.technics);
+  rendering(dom, BleuVars.config.echart.technics);
 }
 
 /**
@@ -68,7 +47,6 @@ export function useRadarChart(dom: HTMLElement) {
 export function usePieChart(config: {
   dom: HTMLElement;
   data: { value: number | string; name: string }[];
-  flag?: Ref<number>;
   radius?: number | string | string[];
 }) {
   const options = {
@@ -91,7 +69,7 @@ export function usePieChart(config: {
     ]
   };
 
-  delayRendering(config.dom, options, config.flag);
+  rendering(config.dom, options);
 }
 
 /**
@@ -103,7 +81,6 @@ export function useLineChart(config: {
   dom: HTMLElement;
   data: number | string[];
   xAxis: string[];
-  flag?: Ref<number>;
 }) {
   const options = {
     tooltip: {
@@ -127,12 +104,12 @@ export function useLineChart(config: {
         name: "篇数",
         data: config.data,
         type: "line",
-        areaStyle: { color: `${BleuVars.config.theme.color}` },
-        lineStyle: { color: `${BleuVars.config.theme.color}a6` },
-        itemStyle: { color: `${BleuVars.config.theme.color}a6` }
+        areaStyle: { color: `${BleuVars.config.echart.color}` },
+        lineStyle: { color: `${BleuVars.config.echart.color}a6` },
+        itemStyle: { color: `${BleuVars.config.echart.color}a6` }
       }
     ]
   };
 
-  delayRendering(config.dom, options, config.flag);
+  rendering(config.dom, options);
 }

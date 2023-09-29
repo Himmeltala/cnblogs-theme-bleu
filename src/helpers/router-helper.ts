@@ -9,50 +9,44 @@ import type { RouteRecordRaw, NavigationGuardNext } from "vue-router";
 
 export const routes = <RouteRecordRaw[]>[
   {
-    name: RouterName.BleuHome,
-    path: RouterPath.BleuHome(),
-    component: () => import("@/views/home/BleuHome.vue"),
-    meta: { title: "首页" }
+    name: RouterName.PostsList,
+    path: RouterPath.PostsList(),
+    component: () => import("@/views/PostList.vue"),
+    meta: { title: "随笔列表" }
   },
   {
-    name: RouterName.Arbeiten,
-    path: RouterPath.Arbeiten(),
-    component: () => import("@/views/Arbeiten.vue")
+    name: RouterName.PostDetail,
+    path: RouterPath.PostDetail(),
+    component: () => import("@/views/PostDetail.vue")
   },
   {
-    name: RouterName.ArbeitenList,
-    path: RouterPath.ArbeitenList(),
+    name: RouterName.PostsByMark,
+    path: RouterPath.PostsByMark(),
     props: true,
-    component: () => import("@/views/ArbeitenList.vue")
+    component: () => import("@/views/PostsByMark.vue")
   },
   {
-    name: RouterName.ArbeitenByMark,
-    path: RouterPath.ArbeitenByMark(),
+    name: RouterName.PostsBySort,
+    path: RouterPath.PostsBySort(),
     props: true,
-    component: () => import("@/views/ArbeitenByMark.vue")
+    component: () => import("@/views/PostsBySort.vue")
   },
   {
-    name: RouterName.ArbeitenBySort,
-    path: RouterPath.ArbeitenBySort(),
-    props: true,
-    component: () => import("@/views/ArbeitenBySort.vue")
+    name: RouterName.PostsByArchive,
+    path: RouterPath.PostsByArchive(),
+    component: () => import("@/views/PostsByArchive.vue")
   },
   {
-    name: RouterName.ArbeitenByArchive,
-    path: RouterPath.ArbeitenByArchive(),
-    component: () => import("@/views/ArbeitenByArchive.vue")
-  },
-  {
-    name: RouterName.ArbeitenByCalendar,
-    path: RouterPath.ArbeitenByCalendar(),
-    component: () => import("@/views/ArbeitenByCalendar.vue"),
+    name: RouterName.PostsByCalendar,
+    path: RouterPath.PostsByCalendar(),
+    component: () => import("@/views/PostsByCalendar.vue"),
     meta: { title: "博客日历" }
   },
   {
     name: RouterName.MarkList,
     path: RouterPath.MarkList(),
     component: () => import("@/views/MarkList.vue"),
-    meta: { title: "标签集合" }
+    meta: { title: "所有标签" }
   },
   {
     name: RouterName.Albumn,
@@ -81,30 +75,25 @@ function positionToComment() {
  */
 const routeRules = [
   {
-    regex: RouterRegx.Arbeiten,
-    name: RouterName.Arbeiten,
+    regex: RouterRegx.PostDetail,
+    name: RouterName.PostDetail,
     params: {
-      id: Textual.regexSplit(window.location.href, RouterRegx.Arbeiten, [2, 0], ["/", "."])
+      id: Textual.regexSplit(window.location.href, RouterRegx.PostDetail, [2, 0], ["/", "."])
     },
     before: positionToComment
   },
   {
-    regex: RouterRegx.ArbeitenBySort,
-    name: RouterName.ArbeitenBySort,
+    regex: RouterRegx.PostsBySort,
+    name: RouterName.PostsBySort,
     params: {
-      id: Textual.regexSplit(window.location.href, RouterRegx.ArbeitenBySort, [2, 0], ["/", "."])
+      id: Textual.regexSplit(window.location.href, RouterRegx.PostsBySort, [2, 0], ["/", "."])
     }
   },
   {
-    regex: RouterRegx.ArbeitenByMark,
-    name: RouterName.ArbeitenByMark,
+    regex: RouterRegx.PostsByMark,
+    name: RouterName.PostsByMark,
     params: {
-      tag: Textual.regexSplit(
-        decodeURI(window.location.href),
-        RouterRegx.ArbeitenByMark,
-        [2],
-        ["/"]
-      )
+      tag: Textual.regexSplit(decodeURI(window.location.href), RouterRegx.PostsByMark, [2], ["/"])
     }
   },
   {
@@ -114,7 +103,7 @@ const routeRules = [
   },
   {
     regex: RouterRegx.Articles,
-    name: RouterName.Arbeiten,
+    name: RouterName.PostDetail,
     params: {
       id: Textual.regexSplit(window.location.href, RouterRegx.Articles, [2, 0], ["/", "."])
     }

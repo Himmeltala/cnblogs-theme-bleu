@@ -2,7 +2,7 @@ export namespace BleuVars {
   /**
    * 博客设置选项
    */
-  export let config: BleuConfig;
+  export let config: BleuConfigModel;
 
   /**
    * 获取博客 App
@@ -64,7 +64,7 @@ export namespace BleuVars {
   /**
    * 判断设备是否是 PC 端
    */
-  export function isPcDevice() {
+  export function isPC() {
     return !/iPhone|iPad|iPod|Android|IEMobile/.test(navigator.userAgent);
   }
 }

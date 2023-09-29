@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CommentApi } from "@/apis";
+import { CommentHttp } from "@/requests";
 
 const props = defineProps({
   postId: { type: String, required: true }
@@ -7,7 +7,7 @@ const props = defineProps({
 
 const emits = defineEmits(["onPost"]);
 
-const comment = ref<BlogComment>({
+const comment = ref<BlogCommentModel>({
   postId: parseInt(props.postId),
   parentCommentId: 0,
   body: ""
@@ -24,10 +24,10 @@ function uploadImage(el: string) {
 async function AddComment() {
   loading.value = true;
   if (comment.value.body) {
-    const data = await CommentApi.insert(comment.value);
+    const data = await CommentHttp.insert(comment.value);
     if (data.isSuccess) {
-      const count = await CommentApi.getCount(props.postId);
-      const comments = await CommentApi.getList(props.postId, 0);
+      const count = await CommentHttp.getCount(props.postId);
+      const comments = await CommentHttp.getList(props.postId, 0);
       comment.value.body = "";
       emits("onPost", { count, comments });
     }
@@ -38,7 +38,7 @@ async function AddComment() {
 
 <template>
   <div>
-    <div class="caption">
+    <div class="caption f-c-s">
       <div class="i-tabler-mail-fast mr-2"></div>
       发表评论
     </div>

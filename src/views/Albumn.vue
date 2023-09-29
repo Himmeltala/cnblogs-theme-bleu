@@ -1,52 +1,41 @@
 <script setup lang="ts">
-import { DatumApi } from "@/apis";
+import { DatumHttp } from "@/requests";
 import { useFancybox } from "@/hooks/use-fancybox";
+
+const loading = new Broswer.Loading();
 
 const route = useRoute();
 const imgList = shallowRef();
-const loading = new Broswer.Loading();
-const albumn = shallowRef<BleuAlbumn>();
+const albumn = shallowRef<AlbumnModel>();
 
-async function fetchData() {
+function fetchData(id: any) {
   loading.startLoading();
-  albumn.value = await DatumApi.getAlbumn(route.params.id as string);
-  imgList.value = albumn.value.data.map((i: any) => i.src);
-  useFancybox();
-  loading.endLoading();
+  DatumHttp.getAlbumn(id).then(data => {
+    albumn.value = data;
+    imgList.value = albumn.value.data.map((i: any) => i.src);
+
+    nextTick(() => {
+      useFancybox();
+      loading.endLoading();
+    });
+  });
 }
 
-watch(route, async () => {
-  if (route.name === RouterName.Albumn) {
-    await fetchData();
-  }
+onBeforeRouteUpdate(updateGuard => {
+  fetchData(updateGuard.params.id);
 });
 
-await fetchData();
+fetchData(route.params.id);
 </script>
 
 <template>
-  <div id="l-albumn" class="page">
-    <div class="content" v-if="albumn">
-      <el-page-header :icon="null" @back="$router.back()">
-        <template #title>
-          <div class="f-c-c">
-            <i-ep-back />
-          </div>
-        </template>
-        <template #content>
-          <div class="text-1.2rem mb-5 mt-4">相册 - {{ albumn.title }}</div>
-        </template>
-      </el-page-header>
-      <div class="mb-4 text-0.9rem text-thirdly">{{ albumn.desc }}</div>
-      <div class="f-c-b flex-wrap">
-        <a
-          v-for="item in imgList"
-          :href="item"
-          data-fancybox="bleu-albumn"
-          :data-download-src="item">
-          <img class="mb-4 max-w-100%" :src="item" />
-        </a>
-      </div>
+  <div class="albumns lg-sm:px-90 lt-sm:px-5" v-if="albumn">
+    <div class="text-1.2rem mb-5">相册 - {{ albumn.title }}</div>
+    <div class="text-0.9rem mb-10 text-text-regular">{{ albumn.desc }}</div>
+    <div class="f-c-b flex-wrap flex-gap-4">
+      <a v-for="item in imgList" :href="item" data-fancybox="bleu-albumn" :data-download-src="item">
+        <img class="max-w-100%" :src="item" />
+      </a>
     </div>
   </div>
 </template>

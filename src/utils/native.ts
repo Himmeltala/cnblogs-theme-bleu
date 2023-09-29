@@ -52,17 +52,9 @@ export function openImageUploadWindow(el: string, onUploaded: (img: string) => v
  *
  * @param id 作品 ID
  */
-export function saveArbeiten(id: string) {
+export function savePost(id: string) {
   // @ts-ignore
   window.AddToWz(id);
-}
-
-/**
- * 分享到微信
- */
-export function shareToWechat() {
-  // @ts-ignore
-  window.shareOnWechat();
 }
 
 /**
@@ -78,6 +70,6 @@ export function shareToTsina() {
  *
  * @param keyword 关键字
  */
-export function searchArbeiten(keyword: string) {
+export function search(keyword: string) {
   Navigation.go("https://zzk.cnblogs.com/s?w=blog:" + BleuVars.getBlogApp() + "%" + keyword);
 }

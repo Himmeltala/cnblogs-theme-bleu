@@ -1,7 +1,7 @@
 /**
  * 随笔/文章
  */
-type BleuArbeiten = Partial<{
+type PostModel = Partial<{
   id: string;
   // 随笔标题
   text: string;
@@ -24,7 +24,7 @@ type BleuArbeiten = Partial<{
 /**
  * 评论
  */
-type BleuComment = Partial<{
+type CommentModel = Partial<{
   // 是否正在编辑
   isEditing: boolean;
   // 是否正在回复
@@ -51,7 +51,7 @@ type BleuComment = Partial<{
 /**
  * 标签
  */
-interface BleuMark {
+interface MarkModel {
   count: number;
   href: string;
   text: string;
@@ -60,17 +60,17 @@ interface BleuMark {
 /**
  * 首页随笔列表、某日下的随笔或文章列表
  */
-type BleuArbeitenList = Partial<{
+type PostsListModel = Partial<{
   page: number;
   hint: string;
-  data: BleuArbeiten[];
+  data: PostModel[];
 }>;
 
 /**
- * 随笔档案、文章档案、随笔分类、档案分类四种列表，扩展 BleuArbeitenList 接口，
- * 以上四种列表比 BleuArbeitenList 多了三个属性值。
+ * 随笔档案、文章档案、随笔分类、档案分类四种列表，扩展 PostsListModel 接口，
+ * 以上四种列表比 PostsListModel 多了三个属性值。
  */
-interface BleuArbeitenList2 extends BleuArbeitenList {
+interface PostsList2Model extends PostsListModel {
   /**
    * 父分类描述
    */
@@ -85,7 +85,7 @@ interface BleuArbeitenList2 extends BleuArbeitenList {
 /**
  * 随笔的分类和标签数组
  */
-interface BleuArbeitenProps {
+interface PostPropsModel {
   tags: { text: string }[];
   sorts: { id: string; text: string }[];
 }
@@ -93,15 +93,17 @@ interface BleuArbeitenProps {
 /**
  * 二级分类
  */
-interface BleuArbeitenL2 {
+interface SubPostModel {
   id: string;
   text: string;
 }
 
 /**
- * 侧边栏标签和分类数组
+ * 侧边栏数据。
+ *
+ * 包括：随笔分类、随笔档案、文章分类、文章档案、最新评论。
  */
-interface BleuMenuColumn {
+declare type ColumnDataModel = Partial<{
   essaySort: { id: string; text: string; count: string }[];
   essayArchive: { id: string; text: string; count: string }[];
   articleSort: { id: string; text: string; count: string }[];
@@ -109,23 +111,18 @@ interface BleuMenuColumn {
   latestEssayList: { id: string; text: string }[];
   latestComments: { id: string; title: string; content: string; author: string }[];
   rankings: { text: string }[];
-  tagList: { id: string; text: string }[];
+  markList: { id: string; text: string }[];
   albumn: { id: string; text: string }[];
-}
+}>;
 
 /**
- * 第一种：
- * 随笔数量、文章数量、评论数量、阅读数量
+ * 随笔、文章、评论、阅读数据、粉丝、昵称、关注、园龄
  *
- * 第二种：
- * 粉丝、昵称、关注、园龄
- *
- * 第三种：
+ * 或：
  * 随笔上一篇或下一篇随笔数据类型
  */
-type BleuMenuItemData = Partial<{
+declare type StatisticsModel = Partial<{
   id: string;
-  // 文本描述
   text: string;
   digg: string;
   href: string;
@@ -134,43 +131,54 @@ type BleuMenuItemData = Partial<{
 /**
  * 侧边栏阅读排行榜
  */
-interface BleuTopList {
-  topView: BleuMenuItemData[];
-  topComments: BleuMenuItemData[];
-  topDigg: BleuMenuItemData[];
+interface TopListModel {
+  topView: StatisticsModel[];
+  topComments: StatisticsModel[];
+  topDigg: StatisticsModel[];
 }
 
 /**
  * 上一篇或下一篇随笔
  */
-interface BleuArbeitenPrevNext {
-  prev: IMenuItemData;
-  next: IMenuItemData;
+interface PostPrevNextModel {
+  prev: { href: string; text: string };
+  next: { href: string; text: string };
 }
 
-interface BleuAlbumnItem {
+interface AlbumnItemModel {
   id: string;
   src: string;
 }
 
-interface BleuAlbumn {
+interface AlbumnModel {
   title: string;
   desc: string;
-  data: BleuMenuItemData[];
+  data: StatisticsModel[];
 }
 
 /**
  * 作品状态，是否关注过博主，是否点过赞
  */
-interface BleuArbeitenState {
-  isFollowed: boolean;
-  isDigg: boolean;
+interface PostInfoModel {
+  props: PostPropsModel;
+  prevNext: PostPrevNextModel;
+  headlines: string;
+  aggTopPosts: string;
+  historyToday: string;
+  postStats: {
+    buryCount: number;
+    diggCount: number;
+    feedbackCount: number;
+    viewCount: number;
+    isFollowed: boolean;
+    isDigg: boolean;
+  };
 }
 
 /**
  * 博客配置项
  */
-interface BleuConfig {
+interface BleuConfigModel {
   icon: string;
   avatar: string;
   signature: string;
@@ -191,8 +199,12 @@ interface BleuConfig {
     };
     stochastic: string[];
   };
+  header: {
+    links: { name: string; value: string }[];
+  };
   fancybox: any;
   echart: {
+    color: string;
     technics: {
       radar: {
         indicator: { name: string; max: number }[];
@@ -200,51 +212,9 @@ interface BleuConfig {
       series: { type: string; data: any }[];
     };
   };
-  theme: {
-    color: string;
-    dark: Record<string, any>;
-    light: Record<string, any>;
-    style: {
-      /**
-       * 文章文字类型
-       */
-      mainFontFamily?: string;
-      /**
-       * 文章文字大小
-       */
-      mainFontSize: number;
-      /**
-       * 代码块文字类型
-       */
-      codeFontFamily?: string;
-      /**
-       * 代码块文字大小
-       */
-      codeFontSize: number;
-      /**
-       * 艺术字体类型
-       */
-      artFontFamily?: string;
-      /**
-       * 艺术字体大小
-       */
-      artFontSize: number;
-      /**
-       * 博文所有标签下的文字间距
-       */
-      mainLetterSpacing: number;
-      /**
-       * 代码块文字间距
-       */
-      codeLetterSpacing: number;
-      /**
-       *
-       */
-      mainLineHeight: number;
-      /**
-       *
-       */
-      codeLineHeight: number;
+  theme?: {
+    cssvar: {
+      codeFamily: string;
     };
   };
 }
@@ -252,10 +222,9 @@ interface BleuConfig {
 /**
  * Bleu 本地设置
  */
-interface BleuOptions {
+declare type LocalOptionModel = Partial<{
   theme: { mode: "dark" | "light" };
-  toolkits: { pin: boolean };
-}
+}>;
 
 /**
  * 是否已登录

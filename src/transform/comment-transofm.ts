@@ -19,8 +19,8 @@ export function toCommentPages(data: string): number {
 /**
  * 解析随笔详细页面的评论列表
  */
-export function toCommentList(dom: Document): BleuComment[] {
-  const data: BleuComment[] = [];
+export function toCommentList(dom: Document): CommentModel[] {
+  const data: CommentModel[] = [];
   const eles = dom.getElementsByClassName("feedbackItem");
 
   for (let i = 0; i < eles.length; i++) {

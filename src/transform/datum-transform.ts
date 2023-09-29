@@ -4,22 +4,6 @@
  * @author Himmelbleu
  * @date 2023 年 1 月 15 日
  */
-/**
- * 解析侧边栏博客排行信息。
- */
-export function parseMenuRankList(dom: Document): BleuMenuItemData[] {
-  const data: BleuMenuItemData[] = [];
-  const eles = dom.querySelectorAll("li");
-
-  for (let i = 0; i < eles.length; i++) {
-    const t = eles[i].innerText.trim();
-    const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
-    const digg = t.match(/\d+/g)[0];
-    data.push({ text, digg });
-  }
-
-  return data;
-}
 
 function parseColHTML(
   dom: Document,
@@ -36,10 +20,10 @@ function parseColHTML(
 }
 
 /**
- * 解析侧边栏分类列表、标签列表，... 列表
+ * 解析侧边栏
  */
-export function toMenuColumn(dom: Document): BleuMenuColumn {
-  const data: BleuMenuColumn = {
+export function toColumnData(dom: Document): ColumnDataModel {
+  const data: ColumnDataModel = {
     essaySort: [],
     essayArchive: [],
     articleArchive: [],
@@ -47,7 +31,7 @@ export function toMenuColumn(dom: Document): BleuMenuColumn {
     latestEssayList: [],
     latestComments: [],
     rankings: [],
-    tagList: [],
+    markList: [],
     albumn: []
   };
 
@@ -67,7 +51,7 @@ export function toMenuColumn(dom: Document): BleuMenuColumn {
     dom,
     "#sidebar_toptags ul li > a",
     (element, matched) => {
-      data.tagList.push({
+      data.markList.push({
         id: matched[1],
         text: element.innerText
       });
@@ -144,6 +128,7 @@ export function toMenuColumn(dom: Document): BleuMenuColumn {
     "#sidebar_articlearchive ul li > a",
     (element, matched) => {
       const date = matched[1].split("/");
+
       data.articleArchive.push({
         id: `${date[0]}-${date[1]}`,
         text: element.innerText
@@ -152,43 +137,37 @@ export function toMenuColumn(dom: Document): BleuMenuColumn {
     /archives\/([0-9]+\/[0-9]+)/
   );
 
-  let count = 1;
-  let bounds = false;
-  let comment = { id: "", title: "", content: "", author: "" };
-
   const elesLi = dom.querySelectorAll("#sidebar_recentcomments ul li");
 
-  for (let i = 0; i < elesLi.length; i++) {
-    if (bounds) bounds = false;
+  for (let i = 0; i < elesLi.length; i += 3) {
+    const comment = { id: "", title: "", content: "", author: "" };
+    const titleEle = elesLi[i].querySelector(".recent_comment_title a");
+    const bodyEle = elesLi[i + 1];
+    const authorEle = elesLi[i + 2];
 
-    if (!bounds) {
-      const attr = elesLi[i].getAttribute("class");
-      if (attr === "recent_comment_title") {
-        const eleA = elesLi[i].getElementsByTagName("a")[0];
-        comment.title = eleA.innerText;
-        comment.id = eleA.getAttribute("href").match(/[0-9]+/g)[0];
-      } else if (attr === "recent_comment_body") {
-        comment.content = elesLi[i].innerText;
-      } else if (attr === "recent_comment_author") {
-        comment.author = Textual.regexReplace(elesLi[i].innerText, [/--/g]);
-      }
+    if (titleEle) {
+      comment.title = titleEle.innerText;
+      comment.id = titleEle.getAttribute("href").match(/[0-9]+/g)[0];
     }
 
-    if (count % 3 == 0) {
-      bounds = true;
-      data.latestComments.push(comment);
-      comment = { id: "", title: "", content: "", author: "" };
+    if (bodyEle) {
+      comment.content = bodyEle.innerText;
     }
-    count++;
+
+    if (authorEle) {
+      comment.author = Textual.regexReplace(authorEle.innerText, [/--/g]);
+    }
+
+    data.latestComments.push(comment);
   }
 
   return data;
 }
 
 /**
- * 解析侧边栏博主主人基本的昵称、粉丝数、园龄等数据
+ * 解析昵称、粉丝数、园龄
  */
-export function toAuthorData(dom: Document): BleuMenuItemData[] {
+export function toAuthorData(dom: Document): StatisticsModel[] {
   const nodeList = dom.querySelectorAll("#profile_block > a");
   return Array.from(nodeList).map(ele => ({
     text: ele.innerText.trim(),
@@ -197,10 +176,10 @@ export function toAuthorData(dom: Document): BleuMenuItemData[] {
 }
 
 /**
- * 解析博主主人的随笔、文章、评论、阅读等数据
+ * 解析随笔、文章、评论、阅读
  */
-export function toMasterData(dom: Document): BleuMenuItemData[] {
-  const data: BleuMenuItemData[] = [];
+export function toStatistics(dom: Document): StatisticsModel[] {
+  const data: StatisticsModel[] = [];
   const eles = dom.getElementsByTagName("span");
 
   for (let index = 0; index < eles.length; index++) {
@@ -219,8 +198,8 @@ export function toMasterData(dom: Document): BleuMenuItemData[] {
 /**
  * 解析博客阅读排行榜
  */
-export function toTopList(dom: Document): BleuTopList {
-  const data: BleuTopList = {
+export function toTopList(dom: Document): TopListModel {
+  const data: TopListModel = {
     topView: [],
     topComments: [],
     topDigg: []
@@ -261,8 +240,8 @@ export function toTopList(dom: Document): BleuTopList {
   return data;
 }
 
-export function toMarkList(dom: Document): BleuMark[] {
-  const data: BleuMark[] = [];
+export function toMarkList(dom: Document): MarkModel[] {
+  const data: MarkModel[] = [];
   const eles = dom.getElementById("MyTag1_dtTagList").getElementsByTagName("td");
 
   for (let i = 0; i < eles.length; i++) {
@@ -281,8 +260,8 @@ export function toAlbumnItem(dom: Document) {
   return dom.getElementById("ViewPicture1_GalleryImage").getAttribute("src");
 }
 
-export function toAlbumn(dom: Document): BleuAlbumn {
-  const data: BleuAlbumnItem[] = [];
+export function toAlbumn(dom: Document): AlbumnModel {
+  const data: AlbumnItemModel[] = [];
   const eles = dom.getElementsByClassName("divPhoto");
 
   for (let i = 0; i < eles.length; i++) {

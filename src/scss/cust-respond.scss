@@ -4,8 +4,9 @@
  * @author Himmelbleu
  * @date 2023 年 1 月 15 日
  */
+ 
 html {
-  --l-text-size: 14px;
+  --bleu-font-size: 14px;
 }
 
 // 小于 1400px 都是 14px，超过 1400px 就开始依次往上递增
@@ -14,7 +15,7 @@ html {
 
   @media screen and (min-width: $min) {
     html {
-      --l-text-size: #{calc($min / 100)};
+      --bleu-font-size: #{calc($min / 100)};
     }
   }
 }

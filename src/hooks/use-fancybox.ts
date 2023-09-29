@@ -6,7 +6,7 @@ export function useFancybox() {
       Toolbar: {
         display: {
           left: ["infobar"],
-          middle: BleuVars.isPcDevice()
+          middle: BleuVars.isPC()
             ? ["zoomIn", "zoomOut", "toggle1to1", "rotateCCW", "rotateCW", "flipX", "flipY"]
             : [],
           right: ["slideshow", "thumbs", "close"]

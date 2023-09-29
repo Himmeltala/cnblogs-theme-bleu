@@ -1,36 +1,29 @@
 <script setup lang="ts">
-import zhCn from "element-plus/lib/locale/lang/zh-cn";
-
-const disabled = ref(!BleuVars.isPcDevice());
+const disabled = ref(!BleuVars.isPC());
 
 provide(KeyVals.CATALOG_FLAG, disabled);
 </script>
 
 <template>
-  <div id="l-progress" class="z-9999 fixed-lt w-100vw">
+  <div id="l-progress" class="z-999999 fixed left-0 top-0 w-100vw">
     <div class="track absolute top-0">
       <div class="bar rd-2"></div>
     </div>
   </div>
-  <div id="l-content" class="fade-in-out relative z-9">
+  <TopHeader></TopHeader>
+  <div id="l-content" class="fade-in-out relative z-99 mt-20">
     <div id="l-top-nail"></div>
-    <el-config-provider :locale="zhCn">
-      <RouterView v-slot="{ Component }">
-        <template v-if="Component">
-          <KeepAlive
-            :include="[RouterName.BleuHome, RouterName.MarkList, RouterName.ArbeitenByCalendar]">
-            <Suspense>
-              <component :is="Component" />
-            </Suspense>
-          </KeepAlive>
-        </template>
-      </RouterView>
-    </el-config-provider>
+    <RouterView v-slot="{ Component }">
+      <template v-if="Component">
+        <Suspense>
+          <component :is="Component" />
+        </Suspense>
+      </template>
+    </RouterView>
     <div id="l-bottom-nail"></div>
   </div>
-  <ToolKits />
   <div
-    class="fixed-lt w-100vw h-100vh"
+    class="fixed left-0 top-0 w-100vw h-100vh"
     :style="{
       'background-image': 'url(' + BleuVars.config.images.background.src + ')',
       'background-size': BleuVars.config.images.background.size,
@@ -47,7 +40,7 @@ provide(KeyVals.CATALOG_FLAG, disabled);
   .bar,
   .track {
     height: 100%;
-    background: var(--l-text-primary);
+    background: var(--bleu-theme-color-primary);
   }
 
   .bar.bar-active {

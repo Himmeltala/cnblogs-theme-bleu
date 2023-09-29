@@ -1,61 +1,115 @@
-@use "@/scss/themes";
 @use "@/scss/cust-respond";
 @use "@/scss/cust-markdown";
 @use "@/scss/cust-highlightjs";
-@use "@/scss/cust-element-plus";
 
 @use "element-plus/theme-chalk/dark/css-vars.css";
 @use "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 html {
-  --l-animation-effect: all 0.3s ease-in-out;
+  /* theme */
+  --bleu-theme-color-primary: var(--el-color-primary);
+  --bleu-theme-color-1: var(--el-color-primary-dark-2);
+  --bleu-theme-color-2: var(--el-color-primary-light-3);
+  --bleu-theme-color-3: var(--el-color-primary-light-5);
+  --bleu-theme-color-4: var(--el-color-primary-light-7);
+  --bleu-theme-color-5: var(--el-color-primary-light-8);
+  --bleu-theme-color-6: var(--el-color-primary-light-9);
+
+  // bg
+  --bleu-bg-color-page: var(--el-bg-color-page);
+  --bleu-bg-color: var(--el-bg-color);
+  --bleu-bg-color-overlay: var(--el-bg-color-overlay);
+
+  // text
+  --bleu-text-color-primary: var(--el-text-color-primary);
+  --bleu-text-color-regular: var(--el-text-color-regular);
+  --bleu-text-color-secondary: var(--el-text-color-secondary);
+  --bleu-text-color-placeholder: var(--el-text-color-placeholder);
+  --bleu-text-color-disabled: var(--el-text-color-disabled);
+
+  // border
+  --bleu-border-color-darker: var(--el-border-color-darker);
+  --bleu-border-color-dark: var(--el-border-color-dark);
+  --bleu-border-color: var(--el-border-color);
+  --bleu-border-color-light: var(--el-border-color-light);
+  --bleu-border-color-lighter: var(--el-border-color-lighter);
+  --bleu-border-color-extra-light: var(--el-border-color-extra-light);
+
+  // fill
+  --bleu-fill-color-darker: var(--el-fill-color-darker);
+  --bleu-fill-color-dark: var(--el-fill-color-dark);
+  --bleu-fill-color: var(--el-fill-color);
+  --bleu-fill-color-light: var(--el-fill-color-light);
+  --bleu-fill-color-lighter: var(--el-fill-color-lighter);
+  --bleu-fill-color-extra-light: var(--el-fill-color-extra-light);
+  --bleu-fill-color-blank: var(--el-fill-color-blank);
+}
+
+html[class="dark"] {
+  --hljs-color: #abb2bf;
+  --hljs-bg: #282c34;
+  --hljs-comment-color: #7b7f88;
+  --hljs-keyword: #c678dd;
+  --hljs-section: #e06c75;
+  --hljs-literal: #56b6c2;
+  --hljs-addition: #98c379;
+  --hljs-attr: #d19a66;
+  --hljs-bullet: #61aeee;
+  --hljs-built: #e6c07b;
+}
+
+html[class="light"] {
+  --hljs-color: #383a42;
+  --hljs-bg: #fafafa;
+  --hljs-comment-color: #a0a1a7;
+  --hljs-keyword: #a626a4;
+  --hljs-section: #e45649;
+  --hljs-literal: #0184bb;
+  --hljs-addition: #50a14f;
+  --hljs-attr: #986801;
+  --hljs-bullet: #986801;
+  --hljs-built: #986801;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  color: var(--l-text-secondary);
-  font-size: var(--l-text-size);
-  background-color: var(--l-bg-a);
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  color: var(--el-text-color-primary);
+  font-size: var(--bleu-font-size);
 }
 
-// a 标签
-a:link {
-  text-decoration: none;
-}
-
-// 设置 PC 端的 page 和 content 样式
-@include mixins.pc() {
-  .page {
-    --uno: f-s-c relative;
-    z-index: 2;
-
-    & > .content {
-      width: 55vw;
-    }
-  }
-}
-
-// 设置移动端的 page 和 content 样式
-@include mixins.mb() {
-  .page {
-    --uno: px-4;
-    width: 100%;
-  }
-}
-
-// 不出现滚动条
-.scroll-none {
+* {
+  line-break: anywhere;
+  line-height: 1.7;
+  word-break: break-all;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
   scrollbar-color: initial;
   scrollbar-width: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+a {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  color: inherit;
+
+  &:link {
+    text-decoration: none;
+  }
+
+  &:visited {
+    color: inherit;
   }
 }
 
@@ -86,21 +140,6 @@ a:link {
     }
     100% {
       background-position: 100% center;
-    }
-  }
-}
-
-// 抖动效果
-.bounce {
-  animation: bounce-animation 0.8s ease alternate infinite;
-
-  @keyframes bounce-animation {
-    0% {
-      transform: translateY(0px) scale(1);
-    }
-
-    100% {
-      transform: translateY(-8px) scale(0.95, 1);
     }
   }
 }

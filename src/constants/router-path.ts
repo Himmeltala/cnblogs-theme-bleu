@@ -1,15 +1,8 @@
 /**
- * @returns "/"
- */
-export function BleuHome() {
-  return "/";
-}
-
-/**
  * @param id 随笔或文章 ID
  * @returns "/p/:id"
  */
-export function Arbeiten(id?: string | number) {
+export function PostDetail(id?: string | number) {
   if (id) {
     return `/p/${id}`;
   } else return "/p/:id";
@@ -19,7 +12,7 @@ export function Arbeiten(id?: string | number) {
  * @param tag 标签
  * @returns "/mark" 或者 "/mark?name=C/C++"
  */
-export function ArbeitenByMark(tag?: string) {
+export function PostsByMark(tag?: string) {
   if (tag) {
     return `/mark?name=${tag}`;
   } else return "/mark";
@@ -29,7 +22,7 @@ export function ArbeitenByMark(tag?: string) {
  * @param id 文章或随笔 ID
  * @returns "/sort?id=1&page=1" 或者 "/sort"
  */
-export function ArbeitenBySort(id?: string | number, page?: number | string, obj?: boolean) {
+export function PostsBySort(id?: string | number, page?: number | string, obj?: boolean) {
   if (obj) {
     return { path: "/sort", query: { id, page } };
   } else {
@@ -39,13 +32,13 @@ export function ArbeitenBySort(id?: string | number, page?: number | string, obj
 }
 
 /**
- * @param page 作品列表
- * @returns "/list" 或者 "/list?page=1"
+ * @param page 文章列表
+ * @returns "/" 或者 "/?page=1"
  */
-export function ArbeitenList(page?: string | number) {
+export function PostsList(page?: string | number) {
   if (page) {
-    return `/list?page=${page}`;
-  } else return "/list";
+    return `/?page=${page}`;
+  } else return "/";
 }
 
 /**
@@ -54,7 +47,7 @@ export function ArbeitenList(page?: string | number) {
  * @param date 日期
  * @returns "/archive/:mode/:date"
  */
-export function ArbeitenByArchive(mode?: "a" | "p" | "d", date?: string) {
+export function PostsByArchive(mode?: "a" | "p" | "d", date?: string) {
   if (mode && date) {
     return `/archive/${mode}/${date}`;
   } else return "/archive/:mode/:date";
@@ -63,7 +56,7 @@ export function ArbeitenByArchive(mode?: "a" | "p" | "d", date?: string) {
 /**
  * @returns "/calendar"
  */
-export function ArbeitenByCalendar() {
+export function PostsByCalendar() {
   return "/calendar";
 }
 

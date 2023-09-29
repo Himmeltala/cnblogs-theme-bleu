@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CommentApi } from "@/apis";
+import { CommentHttp } from "@/requests";
 
 const props = defineProps({
   comment: {
@@ -35,7 +35,7 @@ function before() {
 }
 
 async function finish() {
-  const { isSuccess } = await CommentApi.answer({
+  const { isSuccess } = await CommentHttp.answer({
     body:
       `回复 ${props.comment.layer} [@${props.comment.author}](${props.comment.space})\n\n` +
       content.value,
@@ -46,8 +46,8 @@ async function finish() {
   if (isSuccess) {
     content.value = "";
     props.comment.isAnsling = !props.comment.isAnsling;
-    const count = await CommentApi.getCount(props.postId);
-    const comments = await CommentApi.getList(props.postId, props.currPageIndex);
+    const count = await CommentHttp.getCount(props.postId);
+    const comments = await CommentHttp.getList(props.postId, props.currPageIndex);
     emits("onFinish", { count, comments });
   }
 }

@@ -44,31 +44,25 @@ function createBleuVars() {
         "https://anime.shochiku.co.jp/sukimega/wp-content/themes/sukimega_first_theme/common2/images/top_content_kv01.jpg"
       ]
     },
+    header: {
+      links: [
+        {
+          name: "bilibili",
+          value: "https://space.bilibili.com/7021686"
+        },
+        {
+          name: "github",
+          value: "https://github.com/himmelbleu"
+        }
+      ]
+    },
     theme: {
-      color: "#409EFF",
-      light: {
-        secondary: "#393939",
-        thirdly: "#6e6e6e",
-        bgA: "#f8f8f8"
-      },
-      dark: {
-        secondary: "#b9b9b9",
-        thirdly: "#8b8b8b",
-        bgA: "#222222"
-      },
-      style: {
-        artFontFamily: "ZCOOL KuaiLe",
-        artFontSize: 1.1,
-        mainFontSize: 1.1,
-        mainLetterSpacing: 1.7,
-        mainLineHeight: 1.7,
-        codeFontSize: 0.95,
-        codeFontFamily: "Hack",
-        codeLetterSpacing: 0.7,
-        codeLineHeight: 1.7
+      cssvar: {
+        codeFamily: "Hack"
       }
     },
     echart: {
+      color: "#409eff",
       technics: {
         radar: {
           indicator: [
@@ -107,45 +101,11 @@ function createBleuVars() {
  */
 function createGlobalVars() {
   const style = document.createElement("style");
-
   const theme = BleuVars.config.theme;
 
   style.textContent = `
-    :root {
-      --l-main-family: ${theme.style.mainFontFamily || `var(--el-font-family)`};
-      --l-main-font-size: ${theme.style.mainFontSize}rem;
-      --l-code-family: ${theme.style.codeFontFamily || `var(--el-font-family)`};
-      --l-code-size: ${theme.style.codeFontSize}rem;
-      --l-art-family: ${theme.style.artFontFamily || `var(--el-font-family)`};
-      --l-art-size: ${theme.style.artFontSize}rem;
-      --l-text-primary: ${theme.color};
-      --l-main-letter-spacing: ${theme.style.mainLetterSpacing}px;
-      --l-code-letter-spacing: ${theme.style.codeLetterSpacing}px;
-      --l-main-line-height: ${theme.style.mainLineHeight};
-      --l-code-line-height: ${theme.style.codeLineHeight};
-    }
-
-    html.light {
-      --l-text-secondary: ${theme.light.secondary};
-      --l-text-thirdly: ${theme.light.thirdly};
-      --l-bg-a: ${theme.light.bgA};
-    }
-    
-    html.dark {
-      --l-text-secondary: ${theme.dark.secondary};
-      --l-text-thirdly: ${theme.dark.thirdly};
-      --l-bg-a: ${theme.dark.bgA};
-    }
-
-    * {
-      color: inherit;
-      line-break: anywhere;
-      word-break: break-all;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-      font-family: var(--l-main-family);
-      line-height: var(--l-main-line-height);
-      letter-spacing: var(--l-main-letter-spacing);
+    html {
+      --bleu-code-family: ${theme.cssvar.codeFamily || `var(--el-font-family)`}
     }
   `;
 
@@ -188,7 +148,7 @@ function onBeforeLoad() {
 function onAfterLoad() {
   PrettifyLog.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-bleu");
   PrettifyLog.primary(
-    "v2.10.4",
+    "v2.11.0",
     "The Theme was Created By Himmelbleu, and Powered By Vue3 & Vite."
   );
 }

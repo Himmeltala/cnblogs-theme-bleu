@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CommentApi } from "@/apis";
+import { CommentHttp } from "@/requests";
 
 const props = defineProps({
   comment: {
@@ -29,12 +29,12 @@ function uploadImage(el: string) {
 
 async function before() {
   htmlContent = props.comment.content;
-  content.value = await CommentApi.get({ commentId: props.comment.commentId });
+  content.value = await CommentHttp.get({ commentId: props.comment.commentId });
   props.comment.isEditing = !props.comment.isEditing;
 }
 
 async function finish() {
-  const response = await CommentApi.update({
+  const response = await CommentHttp.update({
     body: content.value,
     commentId: props.comment.commentId
   });
@@ -43,8 +43,8 @@ async function finish() {
     content.value = "";
     props.comment.isEditing = !props.comment.isEditing;
     emits("onFinish", {
-      count: await CommentApi.getCount(props.postId),
-      comments: await CommentApi.getList(props.postId, props.currPageIndex)
+      count: await CommentHttp.getCount(props.postId),
+      comments: await CommentHttp.getList(props.postId, props.currPageIndex)
     });
   }
 }

@@ -1,6 +1,16 @@
+/**
+ * 监听鼠标滚动，上或下
+ *
+ * @param onDown 往下滚动的回调函数
+ * @param onUp 往上滚动的回调函数
+ * @param options
+ */
 export function useWheelRollsUpAndDown(
-  onDown: Function,
-  onUp?: Function,
+  fncs: {
+    onDown?: Function;
+    onUp?: Function;
+    on?: Function;
+  },
   options?: {
     throttle?: number;
   }
@@ -12,15 +22,24 @@ export function useWheelRollsUpAndDown(
     useThrottleFn(e => {
       const isMovedDown = lastScrollY < window.scrollY;
       if (isMovedDown) {
-        onDown();
+        fncs.onDown && fncs.onDown(e);
       } else {
-        onUp && onUp();
+        fncs.onUp && fncs.onUp(e);
       }
+
+      fncs.on && fncs.on(e);
       lastScrollY = window.scrollY;
     }, throttle)
   );
 }
 
+/**
+ * 从评论切割一条线，判断是否超过线条在其上方；是否低于线条在其下方。
+ *
+ * @param onTop
+ * @param onBottom
+ * @param options
+ */
 export function useLineBetweenHighAndLow(
   onTop: Function,
   onBottom?: Function,

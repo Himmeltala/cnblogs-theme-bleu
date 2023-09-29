@@ -13,7 +13,7 @@ type AjaxType = Partial<{
 /**
  * 博客园评论实体，区别于上面定义的评论实体，这个实体是根据博客园的数据库字段而来
  */
-interface BlogComment {
+interface BlogCommentModel {
   postId?: number;
   voteType?: VoteType;
   isAbandoned?: boolean;
@@ -32,7 +32,7 @@ interface BlogComment {
 /**
  * 获取随笔，返回的博客园接口的字段
  */
-interface BlogArbeiten {
+interface BlogPostModel {
   postId?: number;
   voteType?: VoteType;
   isAbandoned?: boolean;
@@ -40,8 +40,10 @@ interface BlogArbeiten {
 
 /**
  * 随笔投票，博客园接口需要的正确字段
+ *
+ * @deprecated
  */
-interface BlogArbeitenViewPoint {
+interface BlogPostViewPoint {
   buryCount: number;
   diggCount: number;
   feedbackCount: number;

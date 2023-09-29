@@ -4,20 +4,16 @@
  * @author Himmelbleu
  * @date 2023 年 1 月 16 日
  */
+
 .hljs {
   display: block;
   overflow-x: auto;
   overflow-y: hidden;
-  color: var(--l-text-secondary) !important;
-  font-family: var(--l-code-family) !important;
-  font-size: var(--l-code-size) !important;
-  line-height: var(--l-code-line-height) !important;
-  letter-spacing: var(--l-code-letter-spacing) !important;
+  color: var(--bleu-text-color-primary) !important;
+  font-family: var(--bleu-code-family) !important;
   
   span {
-    font-family: var(--l-code-family) !important;
-    font-size: var(--l-code-size) !important;
-    letter-spacing: var(--l-code-letter-spacing) !important;
+    font-family: var(--bleu-code-family) !important;
   }
 
   &::-webkit-scrollbar {

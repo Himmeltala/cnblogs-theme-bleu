@@ -1,11 +1,10 @@
 export enum RouterName {
-  BleuHome = "BleuHome",
-  Arbeiten = "Arbeiten",
-  ArbeitenBySort = "ArbeitenBySort",
-  ArbeitenList = "ArbeitenList",
-  ArbeitenByArchive = "ArbeitenByArchive",
-  ArbeitenByMark = "ArbeitenByMark",
-  ArbeitenByCalendar = "ArbeitenByCalendar",
+  PostDetail = "PostDetail",
+  PostsBySort = "PostsBySort",
+  PostsList = "PostsList",
+  PostsByArchive = "PostsByArchive",
+  PostsByMark = "PostsByMark",
+  PostsByCalendar = "PostsByCalendar",
   MarkList = "MarkList",
   Albumn = "Albumn",
   AlbumnItem = "AlbumnItem"

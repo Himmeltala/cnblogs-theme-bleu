@@ -1,75 +1,38 @@
 <script setup lang="ts">
-import { DatumApi } from "@/apis";
+import { DatumHttp } from "@/requests";
 
-const markList = shallowRef<BleuMark[]>();
+const mainList = shallowRef<MarkModel[]>();
 const loading = new Broswer.Loading();
 
-async function fetchData() {
+function fetchData() {
   loading.startLoading();
-  markList.value = await DatumApi.getMarkList();
-  loading.endLoading();
+  DatumHttp.getMarkList().then(data => {
+    mainList.value = data;
+
+    nextTick(() => {
+      loading.endLoading();
+    });
+  });
 }
 
-await fetchData();
+fetchData();
 </script>
 
 <template>
-  <div id="l-mark-list" class="page">
-    <div class="content" v-if="markList">
-      <el-page-header class="mt-4 mb-6" :icon="null" @back="$router.back()">
-        <template #title>
-          <div class="f-c-c">
-            <i-ep-back />
-          </div>
-        </template>
-        <template #content>
-          <div class="text-1.2rem">标签集合</div>
-        </template>
-      </el-page-header>
-      <div class="tags">
-        <HollowedBox hover :padding="false" class="item mb-4" v-for="item of markList">
-          <div class="f-c-c w-100% h-100%">
-            <router-link :to="RouterPath.ArbeitenByMark(item.text)">
-              {{ item.text }} ({{ item.count }})
-            </router-link>
-          </div>
-        </HollowedBox>
-      </div>
+  <div class="mark-list lg-sm:px-90 lt-sm:px-5" v-if="mainList">
+    <div class="f-c-s flex-wrap flex-gap-4">
+      <router-link v-for="item of mainList" :to="RouterPath.PostsByMark(item.text)">
+        <el-tag v-if="item.count > 20" size="large" type="danger">
+          <span class="text-0.9rem"> {{ item.text }} ({{ item.count }}) </span>
+        </el-tag>
+        <el-tag v-else-if="item.count < 20 && item.count > 10" size="large" type="warning">
+          <span class="text-0.8rem"> {{ item.text }} ({{ item.count }}) </span>
+        </el-tag>
+        <el-tag v-else-if="item.count < 10 && item.count > 5" size="large" type="success">
+          <span class="text-0.7rem"> {{ item.text }} ({{ item.count }}) </span>
+        </el-tag>
+        <el-tag v-else size="large" type="info"> {{ item.text }} ({{ item.count }}) </el-tag>
+      </router-link>
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-#l-mark-list .tags {
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  align-content: stretch;
-  flex-wrap: wrap;
-  flex-direction: row;
-
-  .item {
-    --uno: py-4;
-  }
-
-  @include mixins.pc() {
-    .item {
-      flex: 1 1 20%;
-
-      &:not(:nth-child(4n)) {
-        --uno: mr-3;
-      }
-    }
-  }
-
-  @include mixins.mb() {
-    .item {
-      flex: 1 1 40%;
-
-      &:nth-child(odd) {
-        --uno: mr-3;
-      }
-    }
-  }
-}
-</style>
