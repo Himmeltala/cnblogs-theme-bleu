@@ -14,10 +14,22 @@ const commentInst = ref();
 const comments = ref<CommentModel[]>();
 const pageCount = ref(0);
 const currIndex = ref(1);
+const markdown = shallowRef();
 
-async function fetchData() {
-  comments.value = await CommentHttp.getList(props.postId, currIndex.value, anchor.value);
-  pageCount.value = await CommentHttp.getCount(props.postId);
+function fetch() {
+  CommentHttp.getList(props.postId, currIndex.value, anchor.value).then(list => {
+    comments.value = list;
+    CommentHttp.getCount(props.postId).then(count => {
+      pageCount.value = count;
+
+      nextTick(() => {
+        for (let index = 0; index < markdown.value.length; index++) {
+          const element = markdown.value[index];
+          element.mdRender();
+        }
+      });
+    });
+  });
 }
 
 function onPost(response: any) {
@@ -35,8 +47,8 @@ function onEdFinish(response: any) {
   pageCount.value = response.count;
 }
 
-watch(toRefPostId, async () => {
-  await fetchData();
+watch(toRefPostId, () => {
+  fetch();
 });
 
 watch(level, () => {
@@ -44,14 +56,14 @@ watch(level, () => {
   anchor.value = 0;
 });
 
-await fetchData();
+fetch();
 </script>
 
 <template>
   <div class="l-comment">
     <PostComment :post-id="postId" @on-post="onPost" />
     <div class="caption f-c-s">
-      <div class="i-tabler-list mr-2"></div>
+      <div class="i-tabler:list mr-2"></div>
       评论列表
     </div>
     <div class="mt-10" v-if="isLogined && comments?.length">
@@ -78,16 +90,16 @@ await fetchData();
             </div>
           </div>
         </div>
-        <div class="mt-4 relative" style="margin-left: 4.5rem">
+        <div class="mt-4 position-relative" style="margin-left: 4.5rem">
           <textarea
-            class="z--1 opacity-0 absolute top-0 left-0"
+            class="z--1 opacity-0 position-absolute top-0 left-0"
             :id="'upload-img-' + index"></textarea>
-          <Markdown :fancy-group="'comment-' + index" :content="item.content" />
+          <TextRender ref="markdown" :fancy-group="'comment-' + index" :content="item.content" />
         </div>
         <div class="more-action float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>
             <div class="f-c-e text-0.9rem text-thirdly hover">
-              <div class="i-tabler-dots-vertical mr-1"></div>
+              <div class="i-tabler:dots-vertical mr-1"></div>
               <div>更多</div>
             </div>
             <template #dropdown>
@@ -122,8 +134,8 @@ await fetchData();
       </div>
       <div class="mt-10 f-c-e" v-if="pageCount > 1">
         <el-pagination
-          @current-change="fetchData"
-          layout="prev, pager, next"
+          @current-change="fetch"
+          :layout="Consts.isPC() ? 'pager, next' : 'prev, next'"
           v-model:current-page="currIndex"
           :page-count="pageCount" />
       </div>

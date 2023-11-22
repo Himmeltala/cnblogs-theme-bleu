@@ -1,9 +1,59 @@
-@use "@/scss/cust-respond";
 @use "@/scss/cust-markdown";
 @use "@/scss/cust-highlightjs";
-
 @use "element-plus/theme-chalk/dark/css-vars.css";
 @use "@fancyapps/ui/dist/fancybox/fancybox.css";
+
+* {
+  line-height: 1.7;
+  line-break: anywhere;
+  letter-spacing: 0.5px;
+  word-break: break-all;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  scrollbar-color: initial;
+  scrollbar-width: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+html[class="dark"] {
+  --hljs-color: #abb2bf;
+  --hljs-bg: #282c34;
+  --hljs-comment-color: #7b7f88;
+  --hljs-keyword: #c678dd;
+  --hljs-section: #e06c75;
+  --hljs-literal: #56b6c2;
+  --hljs-addition: #98c379;
+  --hljs-attr: #d19a66;
+  --hljs-bullet: #61aeee;
+  --hljs-built: #e6c07b;
+
+  --bleu-text-color-primary: #bbb;
+  --bleu-text-color-regular: #ddd;
+  --bleu-text-color-secondary: #fff;
+}
+
+html[class="light"] {
+  --hljs-color: #383a42;
+  --hljs-bg: #fafafa;
+  --hljs-comment-color: #a0a1a7;
+  --hljs-keyword: #a626a4;
+  --hljs-section: #e45649;
+  --hljs-literal: #0184bb;
+  --hljs-addition: #50a14f;
+  --hljs-attr: #986801;
+  --hljs-bullet: #986801;
+  --hljs-built: #986801;
+
+  --bleu-text-color-primary: #555;
+  --bleu-text-color-regular: #222;
+  --bleu-text-color-secondary: #000;
+}
 
 html {
   /* theme */
@@ -21,9 +71,6 @@ html {
   --bleu-bg-color-overlay: var(--el-bg-color-overlay);
 
   // text
-  --bleu-text-color-primary: var(--el-text-color-primary);
-  --bleu-text-color-regular: var(--el-text-color-regular);
-  --bleu-text-color-secondary: var(--el-text-color-secondary);
   --bleu-text-color-placeholder: var(--el-text-color-placeholder);
   --bleu-text-color-disabled: var(--el-text-color-disabled);
 
@@ -43,77 +90,43 @@ html {
   --bleu-fill-color-lighter: var(--el-fill-color-lighter);
   --bleu-fill-color-extra-light: var(--el-fill-color-extra-light);
   --bleu-fill-color-blank: var(--el-fill-color-blank);
+
+  --bleu-font-size: 14px;
+  --el-text-color-primary: var(--bleu-text-color-primary) !important;
+  --el-text-color-regular: var(--bleu-text-color-regular) !important;
 }
 
-html[class="dark"] {
-  --hljs-color: #abb2bf;
-  --hljs-bg: #282c34;
-  --hljs-comment-color: #7b7f88;
-  --hljs-keyword: #c678dd;
-  --hljs-section: #e06c75;
-  --hljs-literal: #56b6c2;
-  --hljs-addition: #98c379;
-  --hljs-attr: #d19a66;
-  --hljs-bullet: #61aeee;
-  --hljs-built: #e6c07b;
-}
+@for $i from 1 through 20 {
+  $min: $i * 100 + 1400px;
 
-html[class="light"] {
-  --hljs-color: #383a42;
-  --hljs-bg: #fafafa;
-  --hljs-comment-color: #a0a1a7;
-  --hljs-keyword: #a626a4;
-  --hljs-section: #e45649;
-  --hljs-literal: #0184bb;
-  --hljs-addition: #50a14f;
-  --hljs-attr: #986801;
-  --hljs-bullet: #986801;
-  --hljs-built: #986801;
+  @media screen and (min-width: $min) {
+    html {
+      --bleu-font-size: #{calc($min / 100)};
+    }
+  }
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  color: var(--el-text-color-primary);
+  color: var(--bleu-text-color-primary);
   font-size: var(--bleu-font-size);
 }
 
-* {
-  line-break: anywhere;
-  line-height: 1.7;
-  word-break: break-all;
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-  scrollbar-color: initial;
-  scrollbar-width: none;
-  color: inherit;
-  font-family: inherit;
-  font-size: inherit;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 a {
+  color: none;
   border: none;
-  background: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  background: none;
   text-decoration: none;
-  color: inherit;
 
   &:link {
     text-decoration: none;
   }
-
-  &:visited {
-    color: inherit;
-  }
 }
 
-// 文字效果
 .shine-text {
   background: linear-gradient(
     to right,
@@ -144,7 +157,6 @@ a {
   }
 }
 
-// 清除浮动
 .clearfix:after {
   content: "";
   height: 0;
@@ -176,7 +188,6 @@ a {
   }
 }
 
-// 淡入淡出效果
 .fade-in-out {
   animation: opacity-animation 0.9s ease-in forwards;
 

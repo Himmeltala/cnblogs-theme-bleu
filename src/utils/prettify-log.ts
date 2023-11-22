@@ -1,9 +1,10 @@
 /**
  * 美化打印
  *
- * @author Himmelbleu
+ * @author Himmeltala
  * @date 2023 年 1 月 15 日
  */
+
 export function primary(title: string, msg: string) {
   console.log(
     `%c${title}%c${msg}`,

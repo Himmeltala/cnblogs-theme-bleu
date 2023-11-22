@@ -1,9 +1,10 @@
 /**
  * 操作随机数
  *
- * @author Himmelbleu
+ * @author Himmeltala
  * @date 2023 年 1 月 15 日
  */
+
 function select(min: number, max: number) {
   let sum = max - min + 1;
   return Math.floor(Math.random() * sum + min);

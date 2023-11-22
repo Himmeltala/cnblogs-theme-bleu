@@ -3,7 +3,7 @@ export * as Formatter from "./formatter";
 export * as Native from "./native";
 export * as Navigation from "./navigation";
 export * as PrettifyLog from "./prettify-log";
-export * as BleuStorage from "./stoage";
+export * as CustStorage from "./stoage";
 export * as Textual from "./textual";
 export * as Random from "./random";
 

@@ -6,7 +6,7 @@ import { toDOM, PostsTransform } from "@/transform";
  *
  * @param id 随笔、文章 ID
  */
-export async function getArbeiten(id: string) {
+export async function getDetail(id: string) {
   const { data } = await request.get(`/p/${id}.html`);
   return PostsTransform.toPostDetail(id, toDOM(data));
 }
@@ -32,7 +32,7 @@ export async function vote(form: BlogPostModel): Promise<AjaxType> {
  * @param id 传递一个数组，数组第一个就是 postId 的值
  * @deprecated
  */
-export async function getViewPoint(id: string): Promise<BlogPostViewPoint> {
+export async function getViewPoint(id: string): Promise<BlogPostViewPointModel> {
   const { data } = await request.post(`/ajax/GetPostStat`, [id]);
   return data[0];
 }
@@ -43,7 +43,7 @@ export async function getViewPoint(id: string): Promise<BlogPostViewPoint> {
  * @param id 分类 id
  * @param page 页数
  */
-export async function getByL1(id: string, page?: number | string) {
+export async function getByL1(id: string | number | string[], page?: string | number | string[]) {
   const { data } = await request.get(`/category/${id}.html?page=${page || 1}`);
   return PostsTransform.toPostsList2(toDOM(data));
 }
@@ -52,9 +52,9 @@ export async function getByL1(id: string, page?: number | string) {
  * 获取随笔或文章的二级分类
  *
  * @param id 分类 ID
- * @param isArticle 分类类型，随笔的类型是1，文章的类型是2
+ * @param isArticle 随笔的类型是false(1)，文章的类型是true(2)
  */
-export async function getByL2(id: string, isArticle: boolean) {
+export async function getByL2(id: string | number | string[], isArticle: boolean) {
   const { data } = await request.get(
     `/ajax/TreeCategoryList.aspx?parentId=${id}&categoryType=${isArticle ? 2 : 1}`
   );
@@ -91,9 +91,9 @@ export async function getListByArchive(date: string, type: "article" | "arbeiten
  * @param tag 标签名称
  * @param page 页码
  */
-export async function getListByMark(tag: string, page?: string | number) {
+export async function getListByLabel(tag: any, page?: string | number) {
   const { data } = await request.get(`/tag/${tag}/default.html?page=${page ?? 1}`);
-  return PostsTransform.toPostsListPart(toDOM(data));
+  return PostsTransform.toPartPostsList(toDOM(data));
 }
 
 /**
@@ -121,7 +121,7 @@ export async function isPassed(pwd: string, id: string) {
  * @param pwd 博文阅读密码
  * @returns 输入密码正确时返回这个博文内容
  */
-export async function getLockedArbeiten(pwd: string, id: string) {
+export async function getLocked(pwd: string, id: string) {
   const formData = new FormData();
   formData.append("Password", pwd);
   const { data } = await request.post(`/protected/p/${id}.html`, formData);
@@ -144,7 +144,7 @@ export async function getListByDay(date: string) {
  * @param id
  * @since 2023年9月30日
  */
-export async function getArticleInfo(id: string): Promise<PostInfoModel> {
+export async function getInfo(id: string): Promise<PostInfoModel> {
   const { data } = await request.get(`/ajax/post-accessories?postId=${id}`);
   return PostsTransform.toPostDetailInfo(data);
 }
@@ -168,7 +168,7 @@ export async function nominate(id: string) {
  * 关注博主
  */
 export async function follow() {
-  const blogUserGuid = BleuVars.getOppositeGuid();
+  const blogUserGuid = Consts.getOppositeGuid();
   const { data } = await request.post(`/ajax/Follow/FollowBlogger.aspx`, {
     blogUserGuid
   });
@@ -181,7 +181,7 @@ export async function follow() {
  * 取消关注
  */
 export async function unfollow() {
-  const blogUserGuid = BleuVars.getOppositeGuid();
+  const blogUserGuid = Consts.getOppositeGuid();
   const { data } = await request.post(`/ajax/Follow/RemoveFollow.aspx`, {
     blogUserGuid
   });

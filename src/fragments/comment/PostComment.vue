@@ -39,14 +39,14 @@ async function AddComment() {
 <template>
   <div>
     <div class="caption f-c-s">
-      <div class="i-tabler-mail-fast mr-2"></div>
+      <div class="i-tabler:mail-fast mr-2"></div>
       发表评论
     </div>
-    <div class="mb-10 relative">
+    <div class="mb-10 position-relative">
       <div class="tools mb-2 f-c-e">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
           <span class="hover" @click="uploadImage('main-upload-img')">
-            <i-ep-picture-rounded />
+            <i-ep:picture-rounded />
           </span>
         </el-tooltip>
       </div>
@@ -55,13 +55,13 @@ async function AddComment() {
           v-model="comment.body"
           placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>
       </div>
-      <div class="z--1 opacity-0 absolute top-0 left-0">
+      <div class="z--1 opacity-0 position-absolute top-0 left-0">
         <textarea id="main-upload-img" />
       </div>
       <div class="f-c-e">
-        <el-button plain :disabled="!isLogined" :loading="loading" @click="AddComment">
+        <el-button plain round :disabled="!isLogined" :loading="loading" @click="AddComment">
           <template #icon>
-            <div class="i-tabler-send"></div>
+            <div class="i-tabler:send"></div>
           </template>
           发送评论
         </el-button>

@@ -66,7 +66,7 @@ function cancel() {
       <div class="mb-2 f-c-e">
         <el-tooltip content="插入图片" placement="top-start">
           <span class="hover" @click="uploadImage('upload-img-' + currPageIndex)">
-            <i-ep-picture-rounded />
+            <i-ep:picture-rounded />
           </span>
         </el-tooltip>
       </div>
@@ -78,15 +78,15 @@ function cancel() {
       class="float-right f-c-e text-0.9rem text-thirdly"
       :class="{ 'answer-item': !comment.isAnsling, ' w-100%': comment.isAnsling }">
       <div v-show="!comment.isAnsling && !comment.isEditing" class="hover f-c-e" @click="before">
-        <div class="i-tabler-message-circle mr-1"></div>
+        <div class="i-tabler:message-circle mr-1"></div>
         <span>回复</span>
       </div>
       <div v-show="comment.isAnsling" class="hover f-c-e mr-4" @click="finish">
-        <i-ep-check class="mr-1" />
+        <i-ep:check class="mr-1" />
         <span>完成回复</span>
       </div>
       <div v-show="comment.isAnsling" class="hover f-c-e" @click="cancel">
-        <i-ep-close class="mr-1" />
+        <i-ep:close class="mr-1" />
         <span>取消回复</span>
       </div>
     </div>

@@ -6,7 +6,7 @@ const route = useRoute();
 const imgUrl = shallowRef();
 const loading = new Broswer.Loading();
 
-function fetchData() {
+function fetch() {
   loading.startLoading();
   DatumHttp.getAlbumnItem(`${route.params.id}`).then(data => {
     imgUrl.value = data;
@@ -18,11 +18,11 @@ function fetchData() {
   });
 }
 
-fetchData();
+fetch();
 </script>
 
 <template>
-  <div class="albumn-item lg-sm:px-90 lt-sm:px-5">
+  <div class="page">
     <div class="text-1.2rem mb-5">相册图片</div>
     <div class="f-c-c">
       <a :href="imgUrl" data-fancybox="bleu-albumn" :data-download-src="imgUrl">

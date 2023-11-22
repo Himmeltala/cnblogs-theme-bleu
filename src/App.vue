@@ -1,17 +1,13 @@
-<script setup lang="ts">
-const disabled = ref(!BleuVars.isPC());
-
-provide(KeyVals.CATALOG_FLAG, disabled);
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div id="l-progress" class="z-999999 fixed left-0 top-0 w-100vw">
-    <div class="track absolute top-0">
+    <div class="track position-absolute top-0">
       <div class="bar rd-2"></div>
     </div>
   </div>
-  <TopHeader></TopHeader>
-  <div id="l-content" class="fade-in-out relative z-99 mt-20">
+  <NavHeader></NavHeader>
+  <div id="l-content" class="fade-in-out position-relative z-99 mt-20">
     <div id="l-top-nail"></div>
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
@@ -25,11 +21,11 @@ provide(KeyVals.CATALOG_FLAG, disabled);
   <div
     class="fixed left-0 top-0 w-100vw h-100vh"
     :style="{
-      'background-image': 'url(' + BleuVars.config.images.background.src + ')',
-      'background-size': BleuVars.config.images.background.size,
-      'background-repeat': BleuVars.config.images.background.repeat,
-      'background-position': BleuVars.config.images.background.position,
-      opacity: BleuVars.config.images.background.opacity
+      'background-image': 'url(' + Consts.config.images.background.src + ')',
+      'background-size': Consts.config.images.background.size,
+      'background-repeat': Consts.config.images.background.repeat,
+      'background-position': Consts.config.images.background.position,
+      opacity: Consts.config.images.background.opacity
     }"></div>
 </template>
 

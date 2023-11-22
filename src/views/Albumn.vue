@@ -8,7 +8,7 @@ const route = useRoute();
 const imgList = shallowRef();
 const albumn = shallowRef<AlbumnModel>();
 
-function fetchData(id: any) {
+function fetch(id: any) {
   loading.startLoading();
   DatumHttp.getAlbumn(id).then(data => {
     albumn.value = data;
@@ -22,14 +22,14 @@ function fetchData(id: any) {
 }
 
 onBeforeRouteUpdate(updateGuard => {
-  fetchData(updateGuard.params.id);
+  fetch(updateGuard.params.id);
 });
 
-fetchData(route.params.id);
+fetch(route.params.id);
 </script>
 
 <template>
-  <div class="albumns lg-sm:px-90 lt-sm:px-5" v-if="albumn">
+  <div class="page" v-if="albumn">
     <div class="text-1.2rem mb-5">相册 - {{ albumn.title }}</div>
     <div class="text-0.9rem mb-10 text-text-regular">{{ albumn.desc }}</div>
     <div class="f-c-b flex-wrap flex-gap-4">

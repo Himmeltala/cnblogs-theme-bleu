@@ -5,6 +5,8 @@ import { useFancybox } from "@/hooks/use-fancybox";
 hljs.configure({
   ignoreUnescapedHTML: true
 });
+hljs.registerAliases(["xaml"], { languageName: "xml" });
+hljs.registerAliases(["cmd"], { languageName: "bash" });
 
 const props = defineProps({
   content: {
@@ -17,10 +19,10 @@ const props = defineProps({
   }
 });
 
-const markdownInst = ref<HTMLElement>();
-const templates = ref("");
+const mdRef = ref<HTMLElement>();
+const mdStr = ref("");
 
-function generateMarkdownTemplate() {
+function generateMdTemplate() {
   let mtcCode, mtcImg, mtcTip, mtcWar, mtPot;
   let regex1 = /<pre>[\s\S]*?<\/pre>/g;
   let regex2 = /<img[\s\S]*?>/g;
@@ -36,12 +38,14 @@ function generateMarkdownTemplate() {
 
   let step2 = step1;
   while ((mtcImg = regex2.exec(step1)) !== null) {
-    const r = refactorImg(mtcImg[0]);
+    const r = reconstructImage(mtcImg[0]);
     step2 = step2.replace(mtcImg[0], r);
   }
 
   let step3 = step2;
   while ((mtcTip = regex3.exec(step2)) !== null) {
+    console.log(mtcTip[0]);
+
     const r = generateTip(mtcTip[1]);
     step3 = step3.replace(mtcTip[0], r);
   }
@@ -61,7 +65,7 @@ function generateMarkdownTemplate() {
   return step5;
 }
 
-function refactorImg(str: string) {
+function reconstructImage(str: string) {
   const mtSrc = str.match(/src="([^"]*)/);
   const mtAlt = str.match(/alt="([^"]*)"/);
 
@@ -74,9 +78,9 @@ function refactorImg(str: string) {
             <img src="${mtSrc[1]}" class="rd-2" />
           </a>
         </div>
-        <div class="bleu-img__caption text-center text-0.9rem text-thirdly">${
-          mtAlt ? mtAlt[1] : ""
-        }</div>
+        <div class="bleu-img__caption text-center text-0.9rem">
+          ${mtAlt ? mtAlt[1] : ""}
+        </div>
       </div>
     </div>
   `;
@@ -120,6 +124,26 @@ function generatePorter(str: string) {
 const size = Number(getComputedStyle(document.documentElement).fontSize.replace("px", ""));
 const step = size * 1.7;
 
+function extractLangTempFromPreCode(str: string) {
+  const name = str.match(/file:\[([\s\S]*?)\]/);
+  const label = name ? name[1] : "";
+  const lang = str.match(/<code class="language-([\d\w#]+)"/);
+
+  const temp = `
+      <div class="code-tips text-0.8rem ${label ? "position-absolute" : ""} f-c-e w-100% flow-auto pr-1">
+        <div class="code-label">${label}</div>
+        <div class="code-lang ml-4">${lang[1]?.toUpperCase()}</div>
+      </div>
+    `;
+
+  label && (str = str.replace(/file:\[([\s\S]*?)\]/, ""));
+
+  return {
+    temp,
+    str
+  };
+}
+
 function extractTempFromPreCode(
   str: string,
   lines: string[],
@@ -144,7 +168,7 @@ function extractTempFromPreCode(
       str = str.replace(`${mtEnd[0]}`, `${mtEnd[1]}`);
 
       const gap = endIndex - startIndex + 1;
-      temp += `<div class="${color} absolute left-0 w-100%" style="top: ${
+      temp += `<div class="${color} position-absolute left-0 w-100%" style="top: ${
         startIndex * step
       }px; height: ${step * gap}px">
       </div>`;
@@ -157,33 +181,8 @@ function extractTempFromPreCode(
   };
 }
 
-function extractLangTempFromPreCode(str: string) {
-  const name = str.match(/file:\[([\s\S]*?)\]/);
-  const label = name ? name[1] : "";
-  const lang = str.match(/<code class="language-([\d\w]+)"/)[1].toUpperCase();
-
-  const temp = `
-      <div class="tools ${label ? "f-c-b" : "f-c-e"} f-c-b rd-2 w-100%">
-        ${label ? `<div class="left text-0.9rem flow-auto">${label}</div>` : ""}
-        <div class="right text-0.8rem f-c-e flex-auto select-none">
-          <div class="language mr-2 text-text-regular">${lang}</div>
-          <div class="clipboard hover text-text-regular">复制代码</div>
-        </div>
-      </div>
-      ${!label ? `<div class="mb-6"></div>` : ""}
-    `;
-
-  label && (str = str.replace(/file:\[([\s\S]*?)\]/, ""));
-
-  return {
-    temp,
-    str
-  };
-}
-
 function generatePreCode(str: string) {
   const lines = str.split("\n");
-
   const langTemp = extractLangTempFromPreCode(str);
   str = langTemp.str;
 
@@ -222,33 +221,23 @@ function generatePreCode(str: string) {
 
   str = str.replace(
     "<pre>",
-    `<div class="bleu-pre">${langTemp.temp}<pre class="bleu-pre__body relative flow-hidden">${addTemp.temp}${delTemp.temp}${litTemp.temp}`
+    `<div class="bleu-pre">${langTemp.temp}<pre class="code-container position-relative flow-hidden">${addTemp.temp}${delTemp.temp}${litTemp.temp}`
   );
 
   return str + "</div></pre>";
 }
 
-function registerMarkdownEvents(source: HTMLElement, pre: HTMLElement) {
-  source.querySelector(".clipboard").addEventListener("click", () => {
-    navigator.clipboard.writeText(pre.innerText).then(
-      () => ElMessage({ message: "复制成功！", type: "success", grouping: true }),
-      () => ElMessage({ message: "没有权限！", type: "error", grouping: true })
-    );
-  });
-}
-
-function renderMarkdownFnc(callback: any) {
-  templates.value = generateMarkdownTemplate();
+function mdRender(afterRendered: any) {
+  mdStr.value = generateMdTemplate();
 
   nextTick(() => {
-    markdownInst.value.querySelectorAll<HTMLElement>(".bleu-pre").forEach(ele => {
-      const pre = ele.querySelector<HTMLElement>("pre code");
-      hljs.highlightElement(pre);
-      registerMarkdownEvents(ele, pre);
+    mdRef.value.querySelectorAll<HTMLElement>(".bleu-pre").forEach(ele => {
+      const preCodeElem = ele.querySelector<HTMLElement>("pre code");
+      hljs.highlightElement(preCodeElem);
     });
 
     // mathjax
-    const mathjaxEls = markdownInst.value.getElementsByClassName("math");
+    const mathjaxEls = mdRef.value.getElementsByClassName("math");
     if (window.MathJax && mathjaxEls?.length > 0) {
       window.MathJax.startup.promise = window.MathJax.startup.promise
         .then(() => {
@@ -258,16 +247,13 @@ function renderMarkdownFnc(callback: any) {
     }
 
     useFancybox();
-
-    callback(markdownInst.value);
+    afterRendered(mdRef.value);
   });
 }
 
-defineExpose({ renderMarkdownFnc });
+defineExpose({ mdRender });
 </script>
 
 <template>
-  <div ref="markdownInst" class="markdown-textual" v-html="templates"></div>
+  <div ref="mdRef" class="text-render" v-html="mdStr"></div>
 </template>
-
-<style lang="scss" scoped></style>

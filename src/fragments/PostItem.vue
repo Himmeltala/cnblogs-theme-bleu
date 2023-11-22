@@ -12,38 +12,35 @@ defineProps({
 </script>
 
 <template>
-  <div class="item mb-15 rd-2">
-    <router-link
-      class="text-ellipsis line-clamp-2 mb-4 text-1.5rem hover text-text-primary"
-      :to="RouterPath.PostDetail(item.id)">
+  <div class="item mb-15">
+    <router-link class="text-1.2rem hover text-text-regular" :to="RoutePaths.PostDetail(item.id)">
       {{ item.text }}
     </router-link>
-    <div class="f-s-b flex-gap-4">
+    <div class="mt-4 f-s-b flex-gap-4">
       <div class="lg-sm:w-65% lt-sm:w-50%">
-        <div class="f-c-s flex-wrap mb-4 text-0.9rem text-text-secondary">
+        <div class="f-c-s flex-wrap mb-4 text-0.8rem">
           <div class="mr-4 f-c-c">
             <div class="i-ep-clock mr-2"></div>
             {{ item.date }}
           </div>
           <div class="mr-4 f-c-c">
-            <div class="i-ep-view mr-2"></div>
+            <div class="i-ep:view mr-2"></div>
             {{ item.view }}
           </div>
           <div class="mr-4 f-c-c">
-            <div class="i-ep-chat-line-square mr-2"></div>
+            <div class="i-ep:chat-line-square mr-2"></div>
             {{ item.comm }}
           </div>
           <div class="f-c-c">
-            <div class="i-ep-star mr-2"></div>
+            <div class="i-ep:star mr-2"></div>
             {{ item.digg }}
           </div>
         </div>
-        <div class="text-text-regular mb-6 lt-sm:text-ellipsis lt-sm:line-clamp-3">
+        <div class="mb-4 text-0.9rem lt-sm:line-clamp-4">
           {{ item.desc }}
         </div>
-        <div class="hover text-text-regular text-0.9rem f-c-s mb-4">
-          <div class="i-ep-caret-right mr-2"></div>
-          <router-link class="b-b-1 b-b-dotted p-b-1" :to="RouterPath.PostDetail(item.id)">
+        <div class="hover text-0.9rem f-c-s mb-4">
+          <router-link class="b-b-1 b-b-dotted p-b-1" :to="RoutePaths.PostDetail(item.id)">
             阅读全文
           </router-link>
         </div>
@@ -53,10 +50,10 @@ defineProps({
           <el-tag type="warning" v-if="item.isLocked" class="ml-2">密码锁定</el-tag>
         </div>
       </div>
-      <div class="lg-sm:w-35% lt-sm:w-50% lt-sm:h-45 lg-sm:h-55 flow-hidden relative">
-        <div class="mask absolute top-0 left-0 w-100% h-15% z-1"></div>
-        <img class="w-100% h-100% object-cover rd-2" :src="item.surface || cover" />
-        <div class="mask absolute bottom-0 left-0 w-100% h-15%"></div>
+      <div class="lg-sm:w-35% lt-sm:w-50% lt-sm:h-40 lg-sm:h-50 flow-hidden position-relative">
+        <div class="mask position-absolute top-0 left-0 w-100% h-15% z-1"></div>
+        <img class="w-100% h-100% object-cover" :src="item.surface || cover" />
+        <div class="mask position-absolute bottom-0 left-0 w-100% h-15%"></div>
       </div>
     </div>
   </div>

@@ -5,17 +5,17 @@ const loading = new Broswer.Loading();
 
 const route = useRoute();
 const router = useRouter();
-const mainData = ref();
-const postCoverIndex = shallowRef<number[]>();
-const postCoverArr = BleuVars.config.images.stochastic;
-
+const postList = ref();
+const postCoverIdx = shallowRef<number[]>();
+const postCoverArr = Consts.config.images.stochastic;
 const currPage = ref<number>(Number(route.query.page) || 1);
 
-function fetchData() {
+function fetch() {
   loading.startLoading();
+
   PostsHttp.getList(currPage.value).then(data => {
-    mainData.value = data;
-    postCoverIndex.value = Random.get(postCoverArr, mainData.value.data.length);
+    postList.value = data;
+    postCoverIdx.value = Random.get(postCoverArr, postList.value.data.length);
 
     nextTick(() => {
       loading.endLoading();
@@ -24,28 +24,26 @@ function fetchData() {
 }
 
 onBeforeRouteUpdate(() => {
-  fetchData();
+  fetch();
 });
 
 function onCurrentChange() {
   router.push({ path: "/", query: { page: currPage.value } });
 }
 
-fetchData();
+fetch();
 </script>
 
 <template>
-  <div v-if="mainData?.data" class="home w-100vw lg-sm:px-90 lt-sm:px-5 pb-5">
-    <PostsItem
-      v-for="(item, index) in mainData.data"
+  <div v-if="postList?.data" class="page">
+    <PostItem
+      v-for="(item, index) in postList.data"
       :item="item"
-      :cover="postCoverArr[postCoverIndex[index]]" />
+      :cover="postCoverArr[postCoverIdx[index]]" />
     <div class="f-c-e">
       <el-pagination
-        background
-        :layout="BleuVars.isPC() ? 'pager, next, jumper' : 'prev, next, jumper, total'"
-        :total="mainData?.page"
-        :page-count="mainData?.page"
+        :layout="Consts.isPC() ? 'pager, next' : 'prev, next'"
+        :page-count="postList?.page"
         v-model:current-page="currPage"
         @current-change="onCurrentChange" />
     </div>

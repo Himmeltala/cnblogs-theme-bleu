@@ -1,13 +1,13 @@
-export namespace BleuVars {
+export namespace Consts {
   /**
    * 博客设置选项
    */
-  export let config: BleuConfigModel;
+  export let config: ConfigModel;
 
   /**
    * 获取博客 App
    *
-   * @returns 比如：Himmelbleu
+   * @returns 比如：Himmeltala
    */
   export function getBlogApp() {
     if (import.meta.env.DEV) {
@@ -67,4 +67,6 @@ export namespace BleuVars {
   export function isPC() {
     return !/iPhone|iPad|iPod|Android|IEMobile/.test(navigator.userAgent);
   }
+
+  export const OPSTIONS_KEY = `l-${Consts.getBlogApp()}-setting`;
 }

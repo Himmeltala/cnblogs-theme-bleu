@@ -61,7 +61,7 @@ function cancel() {
       <div class="mb-2 f-c-e">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
           <span class="hover" @click="uploadImage('upload-img-' + currPageIndex)">
-            <i-ep-picture-rounded />
+            <i-ep:picture-rounded />
           </span>
         </el-tooltip>
       </div>
@@ -73,15 +73,15 @@ function cancel() {
       class="float-right f-c-e text-0.9rem text-thirdly"
       :class="{ 'edit-item': !comment.isEditing, 'w-100%': comment.isEditing }">
       <div v-show="!comment.isEditing && !comment.isAnsling" class="hover f-c-e" @click="before">
-        <div class="i-tabler-pencil-minus mr-1"></div>
+        <div class="i-tabler:pencil-minus mr-1"></div>
         <span>编辑</span>
       </div>
       <div v-show="comment.isEditing" class="hover f-c-e mr-4" @click="finish">
-        <i-ep-circle-check class="mr-1" />
+        <i-ep:circle-check class="mr-1" />
         <span>完成编辑</span>
       </div>
       <div v-show="comment.isEditing" class="hover f-c-e" @click="cancel">
-        <i-ep-circle-close class="mr-1" />
+        <i-ep:circle-close class="mr-1" />
         <span>取消编辑</span>
       </div>
     </div>

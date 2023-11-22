@@ -1,0 +1,358 @@
+<script setup lang="ts">
+import { DatumHttp } from "@/requests";
+import { useEcharts } from "@/hooks/use-echarts";
+
+const val = ref("");
+const drawer = ref(false);
+const options = CustStorage.getOptions();
+const themeMode = ref(options.value.theme.mode === "dark" ? true : false);
+const colData = ref<ColumnDataModel>();
+const stsData = ref<StatisticsModel[]>();
+const radarRef = ref<HTMLElement>();
+
+function toggle() {
+  if (themeMode.value) {
+    document.documentElement.classList.remove("light");
+    document.documentElement.classList.add("dark");
+    options.value.theme.mode = "dark";
+  } else {
+    document.documentElement.classList.remove("dark");
+    document.documentElement.classList.add("light");
+    options.value.theme.mode = "light";
+  }
+}
+
+const flag = ref(0);
+
+function openedDrawer() {
+  if (flag.value < 1) {
+    DatumHttp.getColumnContent().then(data => {
+      colData.value = data;
+    });
+
+    DatumHttp.getStatistics().then(data => {
+      stsData.value = data;
+    });
+
+    useEcharts({ dom: radarRef.value, options: Consts.config.echart.technics });
+  }
+
+  flag.value++;
+}
+</script>
+
+<template>
+  <el-drawer
+    @open="openedDrawer"
+    v-model="drawer"
+    direction="ltr"
+    :size="Consts.isPC() ? '20%' : '80%'"
+    :with-header="false">
+    <div>
+      <div class="f-c-s">
+        <div class="position-relative w-25 h-25 mr-6">
+          <img :src="Consts.config.avatar" class="w-100% h-100% object-cover rd-50%" />
+          <div
+            class="position-absolute bottom-0 right-0 f-c-c w-8 h-8 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
+            {{ Consts.config.status || "🐟" }}
+          </div>
+        </div>
+        <div v-if="stsData" class="text-0.9rem">
+          <div class="f-c-s hover mt-2" @click="Navigation.go(stsData[1].href)">
+            <div class="i-tabler:calendar-time mr-2"></div>
+            园龄：{{ stsData[1].text }}
+          </div>
+          <div class="f-c-s hover mt-2" @click="Navigation.go(stsData[2].href)">
+            <div class="i-tabler:brand-twitch mr-2"></div>
+            粉丝：{{ stsData[2].text }}
+          </div>
+          <div class="f-c-s hover mt-2" @click="Navigation.go(stsData[3].href)">
+            <div class="i-tabler:heart mr-2"></div>
+            关注：{{ stsData[3].text }}
+          </div>
+        </div>
+      </div>
+      <div
+        class="text-1.4rem cursor-pointer mt-4 shine-text"
+        @click="Navigation.go(stsData[0].href)">
+        {{ Consts.getBlogApp() }}
+      </div>
+      <div v-if="colData" v-for="item in colData.rankings" class="text-0.8rem mt-2">
+        <div class="f-c-s">
+          <div class="i-tabler:star mr-2"></div>
+          {{ item.text }}
+        </div>
+      </div>
+      <div class="text-0.9rem mt-4">{{ Consts.config.signature }}</div>
+    </div>
+    <div v-if="!Consts.isPC()">
+      <el-divider>
+        <div class="text-text-secondary f-c-s">
+          <div class="i-tabler:link mr-2"></div>
+          链接导航
+        </div>
+      </el-divider>
+      <div>
+        <div class="f-c-s flex-wrap">
+          <div
+            class="hover mr-5 position-relative"
+            :class="{
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+                $route.name === 'PostsList'
+            }"
+            @click="$router.push('/')">
+            首页
+          </div>
+          <div class="hover mr-5" @click="Navigation.go('https://www.cnblogs.com/')">博客园</div>
+          <div
+            class="hover mr-5 position-relative"
+            :class="{
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+                $route.name === 'LabelList'
+            }"
+            @click="$router.push(RoutePaths.LabelList())">
+            标签
+          </div>
+          <div
+            class="hover mr-5 position-relative"
+            :class="{
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+                $route.name === 'PostsByCalendar'
+            }"
+            @click="$router.push(RoutePaths.PostsByCalendar())">
+            日历
+          </div>
+          <div class="hover" @click="Navigation.go('https://i.cnblogs.com')">管理</div>
+        </div>
+        <div class="mt-4 f-c-s flex-wrap">
+          <div class="mr-6">
+            <el-switch
+              @change="toggle"
+              v-model="themeMode"
+              inline-prompt
+              active-text="黑"
+              inactive-text="白" />
+          </div>
+          <div
+            class="hover mr-6"
+            @click="Navigation.go(item.value)"
+            v-for="item in Consts.config.header.links">
+            <div class="i-tabler:brand-bilibili" v-if="item.name === 'bilibili'"></div>
+            <div class="i-tabler:brand-github" v-else-if="item.name === 'github'"></div>
+            <div v-else-if="!item.name && item.icon">
+              <div v-html="item.icon"></div>
+            </div>
+            <div v-else>
+              <img class="w-8 h-8 object-cover rd-50%" :src="item.src" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <el-divider>
+      <div class="text-text-secondary f-c-s">
+        <div class="i-tabler:radar mr-2"></div>
+        技能雷达
+      </div>
+    </el-divider>
+    <div ref="radarRef" class="w-100% h-80"></div>
+    <el-divider>
+      <div class="text-text-secondary f-c-s">
+        <div class="i-tabler:info-hexagon mr-2"></div>
+        博主数据
+      </div>
+    </el-divider>
+    <div v-if="stsData" class="text-0.9rem">
+      <div class="f-c-s">
+        <div class="i-tabler:pencil-minus mr-2"></div>
+        发表的随笔：{{ stsData[4].digg }}
+      </div>
+      <div class="f-c-s mt-2">
+        <div class="i-tabler:books mr-2"></div>
+        发表的文章：{{ stsData[5].digg }}
+      </div>
+      <div class="f-c-s mt-2">
+        <div class="i-tabler:chart-bar mr-2"></div>
+        阅读的数量：{{ stsData[7].digg }}
+      </div>
+    </div>
+    <el-divider>
+      <div class="text-text-secondary f-c-s">
+        <div class="i-tabler:tag-starred mr-2"></div>
+        博主标签
+      </div>
+    </el-divider>
+    <div v-if="colData" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
+      <div class="hover" v-for="item in colData.markList">
+        <router-link :to="RoutePaths.PostsByLabel(item.id)">
+          <div class="f-c-s">
+            <div class="i-tabler:tag mr-2"></div>
+            {{ item.text }}
+          </div>
+        </router-link>
+      </div>
+    </div>
+    <el-divider>
+      <div class="text-text-secondary f-c-s">
+        <div class="i-tabler:category-2 mr-2"></div>
+        随笔分类
+      </div>
+    </el-divider>
+    <div v-if="colData" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
+      <div class="hover" v-for="item in colData.essaySort">
+        <router-link :to="RoutePaths.PostsBySort(item.id)">
+          <div class="f-c-s">
+            <div class="i-tabler:folder mr-2"></div>
+            {{ item.text }}
+          </div>
+        </router-link>
+      </div>
+    </div>
+    <el-divider v-if="colData?.essayArchive?.length">
+      <div class="text-text-secondary f-c-s">
+        <div class="i-tabler:archive mr-2"></div>
+        随笔档案
+      </div>
+    </el-divider>
+    <div v-if="colData?.essayArchive" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
+      <div class="hover" v-for="item in colData.essayArchive">
+        <router-link :to="RoutePaths.PostsByArchive('p', item.id)">
+          <div class="f-c-s">
+            <div class="i-tabler:calendar-stats mr-2"></div>
+            {{ item.text }}
+          </div>
+        </router-link>
+      </div>
+    </div>
+    <el-divider v-if="colData?.articleSort?.length">
+      <div class="text-text-secondary f-c-s">
+        <div class="i-tabler:category-plus mr-2"></div>
+        文章分类
+      </div>
+    </el-divider>
+    <div v-if="colData?.articleSort" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
+      <div class="hover" v-for="item in colData.articleSort">
+        <router-link :to="RoutePaths.PostsBySort(item.id)">
+          <div class="f-c-s">
+            <div class="i-tabler:bookmark mr-2"></div>
+            {{ item.text }}
+          </div>
+        </router-link>
+      </div>
+    </div>
+    <el-divider v-if="colData?.articleArchive?.length">
+      <div class="text-text-secondary f-c-s">
+        <div class="i-tabler:file-zip mr-2"></div>
+        文章档案
+      </div>
+    </el-divider>
+    <div v-if="colData?.articleArchive?.length" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
+      <div class="hover" v-for="item in colData.articleArchive">
+        <router-link :to="RoutePaths.PostsByArchive('a', item.id)">
+          <div class="f-c-s">
+            <div class="i-tabler:calendar-event mr-2"></div>
+            {{ item.text }}
+          </div>
+        </router-link>
+      </div>
+    </div>
+    <el-divider v-if="colData?.albumn?.length">
+      <div class="text-text-secondary f-c-s">
+        <div class="i-tabler:photo-sensor-2 mr-2"></div>
+        我的相册
+      </div>
+    </el-divider>
+    <div v-if="colData?.albumn" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
+      <div class="hover" v-for="item in colData.albumn">
+        <router-link :to="RoutePaths.Albumn(item.id)">
+          <div class="f-c-s">
+            <div class="i-tabler:photo mr-2"></div>
+            {{ item.text }}
+          </div>
+        </router-link>
+      </div>
+    </div>
+  </el-drawer>
+  <div
+    b="b-1 b-solid border-primary"
+    class="top-header light:bg-#ffffffb3 dark:bg-#242424b3 h-15 fixed top-0 left-0 w-100vw z-999">
+    <div class="content lg-sm:px-50 lt-sm:px-5 lg-sm:f-c-b lt-sm:f-c-s h-100%">
+      <div class="f-c-s">
+        <el-button round class="mr-6" @click="drawer = !drawer">
+          <template #icon>
+            <div class="i-tabler:menu"></div>
+          </template>
+        </el-button>
+        <div class="w-45">
+          <el-input @keyup.enter="Native.search(val)" placeholder="输入关键字搜索" v-model="val">
+            <template #suffix>
+              <div class="i-ep:search"></div>
+            </template>
+          </el-input>
+        </div>
+      </div>
+      <div class="f-c-b" v-if="Consts.isPC()">
+        <div class="f-c-s text-text-regular">
+          <div
+            class="hover mr-5 position-relative"
+            :class="{
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+                $route.name === 'PostsList'
+            }"
+            @click="$router.push('/')">
+            首页
+          </div>
+          <div class="hover mr-5" @click="Navigation.go('https://www.cnblogs.com/')">博客园</div>
+          <div
+            class="hover mr-5 position-relative"
+            :class="{
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+                $route.name === 'LabelList'
+            }"
+            @click="$router.push(RoutePaths.LabelList())">
+            标签
+          </div>
+          <div
+            class="hover mr-5 position-relative"
+            :class="{
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+                $route.name === 'PostsByCalendar'
+            }"
+            @click="$router.push(RoutePaths.PostsByCalendar())">
+            日历
+          </div>
+          <div class="hover" @click="Navigation.go('https://i.cnblogs.com')">管理</div>
+        </div>
+        <div class="tools ml-5">
+          <el-switch
+            @change="toggle"
+            v-model="themeMode"
+            inline-prompt
+            active-text="黑"
+            inactive-text="白" />
+        </div>
+        <div
+          class="hover ml-4"
+          @click="Navigation.go(item.value)"
+          v-if="Consts.config.header.links?.length"
+          v-for="item in Consts.config.header.links">
+          <div v-if="item.icon" v-html="item.icon" class="f-c-c"></div>
+          <div v-else class="f-c-c">
+            <img class="w-8 h-8 object-cover rd-50%" :src="item.src" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.top-header {
+  -webkit-backdrop-filter: saturate(50%) blur(8px);
+  backdrop-filter: saturate(50%) blur(8px);
+}
+
+:deep(.el-input__wrapper) {
+  border-radius: 10rem;
+}
+</style>

@@ -37,7 +37,7 @@ async function confirmDeleteComment() {
       @confirm="confirmDeleteComment">
       <template #reference>
         <div class="hover f-c-e">
-          <div class="i-tabler-trash mr-1"></div>
+          <div class="i-tabler:trash mr-1"></div>
           <div>删除评论</div>
         </div>
       </template>

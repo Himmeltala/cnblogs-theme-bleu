@@ -4,7 +4,7 @@ import App from "@/App.vue";
 import router from "@/router";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { useBleu } from "@/bleu";
+import { useTheme } from "@/config";
 
 const app = createApp(App);
 
@@ -14,4 +14,4 @@ app.use(createPinia());
 app.config.globalProperties.isBlogOwner = isBlogOwner;
 app.config.globalProperties.isLogined = isLogined;
 
-useBleu(app);
+useTheme(app);

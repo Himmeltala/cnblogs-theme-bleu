@@ -1,7 +1,7 @@
 /**
  * HTML 解析器
  *
- * @author Himmelbleu
+ * @author Himmeltala
  * @date 2023 年 1 月 15 日
  */
 
@@ -155,7 +155,7 @@ export function toColumnData(dom: Document): ColumnDataModel {
     }
 
     if (authorEle) {
-      comment.author = Textual.regexReplace(authorEle.innerText, [/--/g]);
+      comment.author = Textual.replace(authorEle.innerText, [/--/g]);
     }
 
     data.latestComments.push(comment);
@@ -240,8 +240,8 @@ export function toTopList(dom: Document): TopListModel {
   return data;
 }
 
-export function toMarkList(dom: Document): MarkModel[] {
-  const data: MarkModel[] = [];
+export function toMarkList(dom: Document): LabelModel[] {
+  const data: LabelModel[] = [];
   const eles = dom.getElementById("MyTag1_dtTagList").getElementsByTagName("td");
 
   for (let i = 0; i < eles.length; i++) {

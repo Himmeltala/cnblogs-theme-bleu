@@ -1,86 +1,75 @@
 <script setup lang="ts">
 import { useWheelRollsUpAndDown } from "@/hooks/use-mouse";
 
-defineProps({
-  catalogList: {
-    type: Array,
-    required: false
-  }
-});
+const catalogList = ref();
 
-const emits = defineEmits(["update:catalogList"]);
-
-const catalogList = shallowRef();
-
-function highlightCurrentSection(
-  titles: NodeListOf<Element>,
-  inviewport: (title: Element) => void
+function highlightCurrentTopic(
+  topics: NodeListOf<Element>,
+  inviewportFnc: (topic: Element) => void
 ) {
-  const scrollPosition = window.scrollY || window.pageYOffset;
-  for (let i = 0; i < titles.length; i++) {
-    const foffset = titles[i]?.offsetTop;
-    const loffset = titles[i + 1]?.offsetTop;
+  const windowScrollY = window.scrollY;
+  for (let i = 0; i < topics.length; i++) {
+    const headTopicOffset = topics[i]?.offsetTop;
+    const tailTopicOffset = topics[i + 1]?.offsetTop;
 
-    if (scrollPosition < loffset && scrollPosition > foffset) {
-      inviewport(titles[i]);
-    } else if (scrollPosition > foffset && !loffset) {
-      inviewport(titles[i]);
+    if (windowScrollY < tailTopicOffset && windowScrollY > headTopicOffset) {
+      inviewportFnc(topics[i]);
+    } else if (windowScrollY > headTopicOffset && !tailTopicOffset) {
+      inviewportFnc(topics[i]);
     }
   }
 }
 
-let lastToc: Element;
+let lastTopic: Element;
 
-function generateList(content: HTMLDivElement) {
-  const catalogList: { id: string; content: string; item: Element }[] = [];
+function generateTopicList(content: HTMLDivElement) {
+  const topicList: { id: string; content: string; item: Element }[] = [];
+  const topicEles = content.querySelectorAll("h1, h2, h3");
 
-  const titles = content.querySelectorAll("h1, h2, h3");
-
-  for (let i = 0; i < titles.length; i++) {
-    const id = titles[i].getAttribute("id");
-    const type = titles[i].localName;
+  for (let i = 0; i < topicEles.length; i++) {
+    const attributeId = topicEles[i].getAttribute("id");
+    const localName = topicEles[i].localName;
     let marginLeft = "";
 
-    if (type === "h2") {
+    if (localName === "h2") {
       marginLeft = "1rem";
-    } else if (type === "h3") {
+    } else if (localName === "h3") {
       marginLeft = "2rem";
     }
 
     const content = `
-      <div id="catalog-${id}" class="hover"  style="margin-left: ${marginLeft}">
-        ${titles[i].textContent}
+      <div id="topic-${attributeId}" class="hover"  style="margin-left: ${marginLeft}">
+        ${topicEles[i].textContent}
       </div>
     `;
 
-    catalogList.push({ id, content, item: titles[i] });
+    topicList.push({ id: attributeId, content, item: topicEles[i] });
   }
 
   useWheelRollsUpAndDown(
     {
       on: () => {
-        highlightCurrentSection(titles, title => {
-          const target = document.querySelector("#catalog-" + title.id);
+        highlightCurrentTopic(topicEles, title => {
+          const inviewportTopic = document.querySelector("#topic-" + title.id);
 
-          if (lastToc) {
-            lastToc.classList.remove("active-toc");
+          if (lastTopic) {
+            lastTopic.classList.remove("active-topic");
           }
 
-          target.classList.add("active-toc");
+          inviewportTopic.classList.add("active-topic");
 
-          lastToc = target;
+          lastTopic = inviewportTopic;
         });
       }
     },
     { throttle: 50 }
   );
 
-  return catalogList;
+  return topicList;
 }
 
-function renderCatalogFnc(content: HTMLDivElement) {
-  catalogList.value = generateList(content);
-  emits("update:catalogList", catalogList.value);
+function catalogRender(content: HTMLDivElement) {
+  catalogList.value = generateTopicList(content);
 }
 
 function clickToc(toc: any) {
@@ -88,13 +77,13 @@ function clickToc(toc: any) {
 }
 
 defineExpose({
-  renderCatalogFnc
+  catalogRender
 });
 </script>
 
 <template>
-  <div v-if="catalogList && catalogList.length" class="catalog flow-auto">
-    <div class="content w-80% h-100%">
+  <div v-if="catalogList && catalogList.length" class="catalog flow-auto h-87.5%">
+    <div class="w-80%">
       <div class="mb-2">文章目录</div>
       <div
         class="item"
@@ -114,7 +103,7 @@ defineExpose({
 </style>
 
 <style>
-.active-toc {
+.active-topic {
   --uno: text-theme-primary transition-all-300 text-0.9rem;
 }
 </style>

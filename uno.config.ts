@@ -62,7 +62,6 @@ export default defineConfig({
     ]
   ],
   shortcuts: [
-    // flex
     [
       /^f-((c|s|e)(-(c|s|e|b|a))*)$/,
       ([, , g1, , g2]) => {
@@ -86,11 +85,16 @@ export default defineConfig({
         return style;
       }
     ],
-    // 悬停改变字体颜色
     [
       /^hover$/,
       () => {
         return `cursor-pointer hover:text-theme-primary transition-all-300`;
+      }
+    ],
+    [
+      /^page$/,
+      () => {
+        return `w-100vw lg-sm:px-100 lt-sm:px-5 pb-5`;
       }
     ]
   ]

@@ -1,7 +1,7 @@
 type VoteType = "Bury" | "Digg";
 
 /**
- * 有些接口返回的数据类型是博客园的字段，需要该类型进行约束
+ * 返回的博客园的字段类型
  */
 type AjaxType = Partial<{
   id: number;
@@ -11,7 +11,7 @@ type AjaxType = Partial<{
 }>;
 
 /**
- * 博客园评论实体，区别于上面定义的评论实体，这个实体是根据博客园的数据库字段而来
+ * 根据博客园的数据库字段而来的博客园评论模型
  */
 interface BlogCommentModel {
   postId?: number;
@@ -43,7 +43,7 @@ interface BlogPostModel {
  *
  * @deprecated
  */
-interface BlogPostViewPoint {
+interface BlogPostViewPointModel {
   buryCount: number;
   diggCount: number;
   feedbackCount: number;

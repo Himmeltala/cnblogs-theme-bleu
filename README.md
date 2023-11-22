@@ -4,10 +4,6 @@
 一个简单的博客主题。支持数学公式、部分数据有图表统计、部分可配置。
 </p>
 
-<p align="center">
-快速预览：https://www.cnblogs.com/himmelbleu
-</p>
-
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/himmelbleu/cnblogs-theme-bleu?include_prereleases&style=flat-square)](https://github.com/himmelbleu/cnblogs-theme-bleu/releases)
 
 ## 特性
@@ -20,7 +16,7 @@
 
 ```bash
 # 克隆代码
-git clone git@github.com:Himmelbleu/cnblogs-theme-bleu.git
+git clone git@github.com:Himmeltala/cnblogs-theme-bleu.git
 
 # 进入目录
 cd cnblogs-theme-bleu
@@ -76,7 +72,7 @@ pnpm run build
 <!-- 主题样式 -->
 <link
   rel="stylesheet"
-  href="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.css?t=202307090102" />
+  href="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.css?t=2024127009" />
 
 <!-- 推荐字体 -->
 <link
@@ -162,16 +158,68 @@ pnpm run build
 
 ## 页脚 HTML 代码
 
+完整示例（以我的配置）
+
 ```html
 <!-- 主题配置 -->
 <script>
   // 主题的配置对象
-  window.__BLEU_CONFIG__ = {};
+  window.__BLEU_CONFIG__ = {
+    icon: "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/o_230811183015_76772956.jpg",
+    avatar:
+      "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/o_230811183015_76772956.jpg",
+    signature: "Time tick away, dream faded away!",
+    status: "🐟",
+    theme: {
+      cssvar: {
+        codeFontFamily: "Hack"
+      }
+    },
+    images: {
+      stochastic: [
+        "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230703175324_109479306_p0.jpg",
+        "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230913133252_111567709_p0.jpg",
+        "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230913133828_111578714_p0.png"
+      ],
+      background: {
+        src: "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230612174652_94471721_p0.jpg",
+        opacity: 0.05
+      }
+    },
+    echart: {
+      technics: {
+        radar: {
+          indicator: [
+            { name: "Vue", max: 5 },
+            { name: "React", max: 5 },
+            { name: "JS", max: 5 },
+            { name: "TS", max: 5 },
+            { name: "Python", max: 5 },
+            { name: "C", max: 5 },
+            { name: "Java", max: 5 },
+            { name: "MySQL", max: 5 },
+            { name: "Mybatis", max: 5 }
+          ]
+        },
+        series: [
+          {
+            type: "radar",
+            data: [
+              {
+                value: [4, 1, 4, 4, 3.5, 1, 3, 2.5, 3],
+                name: "掌握程度"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  };
 </script>
 <!-- 主题 JS -->
 <script
   type="module"
-  src="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=202307090102"></script>
+  src="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=2024127009"></script>
 
 <!-- 鼠标特效 -->
 <script src="https://blog-static.cnblogs.com/files/yjlblog/cursor-effects.js"></script>
@@ -250,7 +298,7 @@ function calc(x, y) {
 
 ## 主题更新
 
-因博客园有缓存，更改 `https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=20230708117` 链接中 `t` 等于的值，可以是日期，也可以是其他值。更改完成之后，就可以获取到最新的主题。
+因博客园有缓存，更改 `https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=20231251645` 链接中 `t` 等于的值，可以是日期，也可以是其他值。更改完成之后，就可以获取到最新的主题。
 
 # 配置主题
 
@@ -376,27 +424,13 @@ window.__BLEU_CONFIG__ = {
 ## echart
 
 - 类型：object
-- 是否必填：是
+- 是否必填：否
 
-查看官方示例 [echart 雷达图示例](https://echarts.apache.org/examples/zh/index.html#chart-type-radar)。
-
-color 推荐的颜色选择：
-
-<span style="color: #409EFF">#409EFF</span>
-<span style="color: #2D8CF0">#2D8CF0</span>
-<span style="color: #FA7298">#FA7298</span>
-<span style="color: #42B983">#42B983</span>
-<span style="color: #607D8B">#607D8B</span>
-<span style="color: #5E72E4">#5E72E4</span>
-<span style="color: #FF9700">#FF9700</span>
-<span style="color: #009688">#009688</span>
-<span style="color: #673BB7">#673BB7</span>
-<span style="color: #906f61">#906f61</span>
+查看示例 [Echarts 图示例](https://echarts.apache.org/examples/zh/index.html)。
 
 ```js
 window.__BLEU_CONFIG__ = {
   echart: {
-    color: "#409EFF",
     // 我的技能，该属性和 echart 雷达图配置完全一致，可以参考官方文档来填写
     technics: {
       radar: {
@@ -450,6 +484,38 @@ window.__BLEU_CONFIG__ = {
       }
     },
     Hash: false
+  }
+};
+```
+
+## header
+
+- 类型：Object
+- 是否必填：否。不填则 links 为空数组。
+
+配置头部导航栏。name 指定内置的图标，icon 指定 SVG 代码，src 插入图片 URL。
+
+```js
+window.__BLEU_CONFIG__ = {
+  header: {
+    links: [
+      {
+        name: "bilibili",
+        value: "https://space.bilibili.com/7021686"
+      },
+      {
+        name: "github",
+        value: "https://github.com/himmelbleu"
+      },
+      {
+        value: "",
+        icon: "可以插入 svg 代码"
+      },
+      {
+        value: "",
+        src: "图片链接"
+      }
+    ]
   }
 };
 ```

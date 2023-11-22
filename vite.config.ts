@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
           "vue-router",
           "@vueuse/core",
           {
-            "@/constants/index": ["RouterName", "RouterPath", "RouterRegx", "BleuVars", "KeyVals"]
+            "@/constants/index": ["Consts", "RoutePaths"]
           },
           {
             "@/utils/index": [
@@ -38,7 +38,7 @@ export default defineConfig(({ mode }) => {
               "Native",
               "Navigation",
               "Random",
-              "BleuStorage",
+              "CustStorage",
               "Textual"
             ]
           },

@@ -1,16 +1,25 @@
 import * as echarts from "echarts/core";
-import { TooltipComponent, LegendComponent, GridComponent } from "echarts/components";
-import { RadarChart, PieChart, LineChart } from "echarts/charts";
+import {
+  TooltipComponent,
+  LegendComponent,
+  GridComponent,
+  TitleComponent,
+  VisualMapComponent
+} from "echarts/components";
+import { RadarChart, PieChart, LineChart, BarChart } from "echarts/charts";
 import { CanvasRenderer } from "echarts/renderers";
 
 echarts.use([
   TooltipComponent,
   LegendComponent,
   GridComponent,
+  TitleComponent,
+  VisualMapComponent,
   RadarChart,
   CanvasRenderer,
   PieChart,
-  LineChart
+  LineChart,
+  BarChart
 ]);
 
 /**
@@ -25,91 +34,16 @@ function rendering(dom: HTMLElement, options: any) {
 }
 
 /**
- * 渲染雷达图
+ * 渲染图表
  *
- * @param dom 雷达图实例
+ * @param config
  */
-export function useRadarChart(dom: HTMLElement) {
-  Object.assign(BleuVars.config.echart.technics.series[0], {
-    areaStyle: { color: `${BleuVars.config.echart.color}` },
-    lineStyle: { color: `${BleuVars.config.echart.color}a6` },
-    itemStyle: { color: `${BleuVars.config.echart.color}a6` }
-  });
-
-  rendering(dom, BleuVars.config.echart.technics);
-}
-
-/**
- * 渲染饼状图
- *
- * @param config dom、data、flag、radius
- */
-export function usePieChart(config: {
-  dom: HTMLElement;
-  data: { value: number | string; name: string }[];
-  radius?: number | string | string[];
-}) {
+export function useEcharts(config: { dom: HTMLElement; options?: any }) {
   const options = {
     tooltip: {
       trigger: "item"
-    },
-    series: [
-      {
-        type: "pie",
-        data: config.data,
-        radius: config.radius || "100%",
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 5,
-            shadowColor: "rgba(0, 0, 0, 0.5)"
-          }
-        }
-      }
-    ]
+    }
   };
 
-  rendering(config.dom, options);
-}
-
-/**
- * 渲染条形图
- *
- * @param config dom、data、xAxis、flag、series
- */
-export function useLineChart(config: {
-  dom: HTMLElement;
-  data: number | string[];
-  xAxis: string[];
-}) {
-  const options = {
-    tooltip: {
-      trigger: "axis",
-      axisPointer: { type: "cross" }
-    },
-    xAxis: {
-      type: "category",
-      data: config.xAxis
-    },
-    yAxis: {
-      type: "value",
-      name: "随笔数",
-      position: "left",
-      axisLabel: {
-        formatter: "{value} 篇"
-      }
-    },
-    series: [
-      {
-        name: "篇数",
-        data: config.data,
-        type: "line",
-        areaStyle: { color: `${BleuVars.config.echart.color}` },
-        lineStyle: { color: `${BleuVars.config.echart.color}a6` },
-        itemStyle: { color: `${BleuVars.config.echart.color}a6` }
-      }
-    ]
-  };
-
-  rendering(config.dom, options);
+  rendering(config.dom, { ...options, ...config.options });
 }

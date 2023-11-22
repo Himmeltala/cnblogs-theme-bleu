@@ -1,9 +1,10 @@
 /**
  * 博客本地 API
  *
- * @author Himmelbleu
+ * @author Himmeltala
  * @date 2023 年 1 月 15 日
  */
+
 function openWindow(w: string, t: number, i: number, r: number) {
   const left = (screen.width - t) / 2 - r;
   const top = (screen.height - i) / 2 - r;
@@ -71,5 +72,5 @@ export function shareToTsina() {
  * @param keyword 关键字
  */
 export function search(keyword: string) {
-  Navigation.go("https://zzk.cnblogs.com/s?w=blog:" + BleuVars.getBlogApp() + "%" + keyword);
+  Navigation.go("https://zzk.cnblogs.com/s?w=blog:" + Consts.getBlogApp() + "%" + keyword);
 }

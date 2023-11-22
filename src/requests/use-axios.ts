@@ -1,11 +1,9 @@
 import axios from "axios";
-import router from "@/router";
 
 const request = axios.create({
-  baseURL: `${BleuVars.getBaseURL()}`,
+  baseURL: `${Consts.getBaseURL()}`,
   timeout: 5000
 });
-const loading = new Broswer.Loading();
 
 function getToken() {
   let token = "";
@@ -22,6 +20,7 @@ request.interceptors.request.use(
     return config;
   },
   error => {
+    ElMessage.error(error);
     return Promise.reject(error);
   }
 );
@@ -31,9 +30,7 @@ request.interceptors.response.use(
     return config;
   },
   error => {
-    ElMessage({ message: "请求失败！", type: "error", grouping: true });
-    router.push("/");
-    loading.endLoading();
+    ElMessage.error(error);
     return Promise.reject(error);
   }
 );

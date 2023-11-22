@@ -1,9 +1,10 @@
 /**
  * 操作浏览器
  *
- * @author Himmelbleu
+ * @author Himmeltala
  * @date 2023 年 1 月 15 日
  */
+
 /**
  * 设置标题
  *
@@ -11,9 +12,7 @@
  */
 export function setTitle(title?: string) {
   const prefix = title ? title + " - " : "";
-  document.getElementsByTagName(
-    "title"
-  )[0].innerText = `${prefix}${BleuVars.getBlogApp()} - 博客园`;
+  document.getElementsByTagName("title")[0].innerText = `${prefix}${Consts.getBlogApp()} - 博客园`;
 }
 
 /**

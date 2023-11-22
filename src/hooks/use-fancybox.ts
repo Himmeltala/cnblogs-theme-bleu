@@ -6,7 +6,7 @@ export function useFancybox() {
       Toolbar: {
         display: {
           left: ["infobar"],
-          middle: BleuVars.isPC()
+          middle: Consts.isPC()
             ? ["zoomIn", "zoomOut", "toggle1to1", "rotateCCW", "rotateCW", "flipX", "flipY"]
             : [],
           right: ["slideshow", "thumbs", "close"]
@@ -14,7 +14,7 @@ export function useFancybox() {
       },
       Hash: false
     },
-    BleuVars.config.fancybox
+    Consts.config.fancybox
   );
 
   Fancybox.bind("[data-fancybox]", options);

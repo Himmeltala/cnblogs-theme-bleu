@@ -1,7 +1,7 @@
 /**
  * 作品 HTML 解析器
  *
- * @author Himmelbleu
+ * @author Himmeltala
  * @date 2023 年 1 月 15 日
  */
 
@@ -46,13 +46,13 @@ export function toPostsList1(dom: Document): PostsListModel {
     const eleOnlyMe = id[i].querySelector(`img[title="仅自己可见"]`);
     const isOnlyMe = !!eleOnlyMe;
 
-    const eleTop = head[i].getElementsByClassName("pinned-post-mark")[0];
+    const eleTop = head[i].getElementsByClassName("pinned-post-label")[0];
     const isTop = eleTop && eleTop.innerText === "[置顶]";
 
     data.push({
       id: id[i].getAttribute("href").match(/[0-9]+/g)[0],
-      text: Textual.regexReplace(head[i].innerText.trim(), [/\[置顶\]/g]),
-      desc: Textual.regexReplace(desc[i].innerText, [/阅读全文/g]),
+      text: Textual.replace(head[i].innerText.trim(), [/\[置顶\]/g]),
+      desc: Textual.replace(desc[i].innerText, [/阅读全文/g]),
       date: notes[i].innerText.match(dateReg)[0],
       view: notes[i].innerText.match(viewReg)[0],
       comm: notes[i].innerText.match(commReg)[0],
@@ -67,7 +67,7 @@ export function toPostsList1(dom: Document): PostsListModel {
   return {
     data,
     page: getPage(dom.querySelector("#homepage_top_pager > .pager")),
-    hint: hint[0].innerText + " 档案"
+    hint: hint[0] ? hint[0].innerText + " 档案" : ""
   };
 }
 
@@ -146,11 +146,11 @@ export function toPrevNext(dom: HTMLDivElement): PostPrevNextModel {
 
     const res = {
       text: textElem.innerText.trim(),
-      href: Textual.regexSplit(
+      href: Textual.split(
         textElem.getAttribute("href"),
-        RouterRegx.PostDetail,
-        [2, 0],
-        ["/", "."]
+        new RegExp("/" + Consts.getBlogApp() + "/p/\\d{8}", "g"),
+        [3],
+        ["/"]
       )
     };
 
@@ -222,7 +222,7 @@ export function toPostsList2(dom: Document): PostsList2Model {
 /**
  * 获取随笔和文章列表，列表通过标签查询。
  */
-export function toPostsListPart(dom: Document): PostsList2Model {
+export function toPartPostsList(dom: Document): PostsList2Model {
   const head = dom.querySelectorAll(".PostList > .postTitl2 > a");
   const desc = dom.querySelectorAll(".PostList > .postDesc2");
   const hint = dom.getElementsByClassName("PostListTitle")[0].innerText.trim();

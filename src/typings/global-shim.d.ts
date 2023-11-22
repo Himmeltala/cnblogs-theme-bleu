@@ -6,6 +6,6 @@ declare interface Element {
 }
 
 interface Window {
-  __BLEU_CONFIG__: BleuConfigModel;
+  __BLEU_CONFIG__: ConfigModel;
   MathJax: any;
 }

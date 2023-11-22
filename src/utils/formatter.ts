@@ -1,9 +1,10 @@
 /**
  * 格式化
  *
- * @author Himmelbleu
+ * @author Himmeltala
  * @date 2023 年 1 月 15 日
  */
+
 function fixed(trimed: string, suffix?: string, uint?: number, fix?: number) {
   const num = Number(trimed);
   if (num >= 10000) {

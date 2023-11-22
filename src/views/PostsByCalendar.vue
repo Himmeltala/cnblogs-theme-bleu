@@ -11,7 +11,7 @@ function findDate(data: any) {
   return calendar.value.includes(date);
 }
 
-function fetchData() {
+function fetch() {
   loading.startLoading();
   DatumHttp.getCalendar(
     `${dateModel.value.getFullYear()}/${
@@ -28,21 +28,21 @@ function fetchData() {
 
 watch(dateModel, (newVal, oldVal) => {
   if (newVal.getMonth() !== oldVal.getMonth()) {
-    fetchData();
+    fetch();
   }
 });
 
-fetchData();
+fetch();
 </script>
 
 <template>
-  <div class="posts-by-calendar lg-sm:px-90" v-if="calendar">
+  <div class="page" v-if="calendar">
     <el-calendar v-model="dateModel">
       <template #date-cell="{ data }">
         <div
           v-if="findDate(data)"
           class="w-100% h-100%"
-          @click="$router.push(RouterPath.PostsByArchive('d', data.day))">
+          @click="$router.push(RoutePaths.PostsByArchive('d', data.day))">
           <el-tag type="danger">
             {{ data.day.split("-")[2] }}
           </el-tag>
@@ -53,4 +53,8 @@ fetchData();
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.el-button--small) {
+  border-radius: 10rem;
+}
+</style>

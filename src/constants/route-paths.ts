@@ -9,26 +9,23 @@ export function PostDetail(id?: string | number) {
 }
 
 /**
- * @param tag 标签
- * @returns "/mark" 或者 "/mark?name=C/C++"
+ * @param label 标签
+ * @returns "/label" 或者 "/label?name=C/C++"
  */
-export function PostsByMark(tag?: string) {
-  if (tag) {
-    return `/mark?name=${tag}`;
-  } else return "/mark";
+export function PostsByLabel(label?: string) {
+  if (label) {
+    return `/label?name=${label}`;
+  } else return "/label";
 }
 
 /**
  * @param id 文章或随笔 ID
- * @returns "/sort?id=1&page=1" 或者 "/sort"
+ * @returns "/sort?id=112233&page=1" 或者 "/sort"
  */
-export function PostsBySort(id?: string | number, page?: number | string, obj?: boolean) {
-  if (obj) {
-    return { path: "/sort", query: { id, page } };
-  } else {
-    if (id && page) return `/sort?id=${id}&page=${page}`;
-    else return "/sort";
-  }
+export function PostsBySort(id?: string | number | string[], page?: number | string) {
+  if (id) {
+    return { path: "/sort", query: { id, page: page || "1" } };
+  } else return "/sort";
 }
 
 /**
@@ -61,10 +58,10 @@ export function PostsByCalendar() {
 }
 
 /**
- * @returns "/marks"
+ * @returns "/labels"
  */
-export function MarkList() {
-  return "/marks";
+export function LabelList() {
+  return "/labels";
 }
 
 /**

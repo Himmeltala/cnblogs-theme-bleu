@@ -51,14 +51,14 @@ type CommentModel = Partial<{
 /**
  * 标签
  */
-interface MarkModel {
+interface LabelModel {
   count: number;
   href: string;
   text: string;
 }
 
 /**
- * 首页随笔列表、某日下的随笔或文章列表
+ * 随笔列表
  */
 type PostsListModel = Partial<{
   page: number;
@@ -68,7 +68,7 @@ type PostsListModel = Partial<{
 
 /**
  * 随笔档案、文章档案、随笔分类、档案分类四种列表，扩展 PostsListModel 接口，
- * 以上四种列表比 PostsListModel 多了三个属性值。
+ * 比 PostsListModel 多了三个属性值。
  */
 interface PostsList2Model extends PostsListModel {
   /**
@@ -83,7 +83,7 @@ interface PostsList2Model extends PostsListModel {
 }
 
 /**
- * 随笔的分类和标签数组
+ * 随笔详细页的分类和标签
  */
 interface PostPropsModel {
   tags: { text: string }[];
@@ -99,9 +99,7 @@ interface SubPostModel {
 }
 
 /**
- * 侧边栏数据。
- *
- * 包括：随笔分类、随笔档案、文章分类、文章档案、最新评论。
+ * 侧边栏数据。包括：随笔分类、随笔档案、文章分类、文章档案、最新评论。
  */
 declare type ColumnDataModel = Partial<{
   essaySort: { id: string; text: string; count: string }[];
@@ -116,10 +114,8 @@ declare type ColumnDataModel = Partial<{
 }>;
 
 /**
- * 随笔、文章、评论、阅读数据、粉丝、昵称、关注、园龄
- *
- * 或：
- * 随笔上一篇或下一篇随笔数据类型
+ * 随笔、文章、评论、阅读数据、粉丝、昵称、关注、园龄。
+ * 或随笔上一篇或下一篇随笔数据类型。
  */
 declare type StatisticsModel = Partial<{
   id: string;
@@ -129,7 +125,7 @@ declare type StatisticsModel = Partial<{
 }>;
 
 /**
- * 侧边栏阅读排行榜
+ * 阅读排行榜
  */
 interface TopListModel {
   topView: StatisticsModel[];
@@ -178,7 +174,7 @@ interface PostInfoModel {
 /**
  * 博客配置项
  */
-interface BleuConfigModel {
+interface ConfigModel {
   icon: string;
   avatar: string;
   signature: string;
@@ -200,17 +196,11 @@ interface BleuConfigModel {
     stochastic: string[];
   };
   header: {
-    links: { name: string; value: string }[];
+    links: { name?: string; value: string; icon?: string; src?: string }[];
   };
   fancybox: any;
   echart: {
-    color: string;
-    technics: {
-      radar: {
-        indicator: { name: string; max: number }[];
-      };
-      series: { type: string; data: any }[];
-    };
+    technics: any;
   };
   theme?: {
     cssvar: {
@@ -220,7 +210,7 @@ interface BleuConfigModel {
 }
 
 /**
- * Bleu 本地设置
+ * 本地设置
  */
 declare type LocalOptionModel = Partial<{
   theme: { mode: "dark" | "light" };

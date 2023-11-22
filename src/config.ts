@@ -5,19 +5,21 @@ import { deepMerge, PrettifyLog } from "./utils";
  * 初始化浏览器 LocalStorage
  */
 function initStorage() {
-  const ops = BleuStorage.getOptions().value;
-  const factedOps = JSON.stringify(BleuStorage.refactor(ops, BleuStorage.getOptionsTemp()));
-  localStorage.setItem(KeyVals.OPS_KEY, factedOps);
-  document.documentElement.setAttribute("class", ops.theme.mode);
+  const options = CustStorage.getOptions().value;
+  const refactoringOfOptions = JSON.stringify(
+    CustStorage.optionsRefactor(options, CustStorage.getOptionsTemplate())
+  );
+  localStorage.setItem(Consts.OPSTIONS_KEY, refactoringOfOptions);
+  document.documentElement.setAttribute("class", options.theme.mode);
 }
 
 /**
  * 创建主题全局变量
  */
-function createBleuVars() {
+function createConsts() {
   const __BLEU_CONFIG__ = window["__BLEU_CONFIG__"];
 
-  BleuVars.config = {
+  Consts.config = {
     icon: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F52685712-3f98-4dd5-b05b-87cd8b8524c3%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1689215021&t=6944511081f659351480894aa55663eb",
     avatar:
       "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F52685712-3f98-4dd5-b05b-87cd8b8524c3%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1689215021&t=6944511081f659351480894aa55663eb",
@@ -47,11 +49,11 @@ function createBleuVars() {
     header: {
       links: [
         {
-          name: "bilibili",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-git" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 15v-6" /><path d="M15 11l-2 -2" /><path d="M11 7l-1.9 -1.9" /><path d="M13.446 2.6l7.955 7.954a2.045 2.045 0 0 1 0 2.892l-7.955 7.955a2.045 2.045 0 0 1 -2.892 0l-7.955 -7.955a2.045 2.045 0 0 1 0 -2.892l7.955 -7.955a2.045 2.045 0 0 1 2.892 0z" /></svg>`,
           value: "https://space.bilibili.com/7021686"
         },
         {
-          name: "github",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-git" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 15v-6" /><path d="M15 11l-2 -2" /><path d="M11 7l-1.9 -1.9" /><path d="M13.446 2.6l7.955 7.954a2.045 2.045 0 0 1 0 2.892l-7.955 7.955a2.045 2.045 0 0 1 -2.892 0l-7.955 -7.955a2.045 2.045 0 0 1 0 -2.892l7.955 -7.955a2.045 2.045 0 0 1 2.892 0z" /></svg>`,
           value: "https://github.com/himmelbleu"
         }
       ]
@@ -62,7 +64,6 @@ function createBleuVars() {
       }
     },
     echart: {
-      color: "#409eff",
       technics: {
         radar: {
           indicator: [
@@ -93,7 +94,7 @@ function createBleuVars() {
     fancybox: ""
   };
 
-  deepMerge(BleuVars.config, __BLEU_CONFIG__);
+  deepMerge(Consts.config, __BLEU_CONFIG__);
 }
 
 /**
@@ -101,7 +102,7 @@ function createBleuVars() {
  */
 function createGlobalVars() {
   const style = document.createElement("style");
-  const theme = BleuVars.config.theme;
+  const theme = Consts.config.theme;
 
   style.textContent = `
     html {
@@ -118,7 +119,7 @@ function createGlobalVars() {
 function createIconDiv() {
   const icon = document.createElement("link");
   icon.rel = "shortcut icon";
-  icon.href = BleuVars.config.icon;
+  icon.href = Consts.config.icon;
   document.head.append(icon);
 }
 
@@ -136,7 +137,7 @@ function createAppDiv() {
  */
 function onBeforeLoad() {
   initStorage();
-  createBleuVars();
+  createConsts();
   createGlobalVars();
   createIconDiv();
   createAppDiv();
@@ -146,19 +147,19 @@ function onBeforeLoad() {
  * 在 mount Vue 之后
  */
 function onAfterLoad() {
-  PrettifyLog.primary("GitHub", "https://github.com/Himmelbleu/cnblogs-theme-bleu");
+  PrettifyLog.primary("GitHub", "https://github.com/Himmeltala/cnblogs-theme-bleu");
   PrettifyLog.primary(
-    "v2.11.0",
-    "The Theme was Created By Himmelbleu, and Powered By Vue3 & Vite."
+    "v2.11.6",
+    "The Theme was Created By Himmeltala, and Powered By Vue3 & Vite."
   );
 }
 
 /**
- * Bleu 主题代替博客园
+ * 代替博客园
  *
  * @param app Vue 对象
  */
-export function useBleu(app: App<Element>) {
+export function useTheme(app: App<Element>) {
   onBeforeLoad();
 
   app.mount("#app");
