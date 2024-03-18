@@ -1,62 +1,48 @@
 <p align="center">CNBLOGS-THEME-BLEU</p>
 
 <p align="center">
-一个简单的博客主题。支持数学公式、部分数据有图表统计、部分可配置。
+基于 Vite+Vue3+TS 的博客园主题
 </p>
 
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/himmelbleu/cnblogs-theme-bleu?include_prereleases&style=flat-square)](https://github.com/himmelbleu/cnblogs-theme-bleu/releases)
-
-## 特性
-
-- 界面简洁优雅，响应式网页设计。
-- 轻量配置，非常容易使用。
-- 提供暗黑模式和多种色彩主题，可随时切换。
-
-## 开发
+# 二次开发
 
 ```bash
 # 克隆代码
 git clone git@github.com:Himmeltala/cnblogs-theme-bleu.git
-
 # 进入目录
 cd cnblogs-theme-bleu
-
 # 安装依赖
 pnpm install
-
 # 本地调试
-pnpm start
-
+pnpm dev
 # 编译发布
-pnpm run build
+pnpm build
 ```
 
-# 开始配置
+# 基本设置
 
-## 基本设置
-
-![](./docs/image-2.png)
+![](./docs/img-1.png)
 
 - 开启 JS 权限。
 - 博客皮肤请选择 Custom。
 
 ## 代码高亮
 
-![](./docs/image-1.png)
+![](./docs/img-2.png)
 
 - 禁用默认代码高亮。
 - 其余设置可选，但用处不大。
 
 ## 博客选项
 
-![](./docs/image-3.png)
+![](./docs/img-3.png)
 
 - 编辑器推荐选择 markdown，主题特性是基于 markdown 编辑的文本内容进行开发的。
 - 数学公式必须选择 MathJax3，其余的选项可以自行设置。
 
 ## 控件设置
 
-![](./docs/image-4.png)
+![](./docs/img-4.png)
 
 上图所示控件选项仅供参考。
 
@@ -158,63 +144,11 @@ pnpm run build
 
 ## 页脚 HTML 代码
 
-完整示例（以我的配置）
-
 ```html
 <!-- 主题配置 -->
 <script>
   // 主题的配置对象
-  window.__BLEU_CONFIG__ = {
-    icon: "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/o_230811183015_76772956.jpg",
-    avatar:
-      "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/1934022/o_230811183015_76772956.jpg",
-    signature: "Time tick away, dream faded away!",
-    status: "🐟",
-    theme: {
-      cssvar: {
-        codeFontFamily: "Hack"
-      }
-    },
-    images: {
-      stochastic: [
-        "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230703175324_109479306_p0.jpg",
-        "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230913133252_111567709_p0.jpg",
-        "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230913133828_111578714_p0.png"
-      ],
-      background: {
-        src: "https://images.cnblogs.com/cnblogs_com/blogs/666252/galleries/2302503/o_230612174652_94471721_p0.jpg",
-        opacity: 0.05
-      }
-    },
-    echart: {
-      technics: {
-        radar: {
-          indicator: [
-            { name: "Vue", max: 5 },
-            { name: "React", max: 5 },
-            { name: "JS", max: 5 },
-            { name: "TS", max: 5 },
-            { name: "Python", max: 5 },
-            { name: "C", max: 5 },
-            { name: "Java", max: 5 },
-            { name: "MySQL", max: 5 },
-            { name: "Mybatis", max: 5 }
-          ]
-        },
-        series: [
-          {
-            type: "radar",
-            data: [
-              {
-                value: [4, 1, 4, 4, 3.5, 1, 3, 2.5, 3],
-                name: "掌握程度"
-              }
-            ]
-          }
-        ]
-      }
-    }
-  };
+  window.__BLEU_CONFIG__ = {};
 </script>
 <!-- 主题 JS -->
 <script
@@ -231,33 +165,42 @@ pnpm run build
 
 区别于普通的文字链接，传送门居中，是一个卡片的链接，可以展示封面、标题和链接。
 
-在 markdown 中，我们这样写：
+```md
+<pot>
+  title:(m3u8 视频上传和播放源码) link:(https://gitee.com/Himmelbleu/java-learning)
+  cover:(https://www.infocode.com.cn/blog/wp-content/uploads/2021/10/f8fba7a2f3c35d3d7c16892b38ba4785.jpg)
+</pot>
+```
 
-![](./docs/image-11.png)
-
-打开随笔，查看效果：
-
-![](./docs/image-12.png)
+![](./docs/img-5.png)
 
 ## 提示块
 
 提示块可以让我们写下一些提示，这块内容会被绿色背景包裹，按照以下格式：
 
-![](./docs/image-5.png)
+```md
+tip:[start]
+`@Transactional` 是 Spring AOP 切入编程的一种，切入点有三种基本的通知类型，如 `@Before`、`@After`、`@Around`，因此，事务开启在方法执行之前，事务提交在方法执行结束。但是，方法上锁和释放锁都在方法执行时，所以，在下一个线程进入之后，事务可能没有提交，数据库数据也没有更新，下一个线程读取的数据就有问题。
+tip:[end]
+```
 
 以 `tip:[start]` 开始，以 `tip:[end]` 结尾，把提示内容写在中间。写完之后，打开随笔页面，就可以查看到效果：
 
-![](./docs/image-6.png)
+![](./docs/img-6.png)
 
 ## 注意块
 
 注意块可以让我们写下一些注意，这块内容会被红色背景包裹，按照以下格式：
 
-![](./docs/image-7.png)
+```md
+war:[start]
+需要注意的是，destPathname 的目录必须要存在，如，你存放 m3u8 的文件目录是 `E:\Videos\m3u8s`，那么该目录就必须提前存在。
+war:[end]
+```
 
 以 `war:[start]` 开始，以 `war:[end]` 结尾，把注意内容写在中间。写完之后，打开随笔页面，就可以查看到效果：
 
-![](./docs/image-8.png)
+![](./docs/img-7.png)
 
 ## 代码块标注
 
