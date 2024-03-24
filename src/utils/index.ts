@@ -33,7 +33,9 @@ export namespace Utils {
     return target;
   }
 
-  export class Typewriter {
+  type EventHandler = (...args: any[]) => void;
+
+  export class TypeWriter {
     private el: string;
     private texts: string[];
     private count: number;
@@ -46,6 +48,41 @@ export namespace Utils {
     private blinkSpace: number;
     private rem: number;
     private dom: HTMLElement;
+    private typeTimer: ReturnType<typeof setTimeout> | null;
+    private eraseTimer: ReturnType<typeof setTimeout> | null;
+    private _offsetHeight: number;
+    private _offsetWidth: number;
+    private listeners: Record<string, EventHandler[]> = {};
+
+    on(eventName: string, handler: EventHandler): void {
+      if (!this.listeners[eventName]) {
+        this.listeners[eventName] = [];
+      }
+      this.listeners[eventName].push(handler);
+    }
+
+    trigger(eventName: string, ...args: any[]): void {
+      const handlers = this.listeners[eventName];
+      if (handlers) {
+        handlers.forEach(handler => handler(...args));
+      }
+    }
+
+    set offsetHeight(value: number) {
+      this._offsetHeight = value;
+    }
+
+    get offsetHeight(): number {
+      return this._offsetHeight;
+    }
+
+    set offsetWidth(value: number) {
+      this._offsetWidth = value;
+    }
+
+    get offsetWidth(): number {
+      return this._offsetWidth;
+    }
 
     constructor({
       el,
@@ -75,6 +112,8 @@ export namespace Utils {
       this.eraseDelay = eraseDelay;
       this.blinkSpace = blinkSpace;
       this.rem = rem;
+      this.typeTimer = null;
+      this.eraseTimer = null;
 
       this.dom = document.getElementById(this.el);
     }
@@ -127,9 +166,20 @@ export namespace Utils {
       span.style.whiteSpace = "nowrap";
       span.textContent = text;
       document.body.appendChild(span);
-      const width = span.offsetWidth;
+      this.offsetHeight = span.offsetHeight;
+      this.offsetWidth = span.offsetWidth;
+      this.trigger("span", this.offsetHeight, this.offsetWidth);
       document.body.removeChild(span);
-      return width + this.blinkSpace;
+      return this.offsetWidth + this.blinkSpace;
+    }
+
+    clearTimers(): void {
+      if (this.typeTimer) {
+        clearTimeout(this.typeTimer);
+      }
+      if (this.eraseTimer) {
+        clearTimeout(this.eraseTimer);
+      }
     }
   }
 }

@@ -94,14 +94,17 @@ function openedDrawer() {
       </el-divider>
       <div>
         <div class="f-c-s flex-wrap">
+          <div class="hover mr-5 position-relative" @click="$router.push(Consts.Paths.welcome())">
+            首页
+          </div>
           <div
             class="hover mr-5 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'PostsList'
             }"
-            @click="$router.push(Consts.Paths.welcome())">
-            首页
+            @click="$router.push(Consts.Paths.posts())">
+            随笔
           </div>
           <div class="hover mr-5" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
             博客园
@@ -298,14 +301,17 @@ function openedDrawer() {
       </div>
       <div class="f-c-b" v-if="Consts.isPC()">
         <div class="f-c-s text-text-regular">
+          <div class="hover mr-5 position-relative" @click="$router.push(Consts.Paths.welcome())">
+            首页
+          </div>
           <div
             class="hover mr-5 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'PostsList'
             }"
-            @click="$router.push('/')">
-            首页
+            @click="$router.push(Consts.Paths.posts())">
+            随笔
           </div>
           <div class="hover mr-5" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
             博客园
@@ -337,16 +343,6 @@ function openedDrawer() {
             inline-prompt
             active-text="黑"
             inactive-text="白" />
-        </div>
-        <div
-          class="hover ml-4"
-          @click="Utils.Navigation.go(item.value)"
-          v-if="Consts.config.header.links?.length"
-          v-for="item in Consts.config.header.links">
-          <div v-if="item.icon" v-html="item.icon" class="f-c-c"></div>
-          <div v-else class="f-c-c">
-            <img class="w-8 h-8 object-cover rd-50%" :src="item.src" />
-          </div>
         </div>
       </div>
     </div>
