@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
           "vue-router",
           "@vueuse/core",
           {
-            "@/constants/index": ["Consts", "RoutePaths"]
+            "@/constants/index": ["Consts"]
           },
           {
             "@/utils/index": ["Utils"]

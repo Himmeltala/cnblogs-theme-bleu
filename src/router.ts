@@ -4,54 +4,69 @@ import { useAnchorStore } from "@/store";
 
 const routes = <RouteRecordRaw[]>[
   {
-    name: "PostsList",
-    path: RoutePaths.PostsList(),
-    component: () => import("@/views/PostList.vue"),
-    meta: { title: "随笔列表" }
+    name: "Welcome",
+    path: "/",
+    component: () => import("@/views/Welcome.vue"),
+    meta: { title: "欢迎" }
   },
   {
-    name: "PostDetail",
-    path: RoutePaths.PostDetail(),
-    component: () => import("@/views/PostDetail.vue")
-  },
-  {
-    name: "PostsByLabel",
-    path: RoutePaths.PostsByLabel(),
-    component: () => import("@/views/PostsByLabel.vue")
-  },
-  {
-    name: "PostsBySort",
-    path: RoutePaths.PostsBySort(),
-    component: () => import("@/views/PostsBySort.vue")
-  },
-  {
-    name: "PostsByArchive",
-    path: RoutePaths.PostsByArchive(),
-    component: () => import("@/views/PostsByArchive.vue")
-  },
-  {
-    name: "PostsByCalendar",
-    path: RoutePaths.PostsByCalendar(),
-    component: () => import("@/views/PostsByCalendar.vue"),
-    meta: { title: "日历" }
-  },
-  {
-    name: "LabelList",
-    path: RoutePaths.LabelList(),
-    component: () => import("@/views/LabelList.vue"),
-    meta: { title: "标签" }
-  },
-  {
-    name: "Albumn",
-    path: RoutePaths.Albumn(),
-    component: () => import("@/views/Albumn.vue"),
-    meta: { title: "相册" }
-  },
-  {
-    name: "AlbumnItem",
-    path: RoutePaths.AlbumnItem(),
-    component: () => import("@/views/AlbumnItem.vue"),
-    meta: { title: "相册图片" }
+    name: "Main",
+    path: "/main",
+    redirect: "/main/posts",
+    component: () => import("@/views/Main.vue"),
+    meta: { title: "主页" },
+    children: [
+      {
+        name: "PostsList",
+        path: "posts",
+        component: () => import("@/views/PostList.vue"),
+        meta: { title: "随笔列表" }
+      },
+      {
+        name: "PostDetail",
+        path: "p/:id",
+        component: () => import("@/views/PostDetail.vue")
+      },
+      {
+        name: "PostsByLabel",
+        path: "label",
+        component: () => import("@/views/PostsByLabel.vue")
+      },
+      {
+        name: "PostsBySort",
+        path: "sort",
+        component: () => import("@/views/PostsBySort.vue")
+      },
+      {
+        name: "PostsByArchive",
+        path: "archive/:mode/:date",
+        component: () => import("@/views/PostsByArchive.vue")
+      },
+      {
+        name: "PostsByCalendar",
+        path: "calendar",
+        component: () => import("@/views/PostsByCalendar.vue"),
+        meta: { title: "日历" }
+      },
+      {
+        name: "LabelList",
+        path: "labels",
+        component: () => import("@/views/LabelList.vue"),
+        meta: { title: "标签" }
+      },
+      {
+        name: "Albumn",
+        path: "albumn/:id",
+        component: () => import("@/views/Albumn.vue"),
+        meta: { title: "相册" }
+      },
+      {
+        name: "AlbumnItem",
+        path: "album/item/:id",
+        component: () => import("@/views/AlbumnItem.vue"),
+        meta: { title: "相册图片" }
+      }
+    ]
   }
 ];
 

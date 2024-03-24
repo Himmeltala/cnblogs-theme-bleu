@@ -69,7 +69,7 @@ fetch();
       </div>
     </div>
     <div class="f-c-b flex-wrap flex-gap-4">
-      <router-link v-for="item of filteredList" :to="RoutePaths.PostsByLabel(item.text)">
+      <router-link v-for="item of filteredList" :to="Consts.Paths.label(item.text)">
         <el-tag round v-if="item.count >= 20" size="large" type="danger">
           <span> {{ item.text }} ({{ item.count }}) </span>
         </el-tag>

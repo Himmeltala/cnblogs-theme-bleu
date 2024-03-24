@@ -34,7 +34,7 @@ onBeforeRouteUpdate(updateGuard => {
 });
 
 function onCurrentChange() {
-  router.push(RoutePaths.PostsBySort(route.query.id, currPage.value));
+  router.push(Consts.Paths.sort(route.query.id, currPage.value));
 }
 
 fetch(route.query.id);
@@ -50,7 +50,7 @@ fetch(route.query.id);
         v-for="(item, index) in subPosts"
         :class="{ 'mb-2': index != subPosts.length - 1 }">
         <div class="i-tabler:folder-plus mr-2"></div>
-        <router-link :to="RoutePaths.PostsBySort(item.id)">
+        <router-link :to="Consts.Paths.sort(item.id)">
           {{ item.text }}
         </router-link>
       </div>

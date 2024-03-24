@@ -1,41 +1,33 @@
-/**
- * @param id 随笔或文章 ID
- * @returns "/p/:id"
- */
-export function PostDetail(id?: string | number) {
-  if (id) {
-    return `/p/${id}`;
-  } else return "/p/:id";
+export function welcome() {
+  return "/";
 }
 
 /**
- * @param label 标签
- * @returns "/label" 或者 "/label?name=C/C++"
+ * @returns "/main/p/:id"
  */
-export function PostsByLabel(label?: string) {
-  if (label) {
-    return `/label?name=${label}`;
-  } else return "/label";
+export function p(id?: string | number) {
+  return `/main/p/${id}`;
 }
 
 /**
- * @param id 文章或随笔 ID
- * @returns "/sort?id=112233&page=1" 或者 "/sort"
+ * @returns "/main/label?name=C/C++"
  */
-export function PostsBySort(id?: string | number | string[], page?: number | string) {
-  if (id) {
-    return { path: "/sort", query: { id, page: page || "1" } };
-  } else return "/sort";
+export function label(label?: string) {
+  return `/main/label?name=${label}`;
 }
 
 /**
- * @param page 文章列表
- * @returns "/" 或者 "/?page=1"
+ * @returns "/main/sort?id=112233&page=1"
  */
-export function PostsList(page?: string | number) {
-  if (page) {
-    return `/?page=${page}`;
-  } else return "/";
+export function sort(id?: string | number | string[], page?: number | string) {
+  return { path: "/main/sort", query: { id, page: page || "1" } };
+}
+
+/**
+ * @returns "/main/posts?page=1"
+ */
+export function posts(page?: string | number) {
+  return `/main/posts?page=${page}`;
 }
 
 /**
@@ -44,42 +36,34 @@ export function PostsList(page?: string | number) {
  * @param date 日期
  * @returns "/archive/:mode/:date"
  */
-export function PostsByArchive(mode?: "a" | "p" | "d", date?: string) {
-  if (mode && date) {
-    return `/archive/${mode}/${date}`;
-  } else return "/archive/:mode/:date";
+export function archive(mode?: "a" | "p" | "d", date?: string) {
+  return `/main/archive/${mode}/${date}`;
 }
 
 /**
  * @returns "/calendar"
  */
-export function PostsByCalendar() {
-  return "/calendar";
+export function calendar() {
+  return "/main/calendar";
 }
 
 /**
  * @returns "/labels"
  */
-export function LabelList() {
-  return "/labels";
+export function labels() {
+  return "/main/labels";
 }
 
 /**
- * @param id 相册 ID
  * @returns "/albumn/:id"
  */
-export function Albumn(id?: string | number) {
-  if (id) {
-    return `/albumn/${id}`;
-  } else return "/albumn/:id";
+export function albumn(id?: string | number) {
+  return `/main/albumn/${id}`;
 }
 
 /**
- * @param id 照片 ID
  * @returns "/albumn/item/:id"
  */
-export function AlbumnItem(id?: string | number) {
-  if (id) {
-    return `/albumn/item/${id}`;
-  } else return "/album/item/:id";
+export function albumnitem(id?: string | number) {
+  return `/main/albumn/item/${id}`;
 }

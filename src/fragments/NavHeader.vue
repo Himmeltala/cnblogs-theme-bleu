@@ -100,7 +100,7 @@ function openedDrawer() {
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'PostsList'
             }"
-            @click="$router.push('/')">
+            @click="$router.push(Consts.Paths.welcome())">
             首页
           </div>
           <div class="hover mr-5" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
@@ -112,7 +112,7 @@ function openedDrawer() {
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'LabelList'
             }"
-            @click="$router.push(RoutePaths.LabelList())">
+            @click="$router.push(Consts.Paths.labels())">
             标签
           </div>
           <div
@@ -121,7 +121,7 @@ function openedDrawer() {
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'PostsByCalendar'
             }"
-            @click="$router.push(RoutePaths.PostsByCalendar())">
+            @click="$router.push(Consts.Paths.calendar())">
             日历
           </div>
           <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>
@@ -186,7 +186,7 @@ function openedDrawer() {
     </el-divider>
     <div v-if="colData" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
       <div class="hover" v-for="item in colData.markList">
-        <router-link :to="RoutePaths.PostsByLabel(item.id)">
+        <router-link :to="Consts.Paths.label(item.id)">
           <div class="f-c-s">
             <div class="i-tabler:tag mr-2"></div>
             {{ item.text }}
@@ -202,7 +202,7 @@ function openedDrawer() {
     </el-divider>
     <div v-if="colData" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
       <div class="hover" v-for="item in colData.essaySort">
-        <router-link :to="RoutePaths.PostsBySort(item.id)">
+        <router-link :to="Consts.Paths.sort(item.id)">
           <div class="f-c-s">
             <div class="i-tabler:folder mr-2"></div>
             {{ item.text }}
@@ -218,7 +218,7 @@ function openedDrawer() {
     </el-divider>
     <div v-if="colData?.essayArchive" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
       <div class="hover" v-for="item in colData.essayArchive">
-        <router-link :to="RoutePaths.PostsByArchive('p', item.id)">
+        <router-link :to="Consts.Paths.archive('p', item.id)">
           <div class="f-c-s">
             <div class="i-tabler:calendar-stats mr-2"></div>
             {{ item.text }}
@@ -234,7 +234,7 @@ function openedDrawer() {
     </el-divider>
     <div v-if="colData?.articleSort" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
       <div class="hover" v-for="item in colData.articleSort">
-        <router-link :to="RoutePaths.PostsBySort(item.id)">
+        <router-link :to="Consts.Paths.sort(item.id)">
           <div class="f-c-s">
             <div class="i-tabler:bookmark mr-2"></div>
             {{ item.text }}
@@ -250,7 +250,7 @@ function openedDrawer() {
     </el-divider>
     <div v-if="colData?.articleArchive?.length" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
       <div class="hover" v-for="item in colData.articleArchive">
-        <router-link :to="RoutePaths.PostsByArchive('a', item.id)">
+        <router-link :to="Consts.Paths.archive('a', item.id)">
           <div class="f-c-s">
             <div class="i-tabler:calendar-event mr-2"></div>
             {{ item.text }}
@@ -266,7 +266,7 @@ function openedDrawer() {
     </el-divider>
     <div v-if="colData?.albumn" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
       <div class="hover" v-for="item in colData.albumn">
-        <router-link :to="RoutePaths.Albumn(item.id)">
+        <router-link :to="Consts.Paths.albumn(item.id)">
           <div class="f-c-s">
             <div class="i-tabler:photo mr-2"></div>
             {{ item.text }}
@@ -316,7 +316,7 @@ function openedDrawer() {
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'LabelList'
             }"
-            @click="$router.push(RoutePaths.LabelList())">
+            @click="$router.push('/main/labels')">
             标签
           </div>
           <div
@@ -325,7 +325,7 @@ function openedDrawer() {
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'PostsByCalendar'
             }"
-            @click="$router.push(RoutePaths.PostsByCalendar())">
+            @click="$router.push(Consts.Paths.calendar())">
             日历
           </div>
           <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>

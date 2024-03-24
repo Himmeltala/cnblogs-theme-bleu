@@ -13,7 +13,7 @@ defineProps({
 
 <template>
   <div class="item mb-15">
-    <router-link class="text-1.2rem hover text-text-regular" :to="RoutePaths.PostDetail(item.id)">
+    <router-link class="text-1.2rem hover text-text-regular" :to="Consts.Paths.p(item.id)">
       {{ item.text }}
     </router-link>
     <div class="mt-4 f-s-b flex-gap-4">
@@ -40,7 +40,7 @@ defineProps({
           {{ item.desc }}
         </div>
         <div class="hover text-0.9rem f-c-s mb-4">
-          <router-link class="b-b-1 b-b-dotted p-b-1" :to="RoutePaths.PostDetail(item.id)">
+          <router-link class="b-b-1 b-b-dotted p-b-1" :to="Consts.Paths.p(item.id)">
             阅读全文
           </router-link>
         </div>

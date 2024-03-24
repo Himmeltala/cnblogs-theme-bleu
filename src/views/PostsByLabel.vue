@@ -36,7 +36,7 @@ fetch(route.query.name);
       <div
         class="item cursor-pointer lg-sm:w-30% lt-sm:w-45% mb-10"
         v-for="(item, index) in postList.data">
-        <router-link :to="RoutePaths.PostDetail(item.id)">
+        <router-link :to="Consts.Paths.p(item.id)">
           <div class="lt-sm:h-45 lg-sm:h-55 flow-hidden position-relative">
             <div class="mask position-absolute top-0 left-0 w-100% h-15% z-1"></div>
             <img class="w-100% h-100% object-cover rd-2" :src="postCoverArr[postCoverIdx[index]]" />
@@ -44,7 +44,7 @@ fetch(route.query.name);
           </div>
           <div
             class="text-ellipsis line-clamp-1 mt-4 text-text-regular"
-            :to="RoutePaths.PostDetail(item.id)">
+            :to="Consts.Paths.p(item.id)">
             {{ item.text }}
           </div>
           <div>

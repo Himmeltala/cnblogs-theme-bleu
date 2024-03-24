@@ -100,7 +100,7 @@ onMounted(() => {
           <div
             v-for="(item, index) in postInfo.props.sorts"
             :class="{ 'mr-2': index !== postInfo.props.sorts.length - 1 }">
-            <router-link :to="RoutePaths.PostsBySort(item.id)">
+            <router-link :to="Consts.Paths.sort(item.id)">
               <el-tag round>
                 {{ item.text }}
               </el-tag>
@@ -115,7 +115,7 @@ onMounted(() => {
           <div
             v-for="(item, index) in postInfo.props.tags"
             :class="{ 'mr-2': index !== postInfo.props.tags.length - 1 }">
-            <router-link :to="RoutePaths.PostsByLabel(item.text)">
+            <router-link :to="Consts.Paths.label(item.text)">
               <el-tag round type="success">
                 {{ item.text }}
               </el-tag>
@@ -146,12 +146,12 @@ onMounted(() => {
       </div>
       <div class="text-0.9rem text-text-primary mt-10">
         <div class="f-s-s mb-4" v-if="postInfo.prevNext.prev.href">
-          <router-link class="hover" :to="RoutePaths.PostDetail(postInfo.prevNext.prev.href)">
+          <router-link class="hover" :to="Consts.Paths.p(postInfo.prevNext.prev.href)">
             上一篇：{{ postInfo.prevNext.prev.text }}
           </router-link>
         </div>
         <div class="f-s-e" v-if="postInfo.prevNext.next.href">
-          <router-link class="hover" :to="RoutePaths.PostDetail(postInfo.prevNext.next.href)">
+          <router-link class="hover" :to="Consts.Paths.p(postInfo.prevNext.next.href)">
             下一篇：{{ postInfo.prevNext.next.text }}
           </router-link>
         </div>

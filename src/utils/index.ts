@@ -44,7 +44,7 @@ export namespace Utils {
     private eraseSpeed: number;
     private eraseDelay: number;
     private blinkSpace: number;
-    private fontSize: number;
+    private rem: number;
     private dom: HTMLElement;
 
     constructor({
@@ -54,7 +54,7 @@ export namespace Utils {
       eraseSpeed = 20,
       eraseDelay = 2000,
       blinkSpace = 5,
-      fontSize = 16
+      rem = 1
     }: {
       el: string;
       texts: string[];
@@ -62,7 +62,7 @@ export namespace Utils {
       eraseSpeed?: number;
       eraseDelay?: number;
       blinkSpace?: number;
-      fontSize?: number;
+      rem?: number;
     }) {
       this.el = el;
       this.texts = texts;
@@ -74,7 +74,7 @@ export namespace Utils {
       this.eraseSpeed = eraseSpeed;
       this.eraseDelay = eraseDelay;
       this.blinkSpace = blinkSpace;
-      this.fontSize = fontSize;
+      this.rem = rem;
 
       this.dom = document.getElementById(this.el);
     }
@@ -120,7 +120,8 @@ export namespace Utils {
 
     getTextWidth(text: string): number {
       const span = document.createElement("span");
-      span.style.fontSize = `${this.fontSize}px`;
+      const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      span.style.fontSize = `${this.rem * rootFontSize}px`;
       span.style.visibility = "hidden";
       span.style.position = "absolute";
       span.style.whiteSpace = "nowrap";

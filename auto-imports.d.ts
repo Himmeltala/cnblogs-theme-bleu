@@ -320,7 +320,6 @@ declare module 'vue' {
     readonly Consts: UnwrapRef<typeof import('@/constants/index')['Consts']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
-    readonly RoutePaths: UnwrapRef<typeof import('@/constants/index')['RoutePaths']>
     readonly Utils: UnwrapRef<typeof import('@/utils/index')['Utils']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -619,7 +618,6 @@ declare module '@vue/runtime-core' {
     readonly Consts: UnwrapRef<typeof import('@/constants/index')['Consts']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
-    readonly RoutePaths: UnwrapRef<typeof import('@/constants/index')['RoutePaths']>
     readonly Utils: UnwrapRef<typeof import('@/utils/index')['Utils']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>

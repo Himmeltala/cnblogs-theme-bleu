@@ -42,7 +42,7 @@ fetch();
         <div
           v-if="findDate(data)"
           class="w-100% h-100%"
-          @click="$router.push(RoutePaths.PostsByArchive('d', data.day))">
+          @click="$router.push(Consts.Paths.archive('d', data.day))">
           <el-tag type="danger">
             {{ data.day.split("-")[2] }}
           </el-tag>
