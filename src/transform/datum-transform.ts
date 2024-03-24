@@ -155,7 +155,7 @@ export function toColumnData(dom: Document): ColumnDataModel {
     }
 
     if (authorEle) {
-      comment.author = Textual.replace(authorEle.innerText, [/--/g]);
+      comment.author = Utils.Textual.replace(authorEle.innerText, [/--/g]);
     }
 
     data.latestComments.push(comment);
@@ -187,7 +187,7 @@ export function toStatistics(dom: Document): StatisticsModel[] {
       const t = eles[index].innerText;
       const text = t.match(/^[\u4e00-\u9fa5]*/g)[0];
       let digg = t.match(/\d+/g)[0];
-      if (index === 3) digg = Formatter.unit(digg);
+      if (index === 3) digg = Utils.Formatter.unit(digg);
       data.push({ text, digg });
     }
   }

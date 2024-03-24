@@ -5,7 +5,7 @@ const labelList = ref<LabelModel[]>();
 const filteredList = ref<LabelModel[]>();
 const searchVal = ref("");
 const sortVal = ref("乱序");
-const loading = new Broswer.Loading();
+const loading = new Utils.Broswer.Loading();
 
 function fetch() {
   loading.startLoading();

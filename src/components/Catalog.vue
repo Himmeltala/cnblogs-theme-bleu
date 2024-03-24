@@ -73,7 +73,7 @@ function catalogRender(content: HTMLDivElement) {
 }
 
 function clickToc(toc: any) {
-  Broswer.scrollIntoView(`#${toc.id}`);
+  Utils.Broswer.scrollIntoView(`#${toc.id}`);
 }
 
 defineExpose({

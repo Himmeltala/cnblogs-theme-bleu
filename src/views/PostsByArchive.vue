@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PostsHttp } from "@/requests";
 
-const loading = new Broswer.Loading();
+const loading = new Utils.Broswer.Loading();
 
 const route = useRoute();
 const archiveList = shallowRef();
@@ -25,8 +25,8 @@ function fetch() {
 
   promise.then(data => {
     archiveList.value = data;
-    postCoverIdx.value = Random.get(postCoverArr, archiveList.value.data.length);
-    Broswer.setTitle(archiveList.value.hint);
+    postCoverIdx.value = Utils.Random.get(postCoverArr, archiveList.value.data.length);
+    Utils.Broswer.setTitle(archiveList.value.hint);
 
     nextTick(() => {
       loading.endLoading();

@@ -4,7 +4,7 @@ import { useFancybox } from "@/hooks/use-fancybox";
 
 const route = useRoute();
 const imgUrl = shallowRef();
-const loading = new Broswer.Loading();
+const loading = new Utils.Broswer.Loading();
 
 function fetch() {
   loading.startLoading();

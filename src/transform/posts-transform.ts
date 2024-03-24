@@ -51,8 +51,8 @@ export function toPostsList1(dom: Document): PostsListModel {
 
     data.push({
       id: id[i].getAttribute("href").match(/[0-9]+/g)[0],
-      text: Textual.replace(head[i].innerText.trim(), [/\[置顶\]/g]),
-      desc: Textual.replace(desc[i].innerText, [/阅读全文/g]),
+      text: Utils.Textual.replace(head[i].innerText.trim(), [/\[置顶\]/g]),
+      desc: Utils.Textual.replace(desc[i].innerText, [/阅读全文/g]),
       date: notes[i].innerText.match(dateReg)[0],
       view: notes[i].innerText.match(viewReg)[0],
       comm: notes[i].innerText.match(commReg)[0],
@@ -94,7 +94,7 @@ export function toPostDetail(id: string, dom: Document): PostModel {
       view: dom.getElementById("post_view_count").innerText,
       comm: dom.getElementById("post_comment_count").innerText,
       isLocked: !text && !content,
-      wordCount: Textual.calcChineseWords(str)
+      wordCount: Utils.Textual.calcChineseWords(str)
     };
   } else {
     return {
@@ -146,7 +146,7 @@ export function toPrevNext(dom: HTMLDivElement): PostPrevNextModel {
 
     const res = {
       text: textElem.innerText.trim(),
-      href: Textual.split(
+      href: Utils.Textual.split(
         textElem.getAttribute("href"),
         new RegExp("/" + Consts.getBlogApp() + "/p/\\d{8}", "g"),
         [3],

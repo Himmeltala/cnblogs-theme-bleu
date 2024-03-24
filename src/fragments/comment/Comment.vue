@@ -75,7 +75,7 @@ fetch();
         <div class="f-c-s">
           <img class="mr-4 rd-50% w-14 h-14 object-cover" :src="item.avatar" />
           <div>
-            <div class="hover cursor-pointer" @click="Navigation.go(item.space)">
+            <div class="hover cursor-pointer" @click="Utils.Navigation.go(item.space)">
               {{ item.author }}
             </div>
             <div

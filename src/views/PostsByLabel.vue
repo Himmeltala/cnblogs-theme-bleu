@@ -3,7 +3,7 @@ import { PostsHttp } from "@/requests";
 
 const route = useRoute();
 const currPage = ref(1);
-const loading = new Broswer.Loading();
+const loading = new Utils.Broswer.Loading();
 const postList = shallowRef<PostsListModel>();
 const postCoverIdx = shallowRef<number[]>();
 const postCoverArr = Consts.config.images.stochastic;
@@ -13,8 +13,8 @@ function fetch(name: any) {
 
   PostsHttp.getListByLabel(name, currPage.value).then(data => {
     postList.value = data;
-    Broswer.setTitle(postList.value.hint);
-    postCoverIdx.value = Random.get(postCoverArr, postList.value.data.length);
+    Utils.Broswer.setTitle(postList.value.hint);
+    postCoverIdx.value = Utils.Random.get(postCoverArr, postList.value.data.length);
 
     nextTick(() => {
       loading.endLoading();

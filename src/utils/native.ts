@@ -1,5 +1,5 @@
 /**
- * 博客本地 API
+ * 博客园接口
  *
  * @author Himmeltala
  * @date 2023 年 1 月 15 日
@@ -72,5 +72,5 @@ export function shareToTsina() {
  * @param keyword 关键字
  */
 export function search(keyword: string) {
-  Navigation.go("https://zzk.cnblogs.com/s?w=blog:" + Consts.getBlogApp() + "%" + keyword);
+  Utils.Navigation.go("https://zzk.cnblogs.com/s?w=blog:" + Consts.getBlogApp() + "%" + keyword);
 }

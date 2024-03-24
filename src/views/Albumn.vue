@@ -2,7 +2,7 @@
 import { DatumHttp } from "@/requests";
 import { useFancybox } from "@/hooks/use-fancybox";
 
-const loading = new Broswer.Loading();
+const loading = new Utils.Broswer.Loading();
 
 const route = useRoute();
 const imgList = shallowRef();

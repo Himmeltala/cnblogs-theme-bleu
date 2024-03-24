@@ -22,7 +22,7 @@ let htmlContent = "";
 const content = ref("");
 
 function uploadImage(el: string) {
-  Native.openImageUploadWindow(el, (imgUrl: any) => {
+  Utils.Native.openImageUploadWindow(el, (imgUrl: any) => {
     content.value += `\n${imgUrl}\n`;
   });
 }

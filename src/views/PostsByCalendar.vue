@@ -4,7 +4,7 @@ import { DatumHttp } from "@/requests";
 const date = new Date();
 const dateModel = ref(date);
 const calendar = shallowRef<string[]>();
-const loading = new Broswer.Loading();
+const loading = new Utils.Broswer.Loading();
 
 function findDate(data: any) {
   const date = data.day.replaceAll("-", "/");

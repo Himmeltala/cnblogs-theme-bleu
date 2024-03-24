@@ -71,7 +71,7 @@ const RouteRules = [
     regex: new RegExp("/" + Consts.getBlogApp() + "/p/\\d{8}", "g"),
     name: "PostDetail",
     params: {
-      id: Textual.split(
+      id: Utils.Textual.split(
         window.location.href,
         new RegExp("/" + Consts.getBlogApp() + "/p/\\d{8}", "g"),
         [3],
@@ -84,14 +84,14 @@ const RouteRules = [
     regex: /\/category\/\d+/g,
     name: "PostsBySort",
     params: {
-      id: Textual.split(window.location.href, /\/category\/\d+/g, [2, 0], ["/", "."])
+      id: Utils.Textual.split(window.location.href, /\/category\/\d+/g, [2, 0], ["/", "."])
     }
   },
   {
     regex: /\/tag\/[\w\s\u4e00-\u9fa5\n\-\_%]+/g,
     name: "PostsByLabel",
     params: {
-      tag: Textual.split(
+      tag: Utils.Textual.split(
         decodeURI(window.location.href),
         /\/tag\/[\w\s\u4e00-\u9fa5\n\-\_%]+/g,
         [2],
@@ -102,13 +102,13 @@ const RouteRules = [
   {
     regex: /\/gallery\/image\/\d+/g,
     name: "AlbumnItem",
-    params: { id: Textual.split(window.location.href, /\/gallery\/image\/\d+/g, [3], ["/"]) }
+    params: { id: Utils.Textual.split(window.location.href, /\/gallery\/image\/\d+/g, [3], ["/"]) }
   },
   {
     regex: /\/articles\/\d+.html/g,
     name: "PostDetail",
     params: {
-      id: Textual.split(window.location.href, /\/articles\/\d+.html/g, [2, 0], ["/", "."])
+      id: Utils.Textual.split(window.location.href, /\/articles\/\d+.html/g, [2, 0], ["/", "."])
     }
   }
 ];
@@ -151,7 +151,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(to => {
   if (to.meta.title) {
-    Broswer.setTitle(`${to.meta.title}`);
+    Utils.Broswer.setTitle(`${to.meta.title}`);
   }
 });
 

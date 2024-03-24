@@ -32,15 +32,7 @@ export default defineConfig(({ mode }) => {
             "@/constants/index": ["Consts", "RoutePaths"]
           },
           {
-            "@/utils/index": [
-              "Broswer",
-              "Formatter",
-              "Native",
-              "Navigation",
-              "Random",
-              "CustStorage",
-              "Textual"
-            ]
+            "@/utils/index": ["Utils"]
           },
           {
             from: "vue-router",

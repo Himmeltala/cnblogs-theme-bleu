@@ -4,7 +4,7 @@ import { useEcharts } from "@/hooks/use-echarts";
 
 const val = ref("");
 const drawer = ref(false);
-const options = CustStorage.getOptions();
+const options = Utils.Storage.getOptions();
 const themeMode = ref(options.value.theme.mode === "dark" ? true : false);
 const colData = ref<ColumnDataModel>();
 const stsData = ref<StatisticsModel[]>();
@@ -58,15 +58,15 @@ function openedDrawer() {
           </div>
         </div>
         <div v-if="stsData" class="text-0.9rem">
-          <div class="f-c-s hover mt-2" @click="Navigation.go(stsData[1].href)">
+          <div class="f-c-s hover mt-2" @click="Utils.Navigation.go(stsData[1].href)">
             <div class="i-tabler:calendar-time mr-2"></div>
             园龄：{{ stsData[1].text }}
           </div>
-          <div class="f-c-s hover mt-2" @click="Navigation.go(stsData[2].href)">
+          <div class="f-c-s hover mt-2" @click="Utils.Navigation.go(stsData[2].href)">
             <div class="i-tabler:brand-twitch mr-2"></div>
             粉丝：{{ stsData[2].text }}
           </div>
-          <div class="f-c-s hover mt-2" @click="Navigation.go(stsData[3].href)">
+          <div class="f-c-s hover mt-2" @click="Utils.Navigation.go(stsData[3].href)">
             <div class="i-tabler:heart mr-2"></div>
             关注：{{ stsData[3].text }}
           </div>
@@ -74,7 +74,7 @@ function openedDrawer() {
       </div>
       <div
         class="text-1.4rem cursor-pointer mt-4 shine-text"
-        @click="Navigation.go(stsData[0].href)">
+        @click="Utils.Navigation.go(stsData[0].href)">
         {{ Consts.getBlogApp() }}
       </div>
       <div v-if="colData" v-for="item in colData.rankings" class="text-0.8rem mt-2">
@@ -103,7 +103,9 @@ function openedDrawer() {
             @click="$router.push('/')">
             首页
           </div>
-          <div class="hover mr-5" @click="Navigation.go('https://www.cnblogs.com/')">博客园</div>
+          <div class="hover mr-5" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
+            博客园
+          </div>
           <div
             class="hover mr-5 position-relative"
             :class="{
@@ -122,7 +124,7 @@ function openedDrawer() {
             @click="$router.push(RoutePaths.PostsByCalendar())">
             日历
           </div>
-          <div class="hover" @click="Navigation.go('https://i.cnblogs.com')">管理</div>
+          <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>
         </div>
         <div class="mt-4 f-c-s flex-wrap">
           <div class="mr-6">
@@ -135,7 +137,7 @@ function openedDrawer() {
           </div>
           <div
             class="hover mr-6"
-            @click="Navigation.go(item.value)"
+            @click="Utils.Navigation.go(item.value)"
             v-for="item in Consts.config.header.links">
             <div class="i-tabler:brand-bilibili" v-if="item.name === 'bilibili'"></div>
             <div class="i-tabler:brand-github" v-else-if="item.name === 'github'"></div>
@@ -284,7 +286,10 @@ function openedDrawer() {
           </template>
         </el-button>
         <div class="w-45">
-          <el-input @keyup.enter="Native.search(val)" placeholder="输入关键字搜索" v-model="val">
+          <el-input
+            @keyup.enter="Utils.Native.search(val)"
+            placeholder="输入关键字搜索"
+            v-model="val">
             <template #suffix>
               <div class="i-ep:search"></div>
             </template>
@@ -302,7 +307,9 @@ function openedDrawer() {
             @click="$router.push('/')">
             首页
           </div>
-          <div class="hover mr-5" @click="Navigation.go('https://www.cnblogs.com/')">博客园</div>
+          <div class="hover mr-5" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
+            博客园
+          </div>
           <div
             class="hover mr-5 position-relative"
             :class="{
@@ -321,7 +328,7 @@ function openedDrawer() {
             @click="$router.push(RoutePaths.PostsByCalendar())">
             日历
           </div>
-          <div class="hover" @click="Navigation.go('https://i.cnblogs.com')">管理</div>
+          <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>
         </div>
         <div class="tools ml-5">
           <el-switch
@@ -333,7 +340,7 @@ function openedDrawer() {
         </div>
         <div
           class="hover ml-4"
-          @click="Navigation.go(item.value)"
+          @click="Utils.Navigation.go(item.value)"
           v-if="Consts.config.header.links?.length"
           v-for="item in Consts.config.header.links">
           <div v-if="item.icon" v-html="item.icon" class="f-c-c"></div>

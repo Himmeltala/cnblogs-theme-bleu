@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PostsHttp } from "@/requests";
 
-const loading = new Broswer.Loading();
+const loading = new Utils.Broswer.Loading();
 
 const route = useRoute();
 const router = useRouter();
@@ -15,7 +15,7 @@ function fetch() {
 
   PostsHttp.getList(currPage.value).then(data => {
     postList.value = data;
-    postCoverIdx.value = Random.get(postCoverArr, postList.value.data.length);
+    postCoverIdx.value = Utils.Random.get(postCoverArr, postList.value.data.length);
 
     nextTick(() => {
       loading.endLoading();

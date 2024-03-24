@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PostsHttp } from "@/requests";
 
-const loading = new Broswer.Loading();
+const loading = new Utils.Broswer.Loading();
 const route = useRoute();
 const postId = shallowRef<any>(route.params.id);
 const postData = shallowRef<PostModel>();
@@ -18,7 +18,7 @@ function fetch() {
     ([detail, info]) => {
       postData.value = detail;
       postInfo.value = info;
-      Broswer.setTitle(postData.value.text);
+      Utils.Broswer.setTitle(postData.value.text);
 
       nextTick(() => {
         mdRef.value.mdRender((html: any) => {
@@ -139,7 +139,7 @@ onMounted(() => {
           <div class="i-tabler:thumb-down mr-1"></div>
           反对 {{ postInfo.postStats.buryCount }}
         </el-button>
-        <el-button round type="success" text bg @click="Native.savePost(postId)">
+        <el-button round type="success" text bg @click="Utils.Native.savePost(postId)">
           <div class="i-tabler:heart mr-1"></div>
           收藏
         </el-button>
@@ -161,7 +161,7 @@ onMounted(() => {
           <div class="i-tabler:user mr-2"></div>
           作者：<span
             class="hover"
-            @click="Navigation.go('https://home.cnblogs.com/u/' + Consts.getBlogApp())">
+            @click="Utils.Navigation.go('https://home.cnblogs.com/u/' + Consts.getBlogApp())">
             {{ Consts.getBlogApp() }}
           </span>
         </div>
@@ -175,7 +175,7 @@ onMounted(() => {
           <div class="i-tabler:license mr-2"></div>
           版权：本作品采用「<span
             class="hover"
-            @click="Navigation.go('https://creativecommons.org/licenses/by-nc-sa/4.0/')">
+            @click="Utils.Navigation.go('https://creativecommons.org/licenses/by-nc-sa/4.0/')">
             署名-非商业性使用-相同方式共享 4.0 国际 </span
           >」许可协议进行许可。
         </div>

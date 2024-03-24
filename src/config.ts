@@ -1,13 +1,12 @@
 import type { App } from "vue";
-import { deepMerge, PrettifyLog } from "./utils";
 
 /**
  * 初始化浏览器 LocalStorage
  */
 function initStorage() {
-  const options = CustStorage.getOptions().value;
+  const options = Utils.Storage.getOptions().value;
   const refactoringOfOptions = JSON.stringify(
-    CustStorage.optionsRefactor(options, CustStorage.getOptionsTemplate())
+    Utils.Storage.optionsRefactor(options, Utils.Storage.getOptionsTemplate())
   );
   localStorage.setItem(Consts.OPSTIONS_KEY, refactoringOfOptions);
   document.documentElement.setAttribute("class", options.theme.mode);
@@ -94,7 +93,7 @@ function createConsts() {
     fancybox: ""
   };
 
-  deepMerge(Consts.config, __BLEU_CONFIG__);
+  Utils.deepMerge(Consts.config, __BLEU_CONFIG__);
 }
 
 /**
@@ -147,8 +146,8 @@ function onBeforeLoad() {
  * 在 mount Vue 之后
  */
 function onAfterLoad() {
-  PrettifyLog.primary("GitHub", "https://github.com/Himmeltala/cnblogs-theme-bleu");
-  PrettifyLog.primary(
+  Utils.PrettifyLog.primary("GitHub", "https://github.com/Himmeltala/cnblogs-theme-bleu");
+  Utils.PrettifyLog.primary(
     "v1.0.0",
     "The Theme was Created By Himmeltala, and Powered By Vue3 & Vite."
   );
