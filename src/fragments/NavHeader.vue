@@ -34,7 +34,7 @@ function openedDrawer() {
       stsData.value = data;
     });
 
-    useEcharts({ dom: radarRef.value, options: Consts.config.echart.technics });
+    useEcharts({ dom: radarRef.value, options: Consts.config.diagram.technics });
   }
 
   flag.value++;
@@ -141,7 +141,7 @@ function openedDrawer() {
           <div
             class="hover mr-6"
             @click="Utils.Navigation.go(item.value)"
-            v-for="item in Consts.config.header.links">
+            v-for="item in Consts.config.header.paths">
             <div class="i-tabler:brand-bilibili" v-if="item.name === 'bilibili'"></div>
             <div class="i-tabler:brand-github" v-else-if="item.name === 'github'"></div>
             <div v-else-if="!item.name && item.icon">

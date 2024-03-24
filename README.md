@@ -364,7 +364,7 @@ window.__BLEU_CONFIG__ = {
 
 随笔和文章列表封面图不超过 10 个时，会重复看到图片。
 
-## echart
+## diagram
 
 - 类型：object
 - 是否必填：否
@@ -373,7 +373,7 @@ window.__BLEU_CONFIG__ = {
 
 ```js
 window.__BLEU_CONFIG__ = {
-  echart: {
+  diagram: {
     // 我的技能，该属性和 echart 雷达图配置完全一致，可以参考官方文档来填写
     technics: {
       radar: {
@@ -434,14 +434,14 @@ window.__BLEU_CONFIG__ = {
 ## header
 
 - 类型：Object
-- 是否必填：否。不填则 links 为空数组。
+- 是否必填：否。不填则 paths 为空数组。
 
 配置头部导航栏。name 指定内置的图标，icon 指定 SVG 代码，src 插入图片 URL。
 
 ```js
 window.__BLEU_CONFIG__ = {
   header: {
-    links: [
+    paths: [
       {
         name: "bilibili",
         value: "https://space.bilibili.com/7021686"
@@ -458,6 +458,26 @@ window.__BLEU_CONFIG__ = {
         value: "",
         src: "图片链接"
       }
+    ]
+  }
+};
+```
+
+## welcome
+
+- 类型：Object
+- 是否必填：否。
+
+配置欢迎页的打字机文本。
+
+```js
+window.__BLEU_CONFIG__ = {
+  welcome: {
+    texts: [
+      "我是一位 Web <Developer />",
+      "很喜欢日漫、游戏",
+      "技术栈 Vue.js、React.js、Python、Java",
+      "座右铭 “时光飞逝，梦想消逝！”"
     ]
   }
 };

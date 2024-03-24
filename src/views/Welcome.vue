@@ -7,15 +7,12 @@ const offsetHeight = ref(0);
 
 onMounted(() => {
   loading.endLoading();
-
-  const texts = [
-    "很高兴认识你，我是一位 Web <Developer />",
-    "很喜欢日漫、游戏",
-    "技术栈 Vue.js、React.js、Python、Java",
-    "座右铭 “时光飞逝，梦想消逝！”"
-  ];
-
-  tw = new Utils.TypeWriter({ texts, el: "tw", rem: 1.2 });
+  tw = new Utils.TypeWriter({
+    texts: Consts.config.welcome.texts,
+    el: "tw",
+    rem: 1.3,
+    blinkSpace: 0
+  });
   tw.type();
   offsetHeight.value = tw.offsetHeight;
 });
@@ -28,19 +25,41 @@ onUnmounted(() => {
 <template>
   <div class="page f-c-c">
     <div class="lg-sm:w-55vw lt-sm:w-90vw">
-      <div class="text-1.5rem">Hi~👋, I'm {{ Consts.getBlogApp() }}.</div>
-      <div :style="{ height: offsetHeight + 'px' }">
-        <div id="tw" class="text-1.2rem mt-2"></div>
-      </div>
-      <div class="f-c-c mt-10">
-        <div
-          class="hover ml-4"
-          @click="Utils.Navigation.go(item.value)"
-          v-if="Consts.config.header.links?.length"
-          v-for="item in Consts.config.header.links">
-          <div v-if="item.icon" v-html="item.icon" class="f-c-c"></div>
-          <div v-else class="f-c-c">
-            <img class="w-8 h-8 object-cover rd-50%" :src="item.src" />
+      <div class="f-c-c">
+        <div>
+          <div class="f-c-c">
+            <div class="position-relative w-50 h-50 mr-6">
+              <img :src="Consts.config.avatar" class="w-50 h-50 object-cover rd-50%" />
+              <div
+                class="position-absolute bottom-0 right-0 f-c-c w-8 h-8 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
+                {{ Consts.config.status || "🐟" }}
+              </div>
+            </div>
+          </div>
+          <div class="text-2rem mt-4 font-bold">
+            <div>Hi~👋,</div>
+            <div>
+              I'm <span class="shine-text">{{ Consts.getBlogApp() }}</span
+              >.
+            </div>
+          </div>
+          <div class="text-1.2rem font-bold mt-2" :style="{ height: offsetHeight + 'px' }">
+            <div id="tw"></div>
+          </div>
+          <div class="f-c-c mt-10">
+            <div
+              class="hover ml-4"
+              @click="Utils.Navigation.go(item.value)"
+              v-if="Consts.config.header.paths?.length"
+              v-for="item in Consts.config.header.paths">
+              <div v-if="item.icon" v-html="item.icon" class="f-c-c"></div>
+              <div v-else class="f-c-c">
+                <img class="w-8 h-8 object-cover rd-50%" :src="item.src" />
+              </div>
+            </div>
+          </div>
+          <div class="f-c-c mt-40">
+            <div class="circle" @click="$router.push(Consts.Paths.posts())"></div>
           </div>
         </div>
       </div>
@@ -51,7 +70,7 @@ onUnmounted(() => {
 <style scoped lang="scss">
 #tw {
   overflow: hidden;
-  border-right: 0.15rem solid orange;
+  border-right: 0.15rem solid var(--bleu-theme-color-primary);
   animation: blink 0.8s infinite;
 }
 
@@ -60,7 +79,28 @@ onUnmounted(() => {
     border-color: transparent;
   }
   to {
-    border-color: orange;
+    border-color: var(--bleu-theme-color-primary);
   }
+}
+
+@keyframes wave {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.circle {
+  position: relative;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5); /* 设置光圈的颜色和透明度 */
+  animation: wave 1.5s ease-out infinite; /* 添加波浪动画 */
 }
 </style>

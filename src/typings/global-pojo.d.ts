@@ -196,10 +196,11 @@ interface ConfigModel {
     stochastic: string[];
   };
   header: {
-    links: { name?: string; value: string; icon?: string; src?: string }[];
+    paths: { name?: string; value: string; icon?: string; src?: string }[];
   };
+  welcome: any;
   fancybox: any;
-  echart: {
+  diagram: {
     technics: any;
   };
   theme?: {
