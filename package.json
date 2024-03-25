@@ -21,6 +21,7 @@
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
+    "node-fetch-native": "^1.6.4",
     "@iconify-json/ep": "^1.1.15",
     "@iconify-json/tabler": "^1.1.108",
     "@vitejs/plugin-vue": "^5.0.4",

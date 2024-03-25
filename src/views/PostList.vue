@@ -3,12 +3,11 @@ import { PostsHttp } from "@/requests";
 
 const loading = new Utils.Broswer.Loading();
 
-const route = useRoute();
 const router = useRouter();
 const postList = ref();
 const postCoverIdx = shallowRef<number[]>();
 const postCoverArr = Consts.config.images.stochastic;
-const currPage = ref<number>(Number(route.query.page) || 1);
+const currPage = ref(1);
 
 function fetch() {
   loading.startLoading();
@@ -23,12 +22,13 @@ function fetch() {
   });
 }
 
-onBeforeRouteUpdate(() => {
+onBeforeRouteUpdate(updateGuard => {
+  currPage.value = Number(updateGuard.query.page);
   fetch();
 });
 
 function onCurrentChange() {
-  router.push({ path: "/", query: { page: currPage.value } });
+  router.push(Consts.Paths.posts(currPage.value));
 }
 
 fetch();

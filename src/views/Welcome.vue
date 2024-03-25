@@ -28,10 +28,10 @@ onUnmounted(() => {
       <div class="f-c-c">
         <div>
           <div class="f-c-c">
-            <div class="position-relative w-50 h-50 mr-6">
+            <div class="position-relative w-50 h-50">
               <img :src="Consts.config.avatar" class="w-50 h-50 object-cover rd-50%" />
               <div
-                class="position-absolute bottom-0 right-0 f-c-c w-8 h-8 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
+                class="position-absolute bottom-0 right-0 f-c-c w-10 h-10 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
                 {{ Consts.config.status || "🐟" }}
               </div>
             </div>
@@ -39,8 +39,7 @@ onUnmounted(() => {
           <div class="text-2rem mt-4 font-bold">
             <div>Hi~👋,</div>
             <div>
-              I'm <span class="shine-text">{{ Consts.getBlogApp() }}</span
-              >.
+              I'm <span class="shine-text">{{ Consts.getBlogApp() }}.</span>
             </div>
           </div>
           <div class="text-1.2rem font-bold mt-2" :style="{ height: offsetHeight + 'px' }">
@@ -58,8 +57,8 @@ onUnmounted(() => {
               </div>
             </div>
           </div>
-          <div class="f-c-c mt-40">
-            <div class="circle" @click="$router.push(Consts.Paths.posts())"></div>
+          <div class="f-c-c mt-30">
+            <div class="circle" @click="$router.push(Consts.Paths.posts(1))"></div>
           </div>
         </div>
       </div>
@@ -101,6 +100,6 @@ onUnmounted(() => {
   height: 2rem;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.5); /* 设置光圈的颜色和透明度 */
-  animation: wave 1.5s ease-out infinite; /* 添加波浪动画 */
+  animation: wave 2s ease-out infinite; /* 添加波浪动画 */
 }
 </style>

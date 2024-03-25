@@ -12,7 +12,7 @@ function fetch(id: any) {
   loading.startLoading();
   DatumHttp.getAlbumn(id).then(data => {
     albumn.value = data;
-    imgList.value = albumn.value.data.map((i: any) => i.src);
+    imgList.value = albumn.value.data.map(i => i.href);
 
     nextTick(() => {
       useFancybox();

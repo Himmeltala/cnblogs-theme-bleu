@@ -20,14 +20,14 @@ export function label(label?: string) {
  * @returns "/main/sort?id=112233&page=1"
  */
 export function sort(id?: string | number | string[], page?: number | string) {
-  return { path: "/main/sort", query: { id, page: page || "1" } };
+  return { path: "/main/sort", query: { id, page: page || 1 } };
 }
 
 /**
  * @returns "/main/posts?page=1"
  */
 export function posts(page?: string | number) {
-  return `/main/posts?page=${page}`;
+  return `/main/posts?page=${page || 1}`;
 }
 
 /**

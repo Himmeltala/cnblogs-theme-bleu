@@ -271,7 +271,7 @@ export function toAlbumn(dom: Document): AlbumnModel {
         .getAttribute("href")
         .match(/\/gallery\/image\/\d+/g)[0]
         .split("/")[3],
-      src: eles[i].getElementsByTagName("img")[0].getAttribute("src")
+      href: eles[i].getElementsByTagName("img")[0].getAttribute("src")
     });
   }
 

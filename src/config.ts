@@ -64,10 +64,10 @@ function createConsts() {
     },
     welcome: {
       texts: [
-        "我是一位 Web <Developer />",
-        "很喜欢日漫、游戏",
+        "一位 Web <Developer />",
+        "喜欢日漫、游戏",
         "技术栈 Vue.js、React.js、Python、Java",
-        "座右铭 “时光飞逝，梦想消逝！”"
+        "座右铭 时光飞逝，梦想消逝！"
       ]
     },
     diagram: {

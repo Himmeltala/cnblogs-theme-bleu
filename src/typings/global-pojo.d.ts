@@ -143,7 +143,7 @@ interface PostPrevNextModel {
 
 interface AlbumnItemModel {
   id: string;
-  src: string;
+  href: string;
 }
 
 interface AlbumnModel {
