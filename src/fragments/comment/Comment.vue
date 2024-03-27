@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useAnchorStore } from "@/store";
-import { CommentHttp } from "@/requests";
 
 const props = defineProps({
   postId: { type: String, required: true }
@@ -17,9 +16,9 @@ const currIndex = ref(1);
 const markdown = shallowRef();
 
 function fetch() {
-  CommentHttp.getList(props.postId, currIndex.value, anchor.value).then(list => {
+  Requests.Comment.getList(props.postId, currIndex.value, anchor.value).then(list => {
     comments.value = list;
-    CommentHttp.getCount(props.postId).then(count => {
+    Requests.Comment.getCount(props.postId).then(count => {
       pageCount.value = count;
 
       nextTick(() => {
@@ -94,7 +93,7 @@ fetch();
           <textarea
             class="z--1 opacity-0 position-absolute top-0 left-0"
             :id="'upload-img-' + index"></textarea>
-          <TextRender ref="markdown" :fancy-group="'comment-' + index" :content="item.content" />
+          <CustMarkdown ref="markdown" :fancy-group="'comment-' + index" :content="item.content" />
         </div>
         <div class="more-action float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>

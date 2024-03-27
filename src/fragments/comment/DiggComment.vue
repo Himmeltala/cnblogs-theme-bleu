@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { CommentHttp } from "@/requests";
-
 const props = defineProps({
   comment: {
     type: Object as PropType<any>,
@@ -13,7 +11,7 @@ const props = defineProps({
 });
 
 async function diggComment() {
-  const { isSuccess } = await CommentHttp.vote({
+  const { isSuccess } = await Requests.Comment.vote({
     isAbandoned: false,
     commentId: parseInt(props.comment.commentId),
     postId: parseInt(props.postId),

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { PostsHttp } from "@/requests";
-
-const loading = new Utils.Broswer.Loading();
+const loading = new Utils.Browser.Loading();
 const route = useRoute();
 const postId = shallowRef<any>(route.params.id);
 const postData = shallowRef<PostModel>();
@@ -14,11 +12,11 @@ const isShowDrawer = shallowRef(false);
 function fetch() {
   loading.startLoading();
 
-  Promise.all([PostsHttp.getDetail(postId.value), PostsHttp.getInfo(postId.value)]).then(
+  Promise.all([Requests.Posts.getDetail(postId.value), Requests.Posts.getInfo(postId.value)]).then(
     ([detail, info]) => {
       postData.value = detail;
       postInfo.value = info;
-      Utils.Broswer.setTitle(postData.value.text);
+      Utils.Browser.setTitle(postData.value.text);
 
       nextTick(() => {
         mdRef.value.mdRender((html: any) => {
@@ -34,7 +32,7 @@ function fetch() {
 }
 
 function convey(type: VoteType) {
-  PostsHttp.vote({
+  Requests.Posts.vote({
     postId: parseInt(postId.value),
     isAbandoned: false,
     voteType: type
@@ -123,11 +121,13 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <TextRender ref="mdRef" :fancy-group="'post-detail'" :content="postData.content" />
+      <CustMarkdown ref="mdRef" :fancy-group="'post-detail'" :content="postData.content" />
       <div v-if="!isBlogOwner && isLogined" class="mt-10 f-c-e">
         <el-button type="primary" plain round size="small">
-          <span v-if="postInfo.postStats.isFollowed" @click="PostsHttp.unfollow"> - 取消关注 </span>
-          <span v-else @click="PostsHttp.follow"> + 关注博主 </span>
+          <span v-if="postInfo.postStats.isFollowed" @click="Requests.Posts.unfollow">
+            - 取消关注
+          </span>
+          <span v-else @click="Requests.Posts.follow"> + 关注博主 </span>
         </el-button>
       </div>
       <div class="mt-10 f-c-c">

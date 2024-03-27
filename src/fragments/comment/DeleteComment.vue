@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { CommentHttp } from "@/requests";
-
 const props = defineProps({
   comment: {
     type: Object as PropType<any>,
@@ -21,7 +19,7 @@ const props = defineProps({
 });
 
 async function confirmDeleteComment() {
-  await CommentHttp.del({
+  await Requests.Comment.del({
     commentId: parseInt(props.comment.commentId),
     parentId: parseInt(props.postId)
   });

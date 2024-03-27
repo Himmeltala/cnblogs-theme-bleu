@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { DatumHttp } from "@/requests";
-
 const labelList = ref<LabelModel[]>();
 const filteredList = ref<LabelModel[]>();
 const searchVal = ref("");
 const sortVal = ref("乱序");
-const loading = new Utils.Broswer.Loading();
+const loading = new Utils.Browser.Loading();
 
 function fetch() {
   loading.startLoading();
-  DatumHttp.getMarkList().then(data => {
+  Requests.Datum.getMarkList().then(data => {
     labelList.value = data;
     filteredList.value = data;
     nextTick(() => {

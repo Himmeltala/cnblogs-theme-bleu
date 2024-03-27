@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import hljs from "highlight.js";
-import { useFancybox } from "@/hooks/use-fancybox";
 
 hljs.configure({
   ignoreUnescapedHTML: true
@@ -130,7 +129,9 @@ function extractLangTempFromPreCode(str: string) {
   const lang = str.match(/<code class="language-([\d\w#]+)"/);
 
   const temp = `
-      <div class="code-tips text-0.8rem ${label ? "position-absolute" : ""} f-c-e w-100% flow-auto pr-1">
+      <div class="code-tips text-0.8rem ${
+        label ? "position-absolute" : ""
+      } f-c-e w-100% flow-auto pr-1">
         <div class="code-label">${label}</div>
         <div class="code-lang ml-4">${lang[1]?.toUpperCase()}</div>
       </div>
@@ -246,7 +247,7 @@ function mdRender(afterRendered: any) {
         .catch(console.error);
     }
 
-    useFancybox();
+    Hooks.Fancybox.use();
     afterRendered(mdRef.value);
   });
 }
@@ -255,5 +256,5 @@ defineExpose({ mdRender });
 </script>
 
 <template>
-  <div ref="mdRef" class="text-render" v-html="mdStr"></div>
+  <div ref="mdRef" class="cust-markdown" v-html="mdStr"></div>
 </template>

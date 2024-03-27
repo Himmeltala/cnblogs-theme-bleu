@@ -1,6 +1,6 @@
 import { Fancybox } from "@fancyapps/ui";
 
-export function useFancybox() {
+export function use() {
   const options = Object.assign(
     {
       Toolbar: {

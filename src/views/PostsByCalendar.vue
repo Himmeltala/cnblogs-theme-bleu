@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { DatumHttp } from "@/requests";
-
 const date = new Date();
 const dateModel = ref(date);
 const calendar = shallowRef<string[]>();
-const loading = new Utils.Broswer.Loading();
+const loading = new Utils.Browser.Loading();
 
 function findDate(data: any) {
   const date = data.day.replaceAll("-", "/");
@@ -13,7 +11,7 @@ function findDate(data: any) {
 
 function fetch() {
   loading.startLoading();
-  DatumHttp.getCalendar(
+  Requests.Datum.getCalendar(
     `${dateModel.value.getFullYear()}/${
       dateModel.value.getMonth() + 1
     }/${dateModel.value.getDate()}`

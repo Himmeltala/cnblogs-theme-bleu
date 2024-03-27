@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { DatumHttp } from "@/requests";
-import { useEcharts } from "@/hooks/use-echarts";
-
 const val = ref("");
 const drawer = ref(false);
 const options = Utils.Storage.getOptions();
@@ -26,15 +23,15 @@ const flag = ref(0);
 
 function openedDrawer() {
   if (flag.value < 1) {
-    DatumHttp.getColumnContent().then(data => {
+    Requests.Datum.getColumnContent().then(data => {
       colData.value = data;
     });
 
-    DatumHttp.getStatistics().then(data => {
+    Requests.Datum.getStatistics().then(data => {
       stsData.value = data;
     });
 
-    useEcharts({ dom: radarRef.value, options: Consts.config.diagram.technics });
+    Hooks.Echarts.use({ dom: radarRef.value, options: Consts.config.diagram.technics });
   }
 
   flag.value++;

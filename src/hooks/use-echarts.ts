@@ -38,7 +38,7 @@ function rendering(dom: HTMLElement, options: any) {
  *
  * @param config
  */
-export function useEcharts(config: { dom: HTMLElement; options?: any }) {
+export function use(config: { dom: HTMLElement; options?: any }) {
   const options = {
     tooltip: {
       trigger: "item"

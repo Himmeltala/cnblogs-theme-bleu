@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { CommentHttp } from "@/requests";
-
 const props = defineProps({
   postId: { type: String, required: true }
 });
@@ -24,10 +22,10 @@ function uploadImage(el: string) {
 async function AddComment() {
   loading.value = true;
   if (comment.value.body) {
-    const data = await CommentHttp.insert(comment.value);
+    const data = await Requests.Comment.insert(comment.value);
     if (data.isSuccess) {
-      const count = await CommentHttp.getCount(props.postId);
-      const comments = await CommentHttp.getList(props.postId, 0);
+      const count = await Requests.Comment.getCount(props.postId);
+      const comments = await Requests.Comment.getList(props.postId, 0);
       comment.value.body = "";
       emits("onPost", { count, comments });
     }

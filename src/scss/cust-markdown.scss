@@ -1,11 +1,11 @@
 /**
- * text-render 样式
+ * cust-markdown 样式
  *
  * @author Himmeltala
  * @date 2023 年 6 月 11 日
  */
 
-.text-render {
+.cust-markdown {
 
   h1,
   h2,
@@ -80,7 +80,7 @@
 
     a:hover {
       color: var(--el-color-primary-dark-2);
-    } 
+    }
   }
 
   img {
@@ -141,7 +141,7 @@
   strong {
     font-weight: 600;
   }
-  
+
   .bleu-pre {
     --uno: rd-2 dark:bg-#1f1f1fbd light:bg-#fafafabd position-relative;
     margin: 1.5rem 0;

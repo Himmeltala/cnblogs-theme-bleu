@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const loading = new Utils.Broswer.Loading();
+const loading = new Utils.Browser.Loading();
 
 loading.startLoading();
 let tw: any = null;

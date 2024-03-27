@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { PostsHttp } from "@/requests";
-
 const route = useRoute();
 const currPage = ref(1);
-const loading = new Utils.Broswer.Loading();
+const loading = new Utils.Browser.Loading();
 const postList = shallowRef<PostsListModel>();
 const postCoverIdx = shallowRef<number[]>();
 const postCoverArr = Consts.config.images.stochastic;
@@ -11,9 +9,9 @@ const postCoverArr = Consts.config.images.stochastic;
 function fetch(name: any) {
   loading.startLoading();
 
-  PostsHttp.getListByLabel(name, currPage.value).then(data => {
+  Requests.Posts.getListByLabel(name, currPage.value).then(data => {
     postList.value = data;
-    Utils.Broswer.setTitle(postList.value.hint);
+    Utils.Browser.setTitle(postList.value.hint);
     postCoverIdx.value = Utils.Random.get(postCoverArr, postList.value.data.length);
 
     nextTick(() => {

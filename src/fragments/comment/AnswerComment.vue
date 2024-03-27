@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { CommentHttp } from "@/requests";
-
 const props = defineProps({
   comment: {
     type: Object as PropType<any>,
@@ -35,7 +33,7 @@ function before() {
 }
 
 async function finish() {
-  const { isSuccess } = await CommentHttp.answer({
+  const { isSuccess } = await Requests.Comment.answer({
     body:
       `回复 ${props.comment.layer} [@${props.comment.author}](${props.comment.space})\n\n` +
       content.value,
@@ -46,8 +44,8 @@ async function finish() {
   if (isSuccess) {
     content.value = "";
     props.comment.isAnsling = !props.comment.isAnsling;
-    const count = await CommentHttp.getCount(props.postId);
-    const comments = await CommentHttp.getList(props.postId, props.currPageIndex);
+    const count = await Requests.Comment.getCount(props.postId);
+    const comments = await Requests.Comment.getList(props.postId, props.currPageIndex);
     emits("onFinish", { count, comments });
   }
 }

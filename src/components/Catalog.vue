@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useWheelRollsUpAndDown } from "@/hooks/use-mouse";
-
 const catalogList = ref();
 
 function highlightCurrentTopic(
@@ -46,7 +44,7 @@ function generateTopicList(content: HTMLDivElement) {
     topicList.push({ id: attributeId, content, item: topicEles[i] });
   }
 
-  useWheelRollsUpAndDown(
+  Hooks.Mouse.wheelRollsUpAndDown(
     {
       on: () => {
         highlightCurrentTopic(topicEles, title => {
@@ -73,7 +71,7 @@ function catalogRender(content: HTMLDivElement) {
 }
 
 function clickToc(toc: any) {
-  Utils.Broswer.scrollIntoView(`#${toc.id}`);
+  Utils.Browser.scrollIntoView(`#${toc.id}`);
 }
 
 defineExpose({

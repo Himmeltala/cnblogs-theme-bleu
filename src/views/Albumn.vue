@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { DatumHttp } from "@/requests";
-import { useFancybox } from "@/hooks/use-fancybox";
-
-const loading = new Utils.Broswer.Loading();
+const loading = new Utils.Browser.Loading();
 
 const route = useRoute();
 const imgList = shallowRef();
@@ -10,12 +7,12 @@ const albumn = shallowRef<AlbumnModel>();
 
 function fetch(id: any) {
   loading.startLoading();
-  DatumHttp.getAlbumn(id).then(data => {
+  Requests.Datum.getAlbumn(id).then(data => {
     albumn.value = data;
     imgList.value = albumn.value.data.map(i => i.href);
 
     nextTick(() => {
-      useFancybox();
+      Hooks.Fancybox.use();
       loading.endLoading();
     });
   });

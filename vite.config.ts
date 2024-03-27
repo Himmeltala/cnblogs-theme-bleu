@@ -32,7 +32,13 @@ export default defineConfig(({ mode }) => {
             "@/constants/index": ["Consts"]
           },
           {
+            "@/requests/index": ["Requests"]
+          },
+          {
             "@/utils/index": ["Utils"]
+          },
+          {
+            "@/hooks/index": ["Hooks"]
           },
           {
             from: "vue-router",

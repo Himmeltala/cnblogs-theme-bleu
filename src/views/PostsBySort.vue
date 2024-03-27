@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { PostsHttp } from "@/requests";
-
-const loading = new Utils.Broswer.Loading();
+const loading = new Utils.Browser.Loading();
 const route = useRoute();
 const router = useRouter();
 const posts = shallowRef<PostsList2Model>();
@@ -13,13 +11,13 @@ const currPage = ref<number>(Number(route.query.page));
 function fetch(id: string | number | string[]) {
   loading.startLoading();
 
-  PostsHttp.getByL1(id, currPage.value).then(data => {
+  Requests.Posts.getByL1(id, currPage.value).then(data => {
     posts.value = data;
     postCoverIdx.value = Utils.Random.get(postCoverArr, posts.value.data.length);
-    Utils.Broswer.setTitle(posts.value.hint);
+    Utils.Browser.setTitle(posts.value.hint);
 
     nextTick(() => {
-      PostsHttp.getByL2(id, data.isArticle).then(data => {
+      Requests.Posts.getByL2(id, data.isArticle).then(data => {
         subPosts.value = data;
       });
 

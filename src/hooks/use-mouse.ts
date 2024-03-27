@@ -5,7 +5,7 @@
  * @param onUp 往上滚动的回调函数
  * @param options
  */
-export function useWheelRollsUpAndDown(
+export function wheelRollsUpAndDown(
   fncs: {
     onDown?: Function;
     onUp?: Function;

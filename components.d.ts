@@ -13,6 +13,7 @@ declare module 'vue' {
     BuryComment: typeof import('./src/fragments/comment/BuryComment.vue')['default']
     Catalog: typeof import('./src/components/Catalog.vue')['default']
     Comment: typeof import('./src/fragments/comment/Comment.vue')['default']
+    CustMarkdown: typeof import('./src/components/CustMarkdown.vue')['default']
     DeleteComment: typeof import('./src/fragments/comment/DeleteComment.vue')['default']
     DiggComment: typeof import('./src/fragments/comment/DiggComment.vue')['default']
     EditComment: typeof import('./src/fragments/comment/EditComment.vue')['default']
@@ -46,7 +47,6 @@ declare module 'vue' {
     PostsBySort: typeof import('./src/views/PostsBySort.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TextRender: typeof import('./src/components/TextRender.vue')['default']
     Welcome: typeof import('./src/views/Welcome.vue')['default']
   }
 }

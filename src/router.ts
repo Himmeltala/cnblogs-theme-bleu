@@ -166,7 +166,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(to => {
   if (to.meta.title) {
-    Utils.Broswer.setTitle(`${to.meta.title}`);
+    Utils.Browser.setTitle(`${to.meta.title}`);
   }
 });
 

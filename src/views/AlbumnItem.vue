@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { DatumHttp } from "@/requests";
-import { useFancybox } from "@/hooks/use-fancybox";
-
 const route = useRoute();
 const imgUrl = shallowRef();
-const loading = new Utils.Broswer.Loading();
+const loading = new Utils.Browser.Loading();
 
 function fetch() {
   loading.startLoading();
-  DatumHttp.getAlbumnItem(`${route.params.id}`).then(data => {
+  Requests.Datum.getAlbumnItem(`${route.params.id}`).then(data => {
     imgUrl.value = data;
 
     nextTick(() => {
-      useFancybox();
+      Hooks.Fancybox.use();
       loading.endLoading();
     });
   });

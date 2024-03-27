@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { PostsHttp } from "@/requests";
-
-const loading = new Utils.Broswer.Loading();
+const loading = new Utils.Browser.Loading();
 
 const route = useRoute();
 const archiveList = shallowRef();
@@ -16,17 +14,17 @@ function fetch() {
   let promise;
 
   if (archiveMode == "a") {
-    promise = PostsHttp.getListByArchive(`${archiveDate}`, "article");
+    promise = Requests.Posts.getListByArchive(`${archiveDate}`, "article");
   } else if (archiveMode == "p") {
-    promise = PostsHttp.getListByArchive(`${archiveDate}`, "arbeiten");
+    promise = Requests.Posts.getListByArchive(`${archiveDate}`, "arbeiten");
   } else {
-    promise = PostsHttp.getListByDay(`${archiveDate.replaceAll("-", "/")}`);
+    promise = Requests.Posts.getListByDay(`${archiveDate.replaceAll("-", "/")}`);
   }
 
   promise.then(data => {
     archiveList.value = data;
     postCoverIdx.value = Utils.Random.get(postCoverArr, archiveList.value.data.length);
-    Utils.Broswer.setTitle(archiveList.value.hint);
+    Utils.Browser.setTitle(archiveList.value.hint);
 
     nextTick(() => {
       loading.endLoading();

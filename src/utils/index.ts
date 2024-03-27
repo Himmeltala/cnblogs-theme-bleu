@@ -1,4 +1,4 @@
-import * as BroswerModule from "./broswer";
+import * as BrowserModule from "./browser";
 import * as FormatterModule from "./formatter";
 import * as NativeModule from "./native";
 import * as NavigationModule from "./navigation";
@@ -8,7 +8,7 @@ import * as TextualModule from "./textual";
 import * as RandomModule from "./random";
 
 export namespace Utils {
-  export const Broswer: typeof BroswerModule = BroswerModule;
+  export const Browser: typeof BrowserModule = BrowserModule;
   export const Formatter: typeof FormatterModule = FormatterModule;
   export const Native: typeof NativeModule = NativeModule;
   export const Navigation: typeof NavigationModule = NavigationModule;

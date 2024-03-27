@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { CommentHttp } from "@/requests";
-
 const props = defineProps({
   comment: {
     type: Object as PropType<any>,
@@ -29,12 +27,12 @@ function uploadImage(el: string) {
 
 async function before() {
   htmlContent = props.comment.content;
-  content.value = await CommentHttp.get({ commentId: props.comment.commentId });
+  content.value = await Requests.Comment.get({ commentId: props.comment.commentId });
   props.comment.isEditing = !props.comment.isEditing;
 }
 
 async function finish() {
-  const response = await CommentHttp.update({
+  const response = await Requests.Comment.update({
     body: content.value,
     commentId: props.comment.commentId
   });
@@ -43,8 +41,8 @@ async function finish() {
     content.value = "";
     props.comment.isEditing = !props.comment.isEditing;
     emits("onFinish", {
-      count: await CommentHttp.getCount(props.postId),
-      comments: await CommentHttp.getList(props.postId, props.currPageIndex)
+      count: await Requests.Comment.getCount(props.postId),
+      comments: await Requests.Comment.getList(props.postId, props.currPageIndex)
     });
   }
 }
