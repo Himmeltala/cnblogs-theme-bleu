@@ -12,8 +12,7 @@ export default defineConfig({
     presetAttributify(),
     presetIcons({
       collections: {
-        tabler: () => import("@iconify-json/tabler/icons.json").then(i => i.default),
-        ep: () => import("@iconify-json/ep/icons.json").then(i => i.default)
+        tabler: () => import("@iconify-json/tabler/icons.json").then(i => i.default)
       }
     })
   ],

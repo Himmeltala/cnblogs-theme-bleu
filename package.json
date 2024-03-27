@@ -14,26 +14,26 @@
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.8",
     "echarts": "^5.5.0",
-    "element-plus": "^2.6.1",
+    "element-plus": "^2.6.2",
     "highlight.js": "^11.9.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
-    "node-fetch-native": "^1.6.4",
     "@iconify-json/ep": "^1.1.15",
-    "@iconify-json/tabler": "^1.1.108",
+    "@iconify-json/tabler": "^1.1.109",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "node-fetch-native": "^1.6.4",
     "sass": "^1.72.0",
     "sass-loader": "^14.1.1",
-    "typescript": "^5.4.2",
-    "unocss": "^0.58.6",
+    "typescript": "^5.4.3",
+    "unocss": "^0.58.7",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-icons": "^0.18.5",
     "unplugin-vue-components": "^0.26.0",
-    "vite": "^5.1.6",
-    "vue-tsc": "^2.0.6"
+    "vite": "^5.2.6",
+    "vue-tsc": "^2.0.7"
   }
 }

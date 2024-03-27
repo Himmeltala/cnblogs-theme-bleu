@@ -50,19 +50,19 @@ fetch(route.query.name);
           <div>
             <div class="f-c-s flex-wrap mb-2 text-0.8rem">
               <div class="mr-4 f-c-c">
-                <div class="i-ep:clock mr-2"></div>
+                <div class="i-tabler-clock mr-2"></div>
                 {{ item.date }}
               </div>
               <div class="mr-4 f-c-c">
-                <div class="i-ep:view mr-2"></div>
+                <div class="i-tabler-eye mr-1"></div>
                 {{ item.view }}
               </div>
               <div class="mr-4 f-c-c">
-                <div class="i-ep:chat-line-square mr-2"></div>
+                <div class="i-tabler-message mr-1"></div>
                 {{ item.comm }}
               </div>
               <div class="f-c-c">
-                <div class="i-ep:star mr-2"></div>
+                <div class="i-tabler-star mr-1"></div>
                 {{ item.digg }}
               </div>
             </div>

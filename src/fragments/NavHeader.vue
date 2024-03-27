@@ -294,7 +294,7 @@ function openedDrawer() {
             placeholder="输入关键字搜索"
             v-model="val">
             <template #suffix>
-              <div class="i-ep:search"></div>
+              <div class="i-tabler-search"></div>
             </template>
           </el-input>
         </div>

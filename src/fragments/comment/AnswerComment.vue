@@ -66,12 +66,14 @@ function cancel() {
       <div class="mb-2 f-c-e">
         <el-tooltip content="插入图片" placement="top-start">
           <span class="hover" @click="uploadImage('upload-img-' + currPageIndex)">
-            <i-ep:picture-rounded />
+            <div class="i-tabler-photo-circle"></div>
           </span>
         </el-tooltip>
       </div>
       <div class="textarea">
-        <textarea v-model="content" placeholder="请回复一条友善的评论，支持 Markdown 语法" />
+        <textarea
+          v-model="content"
+          placeholder="请回复一条友善的评论，支持 Markdown 语法"></textarea>
       </div>
     </div>
     <div
@@ -82,11 +84,11 @@ function cancel() {
         <span>回复</span>
       </div>
       <div v-show="comment.isAnsling" class="hover f-c-e mr-4" @click="finish">
-        <i-ep:check class="mr-1" />
+        <div class="i-tabler-check mr-1"></div>
         <span>完成回复</span>
       </div>
       <div v-show="comment.isAnsling" class="hover f-c-e" @click="cancel">
-        <i-ep:close class="mr-1" />
+        <div class="i-tabler-x mr-1"></div>
         <span>取消回复</span>
       </div>
     </div>

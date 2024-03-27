@@ -46,7 +46,7 @@ async function AddComment() {
       <div class="tools mb-2 f-c-e">
         <el-tooltip effect="dark" content="插入图片" placement="top-start">
           <span class="hover" @click="uploadImage('main-upload-img')">
-            <i-ep:picture-rounded />
+            <div class="i-tabler-photo-circle"></div>
           </span>
         </el-tooltip>
       </div>

@@ -20,19 +20,19 @@ defineProps({
       <div class="lg-sm:w-65% lt-sm:w-50%">
         <div class="f-c-s flex-wrap mb-4 text-0.8rem">
           <div class="mr-4 f-c-c">
-            <div class="i-ep-clock mr-2"></div>
+            <div class="i-tabler-clock mr-2"></div>
             {{ item.date }}
           </div>
           <div class="mr-4 f-c-c">
-            <div class="i-ep:view mr-2"></div>
+            <div class="i-tabler-eye mr-2"></div>
             {{ item.view }}
           </div>
           <div class="mr-4 f-c-c">
-            <div class="i-ep:chat-line-square mr-2"></div>
+            <div class="i-tabler-message mr-2"></div>
             {{ item.comm }}
           </div>
           <div class="f-c-c">
-            <div class="i-ep:star mr-2"></div>
+            <div class="i-tabler-star mr-2"></div>
             {{ item.digg }}
           </div>
         </div>
