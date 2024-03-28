@@ -71,15 +71,15 @@ function cancel() {
       class="float-right f-c-e text-0.9rem text-thirdly"
       :class="{ 'edit-item': !comment.isEditing, 'w-100%': comment.isEditing }">
       <div v-show="!comment.isEditing && !comment.isAnsling" class="hover f-c-e" @click="before">
-        <div class="i-tabler:pencil-minus mr-1"></div>
+        <div class="i-tabler:pencil-minus mr-2"></div>
         <span>编辑</span>
       </div>
       <div v-show="comment.isEditing" class="hover f-c-e mr-4" @click="finish">
-        <div class="i-tabler-check mr-1"></div>
+        <div class="i-tabler-check mr-2"></div>
         <span>完成编辑</span>
       </div>
       <div v-show="comment.isEditing" class="hover f-c-e" @click="cancel">
-        <div class="i-tabler-x mr-1"></div>
+        <div class="i-tabler-x mr-2"></div>
         <span>取消编辑</span>
       </div>
     </div>

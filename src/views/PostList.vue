@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const loading = new Utils.Browser.Loading();
 
-const router = useRouter();
 const postList = ref();
 const postCoverIdx = shallowRef<number[]>();
 const postCoverArr = Consts.config.images.stochastic;
@@ -20,6 +19,14 @@ function fetch() {
   });
 }
 
+const route = useRoute();
+const router = useRouter();
+
+onBeforeMount(() => {
+  currPage.value = Number(route.query.page);
+  fetch();
+});
+
 onBeforeRouteUpdate(updateGuard => {
   currPage.value = Number(updateGuard.query.page);
   fetch();
@@ -28,8 +35,6 @@ onBeforeRouteUpdate(updateGuard => {
 function onCurrentChange() {
   router.push(Consts.Paths.posts(currPage.value));
 }
-
-fetch();
 </script>
 
 <template>

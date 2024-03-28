@@ -52,15 +52,15 @@ fetch(route.query.name);
                 {{ item.date }}
               </div>
               <div class="mr-4 f-c-c">
-                <div class="i-tabler-eye mr-1"></div>
+                <div class="i-tabler-eye mr-2"></div>
                 {{ item.view }}
               </div>
               <div class="mr-4 f-c-c">
-                <div class="i-tabler-message mr-1"></div>
+                <div class="i-tabler-message mr-2"></div>
                 {{ item.comm }}
               </div>
               <div class="f-c-c">
-                <div class="i-tabler-star mr-1"></div>
+                <div class="i-tabler-star mr-2"></div>
                 {{ item.digg }}
               </div>
             </div>

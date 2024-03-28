@@ -41,7 +41,7 @@ fetch(route.query.id);
 <template>
   <div class="page">
     <div class="text-1.2rem mb-2 text-text-regular">{{ posts?.hint || "" }}</div>
-    <div class="mb-5 text-0.9rem" v-html="posts?.desc2 || posts?.desc || ''"></div>
+    <div class="mb-4 text-0.9rem" v-html="posts?.desc2 || posts?.desc || ''"></div>
     <div class="mb-10 text-0.9rem" v-if="subPosts?.length">
       <div
         class="hover f-c-s"

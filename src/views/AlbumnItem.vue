@@ -20,7 +20,7 @@ fetch();
 
 <template>
   <div class="page">
-    <div class="text-1.2rem mb-5">相册图片</div>
+    <div class="text-1.2rem mb-4">相册图片</div>
     <div class="f-c-c">
       <a :href="imgUrl" data-fancybox="bleu-albumn" :data-download-src="imgUrl">
         <img class="max-w-100% max-h-70vh" :src="imgUrl" />

@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="item mb-15">
+  <div class="item mb-14">
     <router-link class="text-1.2rem hover text-text-regular" :to="Consts.Paths.p(item.id)">
       {{ item.text }}
     </router-link>

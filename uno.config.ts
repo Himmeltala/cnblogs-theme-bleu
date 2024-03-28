@@ -93,7 +93,7 @@ export default defineConfig({
     [
       /^page$/,
       () => {
-        return `w-100vw lg-sm:px-100 lt-sm:px-5 pb-5`;
+        return `w-100vw lg-sm:px-100 lt-sm:px-4 pb-4`;
       }
     ]
   ]

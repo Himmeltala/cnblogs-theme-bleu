@@ -106,7 +106,7 @@ function generatePorter(str: string) {
 
   return `
   <div class="bleu-porter f-c-c">
-    <div class="hover-porter lg:w-50% transition-all-500 dark:bg-#232323 light:bg-#f2f2f2 rd-2 px-5 py-5">
+    <div class="hover-porter lg:w-50% transition-all-500 dark:bg-#232323 light:bg-#f2f2f2 rd-2 px-4 py-4">
       <a class="hover-porter__a" href="${link}" target="_blank">
         <div class="hover-porter__wrapper f-c-b">
           <img class="hover-porter__img w-15 h-15 rd-50% object-cover" src="${cover}" />
@@ -131,7 +131,7 @@ function extractLangTempFromPreCode(str: string) {
   const temp = `
       <div class="code-tips text-0.8rem ${
         label ? "position-absolute" : ""
-      } f-c-e w-100% flow-auto pr-1">
+      } f-c-e w-100% flow-auto pr-2">
         <div class="code-label">${label}</div>
         <div class="code-lang ml-4">${lang[1]?.toUpperCase()}</div>
       </div>

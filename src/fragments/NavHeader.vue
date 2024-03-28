@@ -47,7 +47,7 @@ function openedDrawer() {
     :with-header="false">
     <div>
       <div class="f-c-s">
-        <div class="position-relative w-25 h-25 mr-6">
+        <div class="position-relative w-25 h-25 mr-4">
           <img :src="Consts.config.avatar" class="w-100% h-100% object-cover rd-50%" />
           <div
             class="position-absolute bottom-0 right-0 f-c-c w-8 h-8 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
@@ -70,7 +70,7 @@ function openedDrawer() {
         </div>
       </div>
       <div
-        class="text-1.4rem cursor-pointer mt-4 shine-text"
+        class="text-1.2rem cursor-pointer mt-4 shine-text"
         @click="Utils.Navigation.go(stsData[0].href)">
         {{ Consts.getBlogApp() }}
       </div>
@@ -91,11 +91,11 @@ function openedDrawer() {
       </el-divider>
       <div>
         <div class="f-c-s flex-wrap">
-          <div class="hover mr-5 position-relative" @click="$router.push(Consts.Paths.welcome())">
+          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.welcome())">
             首页
           </div>
           <div
-            class="hover mr-5 position-relative"
+            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'PostsList'
@@ -103,11 +103,11 @@ function openedDrawer() {
             @click="$router.push(Consts.Paths.posts())">
             随笔
           </div>
-          <div class="hover mr-5" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
+          <div class="hover mr-4" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
             博客园
           </div>
           <div
-            class="hover mr-5 position-relative"
+            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'LabelList'
@@ -116,7 +116,7 @@ function openedDrawer() {
             标签
           </div>
           <div
-            class="hover mr-5 position-relative"
+            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'PostsByCalendar'
@@ -127,7 +127,7 @@ function openedDrawer() {
           <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>
         </div>
         <div class="mt-4 f-c-s flex-wrap">
-          <div class="mr-6">
+          <div class="mr-4">
             <el-switch
               @change="toggle"
               v-model="themeMode"
@@ -136,7 +136,7 @@ function openedDrawer() {
               inactive-text="白" />
           </div>
           <div
-            class="hover mr-6"
+            class="hover mr-4"
             @click="Utils.Navigation.go(item.value)"
             v-for="item in Consts.config.header.paths">
             <div class="i-tabler:brand-bilibili" v-if="item.name === 'bilibili'"></div>
@@ -278,9 +278,9 @@ function openedDrawer() {
   <div
     b="b-1 b-solid border-primary"
     class="top-header light:bg-#ffffffb3 dark:bg-#242424b3 h-15 fixed top-0 left-0 w-100vw z-999">
-    <div class="content lg-sm:px-50 lt-sm:px-5 lg-sm:f-c-b lt-sm:f-c-s h-100%">
+    <div class="content lg-sm:px-50 lt-sm:px-4 lg-sm:f-c-b lt-sm:f-c-s h-100%">
       <div class="f-c-s">
-        <el-button round class="mr-6" @click="drawer = !drawer">
+        <el-button round class="mr-4" @click="drawer = !drawer">
           <template #icon>
             <div class="i-tabler:menu"></div>
           </template>
@@ -298,11 +298,11 @@ function openedDrawer() {
       </div>
       <div class="f-c-b" v-if="Consts.isPC()">
         <div class="f-c-s text-text-regular">
-          <div class="hover mr-5 position-relative" @click="$router.push(Consts.Paths.welcome())">
+          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.welcome())">
             首页
           </div>
           <div
-            class="hover mr-5 position-relative"
+            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'PostsList'
@@ -310,11 +310,11 @@ function openedDrawer() {
             @click="$router.push(Consts.Paths.posts())">
             随笔
           </div>
-          <div class="hover mr-5" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
+          <div class="hover mr-4" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
             博客园
           </div>
           <div
-            class="hover mr-5 position-relative"
+            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'LabelList'
@@ -323,7 +323,7 @@ function openedDrawer() {
             标签
           </div>
           <div
-            class="hover mr-5 position-relative"
+            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'PostsByCalendar'
@@ -333,7 +333,7 @@ function openedDrawer() {
           </div>
           <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>
         </div>
-        <div class="tools ml-5">
+        <div class="tools ml-4">
           <el-switch
             @change="toggle"
             v-model="themeMode"
