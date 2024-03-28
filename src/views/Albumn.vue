@@ -27,7 +27,7 @@ fetch(route.params.id);
 
 <template>
   <div class="page" v-if="albumn">
-    <div class="text-1.2rem mb-5">相册 - {{ albumn.title }}</div>
+    <div class="text-1.2rem mb-4">相册 - {{ albumn.title }}</div>
     <div class="text-0.9rem mb-10 text-text-regular">{{ albumn.desc }}</div>
     <div class="f-c-b flex-wrap flex-gap-4">
       <a v-for="item in imgList" :href="item" data-fancybox="bleu-albumn" :data-download-src="item">

@@ -21,7 +21,7 @@ function getPage(dom: Element) {
  *
  * 列表项包含描述、评论、点赞的随笔列表。
  */
-export function toPostsList1(dom: Document): PostsListModel {
+export function toPostsList1(dom: Document): PostsModel {
   const data: PostModel[] = [];
 
   const id = dom.getElementsByClassName("postTitle2");
@@ -169,7 +169,7 @@ export function toPrevNext(dom: HTMLDivElement): PostPrevNextModel {
  *
  * 列表项包含描述、评论、点赞的随笔列表。
  */
-export function toPostsList2(dom: Document): PostsList2Model {
+export function toPostsList2(dom: Document): Posts2Model {
   const data: PostModel[] = [];
 
   const dateReg =
@@ -193,7 +193,9 @@ export function toPostsList2(dom: Document): PostsList2Model {
         .getAttribute("href")
         .match(/[0-9]+/g)[0],
       text: eleList[i].querySelector(".entrylistItemTitle > span").innerText,
-      desc: eleList[i].getElementsByClassName("c_b_p_desc")[0].innerText,
+      desc: Utils.Textual.replace(eleList[i].getElementsByClassName("c_b_p_desc")[0].innerText, [
+        /阅读全文/g
+      ]),
       date: item.match(dateReg)[0],
       view: item.match(viewReg)[0],
       comm: item.match(commReg)[0],
@@ -222,7 +224,7 @@ export function toPostsList2(dom: Document): PostsList2Model {
 /**
  * 获取随笔和文章列表，列表通过标签查询。
  */
-export function toPartPostsList(dom: Document): PostsList2Model {
+export function toPartPostsList(dom: Document): Posts2Model {
   const head = dom.querySelectorAll(".PostList > .postTitl2 > a");
   const desc = dom.querySelectorAll(".PostList > .postDesc2");
   const hint = dom.getElementsByClassName("PostListTitle")[0].innerText.trim();

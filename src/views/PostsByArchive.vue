@@ -3,8 +3,6 @@ const loading = new Utils.Browser.Loading();
 
 const route = useRoute();
 const archiveList = shallowRef();
-const postCoverArr = Consts.config.images.stochastic;
-const postCoverIdx = shallowRef<number[]>();
 
 let archiveDate = route.params.date as string;
 let archiveMode = route.params.mode as string;
@@ -23,7 +21,6 @@ function fetch() {
 
   promise.then(data => {
     archiveList.value = data;
-    postCoverIdx.value = Utils.Random.get(postCoverArr, archiveList.value.data.length);
     Utils.Browser.setTitle(archiveList.value.hint);
 
     nextTick(() => {
@@ -44,9 +41,6 @@ fetch();
 <template>
   <div class="page" v-if="archiveList?.data">
     <div class="text-1.2rem mb-10 text-text-regular">{{ archiveList.hint }}</div>
-    <PostItem
-      v-for="(item, index) in archiveList.data"
-      :item="item"
-      :cover="postCoverArr[postCoverIdx[index]]" />
+    <PostItem :data="archiveList.data" />
   </div>
 </template>

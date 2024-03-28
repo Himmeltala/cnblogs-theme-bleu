@@ -4,22 +4,22 @@ import { useAnchorStore } from "@/store";
 
 const routes = <RouteRecordRaw[]>[
   {
-    name: "Welcome",
+    name: "Index",
     path: "/",
-    component: () => import("@/views/Welcome.vue"),
-    meta: { title: "欢迎" }
+    component: () => import("@/AppIndex.vue"),
+    meta: { title: "首页" }
   },
   {
     name: "Main",
     path: "/main",
     redirect: "/main/posts",
-    component: () => import("@/views/Main.vue"),
+    component: () => import("@/AppMain.vue"),
     meta: { title: "主页" },
     children: [
       {
-        name: "PostsList",
+        name: "Posts",
         path: "posts",
-        component: () => import("@/views/PostList.vue"),
+        component: () => import("@/views/Posts.vue"),
         meta: { title: "随笔列表" }
       },
       {

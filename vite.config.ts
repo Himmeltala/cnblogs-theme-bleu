@@ -56,26 +56,13 @@ export default defineConfig(({ mode }) => {
             type: true
           }
         ],
-        resolvers: [
-          ElementPlusResolver(),
-          IconsResolver({
-            prefix: "Icon"
-          })
-        ],
+        resolvers: [ElementPlusResolver()],
         vueTemplate: true,
         dts: "./auto-imports.d.ts"
       }),
       Components({
-        resolvers: [
-          ElementPlusResolver(),
-          IconsResolver({
-            enabledCollections: ["ep"]
-          })
-        ],
+        resolvers: [ElementPlusResolver()],
         dirs: ["./src/views/**", "./src/components/**", "./src/fragments/**"]
-      }),
-      Icons({
-        autoInstall: true
       })
     ],
     resolve: {

@@ -67,7 +67,7 @@ fetch();
     </div>
     <div class="mt-10" v-if="isLogined && comments?.length">
       <div
-        class="clearfix mb-12"
+        class="clearfix mb-10"
         v-for="(item, index) in comments"
         :key="item.commentId"
         ref="commentInst">
@@ -98,7 +98,7 @@ fetch();
         <div class="more-action float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>
             <div class="f-c-e text-0.9rem text-thirdly hover">
-              <div class="i-tabler:dots-vertical mr-1"></div>
+              <div class="i-tabler:dots-vertical mr-2"></div>
               <div>更多</div>
             </div>
             <template #dropdown>

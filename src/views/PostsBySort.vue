@@ -2,10 +2,8 @@
 const loading = new Utils.Browser.Loading();
 const route = useRoute();
 const router = useRouter();
-const posts = shallowRef<PostsList2Model>();
+const posts = shallowRef<Posts2Model>();
 const subPosts = shallowRef<SubPostModel[]>();
-const postCoverArr = Consts.config.images.stochastic;
-const postCoverIdx = shallowRef<number[]>();
 const currPage = ref<number>(Number(route.query.page));
 
 function fetch(id: string | number | string[]) {
@@ -13,7 +11,6 @@ function fetch(id: string | number | string[]) {
 
   Requests.Posts.getByL1(id, currPage.value).then(data => {
     posts.value = data;
-    postCoverIdx.value = Utils.Random.get(postCoverArr, posts.value.data.length);
     Utils.Browser.setTitle(posts.value.hint);
 
     nextTick(() => {
@@ -41,7 +38,7 @@ fetch(route.query.id);
 <template>
   <div class="page">
     <div class="text-1.2rem mb-2 text-text-regular">{{ posts?.hint || "" }}</div>
-    <div class="mb-5 text-0.9rem" v-html="posts?.desc2 || posts?.desc || ''"></div>
+    <div class="mb-4 text-0.9rem" v-html="posts?.desc2 || posts?.desc || ''"></div>
     <div class="mb-10 text-0.9rem" v-if="subPosts?.length">
       <div
         class="hover f-c-s"
@@ -54,10 +51,7 @@ fetch(route.query.id);
       </div>
     </div>
     <div v-if="posts?.data?.length">
-      <PostItem
-        v-for="(item, index) in posts.data"
-        :item="item"
-        :cover="postCoverArr[postCoverIdx[index]]" />
+      <PostItem :data="posts.data" />
       <div class="f-c-e">
         <el-pagination
           :layout="Consts.isPC() ? 'pager, next' : 'prev, next'"

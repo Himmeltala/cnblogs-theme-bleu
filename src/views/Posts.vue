@@ -1,10 +1,7 @@
 <script setup lang="ts">
 const loading = new Utils.Browser.Loading();
 
-const router = useRouter();
 const postList = ref();
-const postCoverIdx = shallowRef<number[]>();
-const postCoverArr = Consts.config.images.stochastic;
 const currPage = ref(1);
 
 function fetch() {
@@ -12,13 +9,20 @@ function fetch() {
 
   Requests.Posts.getList(currPage.value).then(data => {
     postList.value = data;
-    postCoverIdx.value = Utils.Random.get(postCoverArr, postList.value.data.length);
 
     nextTick(() => {
       loading.endLoading();
     });
   });
 }
+
+const route = useRoute();
+const router = useRouter();
+
+onBeforeMount(() => {
+  currPage.value = Number(route.query.page);
+  fetch();
+});
 
 onBeforeRouteUpdate(updateGuard => {
   currPage.value = Number(updateGuard.query.page);
@@ -28,16 +32,11 @@ onBeforeRouteUpdate(updateGuard => {
 function onCurrentChange() {
   router.push(Consts.Paths.posts(currPage.value));
 }
-
-fetch();
 </script>
 
 <template>
   <div v-if="postList?.data" class="page">
-    <PostItem
-      v-for="(item, index) in postList.data"
-      :item="item"
-      :cover="postCoverArr[postCoverIdx[index]]" />
+    <PostItem :data="postList.data" />
     <div class="f-c-e">
       <el-pagination
         :layout="Consts.isPC() ? 'pager, next' : 'prev, next'"
@@ -48,4 +47,24 @@ fetch();
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.item {
+  .mask::after {
+    --uno: block rd-2 w-100% h-100%;
+    content: "";
+    opacity: 0.8;
+    backdrop-filter: blur(6px);
+  }
+
+  &:hover {
+    img {
+      --uno: transition-all-300;
+      transform: scale(1.1, 1.1);
+    }
+  }
+
+  img {
+    --uno: rd-2 transition-all-300;
+  }
+}
+</style>

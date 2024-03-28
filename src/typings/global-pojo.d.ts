@@ -60,17 +60,17 @@ interface LabelModel {
 /**
  * 随笔列表
  */
-type PostsListModel = Partial<{
+type PostsModel = Partial<{
   page: number;
   hint: string;
   data: PostModel[];
 }>;
 
 /**
- * 随笔档案、文章档案、随笔分类、档案分类四种列表，扩展 PostsListModel 接口，
- * 比 PostsListModel 多了三个属性值。
+ * 随笔档案、文章档案、随笔分类、档案分类四种列表，扩展 PostsModel 接口，
+ * 比 PostsModel 多了三个属性值。
  */
-interface PostsList2Model extends PostsListModel {
+interface Posts2Model extends PostsModel {
   /**
    * 父分类描述
    */

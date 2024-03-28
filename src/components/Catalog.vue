@@ -44,7 +44,7 @@ function generateTopicList(content: HTMLDivElement) {
     topicList.push({ id: attributeId, content, item: topicEles[i] });
   }
 
-  Hooks.Mouse.wheelRollsUpAndDown(
+  Hooks.Mouse.useWheelRollsUpAndDown(
     {
       on: () => {
         highlightCurrentTopic(topicEles, title => {
@@ -95,7 +95,7 @@ defineExpose({
 <style scoped lang="scss">
 .catalog {
   .item {
-    --uno: text-0.8rem text-text-regular mb-1;
+    --uno: text-0.8rem text-text-regular mb-2;
   }
 }
 </style>

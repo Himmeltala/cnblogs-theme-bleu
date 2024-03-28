@@ -59,9 +59,9 @@ fetch();
       <div class="f-c-c mt-2 mb-10">
         <div class="f-c-c w-50%">
           <el-radio-group v-model="sortVal" @change="onSortChange">
-            <el-radio label="乱序">乱序</el-radio>
-            <el-radio label="升序">升序</el-radio>
-            <el-radio label="降序">降序</el-radio>
+            <el-radio value="乱序">乱序</el-radio>
+            <el-radio value="升序">升序</el-radio>
+            <el-radio value="降序">降序</el-radio>
           </el-radio-group>
         </div>
       </div>

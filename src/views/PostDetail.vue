@@ -62,30 +62,35 @@ onMounted(() => {
     <div class="lg-sm:w-55vw lt-sm:w-90vw">
       <div class="text-1.5rem text-text-regular font-bold mb-2">{{ postData.text }}</div>
       <div class="f-c-s flex-wrap mb-4 text-0.9rem">
-        <div class="f-c-c mr-4">
+        <div class="f-c-c">
           <div class="i-tabler:calendar-stats mr-2"></div>
-          {{ postData.date }}
+          发表于 {{ postData.date }}
         </div>
-        <div class="f-c-c mr-4">
+        <div class="mx-2">|</div>
+        <div class="f-c-c">
           <div class="i-tabler:eye mr-2"></div>
-          {{ postData.view }}次阅读
+          已有 {{ postData.view }} 人阅读
         </div>
-        <div class="f-c-c mr-4">
+        <div class="mx-2">|</div>
+        <div class="f-c-c">
           <div class="i-tabler:message-2 mr-2"></div>
-          {{ postData.comm }}条评论
+          留下 {{ postData.comm }} 条评论
         </div>
-        <div class="f-c-c mr-4">
+        <div class="mx-2">|</div>
+        <div class="f-c-c">
           <div class="i-tabler:language mr-2"></div>
-          {{ postData.wordCount }}字
+          全文字数 ≈ {{ postData.wordCount }}字
         </div>
         <a
           v-if="isBlogOwner"
-          class="hover"
           target="_blank"
           :href="'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId">
           <div class="f-c-c">
-            <div class="i-tabler:pencil-minus mr-2"></div>
-            编辑
+            <div class="mx-2">|</div>
+            <div class="f-c-c hover">
+              <div class="i-tabler:pencil-minus mr-2"></div>
+              编辑
+            </div>
           </div>
         </a>
       </div>
@@ -131,16 +136,16 @@ onMounted(() => {
         </el-button>
       </div>
       <div class="mt-10 f-c-c">
-        <el-button round class="mr-5" type="primary" text bg @click="convey('Digg')">
-          <div class="i-tabler:thumb-up mr-1"></div>
+        <el-button round class="mr-4" type="primary" text bg @click="convey('Digg')">
+          <div class="i-tabler:thumb-up mr-2"></div>
           赞成 {{ postInfo.postStats.diggCount }}
         </el-button>
-        <el-button round class="mr-5" type="danger" text bg @click="convey('Bury')">
-          <div class="i-tabler:thumb-down mr-1"></div>
+        <el-button round class="mr-4" type="danger" text bg @click="convey('Bury')">
+          <div class="i-tabler:thumb-down mr-2"></div>
           反对 {{ postInfo.postStats.buryCount }}
         </el-button>
         <el-button round type="success" text bg @click="Utils.Native.savePost(postId)">
-          <div class="i-tabler:heart mr-1"></div>
+          <div class="i-tabler:heart mr-2"></div>
           收藏
         </el-button>
       </div>
@@ -183,7 +188,7 @@ onMounted(() => {
       <div class="mt-10 history-today" v-html="postInfo.historyToday"></div>
       <Comment class="mt-10" :post-id="postId" />
       <div class="mt-10" v-html="postInfo.aggTopPosts"></div>
-      <div class="mt-10 mb-5" v-html="postInfo.headlines"></div>
+      <div class="mt-10 mb-4" v-html="postInfo.headlines"></div>
     </div>
     <div v-if="!Consts.isPC()">
       <el-button round @click="isShowDrawer = !isShowDrawer" plain class="fixed right-5vw top-20">
