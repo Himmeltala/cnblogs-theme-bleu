@@ -19,10 +19,10 @@ function fetch() {
       Utils.Browser.setTitle(postData.value.text);
 
       nextTick(() => {
-        mdRef.value.mdRender((html: any) => {
+        mdRef.value.initialize((html: any) => {
           mdInst.value = html;
           if (Consts.isPC()) {
-            catalogRef.value.catalogRender(mdInst.value);
+            catalogRef.value.initialize(mdInst.value);
           }
           loading.endLoading();
         });
@@ -126,7 +126,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <CustMarkdown ref="mdRef" :fancy-group="'post-detail'" :content="postData.content" />
+      <Markdown ref="mdRef" :fancy-group="'post-detail'" :content="postData.content" />
       <div v-if="!isBlogOwner && isLogined" class="mt-10 f-c-e">
         <el-button type="primary" plain round size="small">
           <span v-if="postInfo.postStats.isFollowed" @click="Requests.Posts.unfollow">
@@ -198,17 +198,17 @@ onMounted(() => {
       </el-button>
       <el-drawer
         size="80%"
-        @open="() => catalogRef.catalogRender(mdInst)"
+        @open="() => catalogRef.init(mdInst)"
         v-model="isShowDrawer"
         direction="rtl"
         :with-header="false">
         <div class="mt-15">
-          <Catalog ref="catalogRef" />
+          <Catalog ref="catalogRef" :html="mdInst" />
         </div>
       </el-drawer>
     </div>
     <div v-else>
-      <Catalog ref="catalogRef" class="fixed left-80vw top-20 w-20vw" />
+      <Catalog ref="catalogRef" :html="mdInst" class="fixed left-80vw top-20 w-20vw" />
     </div>
   </div>
 </template>

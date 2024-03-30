@@ -241,3 +241,14 @@ declare const currentBlogApp: string;
  * blogUserGuid
  */
 declare const visitorUserId: string;
+
+/**
+ * 目录
+ */
+declare interface TopicType {
+  id?: string;
+  title: string;
+  class?: string;
+  content?: string;
+  children?: TopicType[];
+}

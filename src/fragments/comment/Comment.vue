@@ -23,8 +23,8 @@ function fetch() {
 
       nextTick(() => {
         for (let index = 0; index < markdown.value.length; index++) {
-          const element = markdown.value[index];
-          element.mdRender();
+          const el = markdown.value[index];
+          el.initialize();
         }
       });
     });
@@ -93,7 +93,7 @@ fetch();
           <textarea
             class="z--1 opacity-0 position-absolute top-0 left-0"
             :id="'upload-img-' + index"></textarea>
-          <CustMarkdown ref="markdown" :fancy-group="'comment-' + index" :content="item.content" />
+          <Markdown ref="markdown" :fancy-group="'comment-' + index" :content="item.content" />
         </div>
         <div class="more-action float-right f-c-e" v-show="!item.isEditing && !item.isAnsling">
           <el-dropdown>

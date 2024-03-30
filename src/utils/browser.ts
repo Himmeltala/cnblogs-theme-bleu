@@ -15,15 +15,6 @@ export function setTitle(title?: string) {
   document.getElementsByTagName("title")[0].innerText = `${prefix}${Consts.getBlogApp()} - 博客园`;
 }
 
-/**
- * 移动窗口
- *
- * @param selector 选择器
- */
-export function scrollIntoView(selector: string) {
-  document.querySelector(selector).scrollIntoView();
-}
-
 export class Loading {
   private trackEl: HTMLElement;
   private barEl: HTMLElement;

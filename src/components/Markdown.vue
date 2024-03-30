@@ -228,7 +228,7 @@ function generatePreCode(str: string) {
   return str + "</div></pre>";
 }
 
-function mdRender(afterRendered: any) {
+function initialize(rendered: any) {
   mdStr.value = generateMdTemplate();
 
   nextTick(() => {
@@ -248,11 +248,11 @@ function mdRender(afterRendered: any) {
     }
 
     Hooks.Fancybox.use();
-    afterRendered(mdRef.value);
+    rendered(mdRef.value);
   });
 }
 
-defineExpose({ mdRender });
+defineExpose({ initialize });
 </script>
 
 <template>
