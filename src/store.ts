@@ -1,5 +1,5 @@
 export const useAnchorStore = defineStore("anchorStore", () => {
-  let _anchor = ref();
+  const _anchor = ref();
 
   function setAnchor(anchor: string) {
     _anchor.value = anchor;

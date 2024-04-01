@@ -63,7 +63,7 @@ function cancel() {
           </span>
         </el-tooltip>
       </div>
-      <div class="textarea">
+      <div class="comment-area">
         <textarea v-model="content" placeholder="请编辑一条友善的评论，支持 Markdown 语法" />
       </div>
     </div>

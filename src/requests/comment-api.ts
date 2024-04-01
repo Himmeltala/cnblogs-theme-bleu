@@ -1,5 +1,5 @@
 import request from "./use-axios";
-import { toDOM, CommentTransform } from "@/transform";
+import { Transform } from "@/transform";
 
 /**
  * 发送随笔的评论
@@ -54,7 +54,7 @@ export async function update(comment: BlogCommentModel): Promise<AjaxType> {
  */
 export async function getCount(id: number | string) {
   const { data } = await request.get(`/ajax/GetCommentCount.aspx?postId=${id}`);
-  return CommentTransform.toCommentPages(data);
+  return Transform.Comment.toCommentPages(data);
 }
 
 /**
@@ -96,5 +96,5 @@ export async function getList(postId: string, page: number, anchorId?: number) {
   if (anchorId)
     url = `/ajax/GetComments.aspx?postId=${postId}&pageIndex=0&anchorCommentId=${anchorId}`;
   const { data } = await request.get(url);
-  return CommentTransform.toCommentList(toDOM(data));
+  return Transform.Comment.toCommentList(Transform.toDOM(data));
 }

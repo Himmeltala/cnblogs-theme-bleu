@@ -6,21 +6,20 @@ const routes = <RouteRecordRaw[]>[
   {
     name: "Index",
     path: "/",
-    component: () => import("@/AppIndex.vue"),
-    meta: { title: "首页" }
+    meta: { title: "首页" },
+    component: () => import("@/views/Index.vue")
   },
   {
     name: "Main",
     path: "/main",
     redirect: "/main/posts",
-    component: () => import("@/AppMain.vue"),
-    meta: { title: "主页" },
+    component: () => import("@/layouts/Main.vue"),
     children: [
       {
         name: "Posts",
         path: "posts",
-        component: () => import("@/views/Posts.vue"),
-        meta: { title: "随笔列表" }
+        meta: { title: "随笔" },
+        component: () => import("@/views/Posts.vue")
       },
       {
         name: "PostDetail",
@@ -45,42 +44,31 @@ const routes = <RouteRecordRaw[]>[
       {
         name: "PostsByCalendar",
         path: "calendar",
-        component: () => import("@/views/PostsByCalendar.vue"),
-        meta: { title: "日历" }
+        meta: { title: "日历" },
+        component: () => import("@/views/PostsByCalendar.vue")
       },
       {
         name: "LabelList",
         path: "labels",
-        component: () => import("@/views/LabelList.vue"),
-        meta: { title: "标签" }
+        meta: { title: "标签" },
+        component: () => import("@/views/LabelList.vue")
       },
       {
         name: "Albumn",
         path: "albumn/:id",
-        component: () => import("@/views/Albumn.vue"),
-        meta: { title: "相册" }
+        meta: { title: "相册" },
+        component: () => import("@/views/Albumn.vue")
       },
       {
         name: "AlbumnItem",
         path: "album/item/:id",
-        component: () => import("@/views/AlbumnItem.vue"),
-        meta: { title: "相册图片" }
+        meta: { title: "相册图片" },
+        component: () => import("@/views/AlbumnItem.vue")
       }
     ]
   }
 ];
 
-function positionToComment() {
-  const result = /#\/\d+/g.exec(window.location.href);
-  if (result !== null) {
-    const anchor = result[0].split("#/")[1];
-    useAnchorStore().setAnchor(anchor);
-  }
-}
-
-/**
- * 针对于博客园的路由匹配规则
- */
 const RouteRules = [
   {
     regex: new RegExp("/" + Consts.getBlogApp() + "/p/\\d{8}", "g"),
@@ -93,7 +81,13 @@ const RouteRules = [
         ["/"]
       )
     },
-    before: positionToComment
+    before: () => {
+      const result = /#\/\d+/g.exec(window.location.href);
+      if (result !== null) {
+        const anchor = result[0].split("#/")[1];
+        useAnchorStore().setAnchor(anchor);
+      }
+    }
   },
   {
     regex: /\/category\/\d+/g,

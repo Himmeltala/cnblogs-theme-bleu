@@ -48,7 +48,7 @@ async function AddComment() {
           </span>
         </el-tooltip>
       </div>
-      <div class="textarea">
+      <div class="comment-area">
         <textarea
           v-model="comment.body"
           placeholder="请发表一条友善的评论哦~😀支持 Markdown 语法"></textarea>

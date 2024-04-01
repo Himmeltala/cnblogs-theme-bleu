@@ -1,7 +1,64 @@
 <p align="center">CNBLOGS-THEME-BLEU</p>
 
 <p align="center">
-基于 Vite+Vue3+TS 的博客园主题
+基于博客园的主题
+</p>
+
+<p>
+
+<div style="display: flex; justify-content: space-between;">
+
+<div align="center">
+<img src="./docs/vue.png" style="width: 50px; height: 50px; object-fit: contain;" />
+<p align="center">Vue</p>
+</div>
+
+<div align="center" >
+<img src="./docs/typescript.png" style="width: 50px; height: 50px; object-fit: contain;" />
+<p align="center">TypeScript</p>
+</div>
+
+<div align="center">
+<img src="./docs/unocss.png" style="width: 50px; height: 50px; object-fit: contain;" />
+<p align="center">UnoCSS</p>
+</div>
+
+<div align="center">
+<img src="./docs/vite.png" style="width: 50px; height: 50px; object-fit: contain;" />
+<p align="center">Vite</p>
+</div>
+
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+
+<div align="center">
+<img src="./docs/fancyapps.png" style="width: 50px; height: 50px; object-fit: contain;" />
+<p align="center">Fancyapps</p>
+</div>
+
+<div align="center">
+<img src="./docs/axios.png" style="width: 100px; height: 50px; object-fit: contain;" />
+<p align="center">Axios</p>
+</div>
+
+<div align="center">
+<img src="./docs/echarts.png" style="width: 50px; height: 50px; object-fit: contain;" />
+<p align="center">Echarts</p>
+</div>
+
+<div align="center">
+<img src="./docs/element-plus.png" style="width: 50px; height: 50px; object-fit: contain;" />
+<p align="center">ElementPlus</p>
+</div>
+
+<div align="center">
+<img src="./docs/hljs.png" style="width: 50px; height: 50px; object-fit: contain;" />
+<p align="center">Highlight</p>
+</div>
+
+</div>
+
 </p>
 
 # 二次开发
@@ -122,14 +179,6 @@ pnpm build
     100% {
     }
   }
-
-  .text {
-    color: #a7a7a7;
-    font-weight: 100;
-    text-align: center;
-    margin-top: 3rem;
-    letter-spacing: 0.8rem;
-  }
 </style>
 
 <!-- 加载动画 HTML 结构 -->
@@ -137,7 +186,6 @@ pnpm build
   <div>
     <div class="triangle1"></div>
     <div class="triangle2"></div>
-    <h4 class="text">loading</h4>
   </div>
 </div>
 ```

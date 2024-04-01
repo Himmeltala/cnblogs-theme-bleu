@@ -1,23 +1,28 @@
-@use "@/scss/cust-markdown";
-@use "@/scss/cust-highlightjs";
-@use "element-plus/theme-chalk/dark/css-vars.css";
+@use "@/scss/markdown";
+@use "@/scss/normalize";
+@use "@/scss/highlightjs";
 @use "@fancyapps/ui/dist/fancybox/fancybox.css";
+@use "element-plus/theme-chalk/dark/css-vars.css";
 
 * {
   line-height: 1.7;
-  line-break: anywhere;
   letter-spacing: 0.5px;
   word-break: break-all;
   box-sizing: border-box;
-  scroll-behavior: smooth;
-  scrollbar-color: initial;
   scrollbar-width: none;
-  color: inherit;
-  font-family: inherit;
-  font-size: inherit;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@for $i from 1 through 20 {
+  $min: $i * 100 + 1400px;
+
+  @media screen and (min-width: $min) {
+    html {
+      --bleu-font-size: #{calc($min / 100)};
+    }
   }
 }
 
@@ -91,40 +96,8 @@ html {
   --bleu-fill-color-extra-light: var(--el-fill-color-extra-light);
   --bleu-fill-color-blank: var(--el-fill-color-blank);
 
-  --bleu-font-size: 14px;
   --el-text-color-primary: var(--bleu-text-color-primary) !important;
   --el-text-color-regular: var(--bleu-text-color-regular) !important;
-}
-
-@for $i from 1 through 20 {
-  $min: $i * 100 + 1400px;
-
-  @media screen and (min-width: $min) {
-    html {
-      --bleu-font-size: #{calc($min / 100)};
-    }
-  }
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  color: var(--bleu-text-color-primary);
-  font-size: var(--bleu-font-size);
-}
-
-a {
-  color: none;
-  border: none;
-  margin: 0;
-  padding: 0;
-  background: none;
-  text-decoration: none;
-
-  &:link {
-    text-decoration: none;
-  }
 }
 
 .shine-text {
@@ -165,8 +138,7 @@ a {
   visibility: hidden;
 }
 
-// 评论区和发表评论的输入框
-.textarea {
+.comment-area {
   --uno: mb-4 rd-2 transition-all-300;
   background-color: transparent;
   border: 1px solid var(--el-border-color-darker);

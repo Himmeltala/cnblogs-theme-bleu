@@ -1,5 +1,5 @@
 import request from "./use-axios";
-import { toDOM, PostsTransform } from "@/transform";
+import { Transform } from "@/transform";
 
 /**
  * 获取随笔、文章内容
@@ -8,7 +8,7 @@ import { toDOM, PostsTransform } from "@/transform";
  */
 export async function getDetail(id: string) {
   const { data } = await request.get(`/p/${id}.html`);
-  return PostsTransform.toPostDetail(id, toDOM(data));
+  return Transform.Posts.toPostDetail(id, Transform.toDOM(data));
 }
 
 /**
@@ -45,7 +45,7 @@ export async function getViewPoint(id: string): Promise<BlogPostViewPointModel> 
  */
 export async function getByL1(id: string | number | string[], page?: string | number | string[]) {
   const { data } = await request.get(`/category/${id}.html?page=${page || 1}`);
-  return PostsTransform.toPostsList2(toDOM(data));
+  return Transform.Posts.toPostsList2(Transform.toDOM(data));
 }
 
 /**
@@ -58,7 +58,7 @@ export async function getByL2(id: string | number | string[], isArticle: boolean
   const { data } = await request.get(
     `/ajax/TreeCategoryList.aspx?parentId=${id}&categoryType=${isArticle ? 2 : 1}`
   );
-  return PostsTransform.toPostByL2(toDOM(data));
+  return Transform.Posts.toPostByL2(Transform.toDOM(data));
 }
 
 /**
@@ -68,7 +68,7 @@ export async function getByL2(id: string | number | string[], isArticle: boolean
  */
 export async function getList(page?: number | string) {
   const { data } = await request.get(`/default.html?page=${page || 1}`);
-  return PostsTransform.toPostsList1(toDOM(data));
+  return Transform.Posts.toPostsList1(Transform.toDOM(data));
 }
 
 /**
@@ -82,7 +82,7 @@ export async function getListByArchive(date: string, type: "article" | "arbeiten
   const { data } = await request.get(
     `/${type === "article" ? "archives" : "archive"}/${splitDate[0]}/${splitDate[1]}.html`
   );
-  return PostsTransform.toPostsList2(toDOM(data));
+  return Transform.Posts.toPostsList2(Transform.toDOM(data));
 }
 
 /**
@@ -93,7 +93,7 @@ export async function getListByArchive(date: string, type: "article" | "arbeiten
  */
 export async function getListByLabel(tag: any, page?: string | number) {
   const { data } = await request.get(`/tag/${tag}/default.html?page=${page ?? 1}`);
-  return PostsTransform.toPartPostsList(toDOM(data));
+  return Transform.Posts.toPartPostsList(Transform.toDOM(data));
 }
 
 /**
@@ -106,7 +106,7 @@ export async function isPassed(pwd: string, id: string) {
   const formData = new FormData();
   formData.append("Password", pwd);
   const { data } = await request.post(`/protected/p/${id}.html`, formData);
-  const isPassed = PostsTransform.toIsUnLock(toDOM(data));
+  const isPassed = Transform.Posts.toIsUnLock(Transform.toDOM(data));
   ElMessage({
     message: isPassed ? "密码正确！" : "密码错误！",
     grouping: true,
@@ -125,7 +125,7 @@ export async function getLocked(pwd: string, id: string) {
   const formData = new FormData();
   formData.append("Password", pwd);
   const { data } = await request.post(`/protected/p/${id}.html`, formData);
-  return PostsTransform.toPostDetail(id, toDOM(data));
+  return Transform.Posts.toPostDetail(id, Transform.toDOM(data));
 }
 
 /**
@@ -135,7 +135,7 @@ export async function getLocked(pwd: string, id: string) {
  */
 export async function getListByDay(date: string) {
   const { data } = await request.get(`/archive/${date}.html`);
-  return PostsTransform.toPostsList1(toDOM(data));
+  return Transform.Posts.toPostsList1(Transform.toDOM(data));
 }
 
 /**
@@ -146,7 +146,7 @@ export async function getListByDay(date: string) {
  */
 export async function getInfo(id: string): Promise<PostInfoModel> {
   const { data } = await request.get(`/ajax/post-accessories?postId=${id}`);
-  return PostsTransform.toPostDetailInfo(data);
+  return Transform.Posts.toPostDetailInfo(data);
 }
 
 /**
