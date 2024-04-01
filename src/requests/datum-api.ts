@@ -1,5 +1,5 @@
 import request from "./use-axios";
-import { toDOM, DatumTransform } from "@/transform";
+import { Transform } from "@/transform";
 
 /**
  * 获取侧边栏数据。
@@ -8,7 +8,7 @@ import { toDOM, DatumTransform } from "@/transform";
  */
 export async function getColumnContent() {
   const { data } = await request.get(`/ajax/sidecolumn.aspx`);
-  return DatumTransform.toColumnData(toDOM(data));
+  return Transform.Datum.toColumnData(Transform.toDOM(data));
 }
 
 /**
@@ -18,8 +18,8 @@ export async function getStatistics() {
   const { data: stats } = await request.get(`/ajax/blogStats`);
   const { data: news } = await request.get(`/ajax/news.aspx`);
   return [
-    ...DatumTransform.toAuthorData(toDOM(news)),
-    ...DatumTransform.toStatistics(toDOM(stats))
+    ...Transform.Datum.toAuthorData(Transform.toDOM(news)),
+    ...Transform.Datum.toStatistics(Transform.toDOM(stats))
   ];
 }
 
@@ -28,7 +28,7 @@ export async function getStatistics() {
  */
 export async function getTopList() {
   const { data } = await request.get(`/ajax/TopLists.aspx`);
-  return DatumTransform.toTopList(toDOM(data));
+  return Transform.Datum.toTopList(Transform.toDOM(data));
 }
 
 /**
@@ -36,7 +36,7 @@ export async function getTopList() {
  */
 export async function getMarkList() {
   const { data } = await request.get(`/tag`);
-  return DatumTransform.toMarkList(toDOM(data));
+  return Transform.Datum.toMarkList(Transform.toDOM(data));
 }
 
 /**
@@ -46,7 +46,7 @@ export async function getMarkList() {
  */
 export async function getAlbumnItem(id: string) {
   const { data } = await request.get(`/gallery/image/${id}.html`);
-  return DatumTransform.toAlbumnItem(toDOM(data));
+  return Transform.Datum.toAlbumnItem(Transform.toDOM(data));
 }
 
 /**
@@ -54,7 +54,7 @@ export async function getAlbumnItem(id: string) {
  */
 export async function getAlbumn(id: string) {
   const { data } = await request.get(`/gallery/${id}.html`);
-  return DatumTransform.toAlbumn(toDOM(data));
+  return Transform.Datum.toAlbumn(Transform.toDOM(data));
 }
 
 /**
@@ -64,5 +64,5 @@ export async function getAlbumn(id: string) {
  */
 export async function getCalendar(date: string) {
   const { data } = await request.get(`/ajax/calendar.aspx?dateStr=${date}`);
-  return DatumTransform.toCalendar(toDOM(data));
+  return Transform.Datum.toCalendar(Transform.toDOM(data));
 }

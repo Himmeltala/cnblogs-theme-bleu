@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <NavHeader></NavHeader>
+  <Navigation></Navigation>
   <RouterView v-slot="{ Component }">
     <template v-if="Component">
       <component :is="Component" />

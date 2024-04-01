@@ -156,7 +156,7 @@ function onBeforeLoad() {
 function onAfterLoad() {
   Utils.PrettifyLog.primary("GitHub", "https://github.com/Himmeltala/cnblogs-theme-bleu");
   Utils.PrettifyLog.primary(
-    "v1.1.0",
+    "v1.2.0",
     "The Theme was Created By Himmeltala, and Powered By Vue3 & Vite."
   );
 }
