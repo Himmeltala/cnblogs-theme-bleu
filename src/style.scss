@@ -5,11 +5,11 @@
 @use "element-plus/theme-chalk/dark/css-vars.css";
 
 * {
-  line-height: 1.7;
-  letter-spacing: 0.5px;
+  color: inherit;
+  line-height: 2;
   word-break: break-all;
   box-sizing: border-box;
-  scrollbar-width: none;
+  scroll-behavior: smooth;
 
   &::-webkit-scrollbar {
     display: none;

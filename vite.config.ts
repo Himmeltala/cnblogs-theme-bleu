@@ -3,8 +3,6 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import { defineConfig, loadEnv } from "vite";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
-import Icons from "unplugin-icons/vite";
-import IconsResolver from "unplugin-icons/resolver";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import UnoCSS from "unocss/vite";
 
@@ -95,9 +93,9 @@ export default defineConfig(({ mode }) => {
           manualChunks() {
             return "components";
           },
-          entryFileNames: "[name]-bleu.js",
-          chunkFileNames: "[name]-bleu.js",
-          assetFileNames: "[name]-bleu.[ext]"
+          entryFileNames: `[name]-bleu.js`,
+          chunkFileNames: `[name]-bleu.js`,
+          assetFileNames: `[name]-bleu.[ext]`
         }
       }
     }

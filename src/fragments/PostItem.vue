@@ -18,7 +18,15 @@ coverIdx.value = Utils.Random.get(coverArr, props.data.length);
     </router-link>
     <div class="mt-4 f-s-b flex-gap-4">
       <div class="lg-sm:w-65% lt-sm:w-55%">
-        <div class="f-c-s flex-wrap mb-4 text-0.8rem">
+        <div class="mb-4 text-0.9rem lt-sm:line-clamp-4">
+          {{ item.desc }}
+        </div>
+        <div class="f-c-e flex-wrap mb-4">
+          <el-tag type="success" v-if="item.isTop" class="ml-2">置顶随笔</el-tag>
+          <el-tag type="danger" v-if="item.isOnlyMe" class="ml-2">自己可见</el-tag>
+          <el-tag type="warning" v-if="item.isLocked" class="ml-2">密码锁定</el-tag>
+        </div>
+        <div class="f-c-s flex-wrap text-0.8rem">
           <div class="f-c-c">
             <div class="i-tabler-clock mr-2"></div>
             {{ item.date }}
@@ -38,14 +46,6 @@ coverIdx.value = Utils.Random.get(coverArr, props.data.length);
             <div class="i-tabler-star mr-2"></div>
             {{ item.digg }}
           </div>
-        </div>
-        <div class="mb-4 text-0.9rem lt-sm:line-clamp-4">
-          {{ item.desc }}
-        </div>
-        <div class="f-c-e flex-wrap">
-          <el-tag type="success" v-if="item.isTop" class="ml-2">置顶随笔</el-tag>
-          <el-tag type="danger" v-if="item.isOnlyMe" class="ml-2">自己可见</el-tag>
-          <el-tag type="warning" v-if="item.isLocked" class="ml-2">密码锁定</el-tag>
         </div>
       </div>
       <div class="lg-sm:w-30% lt-sm:w-40% lt-sm:h-35 lg-sm:h-40 flow-hidden position-relative">
