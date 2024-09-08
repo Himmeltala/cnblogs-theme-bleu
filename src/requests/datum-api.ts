@@ -46,7 +46,7 @@ export async function getMarkList() {
  */
 export async function getAlbumnItem(id: string) {
   const { data } = await request.get(`/gallery/image/${id}.html`);
-  return Transform.Datum.toAlbumnItem(Transform.toDOM(data));
+  return Transform.Datum.toPhotoDetail(Transform.toDOM(data));
 }
 
 /**
@@ -54,7 +54,7 @@ export async function getAlbumnItem(id: string) {
  */
 export async function getAlbumn(id: string) {
   const { data } = await request.get(`/gallery/${id}.html`);
-  return Transform.Datum.toAlbumn(Transform.toDOM(data));
+  return Transform.Datum.toPhotos(Transform.toDOM(data));
 }
 
 /**

@@ -1,5 +1,5 @@
+import type { NavigationGuardNext, RouteRecordRaw } from "vue-router";
 import { createRouter, createWebHashHistory } from "vue-router";
-import type { RouteRecordRaw, NavigationGuardNext } from "vue-router";
 import { useAnchorStore } from "@/store";
 
 const routes = <RouteRecordRaw[]>[
@@ -23,29 +23,23 @@ const routes = <RouteRecordRaw[]>[
       },
       {
         name: "PostDetail",
-        path: "p/:id",
+        path: "post/:id",
         component: () => import("@/views/PostDetail.vue")
       },
       {
-        name: "PostsByLabel",
+        name: "Label",
         path: "label",
-        component: () => import("@/views/PostsByLabel.vue")
+        component: () => import("@/views/Label.vue")
       },
       {
-        name: "PostsBySort",
-        path: "sort",
-        component: () => import("@/views/PostsBySort.vue")
+        name: "Category",
+        path: "category",
+        component: () => import("@/views/Category.vue")
       },
       {
-        name: "PostsByArchive",
+        name: "Archive",
         path: "archive/:mode/:date",
-        component: () => import("@/views/PostsByArchive.vue")
-      },
-      {
-        name: "PostsByCalendar",
-        path: "calendar",
-        meta: { title: "日历" },
-        component: () => import("@/views/PostsByCalendar.vue")
+        component: () => import("@/views/Archive.vue")
       },
       {
         name: "LabelList",
@@ -54,22 +48,22 @@ const routes = <RouteRecordRaw[]>[
         component: () => import("@/views/LabelList.vue")
       },
       {
-        name: "Albumn",
-        path: "albumn/:id",
+        name: "Photos",
+        path: "photos/:id",
         meta: { title: "相册" },
-        component: () => import("@/views/Albumn.vue")
+        component: () => import("@/views/Photos.vue")
       },
       {
-        name: "AlbumnItem",
-        path: "album/item/:id",
+        name: "PhotoDetail",
+        path: "photo/detail/:id",
         meta: { title: "相册图片" },
-        component: () => import("@/views/AlbumnItem.vue")
+        component: () => import("@/views/PhotoDetail.vue")
       }
     ]
   }
 ];
 
-const RouteRules = [
+const routesRule = [
   {
     regex: new RegExp("/" + Consts.getBlogApp() + "/p/\\d{8}", "g"),
     name: "PostDetail",
@@ -91,14 +85,14 @@ const RouteRules = [
   },
   {
     regex: /\/category\/\d+/g,
-    name: "PostsBySort",
+    name: "Category",
     params: {
       id: Utils.Textual.split(window.location.href, /\/category\/\d+/g, [2, 0], ["/", "."])
     }
   },
   {
     regex: /\/tag\/[\w\s\u4e00-\u9fa5\n\-\_%]+/g,
-    name: "PostsByLabel",
+    name: "Label",
     params: {
       tag: Utils.Textual.split(
         decodeURI(window.location.href),
@@ -110,7 +104,7 @@ const RouteRules = [
   },
   {
     regex: /\/gallery\/image\/\d+/g,
-    name: "AlbumnItem",
+    name: "PhotoDetail",
     params: { id: Utils.Textual.split(window.location.href, /\/gallery\/image\/\d+/g, [3], ["/"]) }
   },
   {
@@ -126,7 +120,7 @@ const RouteRules = [
  * 对原博客链接进行重写并提取重要信息。
  */
 function redirect(next: NavigationGuardNext) {
-  const matched = RouteRules.find(rule => rule.regex.test(window.location.href));
+  const matched = routesRule.find(rule => rule.regex.test(window.location.href));
 
   if (matched) {
     matched.before && matched.before();

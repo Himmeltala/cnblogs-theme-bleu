@@ -202,9 +202,6 @@ pnpm build
 <script
   type="module"
   src="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=2024127009"></script>
-
-<!-- 鼠标特效 -->
-<script src="https://blog-static.cnblogs.com/files/yjlblog/cursor-effects.js"></script>
 ```
 
 # 主题特性
@@ -289,7 +286,8 @@ function calc(x, y) {
 
 ## 主题更新
 
-因博客园有缓存，更改 `https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=20231251645` 链接中 `t` 等于的值，可以是日期，也可以是其他值。更改完成之后，就可以获取到最新的主题。
+因博客园有缓存，更改 `https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.js?t=20231251645` 链接中 `t`
+等于的值，可以是日期，也可以是其他值。更改完成之后，就可以获取到最新的主题。
 
 # 配置主题
 
@@ -371,7 +369,8 @@ window.__BLEU_CONFIG__ = {
 - 类型：object
 - 是否必填：否
 
-该配置项包括了背景图片、首页轮播图、文章和随笔列表封面图。以下的 background、home 等对象都是可选，也就是可以忽略不填，但是 arbeiten 字段至少要给一个网络图片地址，否则随笔列表的封面就是破损图片，除非你在发表一篇博客之前给了一个封面。
+该配置项包括了背景图片、首页轮播图、文章和随笔列表封面图。以下的 background、home 等对象都是可选，也就是可以忽略不填，但是
+arbeiten 字段至少要给一个网络图片地址，否则随笔列表的封面就是破损图片，除非你在发表一篇博客之前给了一个封面。
 
 ```js
 window.__BLEU_CONFIG__ = {

@@ -1,30 +1,30 @@
-export function welcome() {
+export function index() {
   return "/";
 }
 
 /**
- * @returns "/main/p/:id"
+ * @returns "post/:id"
  */
-export function p(id?: string | number) {
-  return `/main/p/${id}`;
+export function post(id?: string | number) {
+  return `/main/post/${id}`;
 }
 
 /**
- * @returns "/main/label?name=C/C++"
+ * @returns "label?name=C/C++"
  */
 export function label(label?: string) {
   return `/main/label?name=${label}`;
 }
 
 /**
- * @returns "/main/sort?id=112233&page=1"
+ * @returns "category?id=112233&page=1"
  */
-export function sort(id?: string | number | string[], page?: number | string) {
-  return { path: "/main/sort", query: { id, page: page || 1 } };
+export function category(id?: string | number | string[], page?: number | string) {
+  return { path: "/main/category", query: { id, page: page || 1 } };
 }
 
 /**
- * @returns "/main/posts?page=1"
+ * @returns "posts?page=1"
  */
 export function posts(page?: string | number) {
   return `/main/posts?page=${page || 1}`;
@@ -32,38 +32,24 @@ export function posts(page?: string | number) {
 
 /**
  *
- * @param mode a -> 文章；p -> 随笔；d -> 从日历点击过来的
+ * @param mode articles -> 文章；posts -> 随笔；d -> 从日历点击过来的
  * @param date 日期
- * @returns "/archive/:mode/:date"
+ * @returns "archive/:mode/:date"
  */
-export function archive(mode?: "a" | "p" | "d", date?: string) {
+export function archive(mode?: "articles" | "posts" | "d", date?: string) {
   return `/main/archive/${mode}/${date}`;
 }
 
 /**
- * @returns "/calendar"
- */
-export function calendar() {
-  return "/main/calendar";
-}
-
-/**
- * @returns "/labels"
+ * @returns "labels"
  */
 export function labels() {
   return "/main/labels";
 }
 
 /**
- * @returns "/albumn/:id"
+ * @returns "photos/:id"
  */
-export function albumn(id?: string | number) {
-  return `/main/albumn/${id}`;
-}
-
-/**
- * @returns "/albumn/item/:id"
- */
-export function albumnitem(id?: string | number) {
-  return `/main/albumn/item/${id}`;
+export function photos(id?: string | number) {
+  return `/main/photos/${id}`;
 }

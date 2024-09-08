@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const loading = new Utils.Browser.Loading();
 
 const postList = ref();
@@ -39,15 +39,15 @@ function onCurrentChange() {
     <PostItem :data="postList.data" />
     <div class="f-c-e">
       <el-pagination
+        v-model:current-page="currPage"
         :layout="Consts.isPC() ? 'pager, next' : 'prev, next'"
         :page-count="postList?.page"
-        v-model:current-page="currPage"
         @current-change="onCurrentChange" />
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .item {
   .mask::after {
     --uno: block rd-2 w-100% h-100%;

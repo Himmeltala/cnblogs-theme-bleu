@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 defineProps({
   data: {
     type: Object as PropType<any>,
@@ -15,25 +15,25 @@ function scrollIntoView(selector: string) {
   <div class="container">
     <div
       v-if="data.id === 'h1'"
+      :id="'topic-' + data.title"
       :class="data.class"
       class="hover"
-      :id="'topic-' + data.title"
       @click="scrollIntoView(`#${data.title}`)">
       {{ data.content }}
     </div>
     <div
       v-else-if="data.id === 'h2'"
+      :id="'topic-' + data.title"
       :class="data.class"
       class="hover ml-4"
-      :id="'topic-' + data.title"
       @click="scrollIntoView(`#${data.title}`)">
       {{ data.content }}
     </div>
     <div
       v-else-if="data.id === 'h3'"
+      :id="'topic-' + data.title"
       :class="data.class"
       class="hover ml-6"
-      :id="'topic-' + data.title"
       @click="scrollIntoView(`#${data.title}`)">
       {{ data.content }}
     </div>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   comment: {
     type: Object as PropType<any>,
@@ -27,10 +27,10 @@ async function confirmDeleteComment() {
 </script>
 
 <template>
-  <div class="text-thirdly text-0.8rem" v-show="!comment.isEditing && !comment.isAnsling">
+  <div v-show="!comment.isEditing && !comment.isAnsling" class="text-thirdly text-0.8rem">
     <el-popconfirm
-      confirm-button-text="确定"
       cancel-button-text="取消"
+      confirm-button-text="确定"
       title="确定删除该评论？"
       @confirm="confirmDeleteComment">
       <template #reference>

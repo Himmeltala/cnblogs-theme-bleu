@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import hljs from "highlight.js";
 
 hljs.configure({
@@ -130,8 +130,8 @@ function extractLangTempFromPreCode(str: string) {
 
   const temp = `
       <div class="code-tips text-0.8rem ${
-        label ? "position-absolute" : ""
-      } f-c-e w-100% flow-auto pr-2">
+    label ? "position-absolute" : ""
+  } f-c-e w-100% flow-auto pr-2">
         <div class="code-label">${label}</div>
         <div class="code-lang ml-4">${lang[1]?.toUpperCase()}</div>
       </div>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const labelList = ref<LabelModel[]>();
 const filteredList = ref<LabelModel[]>();
 const searchVal = ref("");
@@ -45,7 +45,7 @@ fetch();
 </script>
 
 <template>
-  <div class="page" v-if="labelList">
+  <div v-if="labelList" class="page">
     <div class="utils">
       <div class="f-c-c">
         <div class="f-c-b w-50%">
@@ -68,22 +68,22 @@ fetch();
     </div>
     <div class="f-c-b flex-wrap flex-gap-4">
       <router-link v-for="item of filteredList" :to="Consts.Paths.label(item.text)">
-        <el-tag round v-if="item.count >= 20" size="large" type="danger">
+        <el-tag v-if="item.count >= 20" round size="large" type="danger">
           <span> {{ item.text }} ({{ item.count }}) </span>
         </el-tag>
-        <el-tag round v-else-if="item.count < 20 && item.count >= 10" size="large" type="warning">
+        <el-tag v-else-if="item.count < 20 && item.count >= 10" round size="large" type="warning">
           <span> {{ item.text }} ({{ item.count }}) </span>
         </el-tag>
-        <el-tag round v-else-if="item.count < 10 && item.count >= 5" size="large" type="success">
+        <el-tag v-else-if="item.count < 10 && item.count >= 5" round size="large" type="success">
           <span> {{ item.text }} ({{ item.count }}) </span>
         </el-tag>
-        <el-tag round v-else size="large" type="info"> {{ item.text }} ({{ item.count }}) </el-tag>
+        <el-tag v-else round size="large" type="info"> {{ item.text }} ({{ item.count }})</el-tag>
       </router-link>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 :deep(.el-input__wrapper) {
   border-radius: 10rem;
 }

@@ -25,7 +25,7 @@
     font-size: 1.1rem !important;
   }
 
-  h3,h4,h5,h6 {
+  h3, h4, h5, h6 {
     font-size: 1rem !important;
   }
 
@@ -61,8 +61,9 @@
   }
 
 
-  a>code {
-    --uno:  dark:bg-#2929299e light:bg-#e8e8e8 text-#ff1493;
+  a > code {
+    --uno: dark: bg- #2929299e
+    light: bg- #e8e8e8 text- #ff1493;
     margin: 0 0.1rem;
     padding: 0.1rem 0.4rem !important;
     border-radius: 5px !important;
@@ -89,7 +90,8 @@
   }
 
   code {
-    --uno: dark:bg-#2929299e light:bg-#e8e8e8 text-#ff1493;
+    --uno: dark: bg- #2929299e
+    light: bg- #e8e8e8 text- #ff1493;
     margin: 0 0.1rem;
     padding: 0.1rem 0.4rem !important;
     border-radius: 5px !important;
@@ -122,16 +124,20 @@
 
   th,
   td {
-    --uno: b-1 b-solid dark:b-#1f1f1fbd light:b-#f1f1f1bd;
+    --uno: b-1 b-solid
+    dark: b- #1f1f1fbd
+    light: b- #f1f1f1bd;
     padding: 0.5rem 0.5rem;
   }
 
   table thead tr {
-    --uno: dark:bg-#2929299e light:bg-#e8e8e8;
+    --uno: dark: bg- #2929299e
+    light: bg- #e8e8e8;
   }
 
   table tbody tr:nth-child(even) {
-    --uno: dark:bg-#1f1f1fbd light:bg-#f1f1f1bd;
+    --uno: dark: bg- #1f1f1fbd
+    light: bg- #f1f1f1bd;
   }
 
   table tfoot tr td {
@@ -143,7 +149,9 @@
   }
 
   .bleu-pre {
-    --uno: rd-2 dark:bg-#1f1f1fbd light:bg-#fafafabd position-relative;
+    --uno: rd-2
+    dark: bg- #1f1f1fbd
+    light: bg- #fafafabd position-relative;
     margin: 1.5rem 0;
 
     pre {
@@ -198,18 +206,26 @@
   }
 
   .bleu-war {
-    --uno: dark:bg-#4905058b light:bg-#ecc5c5bf dark:color-#C8C8C8 light:color-#404040;
+    --uno: dark: bg- #4905058b
+    light: bg- #ecc5c5bf
+    dark: color- #C8C8C8
+    light: color- #404040;
 
     @include war-tip-before() {
-      --uno: dark:bg-#c32b2be2 light:bg-#d45959e2;
+      --uno: dark: bg- #c32b2be2
+      light: bg- #d45959e2;
     }
   }
 
   .bleu-tip {
-    --uno: dark:bg-#012e018b light:bg-#c8d4c8bf dark:color-#C8C8C8 light:color-#404040;
+    --uno: dark: bg- #012e018b
+    light: bg- #c8d4c8bf
+    dark: color- #C8C8C8
+    light: color- #404040;
 
     @include war-tip-before() {
-      --uno: dark:bg-#009400c2 light:bg-#5aa35ac2;
+      --uno: dark: bg- #009400c2
+      light: bg- #5aa35ac2;
     }
   }
 

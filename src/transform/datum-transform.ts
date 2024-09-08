@@ -123,6 +123,8 @@ export function toColumnData(dom: Document): ColumnDataModel {
     /[0-9]+/g
   );
 
+
+  console.log(dom);
   parseColHTML(
     dom,
     "#sidebar_articlearchive ul li > a",
@@ -134,7 +136,7 @@ export function toColumnData(dom: Document): ColumnDataModel {
         text: element.innerText
       });
     },
-    /archives\/([0-9]+\/[0-9]+)/
+    /archive\/([0-9]+\/[0-9]+)/
   );
 
   const elesLi = dom.querySelectorAll("#sidebar_recentcomments ul li");
@@ -256,12 +258,12 @@ export function toMarkList(dom: Document): LabelModel[] {
   return data;
 }
 
-export function toAlbumnItem(dom: Document) {
+export function toPhotoDetail(dom: Document) {
   return dom.getElementById("ViewPicture1_GalleryImage").getAttribute("src");
 }
 
-export function toAlbumn(dom: Document): AlbumnModel {
-  const data: AlbumnItemModel[] = [];
+export function toPhotos(dom: Document): PhotosModel {
+  const data: PhotoDetailModel[] = [];
   const eles = dom.getElementsByClassName("divPhoto");
 
   for (let i = 0; i < eles.length; i++) {

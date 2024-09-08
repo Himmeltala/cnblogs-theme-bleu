@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const route = useRoute();
 const currPage = ref(1);
 const loading = new Utils.Browser.Loading();
@@ -9,7 +9,7 @@ const postCoverArr = Consts.config.images.stochastic;
 function fetch(name: any) {
   loading.startLoading();
 
-  Requests.Posts.getListByLabel(name, currPage.value).then(data => {
+  Requests.Posts.getListLabel(name, currPage.value).then(data => {
     postList.value = data;
     Utils.Browser.setTitle(postList.value.hint);
     postCoverIdx.value = Utils.Random.get(postCoverArr, postList.value.data.length);
@@ -28,21 +28,21 @@ fetch(route.query.name);
 </script>
 
 <template>
-  <div class="page" v-if="postList">
+  <div v-if="postList" class="page">
     <div class="text-1.2rem mb-10">{{ postList.hint }}</div>
     <div class="f-c-b flex-wrap">
       <div
-        class="item cursor-pointer lg-sm:w-30% lt-sm:w-45% mb-10"
-        v-for="(item, index) in postList.data">
-        <router-link :to="Consts.Paths.p(item.id)">
+        v-for="(item, index) in postList.data"
+        class="item cursor-pointer lg-sm:w-30% lt-sm:w-45% mb-10">
+        <router-link :to="Consts.Paths.post(item.id)">
           <div class="lt-sm:h-45 lg-sm:h-55 flow-hidden position-relative">
             <div class="mask position-absolute top-0 left-0 w-100% h-15% z-1"></div>
-            <img class="w-100% h-100% object-cover rd-2" :src="postCoverArr[postCoverIdx[index]]" />
+            <img :src="postCoverArr[postCoverIdx[index]]" class="w-100% h-100% object-cover rd-2" />
             <div class="mask position-absolute bottom-0 left-0 w-100% h-15%"></div>
           </div>
           <div
-            class="text-ellipsis line-clamp-1 mt-4 text-text-regular"
-            :to="Consts.Paths.p(item.id)">
+            :to="Consts.Paths.post(item.id)"
+            class="text-ellipsis line-clamp-1 mt-4 text-text-regular">
             {{ item.text }}
           </div>
           <div>
@@ -70,15 +70,15 @@ fetch(route.query.name);
     </div>
     <div class="f-c-e">
       <el-pagination
+        v-model:current-page="currPage"
         :layout="Consts.isPC() ? 'pager, next' : 'prev, next'"
         :page-count="postList?.page"
-        v-model:current-page="currPage"
         @current-change="() => fetch(route.query.name)" />
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .mask::after {
   --uno: block rd-2 w-100% h-100%;
   content: "";

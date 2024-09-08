@@ -321,6 +321,7 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly Consts: UnwrapRef<typeof import('@/constants/index')['Consts']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly Hooks: UnwrapRef<typeof import('@/hooks/index')['Hooks']>
     readonly Requests: UnwrapRef<typeof import('@/requests/index')['Requests']>
     readonly Utils: UnwrapRef<typeof import('@/utils/index')['Utils']>
@@ -620,6 +621,7 @@ declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly Consts: UnwrapRef<typeof import('@/constants/index')['Consts']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly Hooks: UnwrapRef<typeof import('@/hooks/index')['Hooks']>
     readonly Requests: UnwrapRef<typeof import('@/requests/index')['Requests']>
     readonly Utils: UnwrapRef<typeof import('@/utils/index')['Utils']>

@@ -67,7 +67,7 @@ function createConsts() {
         "一位 Web <Developer />",
         "喜欢日漫、游戏",
         "技术栈 Vue.js、React.js、Python、Java",
-        "座右铭 时光飞逝，梦想消逝！"
+        "座右铭 时光飞逝，梦想消逝!"
       ]
     },
     diagram: {
@@ -156,7 +156,7 @@ function onBeforeLoad() {
 function onAfterLoad() {
   Utils.PrettifyLog.primary("GitHub", "https://github.com/Himmeltala/cnblogs-theme-bleu");
   Utils.PrettifyLog.primary(
-    "v1.2.0",
+    "v1.3.0",
     "This theme was created by Himmeltala."
   );
 }

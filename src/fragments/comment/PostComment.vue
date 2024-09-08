@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   postId: { type: String, required: true }
 });
@@ -42,7 +42,7 @@ async function AddComment() {
     </div>
     <div class="mb-10 position-relative">
       <div class="tools mb-2 f-c-e">
-        <el-tooltip effect="dark" content="插入图片" placement="top-start">
+        <el-tooltip content="插入图片" effect="dark" placement="top-start">
           <span class="hover" @click="uploadImage('main-upload-img')">
             <div class="i-tabler-photo-circle"></div>
           </span>
@@ -57,7 +57,7 @@ async function AddComment() {
         <textarea id="main-upload-img" />
       </div>
       <div class="f-c-e">
-        <el-button plain round :disabled="!isLogined" :loading="loading" @click="AddComment">
+        <el-button :disabled="!isLogined" :loading="loading" plain round @click="AddComment">
           <template #icon>
             <div class="i-tabler:send"></div>
           </template>

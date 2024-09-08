@@ -36,63 +36,31 @@ export namespace Utils {
   type EventHandler = (...args: any[]) => void;
 
   export class TypeWriter {
-    private el: string;
-    private texts: string[];
+    private readonly el: string;
+    private readonly texts: string[];
     private count: number;
     private index: number;
     private currentText: string;
     private letter: string;
-    private typingSpeed: number;
-    private eraseSpeed: number;
-    private eraseDelay: number;
-    private blinkSpace: number;
-    private rem: number;
-    private dom: HTMLElement;
-    private typeTimer: ReturnType<typeof setTimeout> | null;
-    private eraseTimer: ReturnType<typeof setTimeout> | null;
-    private _offsetHeight: number;
-    private _offsetWidth: number;
+    private readonly typingSpeed: number;
+    private readonly eraseSpeed: number;
+    private readonly eraseDelay: number;
+    private readonly blinkSpace: number;
+    private readonly rem: number;
+    private readonly dom: HTMLElement;
+    private readonly typeTimer: ReturnType<typeof setTimeout> | null;
+    private readonly eraseTimer: ReturnType<typeof setTimeout> | null;
     private listeners: Record<string, EventHandler[]> = {};
 
-    on(eventName: string, handler: EventHandler): void {
-      if (!this.listeners[eventName]) {
-        this.listeners[eventName] = [];
-      }
-      this.listeners[eventName].push(handler);
-    }
-
-    trigger(eventName: string, ...args: any[]): void {
-      const handlers = this.listeners[eventName];
-      if (handlers) {
-        handlers.forEach(handler => handler(...args));
-      }
-    }
-
-    set offsetHeight(value: number) {
-      this._offsetHeight = value;
-    }
-
-    get offsetHeight(): number {
-      return this._offsetHeight;
-    }
-
-    set offsetWidth(value: number) {
-      this._offsetWidth = value;
-    }
-
-    get offsetWidth(): number {
-      return this._offsetWidth;
-    }
-
     constructor({
-      el,
-      texts,
-      typingSpeed = 100,
-      eraseSpeed = 20,
-      eraseDelay = 2000,
-      blinkSpace = 5,
-      rem = 1
-    }: {
+                  el,
+                  texts,
+                  typingSpeed = 100,
+                  eraseSpeed = 20,
+                  eraseDelay = 2000,
+                  blinkSpace = 5,
+                  rem = 1
+                }: {
       el: string;
       texts: string[];
       typingSpeed?: number;
@@ -116,6 +84,40 @@ export namespace Utils {
       this.eraseTimer = null;
 
       this.dom = document.getElementById(this.el);
+    }
+
+    private _offsetHeight: number;
+
+    get offsetHeight(): number {
+      return this._offsetHeight;
+    }
+
+    set offsetHeight(value: number) {
+      this._offsetHeight = value;
+    }
+
+    private _offsetWidth: number;
+
+    get offsetWidth(): number {
+      return this._offsetWidth;
+    }
+
+    set offsetWidth(value: number) {
+      this._offsetWidth = value;
+    }
+
+    on(eventName: string, handler: EventHandler): void {
+      if (!this.listeners[eventName]) {
+        this.listeners[eventName] = [];
+      }
+      this.listeners[eventName].push(handler);
+    }
+
+    trigger(eventName: string, ...args: any[]): void {
+      const handlers = this.listeners[eventName];
+      if (handlers) {
+        handlers.forEach(handler => handler(...args));
+      }
     }
 
     type(): void {

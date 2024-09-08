@@ -141,12 +141,12 @@ interface PostPrevNextModel {
   next: { href: string; text: string };
 }
 
-interface AlbumnItemModel {
+interface PhotoDetailModel {
   id: string;
   href: string;
 }
 
-interface AlbumnModel {
+interface PhotosModel {
   title: string;
   desc: string;
   data: StatisticsModel[];

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const loading = new Utils.Browser.Loading();
 const route = useRoute();
 const router = useRouter();
@@ -29,7 +29,7 @@ onBeforeRouteUpdate(updateGuard => {
 });
 
 function onCurrentChange() {
-  router.push(Consts.Paths.sort(route.query.id, currPage.value));
+  router.push(Consts.Paths.category(route.query.id, currPage.value));
 }
 
 fetch(route.query.id);
@@ -38,14 +38,14 @@ fetch(route.query.id);
 <template>
   <div class="page">
     <div class="text-1.2rem mb-2 text-text-regular">{{ posts?.hint || "" }}</div>
-    <div class="mb-20 text-0.9rem" v-html="posts?.desc2 || posts?.desc || ''"></div>
-    <div class="mb-10 text-0.9rem" v-if="subPosts?.length">
+    <div class="mb-5 text-0.9rem" v-html="posts?.desc2 || posts?.desc || ''"></div>
+    <div v-if="subPosts?.length" class="mb-20 text-0.9rem">
       <div
-        class="hover f-c-s"
         v-for="(item, index) in subPosts"
-        :class="{ 'mb-2': index != subPosts.length - 1 }">
+        :class="{ 'mb-2': index != subPosts.length - 1 }"
+        class="hover f-c-s">
         <div class="i-tabler:folder-plus mr-2"></div>
-        <router-link :to="Consts.Paths.sort(item.id)">
+        <router-link :to="Consts.Paths.category(item.id)">
           {{ item.text }}
         </router-link>
       </div>
@@ -54,15 +54,15 @@ fetch(route.query.id);
       <PostItem :data="posts.data" />
       <div class="f-c-e">
         <el-pagination
-          :layout="Consts.isPC() ? 'pager, next' : 'prev, next'"
-          :total="posts?.page"
-          :page-count="posts?.page"
           v-model:current-page="currPage"
+          :layout="Consts.isPC() ? 'pager, next' : 'prev, next'"
+          :page-count="posts?.page"
+          :total="posts?.page"
           @current-change="onCurrentChange" />
       </div>
     </div>
-    <div class="mt-50" v-else>
-      <el-result title="没有随笔" sub-title="该分类没有随笔，请点击查看子分类"> </el-result>
+    <div v-else class="mt-50">
+      <el-result sub-title="该分类没有随笔，请点击查看子分类" title="没有随笔"></el-result>
     </div>
   </div>
 </template>

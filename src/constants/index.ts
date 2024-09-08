@@ -1,7 +1,7 @@
-import * as PathsMoudle from "./route-paths";
+import * as PathsModule from "./route-paths";
 
 export namespace Consts {
-  export const Paths: typeof PathsMoudle = PathsMoudle;
+  export const Paths: typeof PathsModule = PathsModule;
 
   /**
    * 博客设置选项

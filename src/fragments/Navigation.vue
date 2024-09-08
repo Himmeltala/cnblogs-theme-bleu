@@ -1,8 +1,8 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const val = ref("");
 const drawer = ref(false);
 const options = Utils.Storage.getOptions();
-const themeMode = ref(options.value.theme.mode === "dark" ? true : false);
+const themeMode = ref(options.value.theme.mode === "dark");
 const colData = ref<ColumnDataModel>();
 const stsData = ref<StatisticsModel[]>();
 const radarRef = ref<HTMLElement>();
@@ -40,11 +40,11 @@ function openedDrawer() {
 
 <template>
   <el-drawer
-    @open="openedDrawer"
     v-model="drawer"
-    direction="ltr"
     :size="Consts.isPC() ? '20%' : '80%'"
-    :with-header="false">
+    :with-header="false"
+    direction="ltr"
+    @open="openedDrawer">
     <div>
       <div class="f-c-s">
         <div class="position-relative w-25 h-25 mr-4">
@@ -74,7 +74,7 @@ function openedDrawer() {
         @click="Utils.Navigation.go(stsData[0].href)">
         {{ Consts.getBlogApp() }}
       </div>
-      <div v-if="colData" v-for="item in colData.rankings" class="text-0.8rem mt-2">
+      <div v-for="item in colData.rankings" v-if="colData" class="text-0.8rem mt-2">
         <div class="f-c-s">
           <div class="i-tabler:star mr-2"></div>
           {{ item.text }}
@@ -91,15 +91,15 @@ function openedDrawer() {
       </el-divider>
       <div>
         <div class="f-c-s flex-wrap">
-          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.welcome())">
+          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.index())">
             首页
           </div>
           <div
-            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'Posts'
             }"
+            class="hover mr-4 position-relative"
             @click="$router.push(Consts.Paths.posts())">
             随笔
           </div>
@@ -107,45 +107,36 @@ function openedDrawer() {
             博客园
           </div>
           <div
-            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'LabelList'
             }"
+            class="hover mr-4 position-relative"
             @click="$router.push(Consts.Paths.labels())">
             标签
-          </div>
-          <div
-            class="hover mr-4 position-relative"
-            :class="{
-              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
-                $route.name === 'PostsByCalendar'
-            }"
-            @click="$router.push(Consts.Paths.calendar())">
-            日历
           </div>
           <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>
         </div>
         <div class="mt-4 f-c-s flex-wrap">
           <div class="mr-4">
             <el-switch
-              @change="toggle"
               v-model="themeMode"
-              inline-prompt
               active-text="黑"
-              inactive-text="白" />
+              inactive-text="白"
+              inline-prompt
+              @change="toggle" />
           </div>
           <div
+            v-for="item in Consts.config.header.paths"
             class="hover mr-4"
-            @click="Utils.Navigation.go(item.value)"
-            v-for="item in Consts.config.header.paths">
-            <div class="i-tabler:brand-bilibili" v-if="item.name === 'bilibili'"></div>
-            <div class="i-tabler:brand-github" v-else-if="item.name === 'github'"></div>
+            @click="Utils.Navigation.go(item.value)">
+            <div v-if="item.name === 'bilibili'" class="i-tabler:brand-bilibili"></div>
+            <div v-else-if="item.name === 'github'" class="i-tabler:brand-github"></div>
             <div v-else-if="!item.name && item.icon">
               <div v-html="item.icon"></div>
             </div>
             <div v-else>
-              <img class="w-8 h-8 object-cover rd-50%" :src="item.src" />
+              <img :src="item.src" class="w-8 h-8 object-cover rd-50%" />
             </div>
           </div>
         </div>
@@ -185,7 +176,7 @@ function openedDrawer() {
       </div>
     </el-divider>
     <div v-if="colData" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
-      <div class="hover" v-for="item in colData.markList">
+      <div v-for="item in colData.markList" class="hover">
         <router-link :to="Consts.Paths.label(item.id)">
           <div class="f-c-s">
             <div class="i-tabler:tag mr-2"></div>
@@ -201,8 +192,8 @@ function openedDrawer() {
       </div>
     </el-divider>
     <div v-if="colData" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
-      <div class="hover" v-for="item in colData.essaySort">
-        <router-link :to="Consts.Paths.sort(item.id)">
+      <div v-for="item in colData.essaySort" class="hover">
+        <router-link :to="Consts.Paths.category(item.id)">
           <div class="f-c-s">
             <div class="i-tabler:folder mr-2"></div>
             {{ item.text }}
@@ -217,8 +208,8 @@ function openedDrawer() {
       </div>
     </el-divider>
     <div v-if="colData?.essayArchive" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
-      <div class="hover" v-for="item in colData.essayArchive">
-        <router-link :to="Consts.Paths.archive('p', item.id)">
+      <div v-for="item in colData.essayArchive" class="hover">
+        <router-link :to="Consts.Paths.archive('posts', item.id)">
           <div class="f-c-s">
             <div class="i-tabler:calendar-stats mr-2"></div>
             {{ item.text }}
@@ -233,8 +224,8 @@ function openedDrawer() {
       </div>
     </el-divider>
     <div v-if="colData?.articleSort" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
-      <div class="hover" v-for="item in colData.articleSort">
-        <router-link :to="Consts.Paths.sort(item.id)">
+      <div v-for="item in colData.articleSort" class="hover">
+        <router-link :to="Consts.Paths.category(item.id)">
           <div class="f-c-s">
             <div class="i-tabler:bookmark mr-2"></div>
             {{ item.text }}
@@ -249,8 +240,8 @@ function openedDrawer() {
       </div>
     </el-divider>
     <div v-if="colData?.articleArchive?.length" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
-      <div class="hover" v-for="item in colData.articleArchive">
-        <router-link :to="Consts.Paths.archive('a', item.id)">
+      <div v-for="item in colData.articleArchive" class="hover">
+        <router-link :to="Consts.Paths.archive('articles', item.id)">
           <div class="f-c-s">
             <div class="i-tabler:calendar-event mr-2"></div>
             {{ item.text }}
@@ -265,8 +256,8 @@ function openedDrawer() {
       </div>
     </el-divider>
     <div v-if="colData?.albumn" class="f-c-s flex-wrap flex-gap-4 text-0.9rem">
-      <div class="hover" v-for="item in colData.albumn">
-        <router-link :to="Consts.Paths.albumn(item.id)">
+      <div v-for="item in colData.albumn" class="hover">
+        <router-link :to="Consts.Paths.photos(item.id)">
           <div class="f-c-s">
             <div class="i-tabler:photo mr-2"></div>
             {{ item.text }}
@@ -280,33 +271,33 @@ function openedDrawer() {
     class="top-header light:bg-#ffffffb3 dark:bg-#242424b3 h-15 fixed top-0 left-0 w-100vw z-999">
     <div class="content lg-sm:px-50 lt-sm:px-4 lg-sm:f-c-b lt-sm:f-c-s h-100%">
       <div class="f-c-s">
-        <el-button round class="mr-4" @click="drawer = !drawer">
+        <el-button class="mr-4" round @click="drawer = !drawer">
           <template #icon>
             <div class="i-tabler:menu"></div>
           </template>
         </el-button>
         <div class="w-45">
           <el-input
-            @keyup.enter="Utils.Native.search(val)"
+            v-model="val"
             placeholder="输入关键字搜索"
-            v-model="val">
+            @keyup.enter="Utils.Native.search(val)">
             <template #suffix>
               <div class="i-tabler-search"></div>
             </template>
           </el-input>
         </div>
       </div>
-      <div class="f-c-b" v-if="Consts.isPC()">
+      <div v-if="Consts.isPC()" class="f-c-b">
         <div class="f-c-s text-text-regular">
-          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.welcome())">
+          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.index())">
             首页
           </div>
           <div
-            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'Posts'
             }"
+            class="hover mr-4 position-relative"
             @click="$router.push(Consts.Paths.posts())">
             随笔
           </div>
@@ -314,39 +305,30 @@ function openedDrawer() {
             博客园
           </div>
           <div
-            class="hover mr-4 position-relative"
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'LabelList'
             }"
+            class="hover mr-4 position-relative"
             @click="$router.push('/main/labels')">
             标签
-          </div>
-          <div
-            class="hover mr-4 position-relative"
-            :class="{
-              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
-                $route.name === 'PostsByCalendar'
-            }"
-            @click="$router.push(Consts.Paths.calendar())">
-            日历
           </div>
           <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>
         </div>
         <div class="tools ml-4">
           <el-switch
-            @change="toggle"
             v-model="themeMode"
-            inline-prompt
             active-text="黑"
-            inactive-text="白" />
+            inactive-text="白"
+            inline-prompt
+            @change="toggle" />
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .top-header {
   -webkit-backdrop-filter: saturate(50%) blur(8px);
   backdrop-filter: saturate(50%) blur(8px);

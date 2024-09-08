@@ -102,17 +102,17 @@ html {
 
 .shine-text {
   background: linear-gradient(
-    to right,
-    #409eff,
-    #2d8cf0,
-    #5e72e4,
-    #673bb7,
-    #fa7298,
-    #ff9700,
-    #607d8b,
-    #009688,
-    #42b983,
-    #906f61
+      to right,
+      #409eff,
+      #2d8cf0,
+      #5e72e4,
+      #673bb7,
+      #fa7298,
+      #ff9700,
+      #607d8b,
+      #009688,
+      #42b983,
+      #906f61
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -149,7 +149,7 @@ html {
   }
 
   textarea {
-    --uno: rd-2 p-2 text-0.9rem;
+    --uno: rd-2 p-2 text-0 .9rem;
     background-color: transparent;
     width: 100%;
     height: 15rem;

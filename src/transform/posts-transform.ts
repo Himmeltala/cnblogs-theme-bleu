@@ -274,8 +274,8 @@ export function toPostByL2(dom: Document): SubPostModel[] {
 export function toBols(dom: HTMLDivElement) {
   const followText = dom.querySelector("#green_channel_follow").innerText.trim();
   const diggText = dom.querySelector("#green_channel_digg").innerText.trim();
-  const isFollowed = followText == "已关注" ? true : false;
-  const isDigg = diggText == "已推荐" ? true : false;
+  const isFollowed = followText == "已关注";
+  const isDigg = diggText == "已推荐";
 
   return { isFollowed, isDigg };
 }

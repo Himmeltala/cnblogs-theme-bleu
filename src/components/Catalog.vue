@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   html: {
     type: Object as PropType<any>
@@ -112,11 +112,11 @@ defineExpose({
 <style lang="scss">
 .catalog {
   .topic {
-    --uno: text-0.8rem text-text-regular mb-2;
+    --uno: text-0 .8rem text-text-regular mb-2;
   }
 
   .active-topic {
-    --uno: text-theme-primary transition-all-300 text-0.9rem;
+    --uno: text-theme-primary transition-all-300 text-0 .9rem;
   }
 }
 </style>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   comment: {
     type: Object as PropType<any>,
@@ -60,7 +60,7 @@ function cancel() {
 
 <template>
   <div>
-    <div class="float-right w-100%" v-show="comment.isAnsling">
+    <div v-show="comment.isAnsling" class="float-right w-100%">
       <div class="mb-2 f-c-e">
         <el-tooltip content="插入图片" placement="top-start">
           <span class="hover" @click="uploadImage('upload-img-' + currPageIndex)">
@@ -75,8 +75,8 @@ function cancel() {
       </div>
     </div>
     <div
-      class="float-right f-c-e text-0.9rem text-thirdly"
-      :class="{ 'answer-item': !comment.isAnsling, ' w-100%': comment.isAnsling }">
+      :class="{ 'answer-item': !comment.isAnsling, ' w-100%': comment.isAnsling }"
+      class="float-right f-c-e text-0.9rem text-thirdly">
       <div v-show="!comment.isAnsling && !comment.isEditing" class="hover f-c-e" @click="before">
         <div class="i-tabler:message-circle mr-2"></div>
         <span>回复</span>
@@ -93,7 +93,7 @@ function cancel() {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @include mixins.pc() {
   .answer-item {
     --uno: w-8%;

@@ -1,12 +1,12 @@
 import * as echarts from "echarts/core";
 import {
-  TooltipComponent,
-  LegendComponent,
   GridComponent,
+  LegendComponent,
   TitleComponent,
+  TooltipComponent,
   VisualMapComponent
 } from "echarts/components";
-import { RadarChart, PieChart, LineChart, BarChart } from "echarts/charts";
+import { BarChart, LineChart, PieChart, RadarChart } from "echarts/charts";
 import { CanvasRenderer } from "echarts/renderers";
 
 echarts.use([

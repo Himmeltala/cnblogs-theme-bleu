@@ -2,12 +2,12 @@ import request from "./use-axios";
 import { Transform } from "@/transform";
 
 /**
- * 获取随笔、文章内容
+ * 获取随笔、文章
  *
- * @param id 随笔、文章 ID
+ * @param id
  */
 export async function getDetail(id: string) {
-  const { data } = await request.get(`/p/${id}.html`);
+  const { data } = await request.get(`/p/${id}`);
   return Transform.Posts.toPostDetail(id, Transform.toDOM(data));
 }
 
@@ -75,12 +75,12 @@ export async function getList(page?: number | string) {
  * 获取随笔归档、文章归档
  *
  * @param date 例如：2023/02，请求的是 2023 年 2 月下的随笔或文章归档
- * @param type 文章的请求链接是 archives，随笔的请求链接是 archive
+ * @param type 文章归档 articles，随笔归档 posts
  */
-export async function getListByArchive(date: string, type: "article" | "arbeiten") {
+export async function getListArchive(date: string, type: string) {
   const splitDate = date.split("-");
   const { data } = await request.get(
-    `/${type === "article" ? "archives" : "archive"}/${splitDate[0]}/${splitDate[1]}.html`
+    `/${type == "posts" ? "p" : "articles"}/archive/${splitDate[0]}/${splitDate[1]}`
   );
   return Transform.Posts.toPostsList2(Transform.toDOM(data));
 }
@@ -91,7 +91,7 @@ export async function getListByArchive(date: string, type: "article" | "arbeiten
  * @param tag 标签名称
  * @param page 页码
  */
-export async function getListByLabel(tag: any, page?: string | number) {
+export async function getListLabel(tag: any, page?: string | number) {
   const { data } = await request.get(`/tag/${tag}/default.html?page=${page ?? 1}`);
   return Transform.Posts.toPartPostsList(Transform.toDOM(data));
 }
@@ -100,6 +100,7 @@ export async function getListByLabel(tag: any, page?: string | number) {
  * 检测是否解锁博文
  *
  * @param pwd 博文阅读密码
+ * @param id
  * @returns 输入密码正确时返回 true
  */
 export async function isPassed(pwd: string, id: string) {
@@ -119,6 +120,7 @@ export async function isPassed(pwd: string, id: string) {
  * 获取上锁的博文内容
  *
  * @param pwd 博文阅读密码
+ * @param id
  * @returns 输入密码正确时返回这个博文内容
  */
 export async function getLocked(pwd: string, id: string) {
@@ -132,6 +134,7 @@ export async function getLocked(pwd: string, id: string) {
  * 获取某天下的随笔或文章的列表
  *
  * @param date 例如：2023/02/28，请求的是 2023 年 2 月 28 日的随笔或文章列表
+ * @deprecated 2024年9月8日 废弃该功能
  */
 export async function getListByDay(date: string) {
   const { data } = await request.get(`/archive/${date}.html`);

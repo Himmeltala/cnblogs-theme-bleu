@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const loading = new Utils.Browser.Loading();
 
 loading.startLoading();
@@ -42,18 +42,18 @@ onUnmounted(() => {
               I'm <span class="shine-text">{{ Consts.getBlogApp() }}.</span>
             </div>
           </div>
-          <div class="text-1.2rem font-bold mt-2" :style="{ height: offsetHeight + 'px' }">
+          <div :style="{ height: offsetHeight + 'px' }" class="text-1.2rem font-bold mt-2">
             <div id="tw"></div>
           </div>
           <div class="f-c-c mt-10">
             <div
-              class="hover ml-4"
-              @click="Utils.Navigation.go(item.value)"
+              v-for="item in Consts.config.header.paths"
               v-if="Consts.config.header.paths?.length"
-              v-for="item in Consts.config.header.paths">
-              <div v-if="item.icon" v-html="item.icon" class="f-c-c"></div>
+              class="hover ml-4"
+              @click="Utils.Navigation.go(item.value)">
+              <div v-if="item.icon" class="f-c-c" v-html="item.icon"></div>
               <div v-else class="f-c-c">
-                <img class="w-8 h-8 object-cover rd-50%" :src="item.src" />
+                <img :src="item.src" class="w-8 h-8 object-cover rd-50%" />
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 #tw {
   overflow: hidden;
   border-right: 0.15rem solid var(--bleu-theme-color-primary);

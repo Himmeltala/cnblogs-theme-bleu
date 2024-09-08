@@ -1,4 +1,4 @@
-<script setup lang="ts"></script>
+<script lang="ts" setup></script>
 
 <template>
   <div id="l-progress" class="z-999999 fixed left-0 top-0 w-100vw">
@@ -18,14 +18,14 @@
     <div id="l-bottom-nail"></div>
   </div>
   <div
-    class="fixed left-0 top-0 w-100vw h-100vh"
     :style="{
       'background-image': 'url(' + Consts.config.images.background.src + ')',
       'background-size': Consts.config.images.background.size,
       'background-repeat': Consts.config.images.background.repeat,
       'background-position': Consts.config.images.background.position,
       opacity: Consts.config.images.background.opacity
-    }"></div>
+    }"
+    class="fixed left-0 top-0 w-100vw h-100vh"></div>
 </template>
 
 <style lang="scss">

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const loading = new Utils.Browser.Loading();
 const route = useRoute();
 const postId = shallowRef<any>(route.params.id);
@@ -58,7 +58,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="page position-relative f-c-c" v-if="postData && postInfo">
+  <div v-if="postData && postInfo" class="page position-relative f-c-c">
     <div class="lg-sm:w-55vw lt-sm:w-90vw">
       <div class="text-1.5rem text-text-regular font-bold mb-2">{{ postData.text }}</div>
       <div class="f-c-s flex-wrap mb-4 text-0.9rem">
@@ -83,8 +83,8 @@ onMounted(() => {
         </div>
         <a
           v-if="isBlogOwner"
-          target="_blank"
-          :href="'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId">
+          :href="'https://i.cnblogs.com/EditPosts.aspx?postid=' + postId"
+          target="_blank">
           <div class="f-c-c">
             <div class="mx-2">|</div>
             <div class="f-c-c hover">
@@ -95,7 +95,7 @@ onMounted(() => {
         </a>
       </div>
       <div class="text-text-regular mb-4">
-        <div class="f-c-s flex-wrap" v-if="postInfo.props.sorts.length">
+        <div v-if="postInfo.props.sorts.length" class="f-c-s flex-wrap">
           <div class="f-c-s">
             <div class="i-tabler:category-2 mr-2"></div>
             <span class="text-0.9rem">分类：</span>
@@ -103,14 +103,14 @@ onMounted(() => {
           <div
             v-for="(item, index) in postInfo.props.sorts"
             :class="{ 'mr-2': index !== postInfo.props.sorts.length - 1 }">
-            <router-link :to="Consts.Paths.sort(item.id)">
+            <router-link :to="Consts.Paths.category(item.id)">
               <el-tag round>
                 {{ item.text }}
               </el-tag>
             </router-link>
           </div>
         </div>
-        <div class="f-c-s flex-wrap mt-2" v-if="postInfo.props.tags.length">
+        <div v-if="postInfo.props.tags.length" class="f-c-s flex-wrap mt-2">
           <div class="f-c-s">
             <div class="i-tabler:bookmarks mr-2"></div>
             <span class="text-0.9rem">标签：</span>
@@ -126,9 +126,9 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <Markdown ref="mdRef" :fancy-group="'post-detail'" :content="postData.content" />
+      <Markdown ref="mdRef" :content="postData.content" :fancy-group="'post-detail'" />
       <div v-if="!isBlogOwner && isLogined" class="mt-10 f-c-e">
-        <el-button type="primary" plain round size="small">
+        <el-button plain round size="small" type="primary">
           <span v-if="postInfo.postStats.isFollowed" @click="Requests.Posts.unfollow">
             - 取消关注
           </span>
@@ -136,27 +136,27 @@ onMounted(() => {
         </el-button>
       </div>
       <div class="mt-10 f-c-c">
-        <el-button round class="mr-4" type="primary" text bg @click="convey('Digg')">
+        <el-button bg class="mr-4" round text type="primary" @click="convey('Digg')">
           <div class="i-tabler:thumb-up mr-2"></div>
           赞成 {{ postInfo.postStats.diggCount }}
         </el-button>
-        <el-button round class="mr-4" type="danger" text bg @click="convey('Bury')">
+        <el-button bg class="mr-4" round text type="danger" @click="convey('Bury')">
           <div class="i-tabler:thumb-down mr-2"></div>
           反对 {{ postInfo.postStats.buryCount }}
         </el-button>
-        <el-button round type="success" text bg @click="Utils.Native.savePost(postId)">
+        <el-button bg round text type="success" @click="Utils.Native.savePost(postId)">
           <div class="i-tabler:heart mr-2"></div>
           收藏
         </el-button>
       </div>
       <div class="text-0.9rem text-text-primary mt-10">
-        <div class="f-s-s mb-4" v-if="postInfo.prevNext.prev.href">
-          <router-link class="hover" :to="Consts.Paths.p(postInfo.prevNext.prev.href)">
+        <div v-if="postInfo.prevNext.prev.href" class="f-s-s mb-4">
+          <router-link :to="Consts.Paths.post(postInfo.prevNext.prev.href)" class="hover">
             上一篇：{{ postInfo.prevNext.prev.text }}
           </router-link>
         </div>
-        <div class="f-s-e" v-if="postInfo.prevNext.next.href">
-          <router-link class="hover" :to="Consts.Paths.p(postInfo.prevNext.next.href)">
+        <div v-if="postInfo.prevNext.next.href" class="f-s-e">
+          <router-link :to="Consts.Paths.post(postInfo.prevNext.next.href)" class="hover">
             下一篇：{{ postInfo.prevNext.next.text }}
           </router-link>
         </div>
@@ -165,8 +165,8 @@ onMounted(() => {
         <div class="f-c-s flex-wrap">
           <div class="i-tabler:user mr-2"></div>
           作者：<span
-            class="hover"
-            @click="Utils.Navigation.go('https://home.cnblogs.com/u/' + Consts.getBlogApp())">
+          class="hover"
+          @click="Utils.Navigation.go('https://home.cnblogs.com/u/' + Consts.getBlogApp())">
             {{ Consts.getBlogApp() }}
           </span>
         </div>
@@ -179,29 +179,29 @@ onMounted(() => {
         <div class="f-c-s flex-wrap">
           <div class="i-tabler:license mr-2"></div>
           版权：本作品采用「<span
-            class="hover"
-            @click="Utils.Navigation.go('https://creativecommons.org/licenses/by-nc-sa/4.0/')">
+          class="hover"
+          @click="Utils.Navigation.go('https://creativecommons.org/licenses/by-nc-sa/4.0/')">
             署名-非商业性使用-相同方式共享 4.0 国际 </span
-          >」许可协议进行许可。
+        >」许可协议进行许可。
         </div>
       </div>
       <div class="mt-10 history-today" v-html="postInfo.historyToday"></div>
-      <Comment class="mt-10" :post-id="postId" />
+      <Comment :post-id="postId" class="mt-10" />
       <div class="mt-10" v-html="postInfo.aggTopPosts"></div>
       <div class="mt-10 mb-4" v-html="postInfo.headlines"></div>
     </div>
     <div v-if="!Consts.isPC()">
-      <el-button round @click="isShowDrawer = !isShowDrawer" plain class="fixed right-5vw top-20">
+      <el-button class="fixed right-5vw top-20" plain round @click="isShowDrawer = !isShowDrawer">
         <template #icon>
           <div class="i-tabler:sign-right"></div>
         </template>
       </el-button>
       <el-drawer
-        size="80%"
-        @open="() => catalogRef.init(mdInst)"
         v-model="isShowDrawer"
+        :with-header="false"
         direction="rtl"
-        :with-header="false">
+        size="80%"
+        @open="() => catalogRef.init(mdInst)">
         <div class="mt-15">
           <Catalog ref="catalogRef" :html="mdInst" />
         </div>
@@ -216,7 +216,7 @@ onMounted(() => {
 <style lang="scss">
 .under-post-card,
 .history-today {
-  --uno: text-0.8rem text-text-primary;
+  --uno: text-0 .8rem text-text-primary;
 
   a {
     --uno: hover;

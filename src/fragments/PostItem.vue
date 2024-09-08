@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   data: {
     type: Object as PropType<PostModel[]>,
@@ -12,8 +12,8 @@ coverIdx.value = Utils.Random.get(coverArr, props.data.length);
 </script>
 
 <template>
-  <div class="item mb-14" v-for="(item, index) in data">
-    <router-link class="text-1.2rem hover text-text-regular" :to="Consts.Paths.p(item.id)">
+  <div v-for="(item, index) in data" class="item mb-14">
+    <router-link :to="Consts.Paths.post(item.id)" class="text-1.2rem hover text-text-regular">
       {{ item.text }}
     </router-link>
     <div class="mt-4 f-s-b flex-gap-4">
@@ -22,9 +22,9 @@ coverIdx.value = Utils.Random.get(coverArr, props.data.length);
           {{ item.desc }}
         </div>
         <div class="f-c-e flex-wrap mb-4">
-          <el-tag type="success" v-if="item.isTop" class="ml-2">置顶随笔</el-tag>
-          <el-tag type="danger" v-if="item.isOnlyMe" class="ml-2">自己可见</el-tag>
-          <el-tag type="warning" v-if="item.isLocked" class="ml-2">密码锁定</el-tag>
+          <el-tag v-if="item.isTop" class="ml-2" type="success">置顶随笔</el-tag>
+          <el-tag v-if="item.isOnlyMe" class="ml-2" type="danger">自己可见</el-tag>
+          <el-tag v-if="item.isLocked" class="ml-2" type="warning">密码锁定</el-tag>
         </div>
         <div class="f-c-s flex-wrap text-0.8rem">
           <div class="f-c-c">
@@ -50,14 +50,14 @@ coverIdx.value = Utils.Random.get(coverArr, props.data.length);
       </div>
       <div class="lg-sm:w-30% lt-sm:w-40% lt-sm:h-35 lg-sm:h-40 flow-hidden position-relative">
         <div class="mask position-absolute top-0 left-0 w-100% h-15% z-1"></div>
-        <img class="w-100% h-100% object-cover" :src="item.surface || coverArr[coverIdx[index]]" />
+        <img :src="item.surface || coverArr[coverIdx[index]]" class="w-100% h-100% object-cover" />
         <div class="mask position-absolute bottom-0 left-0 w-100% h-15%"></div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .item {
   .mask::after {
     --uno: block rd-2 w-100% h-100%;

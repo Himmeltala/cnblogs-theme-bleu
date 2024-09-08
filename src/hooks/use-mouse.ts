@@ -1,8 +1,7 @@
 /**
  * 监听鼠标滚动，上或下
  *
- * @param onDown 往下滚动的回调函数
- * @param onUp 往上滚动的回调函数
+ * @param fncs
  * @param options
  */
 export function useWheelRollsUpAndDown(
