@@ -58,6 +58,12 @@ const routes = <RouteRecordRaw[]>[
         path: "photo/detail/:id",
         meta: { title: "相册图片" },
         component: () => import("@/views/PhotoDetail.vue")
+      },
+      {
+        name: "Zone",
+        path: "zone",
+        meta: { title: "我的" },
+        component: () => import("@/views/Zone.vue")
       }
     ]
   }

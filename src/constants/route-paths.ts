@@ -53,3 +53,10 @@ export function labels() {
 export function photos(id?: string | number) {
   return `/main/photos/${id}`;
 }
+
+/**
+ * @returns "main/zone"
+ */
+export function zone() {
+  return "/main/zone";
+}

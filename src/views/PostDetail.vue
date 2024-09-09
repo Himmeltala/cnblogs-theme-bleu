@@ -6,7 +6,7 @@ const postData = shallowRef<PostModel>();
 const postInfo = shallowRef<PostInfoModel>();
 const mdInst = shallowRef();
 const mdRef = shallowRef();
-// const catalogRef = shallowRef();
+const catalogRef = shallowRef();
 const isShowDrawer = shallowRef(false);
 
 function fetch() {
@@ -21,9 +21,7 @@ function fetch() {
       nextTick(() => {
         mdRef.value.initialize((html: any) => {
           mdInst.value = html;
-          // if (Consts.isPC()) {
-          //   catalogRef.value.initialize(mdInst.value);
-          // }
+          catalogRef.value.initialize(html);
           loading.endLoading();
         });
       });
@@ -186,40 +184,9 @@ onMounted(() => {
         </div>
       </div>
       <div class="mt-10 history-today" v-html="postInfo.historyToday"></div>
-      <!-- <Comment :post-id="postId" class="mt-10" /> -->
-      <!-- <div class="mt-10" v-html="postInfo.aggTopPosts"></div> -->
-      <!-- <div class="mt-10 mb-4" v-html="postInfo.headlines"></div> -->
     </div>
-    <!-- <div v-if="!Consts.isPC()">
-      <el-button class="fixed right-5vw top-20" plain round @click="isShowDrawer = !isShowDrawer">
-        <template #icon>
-          <div class="i-tabler:sign-right"></div>
-        </template>
-      </el-button>
-      <el-drawer
-        v-model="isShowDrawer"
-        :with-header="false"
-        direction="rtl"
-        size="80%"
-        @open="() => catalogRef.init(mdInst)">
-        <div class="mt-15">
-          <Catalog ref="catalogRef" :html="mdInst" />
-        </div>
-      </el-drawer>
-    </div> -->
-    <!-- <div> -->
     <Catalog ref="catalogRef" :html="mdInst" class="fixed left-80vw top-20 w-20vw" />
-    <!-- </div> -->
   </div>
 </template>
 
-<style lang="scss">
-.under-post-card,
-.history-today {
-  --uno: text-0.8rem text-text-primary;
-
-  a {
-    --uno: hover;
-  }
-}
-</style>
+<style lang="scss"></style>

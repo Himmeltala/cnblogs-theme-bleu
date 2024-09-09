@@ -123,8 +123,6 @@ export function toColumnData(dom: Document): ColumnDataModel {
     /[0-9]+/g
   );
 
-
-  console.log(dom);
   parseColHTML(
     dom,
     "#sidebar_articlearchive ul li > a",

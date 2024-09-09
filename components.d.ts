@@ -18,7 +18,6 @@ declare module 'vue' {
     EditComment: typeof import('./src/fragments/comment/EditComment.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDivider: typeof import('element-plus/es')['ElDivider']
-    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
@@ -40,5 +39,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Topic: typeof import('./src/components/Topic.vue')['default']
+    Zone: typeof import('./src/views/Zone.vue')['default']
   }
 }

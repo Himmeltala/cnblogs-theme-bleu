@@ -13,10 +13,10 @@ function fetch() {
   Requests.Posts.getListArchive(`${archiveDate}`, archiveMode).then(data => {
     archiveList.value = data;
     Utils.Browser.setTitle(archiveList.value.hint);
+  });
 
-    nextTick(() => {
-      loading.endLoading();
-    });
+  nextTick(() => {
+    loading.endLoading();
   });
 }
 
