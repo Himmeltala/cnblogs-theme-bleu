@@ -32,7 +32,7 @@ declare module 'vue' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
-    Index: typeof import('./src/views/Index.vue')['default']
+    Home: typeof import('./src/views/Home.vue')['default']
     Label: typeof import('./src/views/Label.vue')['default']
     LabelList: typeof import('./src/views/LabelList.vue')['default']
     Markdown: typeof import('./src/components/Markdown.vue')['default']

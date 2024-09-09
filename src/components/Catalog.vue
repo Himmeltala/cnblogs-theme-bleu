@@ -101,7 +101,7 @@ defineExpose({
 </script>
 
 <template>
-  <div v-if="topics && topics.length" class="catalog flow-auto h-87.5%">
+  <div v-if="topics?.length" class="catalog flow-auto h-87.5%">
     <div class="w-80%">
       <div class="mb-2">文章目录</div>
       <Topic v-for="item in topics" :key="item.id" :data="item" />
@@ -112,11 +112,11 @@ defineExpose({
 <style lang="scss">
 .catalog {
   .topic {
-    --uno: text-0 .8rem text-text-regular mb-2;
+    --uno: text-0 0.8rem text-text-regular mb-2;
   }
 
   .active-topic {
-    --uno: text-theme-primary transition-all-300 text-0 .9rem;
+    --uno: text-theme-primary transition-all-300 text-0 0.9rem;
   }
 }
 </style>

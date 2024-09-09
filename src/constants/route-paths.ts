@@ -1,4 +1,4 @@
-export function index() {
+export function home() {
   return "/";
 }
 

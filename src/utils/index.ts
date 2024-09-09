@@ -48,8 +48,8 @@ export namespace Utils {
     private readonly blinkSpace: number;
     private readonly rem: number;
     private readonly dom: HTMLElement;
-    private readonly typeTimer: ReturnType<typeof setTimeout> | null;
-    private readonly eraseTimer: ReturnType<typeof setTimeout> | null;
+    private typeTimer: ReturnType<typeof setTimeout> | null;
+    private eraseTimer: ReturnType<typeof setTimeout> | null;
     private listeners: Record<string, EventHandler[]> = {};
 
     constructor({
@@ -120,19 +120,19 @@ export namespace Utils {
       }
     }
 
-    type(): void {
+    startType(): void {
       this.currentText = this.texts[this.count];
       this.letter = this.currentText.slice(0, ++this.index);
       this.displayLetter();
 
       if (this.letter.length === this.currentText.length) {
-        setTimeout(() => this.erase(), this.eraseDelay);
+        this.eraseTimer = setTimeout(() => this.eraseText(), this.eraseDelay);
       } else {
-        setTimeout(() => this.type(), this.typingSpeed);
+        this.typeTimer = setTimeout(() => this.startType(), this.typingSpeed);
       }
     }
 
-    erase(): void {
+    eraseText(): void {
       this.letter = this.currentText.slice(0, --this.index);
       this.displayLetter();
 
@@ -140,9 +140,9 @@ export namespace Utils {
         this.index = 0;
         this.count = (this.count + 1) % this.texts.length;
         this.clearDisplay();
-        setTimeout(() => this.type(), 500);
+        this.eraseTimer = setTimeout(() => this.startType(), 500);
       } else {
-        setTimeout(() => this.erase(), this.eraseSpeed);
+        this.typeTimer = setTimeout(() => this.eraseText(), this.eraseSpeed);
       }
     }
 

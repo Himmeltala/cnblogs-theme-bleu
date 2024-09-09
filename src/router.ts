@@ -4,10 +4,10 @@ import { useAnchorStore } from "@/store";
 
 const routes = <RouteRecordRaw[]>[
   {
-    name: "Index",
+    name: "Home",
     path: "/",
     meta: { title: "首页" },
-    component: () => import("@/views/Index.vue")
+    component: () => import("@/views/Home.vue")
   },
   {
     name: "Main",

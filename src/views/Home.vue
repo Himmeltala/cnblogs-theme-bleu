@@ -13,7 +13,7 @@ onMounted(() => {
     rem: 1.3,
     blinkSpace: 0
   });
-  tw.type();
+  tw.startType();
   offsetHeight.value = tw.offsetHeight;
 });
 
@@ -45,19 +45,19 @@ onUnmounted(() => {
           <div :style="{ height: offsetHeight + 'px' }" class="text-1.2rem font-bold mt-2">
             <div id="tw"></div>
           </div>
-          <div class="f-c-c mt-10">
-            <div
-              v-for="item in Consts.config.header.paths"
-              v-if="Consts.config.header.paths?.length"
-              class="hover ml-4"
-              @click="Utils.Navigation.go(item.value)">
-              <div v-if="item.icon" class="f-c-c" v-html="item.icon"></div>
-              <div v-else class="f-c-c">
-                <img :src="item.src" class="w-8 h-8 object-cover rd-50%" />
-              </div>
-            </div>
-          </div>
-          <div class="f-c-c mt-30">
+          <!--          <div class="f-c-c mt-10">-->
+          <!--            <div-->
+          <!--              v-for="item in Consts.config.header.paths"-->
+          <!--              v-if="Consts.config.header.paths?.length"-->
+          <!--              class="hover ml-4"-->
+          <!--              @click="Utils.Navigation.go(item.value)">-->
+          <!--              <div v-if="item.icon" class="f-c-c" v-html="item.icon"></div>-->
+          <!--              <div v-else class="f-c-c">-->
+          <!--                <img :src="item.src" class="w-8 h-8 object-cover rd-50%" />-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <div class="f-c-c mt-50">
             <div class="circle" @click="$router.push(Consts.Paths.posts(1))"></div>
           </div>
         </div>

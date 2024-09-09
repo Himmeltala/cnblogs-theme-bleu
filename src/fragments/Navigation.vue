@@ -91,7 +91,7 @@ function openedDrawer() {
       </el-divider>
       <div>
         <div class="f-c-s flex-wrap">
-          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.index())">
+          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.home())">
             首页
           </div>
           <div
@@ -289,7 +289,7 @@ function openedDrawer() {
       </div>
       <div v-if="Consts.isPC()" class="f-c-b">
         <div class="f-c-s text-text-regular">
-          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.index())">
+          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.home())">
             首页
           </div>
           <div
