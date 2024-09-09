@@ -112,11 +112,11 @@ defineExpose({
 <style lang="scss">
 .catalog {
   .topic {
-    --uno: text-0 0.8rem text-text-regular mb-2;
+    --uno: text-0.8rem text-text-regular mb-1;
   }
 
   .active-topic {
-    --uno: text-theme-primary transition-all-300 text-0 0.9rem;
+    --uno: text-0.9rem text-theme-primary transition-all-300;
   }
 }
 </style>

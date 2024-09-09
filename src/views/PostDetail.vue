@@ -6,7 +6,7 @@ const postData = shallowRef<PostModel>();
 const postInfo = shallowRef<PostInfoModel>();
 const mdInst = shallowRef();
 const mdRef = shallowRef();
-const catalogRef = shallowRef();
+// const catalogRef = shallowRef();
 const isShowDrawer = shallowRef(false);
 
 function fetch() {
@@ -21,9 +21,9 @@ function fetch() {
       nextTick(() => {
         mdRef.value.initialize((html: any) => {
           mdInst.value = html;
-          if (Consts.isPC()) {
-            catalogRef.value.initialize(mdInst.value);
-          }
+          // if (Consts.isPC()) {
+          //   catalogRef.value.initialize(mdInst.value);
+          // }
           loading.endLoading();
         });
       });
@@ -165,8 +165,8 @@ onMounted(() => {
         <div class="f-c-s flex-wrap">
           <div class="i-tabler:user mr-2"></div>
           作者：<span
-          class="hover"
-          @click="Utils.Navigation.go('https://home.cnblogs.com/u/' + Consts.getBlogApp())">
+            class="hover"
+            @click="Utils.Navigation.go('https://home.cnblogs.com/u/' + Consts.getBlogApp())">
             {{ Consts.getBlogApp() }}
           </span>
         </div>
@@ -179,18 +179,18 @@ onMounted(() => {
         <div class="f-c-s flex-wrap">
           <div class="i-tabler:license mr-2"></div>
           版权：本作品采用「<span
-          class="hover"
-          @click="Utils.Navigation.go('https://creativecommons.org/licenses/by-nc-sa/4.0/')">
+            class="hover"
+            @click="Utils.Navigation.go('https://creativecommons.org/licenses/by-nc-sa/4.0/')">
             署名-非商业性使用-相同方式共享 4.0 国际 </span
-        >」许可协议进行许可。
+          >」许可协议进行许可。
         </div>
       </div>
       <div class="mt-10 history-today" v-html="postInfo.historyToday"></div>
-      <Comment :post-id="postId" class="mt-10" />
-      <div class="mt-10" v-html="postInfo.aggTopPosts"></div>
-      <div class="mt-10 mb-4" v-html="postInfo.headlines"></div>
+      <!-- <Comment :post-id="postId" class="mt-10" /> -->
+      <!-- <div class="mt-10" v-html="postInfo.aggTopPosts"></div> -->
+      <!-- <div class="mt-10 mb-4" v-html="postInfo.headlines"></div> -->
     </div>
-    <div v-if="!Consts.isPC()">
+    <!-- <div v-if="!Consts.isPC()">
       <el-button class="fixed right-5vw top-20" plain round @click="isShowDrawer = !isShowDrawer">
         <template #icon>
           <div class="i-tabler:sign-right"></div>
@@ -206,17 +206,17 @@ onMounted(() => {
           <Catalog ref="catalogRef" :html="mdInst" />
         </div>
       </el-drawer>
-    </div>
-    <div v-else>
-      <Catalog ref="catalogRef" :html="mdInst" class="fixed left-80vw top-20 w-20vw" />
-    </div>
+    </div> -->
+    <!-- <div> -->
+    <Catalog ref="catalogRef" :html="mdInst" class="fixed left-80vw top-20 w-20vw" />
+    <!-- </div> -->
   </div>
 </template>
 
 <style lang="scss">
 .under-post-card,
 .history-today {
-  --uno: text-0 .8rem text-text-primary;
+  --uno: text-0.8rem text-text-primary;
 
   a {
     --uno: hover;
