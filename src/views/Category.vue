@@ -1,38 +1,34 @@
 <script lang="ts" setup>
-const loading = new Utils.Browser.Loading();
 const route = useRoute();
 const router = useRouter();
 const posts = shallowRef<Posts2Model>();
 const subPosts = shallowRef<SubPostModel[]>();
 const currPage = ref<number>(Number(route.query.page));
 
-function fetch(id: string | number | string[]) {
-  loading.startLoading();
+async function fetch(id: string | number | string[]) {
+  Utils.Browser.startLoading();
 
-  Requests.Posts.getByL1(id, currPage.value).then(data => {
-    posts.value = data;
-    Utils.Browser.setTitle(posts.value.hint);
+  posts.value = await Requests.Posts.getByL1(id, currPage.value);
+  subPosts.value = await Requests.Posts.getByL2(id, posts.value.isArticle);
 
-    nextTick(() => {
-      Requests.Posts.getByL2(id, data.isArticle).then(data => {
-        subPosts.value = data;
-      });
-
-      loading.endLoading();
-    });
+  Utils.Browser.setTitle(posts.value.hint);
+  nextTick(() => {
+    Utils.Browser.endLoading();
   });
 }
 
-onBeforeRouteUpdate(updateGuard => {
+onMounted(async () => {
+  await fetch(route.query.id);
+});
+
+onBeforeRouteUpdate(async updateGuard => {
   currPage.value = Number(updateGuard.query.page);
-  fetch(updateGuard.query.id);
+  await fetch(updateGuard.query.id);
 });
 
 function onCurrentChange() {
   router.push(Consts.Paths.category(route.query.id, currPage.value));
 }
-
-fetch(route.query.id);
 </script>
 
 <template>

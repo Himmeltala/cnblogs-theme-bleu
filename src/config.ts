@@ -3,7 +3,7 @@ import type { App } from "vue";
 /**
  * 初始化浏览器 LocalStorage
  */
-function initStorage() {
+function initLocalStorage() {
   const options = Utils.Storage.getOptions().value;
   const refactoringOfOptions = JSON.stringify(
     Utils.Storage.optionsRefactor(options, Utils.Storage.getOptionsTemplate())
@@ -152,11 +152,11 @@ function createAppDiv() {
  * 在 mount Vue 之前
  */
 function onBeforeLoad() {
-  initStorage();
-  createConsts();
-  createGlobalVars();
-  createIconDiv();
   createAppDiv();
+  createConsts();
+  createIconDiv();
+  createGlobalVars();
+  initLocalStorage();
 }
 
 /**
@@ -174,8 +174,6 @@ function onAfterLoad() {
  */
 export function useTheme(app: App<Element>) {
   onBeforeLoad();
-
   app.mount("#app");
-
   onAfterLoad();
 }

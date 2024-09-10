@@ -3,16 +3,16 @@ const labelList = ref<LabelModel[]>();
 const filteredList = ref<LabelModel[]>();
 const searchVal = ref("");
 const sortVal = ref("乱序");
-const loading = new Utils.Browser.Loading();
 
-function fetch() {
-  loading.startLoading();
-  Requests.Datum.getMarkList().then(data => {
-    labelList.value = data;
-    filteredList.value = data;
-    nextTick(() => {
-      loading.endLoading();
-    });
+async function fetch() {
+  Utils.Browser.startLoading();
+
+  const data = await Requests.Datum.getMarkList();
+  labelList.value = data;
+  filteredList.value = data;
+
+  nextTick(() => {
+    Utils.Browser.endLoading();
   });
 }
 
@@ -41,7 +41,9 @@ function onSortChange() {
   }
 }
 
-fetch();
+onMounted(async () => {
+  await fetch();
+});
 </script>
 
 <template>

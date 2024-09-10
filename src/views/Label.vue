@@ -1,30 +1,30 @@
 <script lang="ts" setup>
 const route = useRoute();
 const currPage = ref(1);
-const loading = new Utils.Browser.Loading();
 const postList = shallowRef<PostsModel>();
 const postCoverIdx = shallowRef<number[]>();
 const postCoverArr = Consts.config.images.stochastic;
 
-function fetch(name: any) {
-  loading.startLoading();
+async function fetch(name: any) {
+  Utils.Browser.startLoading();
 
-  Requests.Posts.getListLabel(name, currPage.value).then(data => {
-    postList.value = data;
-    Utils.Browser.setTitle(postList.value.hint);
-    postCoverIdx.value = Utils.Random.get(postCoverArr, postList.value.data.length);
+  postList.value = await Requests.Posts.getListLabel(name, currPage.value);
+  postCoverIdx.value = Utils.Random.get(postCoverArr, postList.value.data.length);
 
-    nextTick(() => {
-      loading.endLoading();
-    });
+  Utils.Browser.setTitle(postList.value.hint);
+
+  nextTick(() => {
+    Utils.Browser.endLoading();
   });
 }
 
-onBeforeRouteUpdate(updateGuard => {
-  fetch(updateGuard.query.name);
+onMounted(async () => {
+  await fetch(route.query.name);
 });
 
-fetch(route.query.name);
+onBeforeRouteUpdate(async updateGuard => {
+  await fetch(updateGuard.query.name);
+});
 </script>
 
 <template>

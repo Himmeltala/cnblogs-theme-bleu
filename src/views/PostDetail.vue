@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-const loading = new Utils.Browser.Loading();
 const route = useRoute();
 const postId = shallowRef<any>(route.params.id);
 const postData = shallowRef<PostModel>();
@@ -7,26 +6,23 @@ const postInfo = shallowRef<PostInfoModel>();
 const mdInst = shallowRef();
 const mdRef = shallowRef();
 const catalogRef = shallowRef();
-const isShowDrawer = shallowRef(false);
 
-function fetch() {
-  loading.startLoading();
+async function fetch() {
+  Utils.Browser.startLoading();
 
-  Promise.all([Requests.Posts.getDetail(postId.value), Requests.Posts.getInfo(postId.value)]).then(
-    ([detail, info]) => {
-      postData.value = detail;
-      postInfo.value = info;
-      Utils.Browser.setTitle(postData.value.text);
+  postData.value = await Requests.Posts.getDetail(postId.value);
+  postInfo.value = await Requests.Posts.getInfo(postId.value);
 
-      nextTick(() => {
-        mdRef.value.initialize((html: any) => {
-          mdInst.value = html;
-          catalogRef.value.initialize(html);
-          loading.endLoading();
-        });
-      });
-    }
-  );
+  Utils.Browser.setTitle(postData.value.text);
+
+  nextTick(() => {
+    mdRef.value.initialize((html: any) => {
+      mdInst.value = html;
+      catalogRef.value.initialize(html);
+
+      Utils.Browser.endLoading();
+    });
+  });
 }
 
 function convey(type: VoteType) {
@@ -45,13 +41,13 @@ function convey(type: VoteType) {
   });
 }
 
-onBeforeRouteUpdate(updateGuard => {
+onBeforeRouteUpdate(async updateGuard => {
   postId.value = updateGuard.params.id;
-  fetch();
+  await fetch();
 });
 
-onMounted(() => {
-  fetch();
+onMounted(async () => {
+  await fetch();
 });
 </script>
 

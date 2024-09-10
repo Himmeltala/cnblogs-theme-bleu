@@ -1,32 +1,28 @@
 <script lang="ts" setup>
-const loading = new Utils.Browser.Loading();
-
 const postList = ref();
 const currPage = ref(1);
 
-function fetch() {
-  loading.startLoading();
+async function fetch() {
+  Utils.Browser.startLoading();
 
-  Requests.Posts.getList(currPage.value).then(data => {
-    postList.value = data;
+  postList.value = await Requests.Posts.getList(currPage.value);
 
-    nextTick(() => {
-      loading.endLoading();
-    });
+  nextTick(() => {
+    Utils.Browser.endLoading();
   });
 }
 
 const route = useRoute();
 const router = useRouter();
 
-onBeforeMount(() => {
+onMounted(async () => {
   currPage.value = Number(route.query.page);
-  fetch();
+  await fetch();
 });
 
-onBeforeRouteUpdate(updateGuard => {
+onBeforeRouteUpdate(async updateGuard => {
   currPage.value = Number(updateGuard.query.page);
-  fetch();
+  await fetch();
 });
 
 function onCurrentChange() {

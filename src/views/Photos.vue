@@ -1,28 +1,29 @@
 <script lang="ts" setup>
-const loading = new Utils.Browser.Loading();
-
 const route = useRoute();
 const imgList = shallowRef();
 const albumn = shallowRef<PhotosModel>();
 
-function fetch(id: any) {
-  loading.startLoading();
-  Requests.Datum.getAlbumn(id).then(data => {
-    albumn.value = data;
-    imgList.value = albumn.value.data.map(i => i.href);
+async function fetch(id: any) {
+  Utils.Browser.startLoading();
 
-    nextTick(() => {
-      Hooks.Fancybox.use();
-      loading.endLoading();
-    });
+  albumn.value = await Requests.Datum.getAlbumn(id);
+
+  imgList.value = albumn.value.data.map(i => i.href);
+
+  nextTick(() => {
+    Hooks.Fancybox.use();
+
+    Utils.Browser.endLoading();
   });
 }
 
-onBeforeRouteUpdate(updateGuard => {
-  fetch(updateGuard.params.id);
+onMounted(async () => {
+  await fetch(route.params.id);
 });
 
-fetch(route.params.id);
+onBeforeRouteUpdate(async updateGuard => {
+  await fetch(updateGuard.params.id);
+});
 </script>
 
 <template>

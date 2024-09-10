@@ -2,6 +2,8 @@ import type { NavigationGuardNext, RouteRecordRaw } from "vue-router";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { useAnchorStore } from "@/store";
 
+import { withLoading } from "@/components/WithLoading";
+
 const routes = <RouteRecordRaw[]>[
   {
     name: "Home",
@@ -13,7 +15,7 @@ const routes = <RouteRecordRaw[]>[
     name: "Main",
     path: "/main",
     redirect: "/main/posts",
-    component: () => import("@/layouts/Main.vue"),
+    component: () => import("@/layouts/Main.vue").then(module => withLoading(module.default)),
     children: [
       {
         name: "Posts",

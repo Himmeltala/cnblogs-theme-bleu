@@ -126,7 +126,7 @@ pnpm build
   .loading {
     z-index: 9999999;
     background-color: #222222;
-    position: relative;
+    position: absolute;
     height: 100vh;
     width: 100vw;
     display: flex;

@@ -1,21 +1,22 @@
 <script setup lang="ts">
-const loading = new Utils.Browser.Loading();
-
 const colData = ref<ColumnDataModel>();
 const stsData = ref<StatisticsModel[]>();
 const radarRef = ref<HTMLElement>();
 
 async function fetch() {
+  Utils.Browser.startLoading();
+
   colData.value = await Requests.Datum.getColumnContent();
   stsData.value = await Requests.Datum.getStatistics();
-  loading.endLoading();
+
+  Hooks.Echarts.use({ dom: radarRef.value, options: Consts.config.diagram.technics });
+
+  Utils.Browser.endLoading();
 }
 
-onMounted(() => {
-  Hooks.Echarts.use({ dom: radarRef.value, options: Consts.config.diagram.technics });
+onMounted(async () => {
+  await fetch();
 });
-
-await fetch();
 </script>
 
 <template>

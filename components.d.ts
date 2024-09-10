@@ -7,15 +7,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AnswerComment: typeof import('./src/fragments/comment/AnswerComment.vue')['default']
     Archive: typeof import('./src/views/Archive.vue')['default']
-    BuryComment: typeof import('./src/fragments/comment/BuryComment.vue')['default']
     Catalog: typeof import('./src/components/Catalog.vue')['default']
     Category: typeof import('./src/views/Category.vue')['default']
-    Comment: typeof import('./src/fragments/comment/Comment.vue')['default']
-    DeleteComment: typeof import('./src/fragments/comment/DeleteComment.vue')['default']
-    DiggComment: typeof import('./src/fragments/comment/DiggComment.vue')['default']
-    EditComment: typeof import('./src/fragments/comment/EditComment.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDivider: typeof import('element-plus/es')['ElDivider']
     ElInput: typeof import('element-plus/es')['ElInput']
@@ -32,7 +26,6 @@ declare module 'vue' {
     Navigation: typeof import('./src/fragments/Navigation.vue')['default']
     PhotoDetail: typeof import('./src/views/PhotoDetail.vue')['default']
     Photos: typeof import('./src/views/Photos.vue')['default']
-    PostComment: typeof import('./src/fragments/comment/PostComment.vue')['default']
     PostDetail: typeof import('./src/views/PostDetail.vue')['default']
     PostItem: typeof import('./src/fragments/PostItem.vue')['default']
     Posts: typeof import('./src/views/Posts.vue')['default']

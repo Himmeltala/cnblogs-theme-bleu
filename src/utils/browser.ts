@@ -45,41 +45,30 @@ export function getStyleSheetByTitle(title: string): CSSStyleSheet {
   return null;
 }
 
-export class Loading {
-  private trackEl: HTMLElement;
-  private barEl: HTMLElement;
+export function startLoading() {
+  const loadingInst = document.querySelector<HTMLElement>(".loading");
+  const trackEl = document.querySelector<HTMLElement>("#l-progress > .track");
+  const barEl = document.querySelector<HTMLElement>("#l-progress > .track > .bar");
 
-  constructor() {
-    this.trackEl = document.querySelector<HTMLElement>("#l-progress > .track");
-    this.barEl = document.querySelector<HTMLElement>("#l-progress > .track > .bar");
-  }
+  loadingInst.style.display = "block";
+  trackEl.classList.remove("track-static");
+  trackEl.classList.add("track-active");
+  barEl.classList.remove("bar-static");
+  barEl.classList.add("bar-active");
 
-  /**
-   * 关闭 loading 屏
-   */
-  endLoading() {
-    this.trackEl.classList.remove("track-active");
-    this.trackEl.classList.add("track-static");
+  document.getElementById("l-content").classList.toggle("fade-in-out");
+}
 
-    this.barEl.classList.remove("bar-active");
-    this.barEl.classList.add("bar-static");
+export function endLoading() {
+  const loadingInst = document.querySelector<HTMLElement>(".loading");
+  const trackEl = document.querySelector<HTMLElement>("#l-progress > .track");
+  const barEl = document.querySelector<HTMLElement>("#l-progress > .track > .bar");
 
-    const loadingInst = document.querySelector<HTMLElement>(".loading");
-    loadingInst.classList.toggle("fade-in-out");
-    loadingInst.style.display = "none";
+  loadingInst.style.display = "none";
+  trackEl.classList.remove("track-active");
+  trackEl.classList.add("track-static");
+  barEl.classList.remove("bar-active");
+  barEl.classList.add("bar-static");
 
-    document.getElementById("l-content").classList.toggle("fade-in-out");
-  }
-
-  /**
-   * 开启 loading 屏
-   */
-  startLoading() {
-    this.trackEl.classList.remove("track-static");
-    this.trackEl.classList.add("track-active");
-    this.barEl.classList.remove("bar-static");
-    this.barEl.classList.add("bar-active");
-
-    document.getElementById("l-content").classList.toggle("fade-in-out");
-  }
+  document.getElementById("l-content").classList.toggle("fade-in-out");
 }

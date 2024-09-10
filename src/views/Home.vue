@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-const loading = new Utils.Browser.Loading();
-
-loading.startLoading();
 let tw: any = null;
 const offsetHeight = ref(0);
 
 onMounted(() => {
-  loading.endLoading();
+  Utils.Browser.startLoading();
+
   tw = new Utils.TypeWriter({
     texts: Consts.config.welcome.texts,
     el: "tw",
@@ -15,6 +13,10 @@ onMounted(() => {
   });
   tw.startType();
   offsetHeight.value = tw.offsetHeight;
+
+  nextTick(() => {
+    Utils.Browser.endLoading();
+  });
 });
 
 onUnmounted(() => {

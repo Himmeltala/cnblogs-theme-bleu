@@ -1,32 +1,30 @@
 <script lang="ts" setup>
-const loading = new Utils.Browser.Loading();
-
 const route = useRoute();
 const archiveList = shallowRef();
 
 let archiveDate = route.params.date as string;
 let archiveMode = route.params.mode as string;
 
-function fetch() {
-  loading.startLoading();
+async function fetch() {
+  Utils.Browser.startLoading();
 
-  Requests.Posts.getListArchive(`${archiveDate}`, archiveMode).then(data => {
-    archiveList.value = data;
-    Utils.Browser.setTitle(archiveList.value.hint);
-  });
+  archiveList.value = await Requests.Posts.getListArchive(`${archiveDate}`, archiveMode);
+  Utils.Browser.setTitle(archiveList.value.hint);
 
   nextTick(() => {
-    loading.endLoading();
+    Utils.Browser.endLoading();
   });
 }
 
-onBeforeRouteUpdate(updateGuard => {
-  archiveMode = updateGuard.params.mode as string;
-  archiveDate = updateGuard.params.date as string;
-  fetch();
+onMounted(async () => {
+  await fetch();
 });
 
-fetch();
+onBeforeRouteUpdate(async updateGuard => {
+  archiveMode = updateGuard.params.mode as string;
+  archiveDate = updateGuard.params.date as string;
+  await fetch();
+});
 </script>
 
 <template>
