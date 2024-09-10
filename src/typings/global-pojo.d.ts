@@ -206,6 +206,10 @@ interface ConfigModel {
   theme?: {
     codeFamily: string;
     mainFamily: string;
+    codeLineHeight: number;
+    mainLineHeight: number;
+    mainSizeRate: number;
+    codeSizeRate: number;
   };
 }
 

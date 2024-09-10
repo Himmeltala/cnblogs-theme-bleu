@@ -11,9 +11,13 @@
   overflow-y: hidden;
   color: var(--bleu-text-color-primary) !important;
   font-family: var(--bleu-code-family) !important;
+  font-size: var(--bleu-code-font-size) !important;
+  line-height: var(--bleu-code-line-height) !important;
 
   span {
     font-family: var(--bleu-code-family) !important;
+    font-size: var(--bleu-code-font-size) !important;
+    line-height: var(--bleu-code-line-height) !important;
   }
 
   &::-webkit-scrollbar {

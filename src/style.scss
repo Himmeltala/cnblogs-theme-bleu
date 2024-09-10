@@ -5,7 +5,7 @@
 @use "element-plus/theme-chalk/dark/css-vars.css";
 
 * {
-  line-height: 2;
+  line-height: var(--bleu-main-line-height);
   word-break: break-all;
   box-sizing: border-box;
   scroll-behavior: smooth;
@@ -20,7 +20,8 @@
 
   @media screen and (min-width: $min) {
     html {
-      --bleu-font-size: #{calc($min / 100)};
+      --bleu-main-font-size: #{calc($min / var(--bleu-main-font-size-rate))};
+      --bleu-code-font-size: #{calc($min / var(--bleu-code-font-size-rate))};
     }
   }
 }
@@ -100,7 +101,7 @@ html {
 }
 
 html {
-  font-size: var(--bleu-font-size);
+  font-size: var(--bleu-main-font-size);
   font-family: var(--bleu-main-family);
   color: var(--bleu-text-color-primary);
 }

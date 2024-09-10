@@ -59,7 +59,11 @@ function createConsts() {
     },
     theme: {
       codeFamily: "Hack",
-      mainFamily: "LXGW Bright"
+      mainFamily: "LXGW Bright",
+      codeLineHeight: 1.7,
+      mainLineHeight: 2,
+      mainSizeRate: 100,
+      codeSizeRate: 110
     },
     welcome: {
       texts: [
@@ -115,6 +119,10 @@ function createGlobalVars() {
       `html {
         --bleu-code-family: ${theme.codeFamily || `var(--el-font-family)`};
         --bleu-main-family: ${theme.mainFamily || `var(--el-font-family)`};
+        --bleu-code-line-height: ${theme.codeLineHeight};
+        --bleu-main-line-height: ${theme.mainLineHeight};
+        --bleu-main-font-size-rate: ${theme.mainSizeRate};
+        --bleu-code-font-size-rate: ${theme.codeSizeRate};
       }`,
       stylesheet.cssRules.length
     );
