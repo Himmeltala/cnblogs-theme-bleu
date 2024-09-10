@@ -58,9 +58,8 @@ function createConsts() {
       ]
     },
     theme: {
-      cssvar: {
-        codeFamily: "Hack"
-      }
+      codeFamily: "Hack",
+      mainFamily: "LXGW Bright"
     },
     welcome: {
       texts: [
@@ -108,16 +107,18 @@ function createConsts() {
  * 创建全局 CSS 变量
  */
 function createGlobalVars() {
-  const style = document.createElement("style");
   const theme = Consts.config.theme;
+  const stylesheet = Utils.Browser.getStyleSheetByTitle("global-stylesheet");
 
-  style.textContent = `
-    html {
-      --bleu-code-family: ${theme.cssvar.codeFamily || `var(--el-font-family)`}
-    }
-  `;
-
-  document.head.append(style);
+  if (stylesheet) {
+    stylesheet.insertRule(
+      `html {
+        --bleu-code-family: ${theme.codeFamily || `var(--el-font-family)`};
+        --bleu-main-family: ${theme.mainFamily || `var(--el-font-family)`};
+      }`,
+      stylesheet.cssRules.length
+    );
+  }
 }
 
 /**
@@ -155,10 +156,7 @@ function onBeforeLoad() {
  */
 function onAfterLoad() {
   Utils.PrettifyLog.primary("GitHub", "https://github.com/Himmeltala/cnblogs-theme-bleu");
-  Utils.PrettifyLog.primary(
-    "v1.3.0",
-    "This theme was created by Himmeltala."
-  );
+  Utils.PrettifyLog.primary("v1.3.0", "This theme was created by Himmeltala.");
 }
 
 /**

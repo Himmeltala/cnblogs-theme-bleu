@@ -117,11 +117,6 @@ pnpm build
   rel="stylesheet"
   href="https://blog-static.cnblogs.com/files/blogs/666252/index-bleu.css?t=2024127009" />
 
-<!-- 推荐字体 -->
-<link
-  rel="stylesheet"
-  href="https://cdn.bootcdn.net/ajax/libs/hack-font/3.3.0/web/hack-subset.min.css" />
-
 <!-- 加载动画 CSS -->
 <style>
   #home {
@@ -180,6 +175,9 @@ pnpm build
     }
   }
 </style>
+
+<!-- 自定义 CSS 变量，例如修改文章字体、代码块字体 -->
+<style type="text/css" title="global-stylesheet"></style>
 
 <!-- 加载动画 HTML 结构 -->
 <div class="loading">
@@ -299,15 +297,19 @@ function calc(x, y) {
 ```html
 <link
   rel="stylesheet"
+  href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkaibright/dist/LXGWBright-Regular/result.css" />
+<link
+  rel="stylesheet"
   href="https://cdn.bootcdn.net/ajax/libs/hack-font/3.3.0/web/hack-subset.min.css" />
 ```
+
+以下是页面字体和代码块字体，变量很多，持续增加可自定义 CSS 变量。
 
 ```js
 window.__BLEU_CONFIG__ = {
   theme: {
-    cssvar: {
-      codeFamily: "Hack"
-    }
+    codeFamily: "Hack",
+    mainFamily: "LXGW Bright"
   }
 };
 ```

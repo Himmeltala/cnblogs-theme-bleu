@@ -15,6 +15,36 @@ export function setTitle(title?: string) {
   document.getElementsByTagName("title")[0].innerText = `${prefix}${Consts.getBlogApp()} - 博客园`;
 }
 
+/**
+ * 通过 href 获取样式表
+ *
+ * @param href
+ * @returns
+ */
+export function getStyleSheetByHref(href: string): CSSStyleSheet {
+  for (let i = 0; i < document.styleSheets.length; i++) {
+    if (document.styleSheets[i].href && document.styleSheets[i].href.includes(href)) {
+      return document.styleSheets[i];
+    }
+  }
+  return null;
+}
+
+/**
+ * 通过 title 获取样式表
+ *
+ * @param title
+ * @returns
+ */
+export function getStyleSheetByTitle(title: string): CSSStyleSheet {
+  for (let i = 0; i < document.styleSheets.length; i++) {
+    if (document.styleSheets[i].title === title) {
+      return document.styleSheets[i];
+    }
+  }
+  return null;
+}
+
 export class Loading {
   private trackEl: HTMLElement;
   private barEl: HTMLElement;

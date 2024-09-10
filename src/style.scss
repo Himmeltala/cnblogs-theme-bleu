@@ -5,9 +5,6 @@
 @use "element-plus/theme-chalk/dark/css-vars.css";
 
 * {
-  color: inherit;
-  font-family: inherit;
-  font-size: inherit;
   line-height: 2;
   word-break: break-all;
   box-sizing: border-box;
@@ -102,19 +99,25 @@ html {
   --el-text-color-regular: var(--bleu-text-color-regular) !important;
 }
 
+html {
+  font-size: var(--bleu-font-size);
+  font-family: var(--bleu-main-family);
+  color: var(--bleu-text-color-primary);
+}
+
 .shine-text {
   background: linear-gradient(
-      to right,
-      #409eff,
-      #2d8cf0,
-      #5e72e4,
-      #673bb7,
-      #fa7298,
-      #ff9700,
-      #607d8b,
-      #009688,
-      #42b983,
-      #906f61
+    to right,
+    #409eff,
+    #2d8cf0,
+    #5e72e4,
+    #673bb7,
+    #fa7298,
+    #ff9700,
+    #607d8b,
+    #009688,
+    #42b983,
+    #906f61
   );
   -webkit-background-clip: text;
   background-clip: text;

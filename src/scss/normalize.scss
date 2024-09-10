@@ -7,16 +7,10 @@
  * 1. Prevent adjustments of font size after orientation changes in iOS.
  */
 
-html,
-body {
-  color: var(--bleu-text-color-primary);
-  font-size: var(--bleu-font-size);
-  margin: 0;
-  padding: 0;
-}
-
 html {
   -webkit-text-size-adjust: 100%; /* 2 */
+  margin: 0;
+  padding: 0;
 }
 
 /* Sections
@@ -52,7 +46,7 @@ hr {
  */
 
 a {
-  color: none;
+  color: inherit;
   border: none;
   margin: 0;
   padding: 0;

@@ -204,9 +204,8 @@ interface ConfigModel {
     technics: any;
   };
   theme?: {
-    cssvar: {
-      codeFamily: string;
-    };
+    codeFamily: string;
+    mainFamily: string;
   };
 }
 
