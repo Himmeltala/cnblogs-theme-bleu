@@ -7,11 +7,11 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    App: typeof import('./src/App.vue')['default']
     Archive: typeof import('./src/views/Archive.vue')['default']
     Catalog: typeof import('./src/components/Catalog.vue')['default']
     Category: typeof import('./src/views/Category.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElDivider: typeof import('element-plus/es')['ElDivider']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
@@ -22,12 +22,13 @@ declare module 'vue' {
     Home: typeof import('./src/views/Home.vue')['default']
     Label: typeof import('./src/views/Label.vue')['default']
     LabelList: typeof import('./src/views/LabelList.vue')['default']
+    Main: typeof import('./src/layouts/Main.vue')['default']
     Markdown: typeof import('./src/components/Markdown.vue')['default']
-    Navigation: typeof import('./src/fragments/Navigation.vue')['default']
+    Navigation: typeof import('./src/components/Navigation.vue')['default']
     PhotoDetail: typeof import('./src/views/PhotoDetail.vue')['default']
     Photos: typeof import('./src/views/Photos.vue')['default']
     PostDetail: typeof import('./src/views/PostDetail.vue')['default']
-    PostItem: typeof import('./src/fragments/PostItem.vue')['default']
+    PostItem: typeof import('./src/components/PostItem.vue')['default']
     Posts: typeof import('./src/views/Posts.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

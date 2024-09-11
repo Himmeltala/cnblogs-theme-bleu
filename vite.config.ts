@@ -1,5 +1,4 @@
 import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
 import { defineConfig, loadEnv } from "vite";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
@@ -8,29 +7,24 @@ import UnoCSS from "unocss/vite";
 
 export default defineConfig(({ mode }) => {
   const { VITE_BLOG_APP } = loadEnv(mode, "./");
+
   return {
     plugins: [
       vue(),
-      vueJsx(),
       UnoCSS({
         configFile: "./uno.config.ts"
       }),
       AutoImport({
-        include: [
-          /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
-          /\.vue$/,
-          /\.vue\?vue/ // .vue
-        ],
         imports: [
           "vue",
           "pinia",
           "vue-router",
           "@vueuse/core",
           {
-            "@/constants/index": ["Consts"]
+            "@/requests/index": ["Requests"]
           },
           {
-            "@/requests/index": ["Requests"]
+            "@/constants/index": ["Consts"]
           },
           {
             "@/utils/index": ["Utils"]
@@ -54,13 +48,12 @@ export default defineConfig(({ mode }) => {
             type: true
           }
         ],
-        resolvers: [ElementPlusResolver()],
         vueTemplate: true,
-        dts: "./auto-imports.d.ts"
+        resolvers: [ElementPlusResolver()]
       }),
       Components({
-        resolvers: [ElementPlusResolver()],
-        dirs: ["./src/views/**", "./src/components/**", "./src/fragments/**"]
+        dirs: ["./src/**"],
+        resolvers: [ElementPlusResolver()]
       })
     ],
     resolve: {
@@ -73,7 +66,6 @@ export default defineConfig(({ mode }) => {
         scss: {
           additionalData: `
             @use "sass:math";
-            @use "@/scss/mixins";
           `
         }
       }
