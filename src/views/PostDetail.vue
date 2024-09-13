@@ -53,7 +53,7 @@ onMounted(async () => {
 
 <template>
   <div v-if="postData && postInfo" class="page relative f-c-c">
-    <div class="lg-sm:w-55vw lt-sm:w-90vw">
+    <div class="flow-auto">
       <div class="text-1.5rem text-text-regular font-bold mb-2">{{ postData.text }}</div>
       <div class="f-c-s flex-wrap mb-4 text-0.9rem">
         <div class="f-c-c">

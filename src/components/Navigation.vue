@@ -21,7 +21,7 @@ function toggle() {
     b="b-1 b-solid border-primary"
     class="top-header light:bg-#ffffffb3 dark:bg-#242424b3 h-15 fixed top-0 left-0 w-100vw z-999">
     <div class="content lg-sm:px-50 lt-sm:px-4 lg-sm:f-c-b lt-sm:f-c-s h-100%">
-      <div class="f-c-s">
+      <div class="f-c-s lt-sm:hidden">
         <div class="w-45">
           <el-input
             v-model="val"
@@ -34,10 +34,8 @@ function toggle() {
         </div>
       </div>
       <div class="f-c-b">
-        <div v-if="Consts.isPC()" class="f-c-s text-text-regular">
-          <div class="hover mr-4 relative" @click="$router.push(Consts.Paths.home())">
-            首页
-          </div>
+        <div class="f-c-s text-text-regular">
+          <div class="hover mr-4 relative" @click="$router.push(Consts.Paths.home())">首页</div>
           <div
             :class="{
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:absolute before:left-0 before:bottom--1 before:rd-2':
@@ -47,7 +45,9 @@ function toggle() {
             @click="$router.push(Consts.Paths.posts())">
             随笔
           </div>
-          <div class="hover mr-4" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
+          <div
+            class="hover mr-4"
+            @click="Utils.Navigation.go('https://www.cnblogs.com/')">
             博客园
           </div>
           <div
@@ -64,21 +64,12 @@ function toggle() {
               'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'LabelList'
             }"
-            class="hover mr-4 relative"
+            class="hover mr-4 relative lt-sm:hidden"
             @click="$router.push('/main/labels')">
             标签
           </div>
-          <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>
-        </div>
-        <div v-else>
-          <div
-            :class="{
-              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:absolute before:left-0 before:bottom--1 before:rd-2':
-                $route.name === 'Zone'
-            }"
-            class="hover mr-4 relative"
-            @click="$router.push(Consts.Paths.zone())">
-            我的
+          <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">
+            管理
           </div>
         </div>
         <div class="tools ml-4">

@@ -127,6 +127,8 @@ pnpm build
     z-index: 9999999;
     background-color: #222222;
     position: absolute;
+    left: 0;
+    top: 0;
     height: 100vh;
     width: 100vw;
     display: flex;

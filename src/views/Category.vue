@@ -51,7 +51,7 @@ function onCurrentChange() {
       <div class="f-c-e">
         <el-pagination
           v-model:current-page="currPage"
-          :layout="Consts.isPC() ? 'pager, next' : 'prev, next'"
+          layout="pager, next"
           :page-count="posts?.page"
           :total="posts?.page"
           @current-change="onCurrentChange" />
