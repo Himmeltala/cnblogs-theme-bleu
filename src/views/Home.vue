@@ -30,10 +30,10 @@ onUnmounted(() => {
       <div class="f-c-c">
         <div>
           <div class="f-c-c">
-            <div class="position-relative w-50 h-50">
+            <div class="relative w-50 h-50">
               <img :src="Consts.config.avatar" class="w-50 h-50 object-cover rd-50%" />
               <div
-                class="position-absolute bottom-0 right-0 f-c-c w-10 h-10 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
+                class="absolute bottom-0 right-0 f-c-c w-10 h-10 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
                 {{ Consts.config.status || "🐟" }}
               </div>
             </div>

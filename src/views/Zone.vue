@@ -23,10 +23,10 @@ onMounted(() => {
   <div class="page">
     <div>
       <div class="f-s-s">
-        <div class="position-relative w-30 h-30 mr-10">
+        <div class="relative w-30 h-30 mr-10">
           <img :src="Consts.config.avatar" class="w-100% h-100% object-cover rd-50%" />
           <div
-            class="position-absolute bottom-0 right-0 f-c-c w-8 h-8 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
+            class="absolute bottom-0 right-0 f-c-c w-8 h-8 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
             {{ Consts.config.status || "🐟" }}
           </div>
         </div>

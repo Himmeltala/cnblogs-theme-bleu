@@ -35,10 +35,10 @@ onBeforeRouteUpdate(async updateGuard => {
         v-for="(item, index) in postList.data"
         class="item cursor-pointer lg-sm:w-30% lt-sm:w-45% mb-10">
         <router-link :to="Consts.Paths.post(item.id)">
-          <div class="lt-sm:h-45 lg-sm:h-55 flow-hidden position-relative">
-            <div class="mask position-absolute top-0 left-0 w-100% h-15% z-1"></div>
+          <div class="lt-sm:h-45 lg-sm:h-55 flow-hidden relative">
+            <div class="mask absolute top-0 left-0 w-100% h-15% z-1"></div>
             <img :src="postCoverArr[postCoverIdx[index]]" class="w-100% h-100% object-cover rd-2" />
-            <div class="mask position-absolute bottom-0 left-0 w-100% h-15%"></div>
+            <div class="mask absolute bottom-0 left-0 w-100% h-15%"></div>
           </div>
           <div
             :to="Consts.Paths.post(item.id)"

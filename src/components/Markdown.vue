@@ -130,7 +130,7 @@ function extractLangTempFromPreCode(str: string) {
 
   const temp = `
       <div class="code-tips text-0.8rem ${
-    label ? "position-absolute" : ""
+    label ? "absolute" : ""
   } f-c-e w-100% flow-auto pr-2">
         <div class="code-label">${label}</div>
         <div class="code-lang ml-4">${lang[1]?.toUpperCase()}</div>
@@ -169,7 +169,7 @@ function extractTempFromPreCode(
       str = str.replace(`${mtEnd[0]}`, `${mtEnd[1]}`);
 
       const gap = endIndex - startIndex + 1;
-      temp += `<div class="${color} position-absolute left-0 w-100%" style="top: ${
+      temp += `<div class="${color} absolute left-0 w-100%" style="top: ${
         startIndex * step
       }px; height: ${step * gap}px">
       </div>`;
@@ -222,7 +222,7 @@ function generatePreCode(str: string) {
 
   str = str.replace(
     "<pre>",
-    `<div class="bleu-pre">${langTemp.temp}<pre class="code-container position-relative flow-hidden">${addTemp.temp}${delTemp.temp}${litTemp.temp}`
+    `<div class="bleu-pre">${langTemp.temp}<pre class="code-container relative flow-hidden">${addTemp.temp}${delTemp.temp}${litTemp.temp}`
   );
 
   return str + "</div></pre>";

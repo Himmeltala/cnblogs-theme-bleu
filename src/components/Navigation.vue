@@ -35,15 +35,15 @@ function toggle() {
       </div>
       <div class="f-c-b">
         <div v-if="Consts.isPC()" class="f-c-s text-text-regular">
-          <div class="hover mr-4 position-relative" @click="$router.push(Consts.Paths.home())">
+          <div class="hover mr-4 relative" @click="$router.push(Consts.Paths.home())">
             首页
           </div>
           <div
             :class="{
-              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'Posts'
             }"
-            class="hover mr-4 position-relative"
+            class="hover mr-4 relative"
             @click="$router.push(Consts.Paths.posts())">
             随笔
           </div>
@@ -52,19 +52,19 @@ function toggle() {
           </div>
           <div
             :class="{
-              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'Zone'
             }"
-            class="hover mr-4 position-relative"
+            class="hover mr-4 relative"
             @click="$router.push(Consts.Paths.zone())">
             我的
           </div>
           <div
             :class="{
-              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'LabelList'
             }"
-            class="hover mr-4 position-relative"
+            class="hover mr-4 relative"
             @click="$router.push('/main/labels')">
             标签
           </div>
@@ -73,10 +73,10 @@ function toggle() {
         <div v-else>
           <div
             :class="{
-              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:position-absolute before:left-0 before:bottom--1 before:rd-2':
+              'before:w-100% before:h-1 before:bg-theme-primary before:content-empty before:absolute before:left-0 before:bottom--1 before:rd-2':
                 $route.name === 'Zone'
             }"
-            class="hover mr-4 position-relative"
+            class="hover mr-4 relative"
             @click="$router.push(Consts.Paths.zone())">
             我的
           </div>

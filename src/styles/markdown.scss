@@ -37,20 +37,7 @@
     background-color: rgba(var(--el-color-primary-rgb), .1);
 
     p {
-      margin: 0 !important;
-      padding-left: 1rem;
-    }
-
-    .bleu-img {
-      margin: 1.5rem 1rem;
-    }
-
-    .bleu-pre {
-      margin: 1.5rem 1rem;
-    }
-
-    blockquote {
-      margin: 1.5rem 1rem;
+      padding: 0 1rem;
     }
   }
 
@@ -59,7 +46,6 @@
     text-decoration: none;
     padding-bottom: 2px;
   }
-
 
   a>code {
     --uno:  dark:bg-#2929299e light:bg-#e8e8e8 text-#ff1493;
@@ -143,7 +129,7 @@
   }
 
   .bleu-pre {
-    --uno: rd-2 dark:bg-#1f1f1fbd light:bg-#fafafabd position-relative;
+    --uno: rd-2 dark:bg-#1f1f1fbd light:bg-#fafafabd relative;
     margin: 1.5rem 0;
 
     pre {

@@ -2,11 +2,11 @@
 
 <template>
   <div id="l-progress" class="z-999999 fixed left-0 top-0 w-100vw">
-    <div class="track position-absolute top-0">
+    <div class="track absolute top-0">
       <div class="bar rd-2"></div>
     </div>
   </div>
-  <div id="l-content" class="fade-in-out position-relative z-99 mt-20">
+  <div id="l-content" class="fade-in-out relative z-99 mt-20">
     <div id="l-top-nail"></div>
     <RouterView v-slot="{ Component }">
       <template v-if="Component">

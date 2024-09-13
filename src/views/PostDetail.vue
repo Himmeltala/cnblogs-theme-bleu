@@ -52,7 +52,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="postData && postInfo" class="page position-relative f-c-c">
+  <div v-if="postData && postInfo" class="page relative f-c-c">
     <div class="lg-sm:w-55vw lt-sm:w-90vw">
       <div class="text-1.5rem text-text-regular font-bold mb-2">{{ postData.text }}</div>
       <div class="f-c-s flex-wrap mb-4 text-0.9rem">
@@ -185,4 +185,13 @@ onMounted(async () => {
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.under-post-card,
+.history-today {
+  --uno: text-0.8rem text-text-primary;
+
+  a {
+    --uno: hover;
+  }
+}
+</style>
