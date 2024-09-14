@@ -208,8 +208,6 @@ interface ConfigModel {
     mainFamily: string;
     codeLineHeight: number;
     mainLineHeight: number;
-    mainSizeRate: number;
-    codeSizeRate: number;
   };
 }
 

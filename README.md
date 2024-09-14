@@ -311,7 +311,9 @@ function calc(x, y) {
 window.__BLEU_CONFIG__ = {
   theme: {
     codeFamily: "Hack",
-    mainFamily: "LXGW Bright"
+    mainFamily: "LXGW Bright",
+    codeLineHeight: 1.7,
+    mainLineHeight: 2
   }
 };
 ```

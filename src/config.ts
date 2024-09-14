@@ -61,9 +61,7 @@ function createConsts() {
       codeFamily: "Hack",
       mainFamily: "LXGW Bright",
       codeLineHeight: 1.7,
-      mainLineHeight: 2,
-      mainSizeRate: 100,
-      codeSizeRate: 110
+      mainLineHeight: 2
     },
     welcome: {
       texts: [
@@ -121,8 +119,6 @@ function createGlobalVars() {
         --bleu-main-family: ${theme.mainFamily || `var(--el-font-family)`};
         --bleu-code-line-height: ${theme.codeLineHeight};
         --bleu-main-line-height: ${theme.mainLineHeight};
-        --bleu-main-font-size-rate: ${theme.mainSizeRate};
-        --bleu-code-font-size-rate: ${theme.codeSizeRate};
       }`,
       stylesheet.cssRules.length
     );

@@ -15,17 +15,6 @@
   }
 }
 
-@for $i from 1 through 20 {
-  $min: $i * 100 + 1400px;
-
-  @media screen and (min-width: $min) {
-    html {
-      --bleu-main-font-size: #{calc($min / var(--bleu-main-font-size-rate))};
-      --bleu-code-font-size: #{calc($min / var(--bleu-code-font-size-rate))};
-    }
-  }
-}
-
 html[class="dark"] {
   --hljs-color: #abb2bf;
   --hljs-bg: #282c34;
@@ -61,6 +50,9 @@ html[class="light"] {
 }
 
 html {
+  color: var(--bleu-text-color-primary);
+  font-family: var(--bleu-main-family);
+
   /* theme */
   --bleu-theme-color-primary: var(--el-color-primary);
   --bleu-theme-color-1: var(--el-color-primary-dark-2);
@@ -98,12 +90,6 @@ html {
 
   --el-text-color-primary: var(--bleu-text-color-primary) !important;
   --el-text-color-regular: var(--bleu-text-color-regular) !important;
-}
-
-html {
-  font-size: var(--bleu-main-font-size);
-  font-family: var(--bleu-main-family);
-  color: var(--bleu-text-color-primary);
 }
 
 .shine-text {
