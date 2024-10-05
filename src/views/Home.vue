@@ -25,33 +25,27 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="page f-c-c">
-    <div class="lg-sm:w-55vw lt-sm:w-90vw">
-      <div class="f-c-c">
-        <div>
-          <div class="f-c-c">
-            <div class="relative w-50 h-50">
-              <img :src="Consts.config.avatar" class="w-50 h-50 object-cover rd-50%" />
-              <div
-                class="absolute bottom-0 right-0 f-c-c w-10 h-10 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
-                {{ Consts.config.status || "🐟" }}
-              </div>
-            </div>
-          </div>
-          <div class="text-2rem mt-4 font-bold">
-            <div>Hi~👋,</div>
-            <div>
-              I'm <span class="shine-text">{{ Consts.getBlogApp() }}.</span>
-            </div>
-          </div>
-          <div :style="{ height: offsetHeight + 'px' }" class="text-1.2rem font-bold mt-2">
-            <div id="tw"></div>
-          </div>
-          <div class="f-c-c mt-50">
-            <div class="circle" @click="$router.push(Consts.Paths.posts(1))"></div>
-          </div>
+  <div class="page">
+    <div class="f-c-c">
+      <div class="relative w-50 h-50">
+        <img :src="Consts.config.avatar" class="w-50 h-50 object-cover rd-50%" />
+        <div
+          class="absolute bottom-0 right-0 f-c-c w-10 h-10 rd-50% dark:bg-#323232 light:bg-#f2f2f2">
+          {{ Consts.config.status || "🐟" }}
         </div>
       </div>
+    </div>
+    <div class="text-2rem mt-4 font-bold text-center">
+      <div>Hi~👋,</div>
+      <div>
+        I'm <span class="shine-text">{{ Consts.getBlogApp() }}.</span>
+      </div>
+    </div>
+    <div :style="{ height: offsetHeight + 'px' }" class="text-1.2rem font-bold mt-2">
+      <div id="tw"></div>
+    </div>
+    <div class="f-c-c mt-50">
+      <div class="circle" @click="$router.push(Consts.Paths.posts(1))"></div>
     </div>
   </div>
 </template>

@@ -17,7 +17,7 @@ coverIdx.value = Utils.Random.get(coverArr, props.data.length);
       {{ item.text }}
     </router-link>
     <div class="mt-4 f-s-b flex-gap-4">
-      <div class="lg-sm:w-65% lt-sm:w-55%">
+      <div class="sm:w-65% lt-sm:w-55%">
         <div class="mb-4 text-0.9rem lt-sm:line-clamp-4">
           {{ item.desc }}
         </div>
@@ -48,7 +48,7 @@ coverIdx.value = Utils.Random.get(coverArr, props.data.length);
           </div>
         </div>
       </div>
-      <div class="lg-sm:w-30% lt-sm:w-40% lt-sm:h-35 lg-sm:h-40 flow-hidden relative">
+      <div class="sm:w-30% sm:h-40 lt-sm:w-40% lt-sm:h-35 flow-hidden relative">
         <div class="mask absolute top-0 left-0 w-100% h-15% z-1"></div>
         <img :src="item.surface || coverArr[coverIdx[index]]" class="w-100% h-100% object-cover" />
         <div class="mask absolute bottom-0 left-0 w-100% h-15%"></div>

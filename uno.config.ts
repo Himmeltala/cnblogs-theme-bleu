@@ -1,10 +1,4 @@
-import {
-  defineConfig,
-  presetAttributify,
-  presetIcons,
-  presetUno,
-  transformerDirectives
-} from "unocss";
+import { defineConfig, presetAttributify, presetIcons, presetUno, transformerDirectives } from "unocss";
 
 export default defineConfig({
   presets: [
@@ -25,12 +19,12 @@ export default defineConfig({
     colors: {
       theme: {
         primary: "var(--bleu-theme-color-primary)",
-        1: "var(--bleu-theme-color-1)",
-        2: "var(--bleu-theme-color-2)",
-        3: "var(--bleu-theme-color-3)",
-        4: "var(--bleu-theme-color-4)",
-        5: "var(--bleu-theme-color-5)",
-        6: "var(--bleu-theme-color-6)"
+        "1": "var(--bleu-theme-color-1)",
+        "2": "var(--bleu-theme-color-2)",
+        "3": "var(--bleu-theme-color-3)",
+        "4": "var(--bleu-theme-color-4)",
+        "5": "var(--bleu-theme-color-5)",
+        "6": "var(--bleu-theme-color-6)"
       },
       text: {
         primary: "var(--bleu-text-color-primary)",
@@ -62,7 +56,7 @@ export default defineConfig({
   ],
   shortcuts: [
     [
-      /^f-((c|s|e)(-(c|s|e|b|a))*)$/,
+      /^f-(([cse])(-([cseba]))*)$/,
       ([, , g1, , g2]) => {
         let style = ``;
         const temps = [
@@ -93,7 +87,7 @@ export default defineConfig({
     [
       /^page$/,
       () => {
-        return `lg-sm:px-100 lt-sm:px-4 pb-4`;
+        return `lt-lg:px-10 xl:px-40 2xl:px-100`;
       }
     ]
   ]

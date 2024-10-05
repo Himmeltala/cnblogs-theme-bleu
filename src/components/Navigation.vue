@@ -20,7 +20,7 @@ function toggle() {
   <div
     b="b-1 b-solid border-primary"
     class="top-header light:bg-#ffffffb3 dark:bg-#242424b3 h-15 fixed top-0 left-0 w-100vw z-999">
-    <div class="content lg-sm:px-50 lt-sm:px-4 lg-sm:f-c-b lt-sm:f-c-s h-100%">
+    <div class="content lt-lg:px-10 xl:px-40 f-c-b h-100%">
       <div class="f-c-s lt-sm:hidden">
         <div class="w-45">
           <el-input
@@ -45,9 +45,7 @@ function toggle() {
             @click="$router.push(Consts.Paths.posts())">
             随笔
           </div>
-          <div
-            class="hover mr-4"
-            @click="Utils.Navigation.go('https://www.cnblogs.com/')">
+          <div class="hover mr-4" @click="Utils.Navigation.go('https://www.cnblogs.com/')">
             博客园
           </div>
           <div
@@ -68,9 +66,7 @@ function toggle() {
             @click="$router.push('/main/labels')">
             标签
           </div>
-          <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">
-            管理
-          </div>
+          <div class="hover" @click="Utils.Navigation.go('https://i.cnblogs.com')">管理</div>
         </div>
         <div class="tools ml-4">
           <el-switch
