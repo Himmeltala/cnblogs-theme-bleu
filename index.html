@@ -3,7 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ecy</title>
+    <title>主题</title>
+    <link
+      rel="stylesheet"
+      href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkaibright/dist/LXGWBright-Regular/result.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.bootcdn.net/ajax/libs/hack-font/3.3.0/web/hack-subset.min.css" />
     <script>
       window.MathJax = {
         tex: {
@@ -26,116 +32,76 @@
           fontCache: "global"
         }
       };
+      var isLogined = true;
+      var isBlogOwner = true;
     </script>
     <script async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js"></script>
     <style>
-      #home {
-        display: none !important;
-      }
-      @-webkit-keyframes loading {
-        0% {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      @keyframes loading {
-        0% {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      .dark-loading {
-        background: #222;
-      }
-      .light-loading {
-        background: #fff;
-      }
-      .dark-loading,
-      .light-loading {
-        font-size: 1rem !important;
-        font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
-        font-weight: 400;
-        position: fixed;
-        top: 0;
+      .loading {
+        z-index: 99999;
+        background-color: #222222;
+        position: absolute;
         left: 0;
-        bottom: 0;
-        right: 0;
-        display: -webkit-box;
-        display: -ms-flexbox;
+        top: 0;
+        height: 100vh;
+        width: 100vw;
         display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-content: center;
         justify-content: center;
         align-items: center;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        z-index: 999999;
       }
-      .box h2 {
-        font-size: 1rem !important;
-        font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
-        font-weight: 400;
-        color: #777;
-        margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        text-align: center;
+
+      .triangle1 {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 4rem 4rem 0 0;
+        border-color: #354952 transparent transparent transparent;
+        margin: 0 auto;
+        animation: triangle1-start 1s ease-in-out infinite normal;
       }
-      .box span {
-        font-size: 1rem !important;
-        font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
-        font-weight: 400;
-        display: inline-block;
-        vertical-align: middle;
-        width: 0.6em;
-        height: 0.6em;
-        margin: 0.19em;
-        background: #007db6;
-        border-radius: 0.6em;
-        -webkit-animation: loading 1s infinite alternate;
-        animation: loading 1s infinite alternate;
+
+      .triangle2 {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 4rem 4rem;
+        border-color: transparent transparent #df1a54 transparent;
+        margin: -4rem auto 0;
+        animation: triangle2-start 1s ease-in-out infinite alternate;
       }
-      .box span:nth-of-type(2) {
-        background: #008fb2;
-        -webkit-animation-delay: 0.2s;
-        animation-delay: 0.2s;
+
+      @keyframes triangle1-start {
+        0% {
+          transform: rotate(-360deg);
+        }
+
+        100% {
+        }
       }
-      .box span:nth-of-type(3) {
-        background: #009b9e;
-        -webkit-animation-delay: 0.4s;
-        animation-delay: 0.4s;
-      }
-      .box span:nth-of-type(4) {
-        background: #00a77d;
-        -webkit-animation-delay: 0.6s;
-        animation-delay: 0.6s;
-      }
-      .box span:nth-of-type(5) {
-        background: #00b247;
-        -webkit-animation-delay: 0.8s;
-        animation-delay: 0.8s;
-      }
-      .box span:nth-of-type(6) {
-        background: #5ab027;
-        -webkit-animation-delay: 1s;
-        animation-delay: 1s;
-      }
-      .box span:nth-of-type(7) {
-        background: #a0b61e;
-        -webkit-animation-delay: 1.2s;
-        animation-delay: 1.2s;
+
+      @keyframes triangle2-start {
+        0% {
+          transform: rotate(360deg);
+        }
+
+        100% {
+        }
       }
     </style>
+    <style type="text/css" title="global-stylesheet"></style>
   </head>
   <body>
-    <div class="dark-loading">
-      <div class="box">
-        <h2>Loading</h2>
-        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    <input
+      type="hidden"
+      id="antiforgery_token"
+      value="CfDJ8DZoAyJmInJHoSwqM1IbzdTLE5E2Xg9asfQuCKGVzG3UPtAlybsHSR7IB_FwRlXnmxTi8Pfr8J3LxyD1EBJmWWgeWRU05sHxmKso2SoZKdlYEFiaX6ZRzPEY7GWAYwGJ42Gaifi170dEuTuCEOdpOL4izuPLxhg1SVOeBxdNnx0Titw02pRwQFvQk19A367MYQ" />
+    <div class="loading">
+      <div>
+        <div class="triangle1"></div>
+        <div class="triangle2"></div>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

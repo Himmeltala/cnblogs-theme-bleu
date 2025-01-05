@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>主题</title>
+    <link
+      rel="stylesheet"
+      href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkaibright/dist/LXGWBright-Regular/result.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.bootcdn.net/ajax/libs/hack-font/3.3.0/web/hack-subset.min.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [
+            ["$", "$"],
+            ["\\(", "\\)"]
+          ],
+          displayMath: [
+            ["$$", "$$"],
+            ["\\[", "\\]"]
+          ],
+          processEnvironments: true,
+          processRefs: true
+        },
+        options: {
+          skipHtmlTags: ["noscript", "style", "textarea", "pre", "code"],
+          ignoreHtmlClass: "tex2jax_ignore"
+        },
+        svg: {
+          fontCache: "global"
+        }
+      };
+      var isLogined = true;
+      var isBlogOwner = true;
+    </script>
+    <script async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.0/es5/tex-chtml.js"></script>
+    <style>
+      .loading {
+        z-index: 99999;
+        background-color: #222222;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .triangle1 {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 4rem 4rem 0 0;
+        border-color: #354952 transparent transparent transparent;
+        margin: 0 auto;
+        animation: triangle1-start 1s ease-in-out infinite normal;
+      }
+
+      .triangle2 {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 4rem 4rem;
+        border-color: transparent transparent #df1a54 transparent;
+        margin: -4rem auto 0;
+        animation: triangle2-start 1s ease-in-out infinite alternate;
+      }
+
+      @keyframes triangle1-start {
+        0% {
+          transform: rotate(-360deg);
+        }
+
+        100% {
+        }
+      }
+
+      @keyframes triangle2-start {
+        0% {
+          transform: rotate(360deg);
+        }
+
+        100% {
+        }
+      }
+    </style>
+    <style type="text/css" title="global-stylesheet"></style>
+    <script type="module" crossorigin src="/index-bleu.js"></script>
+    <link rel="stylesheet" crossorigin href="/index-bleu.css">
+  </head>
+  <body>
+    <input
+      type="hidden"
+      id="antiforgery_token"
+      value="CfDJ8DZoAyJmInJHoSwqM1IbzdTLE5E2Xg9asfQuCKGVzG3UPtAlybsHSR7IB_FwRlXnmxTi8Pfr8J3LxyD1EBJmWWgeWRU05sHxmKso2SoZKdlYEFiaX6ZRzPEY7GWAYwGJ42Gaifi170dEuTuCEOdpOL4izuPLxhg1SVOeBxdNnx0Titw02pRwQFvQk19A367MYQ" />
+    <div class="loading">
+      <div>
+        <div class="triangle1"></div>
+        <div class="triangle2"></div>
+      </div>
+    </div>
+  </body>
+</html>
