@@ -1,0 +1,105 @@
+/**
+ * highlightjs 样式
+ *
+ * @author Himmeltala
+ * @date 2023 年 1 月 16 日
+ */
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  color: var(--bleu-text-color-primary) !important;
+  font-family: var(--bleu-code-family) !important;
+  font-size: 0.9rem !important;
+  line-height: var(--bleu-code-line-height) !important;
+
+  span {
+    font-family: var(--bleu-code-family) !important;
+    font-size: 0.9rem !important;
+    line-height: var(--bleu-code-line-height) !important;
+  }
+
+  &::-webkit-scrollbar {
+    height: 0.3rem;
+    width: 0;
+  }
+
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    --uno: rd-2 dark:bg-#7f7f7f light:bg-#d5d5d5;
+  }
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--hljs-comment-color);
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-formula,
+.hljs-keyword {
+  color: var(--hljs-keyword);
+}
+
+.hljs-deletion,
+.hljs-name,
+.hljs-section,
+.hljs-selector-tag,
+.hljs-subst {
+  color: var(--hljs-section);
+}
+
+.hljs-literal {
+  color: var(--hljs-literal);
+}
+
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string,
+.hljs-regexp,
+.hljs-string {
+  color: var(--hljs-addition);
+}
+
+.hljs-attr,
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-pseudo,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable {
+  color: var(--hljs-attr);
+}
+
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-symbol,
+.hljs-title {
+  color: var(--hljs-bullet);
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title,
+.hljs-title.class_ {
+  color: var(--hljs-built);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}

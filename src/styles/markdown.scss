@@ -1,0 +1,209 @@
+/**
+ * cust-markdown 样式
+ *
+ * @author Himmeltala
+ * @date 2023 年 6 月 11 日
+ */
+
+.cust-markdown {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--bleu-text-color-regular) !important;
+    font-weight: 600 !important;
+  }
+
+  h1 {
+    font-size: 1.3rem !important;
+  }
+
+  h2 {
+    font-size: 1.1rem !important;
+  }
+
+  h3,h4,h5,h6 {
+    font-size: 1rem !important;
+  }
+
+  blockquote {
+    --uno: text-text-regular b-l-6 b-l-solid b-theme-primary rd-2;
+    margin: 1.5rem 0;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    background-color: rgba(var(--el-color-primary-rgb), .1);
+
+    p {
+      padding: 0 1rem;
+    }
+  }
+
+  u {
+    --uno: b-border-primary b-b-1 b-b-solid;
+    text-decoration: none;
+    padding-bottom: 2px;
+  }
+
+  a>code {
+    --uno:  dark:bg-#2929299e light:bg-#e8e8e8 text-#ff1493;
+    margin: 0 0.1rem;
+    padding: 0.1rem 0.4rem !important;
+    border-radius: 5px !important;
+    border: none !important;
+  }
+
+
+  p {
+    margin: 1.5rem 0;
+
+    a {
+      transition: color .25s;
+      --uno: text-theme-primary;
+    }
+
+    a:hover {
+      color: var(--el-color-primary-dark-2);
+    }
+  }
+
+  img {
+    cursor: zoom-in;
+    max-width: 100%;
+  }
+
+  code {
+    --uno: dark:bg-#2929299e light:bg-#e8e8e8 text-#ff1493;
+    margin: 0 0.1rem;
+    padding: 0.1rem 0.4rem !important;
+    border-radius: 5px !important;
+    border: none !important;
+  }
+
+  ul,
+  ol {
+    padding-left: 4rem;
+
+    a {
+      transition: color .25s;
+      --uno: text-theme-primary;
+    }
+
+    a:hover {
+      color: var(--el-color-primary-dark-2);
+    }
+  }
+
+  table {
+    --uno: rd-2;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table caption {
+    font-weight: bold;
+  }
+
+  th,
+  td {
+    --uno: b-1 b-solid dark:b-#1f1f1fbd light:b-#f1f1f1bd;
+    padding: 0.5rem 0.5rem;
+  }
+
+  table thead tr {
+    --uno: dark:bg-#2929299e light:bg-#e8e8e8;
+  }
+
+  table tbody tr:nth-child(even) {
+    --uno: dark:bg-#1f1f1fbd light:bg-#f1f1f1bd;
+  }
+
+  table tfoot tr td {
+    text-align: right;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  .bleu-pre {
+    --uno: rd-2 dark:bg-#1f1f1fbd light:bg-#fafafabd relative;
+    margin: 1.5rem 0;
+
+    pre {
+      margin: 0;
+      padding: 0 1.5rem 1.5rem 1.5rem;
+
+      code {
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        background-color: initial !important;
+      }
+    }
+  }
+
+  .bleu-img {
+    margin: 1.5rem 0;
+  }
+
+  .bleu-war,
+  .bleu-tip {
+    --uno: rd-2;
+    position: relative;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+    padding: 1rem 1rem 1rem 1.5rem;
+
+    a {
+      transition: color .25s;
+      --uno: text-theme-primary;
+    }
+
+    a:hover {
+      color: var(--el-color-primary-dark-2);
+    }
+  }
+
+  @mixin war-tip-before {
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: inline-block;
+      width: 0.3rem;
+      height: 100%;
+      border-top-left-radius: 0.5rem;
+      border-bottom-left-radius: 0.5rem;
+      @content;
+    }
+  }
+
+  .bleu-war {
+    --uno: dark:bg-#4905058b light:bg-#ecc5c5bf dark:color-#C8C8C8 light:color-#404040;
+
+    @include war-tip-before() {
+      --uno: dark:bg-#c32b2be2 light:bg-#d45959e2;
+    }
+  }
+
+  .bleu-tip {
+    --uno: dark:bg-#012e018b light:bg-#c8d4c8bf dark:color-#C8C8C8 light:color-#404040;
+
+    @include war-tip-before() {
+      --uno: dark:bg-#009400c2 light:bg-#5aa35ac2;
+    }
+  }
+
+  .bleu-porter {
+    margin: 1.5rem 0;
+
+    .hover-porter:hover {
+      box-shadow: 0 4px 8px 0px rgba(0, 0, 0, 0.1), 0 2px 4px 0px rgba(0, 0, 0, 0.1), 0 4px 8px 0px rgba(0, 0, 0, 0.1), 0 8px 16px 0px rgba(0, 0, 0, 0.1);
+    }
+  }
+}

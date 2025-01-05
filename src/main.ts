@@ -1,29 +1,17 @@
-/* Import Vue */
+import "uno.css";
+import "@/style.scss";
 import App from "@/App.vue";
 import router from "@/router";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import { useTheme } from "@/config";
 
-/* Import CSS */
-// uno style
-import "uno.css";
-// ecy style
-import "./style.scss";
-
-/* Import Ecy */
-import { useDirective } from "./directive";
-
-/* Start */
 const app = createApp(App);
 
 app.use(router);
 app.use(createPinia());
 
-useDirective(app);
-EcyConfig.useLite(
-  () => app.mount("#app"),
-  () => {
-    // initLiteVars();
-    app.mount("#app");
-  }
-);
+app.config.globalProperties.isBlogOwner = isBlogOwner;
+app.config.globalProperties.isLogined = isLogined;
+
+useTheme(app);
