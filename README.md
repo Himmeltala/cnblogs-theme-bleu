@@ -1,4 +1,8 @@
-<p align="center">CNBLOGS-THEME-BLEU</p>
+<p align="center">
+CNBLOGS-THEME-BLEU
+</p>
+
+<p align="center">不再维护！！！</p>
 
 <p align="center">
 博客园主题
@@ -9,7 +13,9 @@
 <div style="display: flex; justify-content: space-between;">
 
 <div align="center">
+
 <img src="./docs/vue.png" style="width: 50px; height: 50px; object-fit: contain;" />
+
 <p align="center">Vue</p>
 </div>
 
@@ -77,8 +83,6 @@ pnpm build
 ```
 
 # 基本设置
-
-![](./docs/img-1.png)
 
 - 开启 JS 权限。
 - 博客皮肤请选择 Custom。
@@ -212,7 +216,7 @@ pnpm build
 
 ```md
 <pot>
-  title:(m3u8 视频上传和播放源码) link:(https://gitee.com/Himmelbleu/java-learning)
+  title:(m3u8 视频上传和播放源码) link:(https://gitee.com/Himmeltala/java-learning)
   cover:(https://www.infocode.com.cn/blog/wp-content/uploads/2021/10/f8fba7a2f3c35d3d7c16892b38ba4785.jpg)
 </pot>
 ```
@@ -501,7 +505,7 @@ window.__BLEU_CONFIG__ = {
       },
       {
         name: "github",
-        value: "https://github.com/himmelbleu"
+        value: "https://github.com/Himmeltala"
       },
       {
         value: "",

@@ -28,7 +28,7 @@ export function replace(str: string, regexs: RegExp[], replacement?: string[]) {
 /**
  * 多次切割得到最终的字符。
  *
- * 如输入 http://localhost:5173/Himmelbleu/p/17926340.html/#/，regex 为 /\/p\/\d+.html/g，得到的结果是 ['', 'p', '17926340.html']。
+ * 如输入 http://localhost:5173/Himmeltala/p/17926340.html/#/，regex 为 /\/p\/\d+.html/g，得到的结果是 ['', 'p', '17926340.html']。
  *
  * 首先第一次获取数组中 17926340.html，再对其进行切割得到 17926340。那么，indexs 和 splits 应该传递的参数如下：
  * [2, 0], ["/", "."]
